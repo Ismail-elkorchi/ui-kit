@@ -4,9 +4,19 @@
   "private": true,
   "author": "Ismail El Korchi",
   "license": "Apache-2.0",
-  "keywords": ["ui-kit", "lit", "web-components", "design-system", "monorepo"],
-  "engines": {"node": ">=20.11"},
-  "workspaces": ["packages/*"],
+  "keywords": [
+    "ui-kit",
+    "lit",
+    "web-components",
+    "design-system",
+    "monorepo"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "npm --workspaces run build",
     "lint": "eslint .",

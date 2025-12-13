@@ -62,7 +62,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ismail-elkorchi/ui-kit.git",
+    "url": "git+https://github.com/Ismail-elkorchi/ui-kit.git",
     "directory": "packages/ui-primitives"
   },
   "bugs": {
