@@ -1,0 +1,41 @@
+{
+  "name": "@ismail-elkorchi/ui-tokens",
+  "version": "0.1.0",
+  "description": "CSS design tokens packaged as reusable variables for any UI.",
+  "author": "Ismail El Korchi",
+  "license": "Apache-2.0",
+  "type": "module",
+  "keywords": ["design-tokens", "css-variables", "theme", "ui-kit"],
+  "engines": {"node": ">=20.11"},
+  "style": "./dist/index.css",
+  "exports": {
+    ".": "./dist/index.css",
+    "./index.css": "./dist/index.css",
+    "./theme.css": "./dist/theme.css"
+  },
+  "sideEffects": [
+    "./dist/**/*.css"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm run clean && node -e \"const fs = require('fs'); fs.mkdirSync('dist', {recursive: true}); ['index.css', 'theme.css'].forEach(file => fs.copyFileSync(file, 'dist/' + file));\"",
+    "clean": "node -e \"const fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true});\"",
+    "typecheck": "echo \"Skipping typecheck for CSS-only package\"",
+    "prepack": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ismail-elkorchi/ui-kit.git",
+    "directory": "packages/ui-tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/Ismail-elkorchi/ui-kit/issues"
+  },
+  "homepage": "https://github.com/Ismail-elkorchi/ui-kit",
+  "publishConfig": {
+    "access": "public"
+  }
+}

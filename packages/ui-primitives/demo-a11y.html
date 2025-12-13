@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI Primitives A11y Demo</title>
+    <script type="module">
+      import './dist/register.js';
+    </script>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      .log {
+        background: #f0f0f0;
+        padding: 1rem;
+        border-radius: 4px;
+        font-family: monospace;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>UI Primitives A11y & Events Demo</h1>
+
+    <div class="section">
+      <h2>1. Button Type Behavior</h2>
+
+      <form
+        id="demo-form"
+        action="#"
+        onsubmit="
+          alert('Form Submitted!');
+          return false;
+        ">
+        <p>
+          <uik-button>Default Button (should NOT submit)</uik-button>
+          <br /><small>Clicking this should do nothing to the form.</small>
+        </p>
+
+        <p>
+          <uik-button type="submit" variant="default">Submit Button (should submit)</uik-button>
+          <br /><small>Clicking this should trigger the form alert.</small>
+        </p>
+      </form>
+    </div>
+
+    <div class="section">
+      <h2>2. Input Accessibility & Events</h2>
+
+      <uik-input id="test-input" label="Email Address" placeholder="Type something..."></uik-input>
+
+      <p>
+        Accessibility check: Inspect the input above. It should have <code>aria-label="Email Address"</code> on the
+        internal <code>&lt;input&gt;</code>.
+      </p>
+
+      <h3>Event Log:</h3>
+      <div id="log" class="log"></div>
+    </div>
+
+    <script>
+      const logEl = document.getElementById('log');
+      const inputEl = document.getElementById('test-input');
+
+      function log(msg) {
+        const div = document.createElement('div');
+        div.textContent = `${new Date().toLocaleTimeString()} - ${msg}`;
+        logEl.prepend(div);
+      }
+
+      inputEl.addEventListener('input', e => {
+        log(`[input] value: "${e.detail.value}" (Type: ${e.constructor.name})`);
+        console.log('input event:', e);
+      });
+
+      inputEl.addEventListener('change', e => {
+        log(`[change] value: "${e.detail.value}" (Type: ${e.constructor.name})`);
+        console.log('change event:', e);
+      });
+    </script>
+  </body>
+</html>
