@@ -2,10 +2,10 @@ import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 @customElement('uik-separator')
-export class Separator extends LitElement {
+export class UikSeparator extends LitElement {
   @property({type: String}) accessor orientation: 'horizontal' | 'vertical' = 'horizontal';
 
-  static override styles = css`
+  static override readonly styles = css`
     :host {
       display: block;
       flex-shrink: 0;

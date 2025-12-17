@@ -27,24 +27,24 @@
       "default": "./dist/register.js"
     },
     "./button": {
-      "types": "./dist/Button.d.ts",
-      "import": "./dist/Button.js",
-      "default": "./dist/Button.js"
+      "types": "./dist/uik-button.d.ts",
+      "import": "./dist/uik-button.js",
+      "default": "./dist/uik-button.js"
     },
     "./badge": {
-      "types": "./dist/Badge.d.ts",
-      "import": "./dist/Badge.js",
-      "default": "./dist/Badge.js"
+      "types": "./dist/uik-badge.d.ts",
+      "import": "./dist/uik-badge.js",
+      "default": "./dist/uik-badge.js"
     },
     "./input": {
-      "types": "./dist/Input.d.ts",
-      "import": "./dist/Input.js",
-      "default": "./dist/Input.js"
+      "types": "./dist/uik-input.d.ts",
+      "import": "./dist/uik-input.js",
+      "default": "./dist/uik-input.js"
     },
     "./separator": {
-      "types": "./dist/Separator.d.ts",
-      "import": "./dist/Separator.js",
-      "default": "./dist/Separator.js"
+      "types": "./dist/uik-separator.d.ts",
+      "import": "./dist/uik-separator.js",
+      "default": "./dist/uik-separator.js"
     }
   },
   "sideEffects": [

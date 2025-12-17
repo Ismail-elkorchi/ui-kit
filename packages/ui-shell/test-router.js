@@ -1,4 +1,4 @@
-import {AppShellRouter, APP_SHELL_NAV_EVENT} from './dist/router.js';
+import {UikShellRouter, UIK_SHELL_NAV_EVENT} from './dist/router.js';
 
 // ---- Polyfills for Node Environment ----
 class CustomEvent extends Event {
@@ -35,7 +35,7 @@ async function runTests() {
     {id: 'page2', label: 'Page 2'}
   ];
 
-  const router = new AppShellRouter({routes, initialView: 'page1'});
+  const router = new UikShellRouter({routes, initialView: 'page1'});
 
   // Test 1: Initial state
   assert(router.current.view === 'page1', 'Initial view should be page1');
@@ -57,7 +57,7 @@ async function runTests() {
     assert(event.detail.to.view === 'page2', 'Event to view should be page2');
     assert(event.detail.route.id === 'page2', 'Event route id should be page2');
   };
-  window.addEventListener(APP_SHELL_NAV_EVENT, windowHandler);
+  window.addEventListener(UIK_SHELL_NAV_EVENT, windowHandler);
 
   // Perform navigation
   console.log('🔄 Navigating to page2...');

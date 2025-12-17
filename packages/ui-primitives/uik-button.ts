@@ -2,7 +2,7 @@ import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 @customElement('uik-button')
-export class Button extends LitElement {
+export class UikButton extends LitElement {
   @property({type: String, reflect: true}) accessor variant:
     | 'default'
     | 'destructive'
@@ -16,7 +16,7 @@ export class Button extends LitElement {
   @property({type: Boolean, reflect: true}) accessor active = false;
   @property({type: Boolean, reflect: true}) accessor muted = false;
 
-  static override styles = css`
+  static override readonly styles = css`
     :host {
       display: inline-flex;
     }
@@ -154,19 +154,20 @@ export class Button extends LitElement {
     }
   `;
 
+  private readonly handleClick = (event: Event) => {
+    if (!this.disabled) return;
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   override render() {
     return html`
       <button
         part="base"
         class="variant-${this.variant} size-${this.size}"
-        type="${this.type}"
+        type=${this.type}
         ?disabled=${this.disabled}
-        @click=${(e: Event) => {
-          if (this.disabled) {
-            e.preventDefault();
-            e.stopPropagation();
-          }
-        }}>
+        @click=${this.handleClick}>
         <slot></slot>
       </button>
     `;

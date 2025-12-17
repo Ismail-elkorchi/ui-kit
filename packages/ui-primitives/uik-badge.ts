@@ -2,10 +2,10 @@ import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 @customElement('uik-badge')
-export class Badge extends LitElement {
+export class UikBadge extends LitElement {
   @property({type: String}) accessor variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'default';
 
-  static override styles = css`
+  static override readonly styles = css`
     :host {
       display: inline-flex;
     }

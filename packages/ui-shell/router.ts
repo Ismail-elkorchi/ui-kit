@@ -1,66 +1,68 @@
-export const APP_SHELL_NAV_EVENT = 'app-shell:navigate';
+export const UIK_SHELL_NAV_EVENT = 'uik-shell:navigate';
 
-export interface AppShellRoute {
+export interface UikShellRoute {
   id: string;
   label?: string;
   subviews?: string[];
   defaultSubview?: string;
 }
 
-export interface AppShellLocation {
+export interface UikShellLocation {
   view: string;
   subview?: string | undefined;
 }
 
-export interface AppShellNavigationDetail {
-  from: AppShellLocation;
-  to: AppShellLocation;
-  route: AppShellRoute;
+export interface UikShellNavigationDetail {
+  from: UikShellLocation;
+  to: UikShellLocation;
+  route: UikShellRoute;
 }
 
-export interface AppShellRouterConfig {
-  routes: AppShellRoute[];
+export interface UikShellRouterConfig {
+  routes: UikShellRoute[];
   initialView?: string;
   initialSubview?: string;
 }
 
-export type AppShellNavigationListener = (location: AppShellLocation) => void;
+export type UikShellNavigationListener = (location: UikShellLocation) => void;
 
-export class AppShellRouter extends EventTarget {
-  private readonly routes = new Map<string, AppShellRoute>();
+export class UikShellRouter extends EventTarget {
+  private readonly routes = new Map<string, UikShellRoute>();
   private readonly lastSubviews = new Map<string, string | undefined>();
-  private location: AppShellLocation;
+  private location: UikShellLocation;
 
-  constructor(config: AppShellRouterConfig) {
+  constructor(config: UikShellRouterConfig) {
     super();
-    if (!config.routes.length) throw new Error('AppShellRouter requires at least one route.');
+    if (config.routes.length === 0) throw new Error('UikShellRouter requires at least one route.');
 
-    config.routes.forEach(route => this.routes.set(route.id, route));
+    for (const route of config.routes) {
+      this.routes.set(route.id, route);
+    }
 
     const view = this.resolveInitialView(config.initialView);
     const subview = this.resolveSubview(view, config.initialSubview);
     this.location = {view, subview};
   }
 
-  get current(): AppShellLocation {
+  get current(): UikShellLocation {
     return {...this.location};
   }
 
-  get routeList(): AppShellRoute[] {
-    return Array.from(this.routes.values());
+  get routeList(): UikShellRoute[] {
+    return [...this.routes.values()];
   }
 
-  subscribe(listener: AppShellNavigationListener): () => void {
+  subscribe(listener: UikShellNavigationListener): () => void {
     const handler = (event: Event) => {
-      const detail = (event as CustomEvent<AppShellNavigationDetail>).detail;
+      const detail = (event as CustomEvent<UikShellNavigationDetail>).detail;
       listener(detail.to);
     };
 
-    this.addEventListener(APP_SHELL_NAV_EVENT, handler as EventListener);
+    this.addEventListener(UIK_SHELL_NAV_EVENT, handler as EventListener);
     listener(this.current);
 
     return () => {
-      this.removeEventListener(APP_SHELL_NAV_EVENT, handler as EventListener);
+      this.removeEventListener(UIK_SHELL_NAV_EVENT, handler as EventListener);
     };
   }
 
@@ -69,7 +71,7 @@ export class AppShellRouter extends EventTarget {
     if (!route) throw new Error(`Unknown route "${view}".`);
 
     const resolvedSubview = this.resolveSubview(view, subview);
-    const next: AppShellLocation = {view, subview: resolvedSubview};
+    const next: UikShellLocation = {view, subview: resolvedSubview};
 
     if (next.view === this.location.view && next.subview === this.location.subview) return;
 
@@ -77,12 +79,13 @@ export class AppShellRouter extends EventTarget {
     this.location = next;
 
     this.dispatchEvent(
-      new CustomEvent<AppShellNavigationDetail>(APP_SHELL_NAV_EVENT, {detail: {from: previous, to: next, route}})
+      new CustomEvent<UikShellNavigationDetail>(UIK_SHELL_NAV_EVENT, {detail: {from: previous, to: next, route}}),
     );
 
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(
-        new CustomEvent<AppShellNavigationDetail>(APP_SHELL_NAV_EVENT, {detail: {from: previous, to: next, route}})
+    const globalWindow = (globalThis as unknown as {window?: Window}).window;
+    if (globalWindow) {
+      globalWindow.dispatchEvent(
+        new CustomEvent<UikShellNavigationDetail>(UIK_SHELL_NAV_EVENT, {detail: {from: previous, to: next, route}}),
       );
     }
   }
@@ -90,7 +93,7 @@ export class AppShellRouter extends EventTarget {
   private resolveInitialView(initialView?: string): string {
     if (initialView && this.routes.has(initialView)) return initialView;
     const first = this.routes.values().next().value;
-    if (!first) throw new Error('AppShellRouter requires at least one route.');
+    if (!first) throw new Error('UikShellRouter requires at least one route.');
     return first.id;
   }
 
@@ -112,4 +115,4 @@ export class AppShellRouter extends EventTarget {
   }
 }
 
-export const createAppShellRouter = (config: AppShellRouterConfig) => new AppShellRouter(config);
+export const createUikShellRouter = (config: UikShellRouterConfig) => new UikShellRouter(config);

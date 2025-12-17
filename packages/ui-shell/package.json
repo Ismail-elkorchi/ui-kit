@@ -27,29 +27,29 @@
       "default": "./dist/register.js"
     },
     "./layout": {
-      "types": "./dist/AppShellLayout.d.ts",
-      "import": "./dist/AppShellLayout.js",
-      "default": "./dist/AppShellLayout.js"
+      "types": "./dist/uik-shell-layout.d.ts",
+      "import": "./dist/uik-shell-layout.js",
+      "default": "./dist/uik-shell-layout.js"
     },
     "./activity-bar": {
-      "types": "./dist/ActivityBar.d.ts",
-      "import": "./dist/ActivityBar.js",
-      "default": "./dist/ActivityBar.js"
+      "types": "./dist/uik-shell-activity-bar.d.ts",
+      "import": "./dist/uik-shell-activity-bar.js",
+      "default": "./dist/uik-shell-activity-bar.js"
     },
     "./sidebar": {
-      "types": "./dist/Sidebar.d.ts",
-      "import": "./dist/Sidebar.js",
-      "default": "./dist/Sidebar.js"
+      "types": "./dist/uik-shell-sidebar.d.ts",
+      "import": "./dist/uik-shell-sidebar.js",
+      "default": "./dist/uik-shell-sidebar.js"
     },
     "./secondary-sidebar": {
-      "types": "./dist/SecondarySidebar.d.ts",
-      "import": "./dist/SecondarySidebar.js",
-      "default": "./dist/SecondarySidebar.js"
+      "types": "./dist/uik-shell-secondary-sidebar.d.ts",
+      "import": "./dist/uik-shell-secondary-sidebar.js",
+      "default": "./dist/uik-shell-secondary-sidebar.js"
     },
     "./statusbar": {
-      "types": "./dist/Statusbar.d.ts",
-      "import": "./dist/Statusbar.js",
-      "default": "./dist/Statusbar.js"
+      "types": "./dist/uik-shell-statusbar.d.ts",
+      "import": "./dist/uik-shell-statusbar.js",
+      "default": "./dist/uik-shell-statusbar.js"
     },
     "./router": {
       "types": "./dist/router.d.ts",

@@ -3,20 +3,14 @@ import {customElement, property} from 'lit/decorators.js';
 
 import '@ismail-elkorchi/ui-primitives/button';
 
-export type ActivityBarIcon = string | ReturnType<typeof svg>;
-
-export interface ActivityBarItem {
-  id: string;
-  label: string;
-  icon?: ActivityBarIcon;
-  tooltip?: string;
-}
+import type {UikShellActivityBarItem} from './uik-activity-bar-types';
+export type {UikShellActivityBarIcon, UikShellActivityBarItem} from './uik-activity-bar-types';
 
 @customElement('uik-shell-activity-bar')
-export class AppShellActivityBar extends LitElement {
-  @property({attribute: false}) accessor items: ActivityBarItem[] = [];
+export class UikShellActivityBar extends LitElement {
+  @property({attribute: false}) accessor items: UikShellActivityBarItem[] = [];
   @property({type: String}) accessor activeId = '';
-  @property({attribute: false}) accessor footer: unknown = null;
+  @property({attribute: false}) accessor footer: unknown = undefined;
 
   override createRenderRoot() {
     return this;
@@ -26,20 +20,31 @@ export class AppShellActivityBar extends LitElement {
     this.dispatchEvent(new CustomEvent('activity-select', {detail: {id}, bubbles: true, composed: true}));
   }
 
-  private renderIcon(item: ActivityBarItem) {
+  private renderIcon(item: UikShellActivityBarItem) {
     if (!item.icon) return html`<span class="text-xs font-semibold">${item.label.charAt(0).toUpperCase()}</span>`;
     if (typeof item.icon === 'string') {
-      return svg`<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="${item.icon}"></path>`;
+      return svg`<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d=${item.icon}></path>`;
     }
     return item.icon;
   }
 
-  private renderItem(item: ActivityBarItem) {
+  private readonly onItemClick = (event: Event) => {
+    const currentTarget = event.currentTarget;
+    if (!(currentTarget instanceof HTMLElement)) return;
+
+    const {id} = currentTarget.dataset;
+    if (!id) return;
+
+    this.emitSelect(id);
+  };
+
+  private renderItem(item: UikShellActivityBarItem) {
     const isActive = this.activeId === item.id;
     return html`
       <div class="relative w-12 h-12 flex items-center justify-center">
-        <div class="${isActive ? 'absolute left-0 w-[2px] h-full bg-primary rounded-r-sm' : 'hidden'}"></div>
+        <div class=${isActive ? 'absolute left-0 w-[2px] h-full bg-primary rounded-r-sm' : 'hidden'}></div>
         <uik-button
+          data-id=${item.id}
           variant="ghost"
           size="icon"
           class="w-12 h-12"
@@ -48,9 +53,7 @@ export class AppShellActivityBar extends LitElement {
           aria-pressed=${isActive ? 'true' : 'false'}
           aria-label=${item.label}
           title=${item.tooltip ?? item.label}
-          @click=${() => {
-            this.emitSelect(item.id);
-          }}>
+          @click=${this.onItemClick}>
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">${this.renderIcon(item)}</svg>
         </uik-button>
       </div>
@@ -58,11 +61,12 @@ export class AppShellActivityBar extends LitElement {
   }
 
   override render() {
+    const items = this.items.map(item => this.renderItem(item));
     return html`
       <aside
         data-region="activity-bar"
         class="w-12 bg-secondary flex flex-col items-center py-2 flex-shrink-0 text-muted-foreground h-full">
-        ${this.items.map(item => this.renderItem(item))}
+        ${items}
         <div class="flex-1"></div>
         ${this.footer ?? nothing}
       </aside>
@@ -72,6 +76,6 @@ export class AppShellActivityBar extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'uik-shell-activity-bar': AppShellActivityBar;
+    'uik-shell-activity-bar': UikShellActivityBar;
   }
 }

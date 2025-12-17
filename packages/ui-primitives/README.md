@@ -5,7 +5,7 @@ Shadow DOM web components backed by the shared token CSS variables from `@ismail
 ## Build & distribution
 
 - `npm run build` emits ESM + `.d.ts` files into `dist/`.
-- Exported subpaths map directly to files: `dist/index.js`, `dist/register.js`, `dist/Button.js`, `dist/Badge.js`, `dist/Input.js`, `dist/Separator.js`.
+- Exported subpaths map directly to files: `dist/index.js`, `dist/register.js`, `dist/uik-button.js`, `dist/uik-badge.js`, `dist/uik-input.js`, `dist/uik-separator.js`.
 - Published artifacts include only `dist/` and this README; TypeScript sources stay in the workspace.
 
 ## Usage

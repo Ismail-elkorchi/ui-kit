@@ -5,11 +5,11 @@ import '@ismail-elkorchi/ui-primitives/button';
 import '@ismail-elkorchi/ui-primitives/separator';
 
 @customElement('uik-shell-secondary-sidebar')
-export class AppShellSecondarySidebar extends LitElement {
+export class UikShellSecondarySidebar extends LitElement {
   @property({type: Boolean}) accessor open = false;
   @property({type: String}) accessor heading = '';
-  @property({attribute: false}) accessor body: unknown = null;
-  @property({attribute: false}) accessor footer: unknown = null;
+  @property({attribute: false}) accessor body: unknown = undefined;
+  @property({attribute: false}) accessor footer: unknown = undefined;
 
   override createRenderRoot() {
     return this;
@@ -22,14 +22,26 @@ export class AppShellSecondarySidebar extends LitElement {
   override render() {
     if (!this.open) return nothing;
 
+    const headingText = this.heading === '' ? 'Secondary' : this.heading;
+
+    let bodyContent = this.body;
+    bodyContent ??= html`<p class="text-xs italic">Secondary sidebar content</p>`;
+
+    const footer = this.footer ?? undefined;
+    let footerContent: unknown = nothing;
+    if (footer) {
+      footerContent = html`
+        <uik-separator orientation="horizontal"></uik-separator>
+        <div class="p-3 border-t border-border bg-card">${footer}</div>
+      `;
+    }
+
     return html`
       <aside
         data-region="secondary-sidebar"
         class="w-80 bg-card flex flex-col border-l border-border flex-shrink-0 h-full text-foreground">
         <div class="h-10 px-4 flex items-center justify-between bg-card select-none flex-shrink-0">
-          <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground truncate">
-            ${this.heading || 'Secondary'}
-          </span>
+          <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground truncate">${headingText}</span>
           <uik-button
             variant="ghost"
             size="icon"
@@ -44,15 +56,8 @@ export class AppShellSecondarySidebar extends LitElement {
           </uik-button>
         </div>
         <uik-separator orientation="horizontal"></uik-separator>
-        <div class="flex-1 overflow-y-auto p-4 custom-scrollbar text-sm text-muted-foreground">
-          ${this.body ?? html`<p class="text-xs italic">Secondary sidebar content</p>`}
-        </div>
-        ${this.footer
-          ? html`
-              <uik-separator orientation="horizontal"></uik-separator>
-              <div class="p-3 border-t border-border bg-card">${this.footer}</div>
-            `
-          : nothing}
+        <div class="flex-1 overflow-y-auto p-4 custom-scrollbar text-sm text-muted-foreground">${bodyContent}</div>
+        ${footerContent}
       </aside>
     `;
   }
@@ -60,6 +65,6 @@ export class AppShellSecondarySidebar extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'uik-shell-secondary-sidebar': AppShellSecondarySidebar;
+    'uik-shell-secondary-sidebar': UikShellSecondarySidebar;
   }
 }

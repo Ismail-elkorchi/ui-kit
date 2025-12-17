@@ -1,4 +1,4 @@
-import './Button';
-import './Badge';
-import './Input';
-import './Separator';
+import './uik-button';
+import './uik-badge';
+import './uik-input';
+import './uik-separator';

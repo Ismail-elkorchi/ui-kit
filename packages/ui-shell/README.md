@@ -21,9 +21,9 @@ Tailwind-friendly shell components (activity bar, sidebars, status bar, and an o
 import {html} from 'lit';
 import '@ismail-elkorchi/ui-primitives/register';
 import '@ismail-elkorchi/ui-shell/register';
-import type {ActivityBarItem} from '@ismail-elkorchi/ui-shell/activity-bar';
+import type {UikShellActivityBarItem} from '@ismail-elkorchi/ui-shell/activity-bar';
 
-const activityItems: ActivityBarItem[] = [
+const activityItems: UikShellActivityBarItem[] = [
   {
     id: 'explorer',
     label: 'Explorer',
@@ -76,7 +76,7 @@ html`
 A tiny EventTarget-based router lives in `@ismail-elkorchi/ui-shell/router`. It is framework-light, keeps state in memory (no history), and is meant for desktop flows that only need named views and optional subviews/tabs.
 
 ```ts
-import {createAppShellRouter, APP_SHELL_NAV_EVENT, type AppShellNavigationDetail} from '@ismail-elkorchi/ui-shell/router';
+import {createUikShellRouter, UIK_SHELL_NAV_EVENT, type UikShellNavigationDetail} from '@ismail-elkorchi/ui-shell/router';
 
 const routes = [
   {id: 'explorer', label: 'Explorer', subviews: ['code', 'prompt', 'apply'], defaultSubview: 'code'},
@@ -84,7 +84,7 @@ const routes = [
   {id: 'settings', label: 'Settings'}
 ] as const;
 
-export const shellRouter = createAppShellRouter({routes, initialView: 'explorer', initialSubview: 'code'});
+export const shellRouter = createUikShellRouter({routes, initialView: 'explorer', initialSubview: 'code'});
 
 // React to navigation anywhere in the app
 const unsubscribe = shellRouter.subscribe(({view, subview}) => {
@@ -106,8 +106,8 @@ html`
 `;
 
 // Listen to the low-level navigation event if you prefer EventTarget
-window.addEventListener(APP_SHELL_NAV_EVENT, (event: Event) => {
-  const detail = (event as CustomEvent<AppShellNavigationDetail>).detail;
+window.addEventListener(UIK_SHELL_NAV_EVENT, (event: Event) => {
+  const detail = (event as CustomEvent<UikShellNavigationDetail>).detail;
   console.log(detail.from, detail.to, detail.route);
 });
 ```

@@ -4,14 +4,14 @@ import {customElement, property} from 'lit/decorators.js';
 import '@ismail-elkorchi/ui-primitives/separator';
 
 @customElement('uik-shell-sidebar')
-export class AppShellSidebar extends LitElement {
+export class UikShellSidebar extends LitElement {
   @property({type: String}) accessor heading = '';
   @property({type: String}) accessor subtitle = '';
   @property({type: Boolean}) accessor paddedBody = true;
   @property({type: Boolean}) accessor scrollBody = true;
-  @property({attribute: false}) accessor actions: unknown = null;
-  @property({attribute: false}) accessor body: unknown = null;
-  @property({attribute: false}) accessor footer: unknown = null;
+  @property({attribute: false}) accessor actions: unknown = undefined;
+  @property({attribute: false}) accessor body: unknown = undefined;
+  @property({attribute: false}) accessor footer: unknown = undefined;
 
   override createRenderRoot() {
     return this;
@@ -25,7 +25,7 @@ export class AppShellSidebar extends LitElement {
       'flex-col',
       this.paddedBody ? 'p-3' : '',
       this.scrollBody ? 'overflow-y-auto custom-scrollbar' : '',
-      'gap-3'
+      'gap-3',
     ]
       .filter(Boolean)
       .join(' ');
@@ -51,7 +51,7 @@ export class AppShellSidebar extends LitElement {
         </div>
         <uik-separator orientation="horizontal"></uik-separator>
         <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
-          <div class="${this.getBodyClasses()}">${this.body ?? nothing}</div>
+          <div class=${this.getBodyClasses()}>${this.body ?? nothing}</div>
           ${this.footer
             ? html`
                 <uik-separator orientation="horizontal"></uik-separator>
@@ -66,6 +66,6 @@ export class AppShellSidebar extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'uik-shell-sidebar': AppShellSidebar;
+    'uik-shell-sidebar': UikShellSidebar;
   }
 }

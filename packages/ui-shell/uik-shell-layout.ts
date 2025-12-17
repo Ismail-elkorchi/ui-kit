@@ -2,12 +2,12 @@ import {LitElement, html, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 @customElement('uik-shell-layout')
-export class AppShellLayout extends LitElement {
-  @property({attribute: false}) accessor activityBar: unknown = null;
-  @property({attribute: false}) accessor primarySidebar: unknown = null;
-  @property({attribute: false}) accessor mainContent: unknown = null;
-  @property({attribute: false}) accessor secondarySidebar: unknown = null;
-  @property({attribute: false}) accessor statusBar: unknown = null;
+export class UikShellLayout extends LitElement {
+  @property({attribute: false}) accessor activityBar: unknown = undefined;
+  @property({attribute: false}) accessor primarySidebar: unknown = undefined;
+  @property({attribute: false}) accessor mainContent: unknown = undefined;
+  @property({attribute: false}) accessor secondarySidebar: unknown = undefined;
+  @property({attribute: false}) accessor statusBar: unknown = undefined;
   @property({type: Boolean}) accessor showSecondary = false;
 
   override createRenderRoot() {
@@ -30,6 +30,6 @@ export class AppShellLayout extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'uik-shell-layout': AppShellLayout;
+    'uik-shell-layout': UikShellLayout;
   }
 }

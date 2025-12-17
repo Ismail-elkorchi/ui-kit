@@ -4,14 +4,14 @@ import {customElement, property} from 'lit/decorators.js';
 type InputEventName = 'input' | 'change';
 
 @customElement('uik-input')
-export class Input extends LitElement {
+export class UikInput extends LitElement {
   @property({type: String}) accessor type = 'text';
   @property({type: String}) accessor placeholder = '';
   @property({type: String}) accessor value = '';
   @property({type: Boolean}) accessor disabled = false;
   @property({type: String}) accessor label = '';
 
-  static override styles = css`
+  static override readonly styles = css`
     :host {
       display: block;
       flex: 1;
@@ -50,33 +50,31 @@ export class Input extends LitElement {
   `;
 
   private emitValue(name: InputEventName, originalEvent: Event) {
-    this.dispatchEvent(
-      new CustomEvent(name, {detail: {value: this.value, originalEvent}, bubbles: true, composed: true})
-    );
+    this.dispatchEvent(new CustomEvent(name, {detail: {value: this.value, originalEvent}, bubbles: true, composed: true}));
   }
 
-  private onChange = (e: Event) => {
-    const input = e.target as HTMLInputElement;
+  private onChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
     this.value = input.value;
-    e.stopPropagation();
-    this.emitValue('change', e);
+    event.stopPropagation();
+    this.emitValue('change', event);
   };
 
-  private onInput = (e: Event) => {
-    const input = e.target as HTMLInputElement;
+  private onInput = (event: Event) => {
+    const input = event.target as HTMLInputElement;
     this.value = input.value;
-    e.stopPropagation();
-    this.emitValue('input', e);
+    event.stopPropagation();
+    this.emitValue('input', event);
   };
 
   override render() {
     return html`
       <input
         part="base"
-        type="${this.type}"
-        aria-label="${this.label}"
-        placeholder="${this.placeholder}"
-        .value="${this.value}"
+        type=${this.type}
+        aria-label=${this.label}
+        placeholder=${this.placeholder}
+        .value=${this.value}
         ?disabled=${this.disabled}
         @change=${this.onChange}
         @input=${this.onInput} />

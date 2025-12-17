@@ -6,11 +6,11 @@ import '@ismail-elkorchi/ui-primitives/badge';
 type StatusTone = 'info' | 'success' | 'error' | 'muted';
 
 @customElement('uik-shell-statusbar')
-export class AppShellStatusbar extends LitElement {
+export class UikShellStatusbar extends LitElement {
   @property({type: String}) accessor message = 'Ready';
   @property({type: String}) accessor tone: StatusTone = 'info';
-  @property({attribute: false}) accessor meta: unknown = null;
-  @property({attribute: false}) accessor actions: unknown = null;
+  @property({attribute: false}) accessor meta: unknown = undefined;
+  @property({attribute: false}) accessor actions: unknown = undefined;
 
   override createRenderRoot() {
     return this;
@@ -18,14 +18,18 @@ export class AppShellStatusbar extends LitElement {
 
   private getToneClass() {
     switch (this.tone) {
-      case 'info':
+      case 'info': {
         return 'text-foreground';
-      case 'success':
+      }
+      case 'success': {
         return 'text-green-300';
-      case 'error':
+      }
+      case 'error': {
         return 'text-red-300';
-      case 'muted':
+      }
+      case 'muted': {
         return 'text-muted-foreground';
+      }
       default: {
         const _exhaustive: never = this.tone;
         return _exhaustive;
@@ -53,6 +57,6 @@ export class AppShellStatusbar extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'uik-shell-statusbar': AppShellStatusbar;
+    'uik-shell-statusbar': UikShellStatusbar;
   }
 }
