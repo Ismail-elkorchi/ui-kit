@@ -1,5 +1,8 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from "eslint-plugin-storybook";
+
 import eslint from '@eslint/js';
-import {defineConfig} from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import importPlugin from 'eslint-plugin-import';
 import lit from 'eslint-plugin-lit';
@@ -17,12 +20,20 @@ const tsconfigProjects = ['./tsconfig.base.json', './packages/*/tsconfig.build.j
 const strictTypeChecked = tseslint.configs.strictTypeChecked.map(config => ({
   ...config,
   files: config.files ?? tsFiles,
-  ignores: [...(config.ignores ?? []), '**/*.d.ts'],
+  ignores: [
+    ...(config.ignores ?? []),
+    '**/*.d.ts',
+    '**/*.config.*',
+    'vitest.config.ts',
+    'vite.config.ts',
+    '.storybook/**',
+  ],
 }));
 
 const stylisticTypeChecked = tseslint.configs.stylisticTypeChecked.map(config => ({
   ...config,
   files: config.files ?? tsFiles,
+  ignores: [...(config.ignores ?? []), '**/*.config.*', 'vitest.config.ts', 'vite.config.ts', '.storybook/**'],
 }));
 
 const importRecommended = importPlugin.flatConfigs.recommended;
@@ -32,7 +43,15 @@ const wcRecommended = wc.configs['flat/recommended'];
 
 export default defineConfig([
   {
-    ignores: ['**/dist/**', '**/.tsbuildinfo', '**/node_modules/**', '**/coverage/**'],
+    ignores: [
+      '**/dist/**',
+      '**/.tsbuildinfo',
+      '**/node_modules/**',
+      '**/coverage/**',
+      '**/storybook-static/**',
+      '**/playwright-report/**',
+      '**/test-results/**',
+    ],
   },
 
   eslint.configs.recommended,
@@ -54,6 +73,7 @@ export default defineConfig([
 
   {
     files: tsFiles,
+    ignores: ['.storybook/**'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -62,6 +82,7 @@ export default defineConfig([
       },
     },
     plugins: {
+      '@typescript-eslint': tseslint.plugin,
       import: importPlugin,
       lit,
       'lit-a11y': litA11y,
@@ -103,12 +124,6 @@ export default defineConfig([
         'error',
         {packageDir: [import.meta.dirname, './packages/ui-shell', './packages/ui-primitives', './packages/ui-tokens']},
       ],
-      'import/no-internal-modules': [
-        'error',
-        {
-          allow: ['lit/decorators.js', '@ismail-elkorchi/ui-primitives/*'],
-        },
-      ],
       'import/no-relative-packages': 'error',
       'import/group-exports': 'off',
       'import/order': [
@@ -132,6 +147,83 @@ export default defineConfig([
   },
 
   {
+    files: ['packages/**/*.{ts,tsx,mts,cts}'],
+    rules: {
+      'import/no-internal-modules': [
+        'error',
+        {
+          allow: [
+            'lit/decorators.js',
+            '@ismail-elkorchi/ui-primitives/*',
+            '@ismail-elkorchi/ui-shell/*',
+            '@ismail-elkorchi/ui-tokens/*',
+          ],
+        },
+      ],
+    },
+  },
+
+  {
+    files: ['.storybook/**/*'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {project: false},
+      globals: {...globals.node, ...globals.es2021},
+    },
+    rules: {
+      'import/no-default-export': 'off',
+      'import/no-extraneous-dependencies': 'off',
+      'import/no-internal-modules': 'off',
+      'no-console': 'off',
+    },
+  },
+
+  {
+    files: ['**/*.stories.@(ts|js|tsx|jsx|mjs|cjs)'],
+    languageOptions: {
+      parserOptions: {project: tsconfigProjects},
+    },
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      'import/no-default-export': 'off',
+      'import/no-extraneous-dependencies': 'off',
+      'import/no-internal-modules': 'off',
+      'no-console': 'off',
+    },
+  },
+
+  {
+    files: [
+      '**/*.config.ts',
+      '**/*.config.tsx',
+      '**/*.config.mts',
+      '**/*.config.cts',
+      'vitest.config.ts',
+      'vite.config.ts',
+    ],
+    languageOptions: {
+      parserOptions: {
+        ...(tseslint.configs.disableTypeChecked.languageOptions?.parserOptions ?? {}),
+      },
+      globals: {...globals.node, ...globals.es2021},
+    },
+    rules: {
+      ...(tseslint.configs.disableTypeChecked.rules ?? {}),
+      'import/no-default-export': 'off',
+      'import/no-internal-modules': 'off',
+      'import/no-extraneous-dependencies': 'off',
+    },
+  },
+
+  {
+    files: ['**/*.config.cjs', 'tools/**/*.mjs'],
+    languageOptions: {
+      parserOptions: {project: false},
+      globals: {...globals.node, ...globals.es2021},
+    },
+  },
+
+  {
     files: ['packages/ui-shell/test-router.js'],
     languageOptions: {
       globals: {...globals.node, ...globals.es2021, ...globals.browser},
@@ -141,5 +233,6 @@ export default defineConfig([
     },
   },
 
+  ...storybook.configs['flat/recommended'],
   eslintConfigPrettier,
 ]);

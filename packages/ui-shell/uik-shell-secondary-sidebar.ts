@@ -1,8 +1,8 @@
 import {LitElement, html, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
-import '@ismail-elkorchi/ui-primitives/button';
-import '@ismail-elkorchi/ui-primitives/separator';
+import '@ismail-elkorchi/ui-primitives/UikButton';
+import '@ismail-elkorchi/ui-primitives/UikSeparator';
 
 @customElement('uik-shell-secondary-sidebar')
 export class UikShellSecondarySidebar extends LitElement {

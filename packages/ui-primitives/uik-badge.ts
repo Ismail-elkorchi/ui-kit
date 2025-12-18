@@ -13,37 +13,37 @@ export class UikBadge extends LitElement {
     .badge {
       display: inline-flex;
       align-items: center;
-      border-radius: 0.375rem;
-      border: 1px solid transparent;
       padding: 0.125rem 0.625rem;
       font-size: 0.75rem;
       font-weight: 600;
+      border: 1px solid transparent;
+      border-radius: 0.375rem;
       transition:
         color 0.15s,
         background-color 0.15s;
     }
 
     .variant-default {
-      background-color: hsl(var(--primary, 0 0% 98%));
       color: hsl(var(--primary-foreground, 240 5.9% 10%));
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      background-color: hsl(var(--primary, 0 0% 98%));
+      box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
     }
 
     .variant-secondary {
-      background-color: hsl(var(--secondary, 240 3.7% 15.9%));
       color: hsl(var(--secondary-foreground, 0 0% 98%));
+      background-color: hsl(var(--secondary, 240 3.7% 15.9%));
     }
 
     .variant-destructive {
-      background-color: hsl(var(--destructive, 0 62.8% 30.6%));
       color: hsl(var(--destructive-foreground, 0 0% 98%));
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      background-color: hsl(var(--destructive, 0 62.8% 30.6%));
+      box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
     }
 
     .variant-outline {
+      color: hsl(var(--foreground, 0 0% 98%));
       background-color: transparent;
       border-color: hsl(var(--border, 240 3.7% 15.9%));
-      color: hsl(var(--foreground, 0 0% 98%));
     }
   `;
 

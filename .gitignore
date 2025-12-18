@@ -5,3 +5,14 @@ dist/
 npm-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+storybook-static/
+.turbo/
+.vite/
+.playwright/
+playwright-report/
+test-results/
+coverage/
+.idea/
+.vscode/
+.sb-cache/
+debug-storybook.log

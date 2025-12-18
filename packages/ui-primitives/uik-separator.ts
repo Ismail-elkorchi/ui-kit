@@ -16,13 +16,13 @@ export class UikSeparator extends LitElement {
     }
 
     .horizontal {
-      height: 1px;
       width: 100%;
+      height: 1px;
     }
 
     .vertical {
-      height: 100%;
       width: 1px;
+      height: 100%;
     }
   `;
 

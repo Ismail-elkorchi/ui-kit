@@ -23,7 +23,9 @@
   "scripts": {
     "build": "npm run clean && node -e \"const fs = require('fs'); fs.mkdirSync('dist', {recursive: true}); ['index.css', 'theme.css'].forEach(file => fs.copyFileSync(file, 'dist/' + file));\"",
     "clean": "node -e \"const fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true});\"",
-    "typecheck": "echo \"Skipping typecheck for CSS-only package\"",
+    "cem": "node -e \"console.log('No custom elements manifest needed for @ismail-elkorchi/ui-tokens');\"",
+    "test": "node -e \"console.log('No tests yet for @ismail-elkorchi/ui-tokens');\"",
+    "typecheck": "node -e \"console.log('No TypeScript to typecheck for @ismail-elkorchi/ui-tokens');\"",
     "prepack": "npm run build"
   },
   "repository": {

@@ -1,7 +1,7 @@
 import {LitElement, html, nothing, svg} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
-import '@ismail-elkorchi/ui-primitives/button';
+import '@ismail-elkorchi/ui-primitives/UikButton';
 
 import type {UikShellActivityBarItem} from './uik-activity-bar-types';
 export type {UikShellActivityBarIcon, UikShellActivityBarItem} from './uik-activity-bar-types';

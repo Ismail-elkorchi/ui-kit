@@ -13,10 +13,10 @@ Shadow DOM web components backed by the shared token CSS variables from `@ismail
 ```ts
 import '@ismail-elkorchi/ui-primitives/register'; // defines all elements
 // or import individual components for tree-shaking:
-import '@ismail-elkorchi/ui-primitives/button';
-import '@ismail-elkorchi/ui-primitives/badge';
-import '@ismail-elkorchi/ui-primitives/input';
-import '@ismail-elkorchi/ui-primitives/separator';
+import '@ismail-elkorchi/ui-primitives/UikButton';
+import '@ismail-elkorchi/ui-primitives/UikBadge';
+import '@ismail-elkorchi/ui-primitives/UikInput';
+import '@ismail-elkorchi/ui-primitives/UikSeparator';
 ```
 
 Ensure your app imports tokens before Tailwind so the theme variables exist:

@@ -20,15 +20,15 @@ export class UikInput extends LitElement {
 
     input {
       display: flex;
-      height: 2.25rem;
       width: 100%;
-      border-radius: 0.375rem;
-      border: 1px solid hsl(var(--input, 240 3.7% 15.9%));
-      background-color: transparent;
+      height: 2.25rem;
       padding: 0.25rem 0.75rem;
       font-size: 0.875rem;
       color: hsl(var(--foreground, 0 0% 98%));
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      background-color: transparent;
+      border: 1px solid hsl(var(--input, 240 3.7% 15.9%));
+      border-radius: 0.375rem;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
       transition:
         border-color 0.15s,
         box-shadow 0.15s;
