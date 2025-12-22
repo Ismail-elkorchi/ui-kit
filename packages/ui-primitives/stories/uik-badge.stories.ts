@@ -1,6 +1,8 @@
+import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
-import '@ismail-elkorchi/ui-primitives/register';
+
+import {runA11y} from '../../../.storybook/a11y';
 
 type BadgeArgs = {
   label: string;
@@ -11,7 +13,14 @@ const meta: Meta<BadgeArgs> = {
   title: 'Primitives/Badge',
   component: 'uik-badge',
   tags: ['autodocs'],
-  parameters: {layout: 'centered'},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'A11y: non-interactive label; provide meaningful text content.',
+      },
+    },
+  },
   args: {
     label: 'Status',
     variant: 'default',
@@ -33,16 +42,23 @@ export default meta;
 
 type Story = StoryObj<BadgeArgs>;
 
-export const Default: Story = {};
+const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
+
+export const Default: Story = {
+  play: playA11y,
+};
 
 export const Secondary: Story = {
+  play: playA11y,
   args: {variant: 'secondary', label: 'Secondary'},
 };
 
 export const Destructive: Story = {
+  play: playA11y,
   args: {variant: 'destructive', label: 'Alert'},
 };
 
 export const Outline: Story = {
+  play: playA11y,
   args: {variant: 'outline', label: 'Outline'},
 };

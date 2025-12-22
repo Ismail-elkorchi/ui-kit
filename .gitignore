@@ -13,9 +13,11 @@ storybook-static/
 playwright-report/
 test-results/
 coverage/
+__screenshots__/
 .idea/
 .vscode/
 .sb-cache/
 debug-storybook.log
 .storybook/tailwind.css
 .storybook/tailwind.css.map
+package-lock.json

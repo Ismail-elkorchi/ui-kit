@@ -68,10 +68,11 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.build.json && node -e \"const fs = require('fs'); fs.mkdirSync('dist', {recursive: true}); fs.copyFileSync('tailwind-source.css', 'dist/tailwind-source.css');\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json && npm run cem && node -e \"const fs = require('fs'); fs.mkdirSync('dist', {recursive: true}); fs.copyFileSync('tailwind-source.css', 'dist/tailwind-source.css');\"",
     "clean": "node -e \"const fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true}); fs.rmSync('.tsbuildinfo', {force: true});\"",
     "cem": "cem analyze --config ./custom-elements-manifest.config.cjs --litelement",
-    "test": "npm run build && node ./test-router.js",
+    "lint": "eslint . --max-warnings=0",
+    "test": "npm run build && vitest --run --project node --dir .",
     "typecheck": "tsc -p tsconfig.build.json --noEmit",
     "prepack": "npm run build"
   },

@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 
 @customElement('uik-separator')
 export class UikSeparator extends LitElement {
-  @property({type: String}) accessor orientation: 'horizontal' | 'vertical' = 'horizontal';
+  @property({type: String, reflect: true}) accessor orientation: 'horizontal' | 'vertical' = 'horizontal';
 
   static override readonly styles = css`
     :host {
@@ -12,6 +12,7 @@ export class UikSeparator extends LitElement {
     }
 
     .separator {
+      border: none;
       background-color: oklch(var(--uik-separator-color));
       border-radius: var(--uik-separator-radius);
     }
@@ -30,6 +31,9 @@ export class UikSeparator extends LitElement {
 
   override render() {
     const isHorizontal = this.orientation === 'horizontal';
-    return html` <div part="base" class="separator ${isHorizontal ? 'horizontal' : 'vertical'}" role="none"></div> `;
+    if (isHorizontal) {
+      return html`<hr part="base" class="separator horizontal" />`;
+    }
+    return html`<div part="base" class="separator vertical" role="separator" aria-orientation="vertical"></div>`;
   }
 }

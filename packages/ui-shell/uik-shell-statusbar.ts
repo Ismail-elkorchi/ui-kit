@@ -1,7 +1,7 @@
 import {LitElement, html, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
-import '@ismail-elkorchi/ui-primitives/UikBadge';
+import '@ismail-elkorchi/ui-primitives/uik-badge';
 
 type StatusTone = 'info' | 'success' | 'error' | 'muted';
 

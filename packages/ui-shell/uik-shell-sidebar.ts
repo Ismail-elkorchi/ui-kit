@@ -1,7 +1,7 @@
 import {LitElement, html, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
-import '@ismail-elkorchi/ui-primitives/UikSeparator';
+import '@ismail-elkorchi/ui-primitives/uik-separator';
 
 @customElement('uik-shell-sidebar')
 export class UikShellSidebar extends LitElement {

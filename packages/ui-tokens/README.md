@@ -14,7 +14,7 @@ Builds are produced with Terrazzo using a resolver-based context model.
 ## Installation
 
 ```bash
-npm i @ismail-elkorchi/ui-tokens
+npm install @ismail-elkorchi/ui-tokens
 ```
 
 ## Outputs (what to import)
@@ -118,9 +118,9 @@ document.documentElement.setAttribute(DENSITY_ATTRIBUTE, 'compact');
 
 ## Build + verify
 
-- `npm -w @ismail-elkorchi/ui-tokens run build`
-- `npm -w @ismail-elkorchi/ui-tokens run verify`
-- `npm -w @ismail-elkorchi/ui-tokens run validate`
+- `npm run --workspace @ismail-elkorchi/ui-tokens build`
+- `npm run --workspace @ismail-elkorchi/ui-tokens verify`
+- `npm run --workspace @ismail-elkorchi/ui-tokens validate`
 
 Notes:
 

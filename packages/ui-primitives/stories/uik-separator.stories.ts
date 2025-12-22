@@ -1,6 +1,8 @@
+import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
-import '@ismail-elkorchi/ui-primitives/register';
+
+import {runA11y} from '../../../.storybook/a11y';
 
 type SeparatorArgs = {
   orientation: 'horizontal' | 'vertical';
@@ -10,7 +12,14 @@ const meta: Meta<SeparatorArgs> = {
   title: 'Primitives/Separator',
   component: 'uik-separator',
   tags: ['autodocs'],
-  parameters: {layout: 'centered'},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'A11y: horizontal renders as <hr>; vertical uses role="separator" with aria-orientation.',
+      },
+    },
+  },
   args: {
     orientation: 'horizontal',
   },
@@ -45,4 +54,8 @@ export default meta;
 
 type Story = StoryObj<SeparatorArgs>;
 
-export const Default: Story = {};
+const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
+
+export const Default: Story = {
+  play: playA11y,
+};

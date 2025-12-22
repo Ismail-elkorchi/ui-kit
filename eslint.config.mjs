@@ -1,5 +1,6 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
 import storybook from "eslint-plugin-storybook";
+import path from 'node:path';
 
 import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
@@ -16,6 +17,12 @@ const jsFiles = ['**/*.js', '**/*.cjs', '**/*.mjs'];
 const allSources = [...tsFiles, ...jsFiles];
 
 const tsconfigProjects = ['./tsconfig.base.json', './packages/*/tsconfig.build.json'];
+const packageDirs = [
+  import.meta.dirname,
+  path.join(import.meta.dirname, 'packages/ui-shell'),
+  path.join(import.meta.dirname, 'packages/ui-primitives'),
+  path.join(import.meta.dirname, 'packages/ui-tokens'),
+];
 
 const strictTypeChecked = tseslint.configs.strictTypeChecked.map(config => ({
   ...config,
@@ -46,6 +53,7 @@ export default defineConfig([
     ignores: [
       '**/dist/**',
       '**/.tsbuildinfo',
+      '**/*.d.ts',
       '**/node_modules/**',
       '**/coverage/**',
       '**/storybook-static/**',
@@ -131,7 +139,7 @@ export default defineConfig([
       'import/no-named-export': 'off',
       'import/no-extraneous-dependencies': [
         'error',
-        {packageDir: [import.meta.dirname, './packages/ui-shell', './packages/ui-primitives', './packages/ui-tokens']},
+        {packageDir: packageDirs},
       ],
       'import/no-relative-packages': 'error',
       'import/group-exports': 'off',
@@ -163,6 +171,8 @@ export default defineConfig([
         {
           allow: [
             'lit/decorators.js',
+            'lit/directives/if-defined.js',
+            'vitest/browser',
             '@ismail-elkorchi/ui-primitives/*',
             '@ismail-elkorchi/ui-shell/*',
             '@ismail-elkorchi/ui-tokens/*',
@@ -196,8 +206,16 @@ export default defineConfig([
       '@typescript-eslint/consistent-type-definitions': 'off',
       'import/no-default-export': 'off',
       'import/no-extraneous-dependencies': 'off',
+      'import/no-relative-packages': 'off',
       'import/no-internal-modules': 'off',
       'no-console': 'off',
+    },
+  },
+
+  {
+    files: ['**/*.@(test|spec).@(ts|js|tsx|jsx|mjs|cjs)'],
+    rules: {
+      'import/no-extraneous-dependencies': 'off',
     },
   },
 
@@ -229,16 +247,6 @@ export default defineConfig([
     languageOptions: {
       parserOptions: {project: false},
       globals: {...globals.node, ...globals.es2021},
-    },
-  },
-
-  {
-    files: ['packages/ui-shell/test-router.js'],
-    languageOptions: {
-      globals: {...globals.node, ...globals.es2021, ...globals.browser},
-    },
-    rules: {
-      'no-console': 'off',
     },
   },
 

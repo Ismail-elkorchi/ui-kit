@@ -14,22 +14,25 @@
   "engines": {
     "node": ">=20.11"
   },
+  "packageManager": "npm@11.6.2",
   "workspaces": [
-    "packages/*"
+    "packages/ui-tokens",
+    "packages/ui-primitives",
+    "packages/ui-shell"
   ],
   "scripts": {
-    "build": "node ./tools/run-workspaces.mjs build",
+    "build": "npm run --workspaces --if-present build",
     "build-storybook": "storybook build -c .storybook -o storybook-static --disable-telemetry",
-    "prebuild-storybook": "npm run storybook:css",
-    "cem": "node ./tools/cem.mjs",
+    "prebuild-storybook": "npm run --workspaces --if-present build && npm run storybook:css",
+    "cem": "npm run --workspaces --if-present cem",
     "lint": "eslint . --max-warnings=0",
     "lint:style": "stylelint \"**/*.{css,ts,js}\" --max-warnings=0",
     "storybook": "storybook dev -c .storybook -p 6006 --disable-telemetry",
-    "prestorybook": "npm run storybook:css",
+    "prestorybook": "npm run --workspaces --if-present build && npm run storybook:css",
     "storybook:css": "tailwindcss -i .storybook/tailwind.input.css -o .storybook/tailwind.css",
-    "test": "node ./tools/run-workspaces.mjs test",
-    "test-storybook": "vitest --project=storybook",
-    "typecheck": "node ./tools/run-workspaces.mjs typecheck"
+    "test": "npm run --workspaces --if-present test && npm run test-storybook",
+    "test-storybook": "npm run storybook:css && vitest --project=storybook",
+    "typecheck": "npm run --workspaces --if-present typecheck"
   },
   "postcss-lit": {
     "babelOptions": {
@@ -48,14 +51,14 @@
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.10",
+    "axe-core": "^4.10.3",
     "@eslint/js": "^9.39.2",
-    "@jackolope/lit-analyzer": "^3.2.1",
-    "@lit-labs/analyzer": "^0.13.2",
     "@storybook/addon-docs": "^10.1.10",
     "@storybook/addon-vitest": "^10.1.10",
     "@storybook/web-components-vite": "^10.1.10",
     "@vitest/browser": "^4.0.16",
     "@vitest/browser-playwright": "^4.0.16",
+    "playwright": "^1.55.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",

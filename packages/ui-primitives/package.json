@@ -35,22 +35,22 @@
       "import": "./dist/register.js",
       "default": "./dist/register.js"
     },
-    "./UikButton": {
+    "./uik-button": {
       "types": "./dist/uik-button.d.ts",
       "import": "./dist/uik-button.js",
       "default": "./dist/uik-button.js"
     },
-    "./UikBadge": {
+    "./uik-badge": {
       "types": "./dist/uik-badge.d.ts",
       "import": "./dist/uik-badge.js",
       "default": "./dist/uik-badge.js"
     },
-    "./UikInput": {
+    "./uik-input": {
       "types": "./dist/uik-input.d.ts",
       "import": "./dist/uik-input.js",
       "default": "./dist/uik-input.js"
     },
-    "./UikSeparator": {
+    "./uik-separator": {
       "types": "./dist/uik-separator.d.ts",
       "import": "./dist/uik-separator.js",
       "default": "./dist/uik-separator.js"
@@ -64,10 +64,11 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "build": "npm run clean && tsc -p tsconfig.build.json && npm run cem",
     "clean": "node -e \"const fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true}); fs.rmSync('.tsbuildinfo', {force: true});\"",
     "cem": "cem analyze --config ./custom-elements-manifest.config.cjs --litelement",
-    "test": "npm run build && node ./test-elements.js",
+    "lint": "eslint . --max-warnings=0",
+    "test": "npm run build && vitest --run --project browser --dir .",
     "typecheck": "tsc -p tsconfig.build.json --noEmit",
     "prepack": "npm run build"
   },
@@ -81,6 +82,7 @@
   },
   "homepage": "https://github.com/Ismail-elkorchi/ui-kit",
   "dependencies": {
+    "@ismail-elkorchi/ui-tokens": "^0.1.0",
     "lit": "^3.1.0"
   },
   "publishConfig": {

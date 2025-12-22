@@ -13,10 +13,10 @@ Shadow DOM web components backed by the shared token CSS variables from `@ismail
 ```ts
 import '@ismail-elkorchi/ui-primitives/register'; // defines all elements
 // or import individual components for tree-shaking:
-import '@ismail-elkorchi/ui-primitives/UikButton';
-import '@ismail-elkorchi/ui-primitives/UikBadge';
-import '@ismail-elkorchi/ui-primitives/UikInput';
-import '@ismail-elkorchi/ui-primitives/UikSeparator';
+import '@ismail-elkorchi/ui-primitives/uik-button';
+import '@ismail-elkorchi/ui-primitives/uik-badge';
+import '@ismail-elkorchi/ui-primitives/uik-input';
+import '@ismail-elkorchi/ui-primitives/uik-separator';
 ```
 
 Ensure your app imports tokens before Tailwind so the theme variables exist:
@@ -30,8 +30,8 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 
 - `uik-button`: `part="base"` on the internal `<button>`.
 - `uik-badge`: `part="base"` on the internal `<div>`.
-- `uik-input`: `part="base"` on the internal `<input>`.
-- `uik-separator`: `part="base"` on the internal `<div>` line.
+- `uik-input`: `part="base"` on the internal `<input>`, `part="control"` wrapper, plus `part="label"`, `part="hint"`, `part="error"` when slotted.
+- `uik-separator`: `part="base"` on the rendered line (`<hr>` or `<div>`).
 
 ## Components and contracts
 
@@ -43,6 +43,8 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
   - Sizing is enforced on the `:host`. The internal button fills the host (100% width/height).
   - `active`/`muted` props control stateful colors (especially for ghost variant).
   - `part="base"` allows overrides, but avoid fighting the host sizing.
+- **A11y**: `aria-label`/`aria-labelledby` are forwarded to the internal `<button>` for icon-only buttons.
+- **Forms**: `type="submit"` and `type="reset"` invoke `form.requestSubmit()`/`form.reset()` when inside a form.
 
 ### `<uik-badge>`
 
@@ -50,14 +52,16 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Events**: none special; behaves like an inline element.
 - **Styling hooks**: token-driven colors and `part="base"`.
 
-### `<uik-input>` (event strategy)
+### `<uik-input>`
 
-- **Attributes/props**: `type`, `placeholder`, `value`, `disabled`, `label` (required for a11y, sets `aria-label`).
-- **Events**: re-dispatches `input` and `change` as `CustomEvent`s with `detail: { value, originalEvent }`, `bubbles: true`, `composed: true`. The internal native event is stopped to avoid duplicate handlers; listen on the custom element for `input`/`change`.
-- **Styling hooks**: token-driven colors, `part="base"`. The `value` property stays in sync with user input.
+- **Attributes/props**: `type`, `name`, `value`, `placeholder`, `disabled`, `required`, `readonly`, `invalid`, `autocomplete`, `inputmode`, `enterkeyhint`. Optional `aria-label`/`aria-labelledby` are forwarded when no label slot is provided.
+- **Slots**: `label`, `hint`, `error`.
+- **Events**: native `input` and `change` bubble from the internal `<input>` (no re-dispatch).
+- **A11y**: label slot associates via `for`, hint/error slot text is wired to `aria-describedby`, and `aria-invalid` is set when `invalid` or an error slot is present.
+- **Forms**: form-associated via `ElementInternals` and participates in `FormData` when `name` is set.
 
 ### `<uik-separator>`
 
 - **Attributes/props**: `orientation` (`horizontal | vertical`).
 - **Events**: none; presentational.
-- **Styling hooks**: token-driven color, `part="base"`.
+- **Styling hooks**: token-driven color, `part="base"`. Horizontal renders as `<hr>`, vertical as `role="separator"`.

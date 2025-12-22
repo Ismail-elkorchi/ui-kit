@@ -1,8 +1,11 @@
-import {LitElement, html, css} from 'lit';
+import {LitElement, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
+import {ifDefined} from 'lit/directives/if-defined.js';
 
 @customElement('uik-button')
 export class UikButton extends LitElement {
+  static formAssociated = true;
+
   @property({type: String, reflect: true}) accessor variant:
     | 'default'
     | 'destructive'
@@ -12,9 +15,13 @@ export class UikButton extends LitElement {
     | 'link' = 'default';
   @property({type: String, reflect: true}) accessor size: 'default' | 'sm' | 'lg' | 'icon' = 'default';
   @property({type: String}) accessor type: 'button' | 'submit' | 'reset' = 'button';
-  @property({type: Boolean}) accessor disabled = false;
+  @property({type: Boolean, reflect: true}) accessor disabled = false;
   @property({type: Boolean, reflect: true}) accessor active = false;
   @property({type: Boolean, reflect: true}) accessor muted = false;
+  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
+  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
+
+  private readonly internals = this.attachInternals();
 
   static override readonly styles = css`
     :host {
@@ -200,9 +207,30 @@ export class UikButton extends LitElement {
         part="base"
         class="variant-${this.variant} size-${this.size}"
         type=${this.type}
-        ?disabled=${this.disabled}>
+        aria-label=${ifDefined(this.ariaLabelValue || undefined)}
+        aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
+        ?disabled=${this.disabled}
+        @click=${this.onClick}>
         <slot></slot>
       </button>
     `;
   }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
+  private onClick = (event: MouseEvent) => {
+    if (this.disabled) return;
+    const form = this.internals.form;
+    if (!form) return;
+
+    if (this.type === 'submit') {
+      event.preventDefault();
+      form.requestSubmit();
+    } else if (this.type === 'reset') {
+      event.preventDefault();
+      form.reset();
+    }
+  };
 }

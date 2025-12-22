@@ -1,6 +1,8 @@
+import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
-import '@ismail-elkorchi/ui-primitives/register';
+
+import {runA11y} from '../../../.storybook/a11y';
 
 type ButtonArgs = {
   label: string;
@@ -16,7 +18,14 @@ const meta: Meta<ButtonArgs> = {
   title: 'Primitives/Button',
   component: 'uik-button',
   tags: ['autodocs'],
-  parameters: {layout: 'centered'},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'A11y: native <button> semantics, ensure visible text/aria-label, use disabled for non-interactive state.',
+      },
+    },
+  },
   args: {
     label: 'Click me',
     variant: 'default',
@@ -59,16 +68,37 @@ export default meta;
 
 type Story = StoryObj<ButtonArgs>;
 
-export const Default: Story = {};
+const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
+
+export const Default: Story = {
+  play: playA11y,
+};
 
 export const Destructive: Story = {
+  play: playA11y,
   args: {variant: 'destructive', label: 'Delete'},
 };
 
 export const GhostMuted: Story = {
+  play: playA11y,
   args: {variant: 'ghost', label: 'Muted ghost', muted: true},
 };
 
 export const IconButton: Story = {
+  play: playA11y,
   args: {label: '★', size: 'icon', variant: 'secondary', type: 'button'},
+  render: ({label, ...args}) => html`
+    <div style="display: inline-flex; gap: 0.75rem; align-items: center; padding: 1rem;">
+      <uik-button
+        variant=${args.variant}
+        size=${args.size}
+        type=${args.type}
+        aria-label="Favorite"
+        ?disabled=${args.disabled}
+        ?active=${args.active}
+        ?muted=${args.muted}>
+        ${label}
+      </uik-button>
+    </div>
+  `,
 };
