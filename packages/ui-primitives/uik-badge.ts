@@ -11,39 +11,57 @@ export class UikBadge extends LitElement {
     }
 
     .badge {
+      --uik-badge-bg: oklch(var(--uik-component-badge-default-bg));
+      --uik-badge-fg: oklch(var(--uik-component-badge-default-fg));
+      --uik-badge-border-color: oklch(var(--uik-component-badge-default-border));
+      --uik-badge-shadow: var(--uik-component-badge-default-shadow);
+
       display: inline-flex;
       align-items: center;
-      padding: 0.125rem 0.625rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border: 1px solid transparent;
-      border-radius: 0.375rem;
+      padding: var(--uik-component-badge-base-padding-y) var(--uik-component-badge-base-padding-x);
+      font-size: var(--uik-component-badge-base-font-size);
+      font-weight: var(--uik-component-badge-base-font-weight);
+      line-height: var(--uik-component-badge-base-line-height);
+      color: var(--uik-badge-fg);
+      background-color: var(--uik-badge-bg);
+      border-style: var(--uik-border-style-solid);
+      border-width: var(--uik-component-badge-base-border-width);
+      border-color: var(--uik-badge-border-color);
+      border-radius: var(--uik-component-badge-base-radius);
+      box-shadow: var(--uik-badge-shadow);
       transition:
-        color 0.15s,
-        background-color 0.15s;
+        color var(--uik-motion-transition-colors),
+        background-color var(--uik-motion-transition-colors),
+        border-color var(--uik-motion-transition-colors),
+        box-shadow var(--uik-motion-transition-shadow);
     }
 
     .variant-default {
-      color: hsl(var(--primary-foreground, 240 5.9% 10%));
-      background-color: hsl(var(--primary, 0 0% 98%));
-      box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+      --uik-badge-bg: oklch(var(--uik-component-badge-default-bg));
+      --uik-badge-fg: oklch(var(--uik-component-badge-default-fg));
+      --uik-badge-border-color: oklch(var(--uik-component-badge-default-border));
+      --uik-badge-shadow: var(--uik-component-badge-default-shadow);
     }
 
     .variant-secondary {
-      color: hsl(var(--secondary-foreground, 0 0% 98%));
-      background-color: hsl(var(--secondary, 240 3.7% 15.9%));
+      --uik-badge-bg: oklch(var(--uik-component-badge-secondary-bg));
+      --uik-badge-fg: oklch(var(--uik-component-badge-secondary-fg));
+      --uik-badge-border-color: oklch(var(--uik-component-badge-secondary-border));
+      --uik-badge-shadow: var(--uik-component-badge-secondary-shadow);
     }
 
     .variant-destructive {
-      color: hsl(var(--destructive-foreground, 0 0% 98%));
-      background-color: hsl(var(--destructive, 0 62.8% 30.6%));
-      box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+      --uik-badge-bg: oklch(var(--uik-component-badge-danger-bg));
+      --uik-badge-fg: oklch(var(--uik-component-badge-danger-fg));
+      --uik-badge-border-color: oklch(var(--uik-component-badge-danger-border));
+      --uik-badge-shadow: var(--uik-component-badge-danger-shadow);
     }
 
     .variant-outline {
-      color: hsl(var(--foreground, 0 0% 98%));
-      background-color: transparent;
-      border-color: hsl(var(--border, 240 3.7% 15.9%));
+      --uik-badge-bg: oklch(var(--uik-component-badge-outline-bg));
+      --uik-badge-fg: oklch(var(--uik-component-badge-outline-fg));
+      --uik-badge-border-color: oklch(var(--uik-component-badge-outline-border));
+      --uik-badge-shadow: var(--uik-component-badge-outline-shadow);
     }
   `;
 

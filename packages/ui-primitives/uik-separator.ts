@@ -12,17 +12,19 @@ export class UikSeparator extends LitElement {
     }
 
     .separator {
-      background-color: hsl(var(--border, 240 3.7% 15.9%));
+      background-color: oklch(var(--uik-separator-color));
+      border-radius: var(--uik-separator-radius);
     }
 
     .horizontal {
       width: 100%;
-      height: 1px;
+      height: var(--uik-separator-thickness);
     }
 
     .vertical {
-      width: 1px;
+      width: var(--uik-separator-thickness);
       height: 100%;
+      min-height: var(--uik-size-control-md);
     }
   `;
 

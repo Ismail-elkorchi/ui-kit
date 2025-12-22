@@ -1,3 +1,4 @@
+AGENTS.md
 node_modules/
 dist/
 *.tsbuildinfo
@@ -16,3 +17,5 @@ coverage/
 .vscode/
 .sb-cache/
 debug-storybook.log
+.storybook/tailwind.css
+.storybook/tailwind.css.map

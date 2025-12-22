@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@source "../packages/**/*.{ts,js,html}";
+@source "../.storybook/**/*.{ts,js,html}";
+
+@theme {
+  --color-background: oklch(var(--uik-surface-bg));
+  --color-foreground: oklch(var(--uik-text-default));
+  --color-card: oklch(var(--uik-surface-card));
+  --color-secondary: oklch(var(--uik-surface-muted));
+  --color-secondary-foreground: oklch(var(--uik-text-secondary));
+  --color-muted-foreground: oklch(var(--uik-text-muted));
+  --color-border: oklch(var(--uik-border-default));
+  --color-primary: oklch(var(--uik-intent-primary-bg-default));
+  --color-primary-foreground: oklch(var(--uik-intent-primary-fg));
+  --radius-sm: var(--uik-radius-2);
+  --radius-md: var(--uik-radius-3);
+  --radius-lg: var(--uik-radius-4);
+}

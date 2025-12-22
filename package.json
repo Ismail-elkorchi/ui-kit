@@ -20,10 +20,13 @@
   "scripts": {
     "build": "node ./tools/run-workspaces.mjs build",
     "build-storybook": "storybook build -c .storybook -o storybook-static --disable-telemetry",
+    "prebuild-storybook": "npm run storybook:css",
     "cem": "node ./tools/cem.mjs",
     "lint": "eslint . --max-warnings=0",
     "lint:style": "stylelint \"**/*.{css,ts,js}\" --max-warnings=0",
     "storybook": "storybook dev -c .storybook -p 6006 --disable-telemetry",
+    "prestorybook": "npm run storybook:css",
+    "storybook:css": "tailwindcss -i .storybook/tailwind.input.css -o .storybook/tailwind.css",
     "test": "node ./tools/run-workspaces.mjs test",
     "test-storybook": "vitest --project=storybook",
     "typecheck": "node ./tools/run-workspaces.mjs typecheck"

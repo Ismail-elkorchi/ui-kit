@@ -19,151 +19,178 @@ export class UikButton extends LitElement {
   static override readonly styles = css`
     :host {
       display: inline-flex;
-    }
-
-    /* Size variants on host */
-    :host([size='default']) {
-      height: 2.25rem;
+      height: var(--uik-component-button-md-height);
     }
 
     :host([size='sm']) {
-      height: 2rem;
+      height: var(--uik-component-button-sm-height);
     }
 
     :host([size='lg']) {
-      height: 2.5rem;
+      height: var(--uik-component-button-lg-height);
     }
 
     :host([size='icon']) {
-      width: 2.25rem;
-      height: 2.25rem;
+      width: var(--uik-component-button-md-height);
+      height: var(--uik-component-button-md-height);
     }
 
     button {
+      --uik-button-bg: oklch(var(--uik-component-button-solid-bg-default));
+      --uik-button-bg-hover: oklch(var(--uik-component-button-solid-bg-hover));
+      --uik-button-bg-active: oklch(var(--uik-component-button-solid-bg-active));
+      --uik-button-fg: oklch(var(--uik-component-button-solid-fg));
+      --uik-button-border-color: oklch(var(--uik-component-button-solid-border));
+      --uik-button-shadow: var(--uik-component-button-solid-shadow);
+      --uik-button-padding-x: var(--uik-component-button-md-padding-x);
+      --uik-button-padding-y: var(--uik-component-button-md-padding-y);
+      --uik-button-radius: var(--uik-component-button-md-radius);
+
       display: inline-flex;
-      gap: 0.5rem;
+      gap: var(--uik-component-button-base-gap);
       align-items: center;
       justify-content: center;
       width: 100%;
       height: 100%;
-      padding: 0;
-      font-size: 0.875rem;
-      font-weight: 500;
+      padding: var(--uik-button-padding-y) var(--uik-button-padding-x);
+      font-family: var(--uik-component-button-base-font-family);
+      font-size: var(--uik-component-button-base-font-size);
+      font-weight: var(--uik-component-button-base-font-weight);
+      line-height: var(--uik-component-button-base-line-height);
       white-space: nowrap;
       cursor: pointer;
-      border: none;
-      border-radius: 0.375rem;
+      color: var(--uik-button-fg);
+      background-color: var(--uik-button-bg);
+      border-style: var(--uik-border-style-solid);
+      border-width: var(--uik-component-button-base-border-width);
+      border-color: var(--uik-button-border-color);
+      border-radius: var(--uik-button-radius);
+      box-shadow: var(--uik-button-shadow);
       transition:
-        color 0.15s,
-        background-color 0.15s;
+        color var(--uik-component-button-base-transition-duration) var(--uik-component-button-base-transition-ease),
+        background-color var(--uik-component-button-base-transition-duration)
+          var(--uik-component-button-base-transition-ease),
+        border-color var(--uik-component-button-base-transition-duration) var(--uik-component-button-base-transition-ease),
+        box-shadow var(--uik-motion-transition-shadow);
     }
 
-    /* Padding applied to internal button based on size prop of host (mirrored via class or just explicit here) 
-   Actually, to keep it simple, we can use the classes on the button as before for padding, 
-   but height/width are now 100% to fill host. 
-*/
-    .size-default {
-      padding: 0.5rem 1rem;
+    button:hover {
+      background-color: var(--uik-button-bg-hover);
+      color: var(--uik-button-fg-hover, var(--uik-button-fg));
     }
 
-    .size-sm {
-      padding: 0.25rem 0.75rem;
-      font-size: 0.75rem;
-    }
-
-    .size-lg {
-      padding: 0.5rem 2rem;
-    }
-
-    .size-icon {
-      padding: 0;
+    button:active {
+      background-color: var(--uik-button-bg-active);
     }
 
     button:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 1px hsl(var(--ring, 240 4.9% 83.9%));
+      box-shadow:
+        var(--uik-button-shadow),
+        0 0 0 var(--uik-component-button-base-focus-ring-offset) oklch(var(--uik-focus-ring-offset-bg)),
+        0 0 0 calc(
+            var(--uik-component-button-base-focus-ring-offset) + var(--uik-component-button-base-focus-ring-width)
+          )
+          oklch(var(--uik-component-button-base-focus-ring) / var(--uik-component-button-base-focus-ring-opacity));
     }
 
     button:disabled {
       pointer-events: none;
-      opacity: 0.5;
+      opacity: var(--uik-component-button-base-disabled-opacity);
     }
 
-    /* Color variants using CSS variables */
+    .size-default {
+      --uik-button-padding-x: var(--uik-component-button-md-padding-x);
+      --uik-button-padding-y: var(--uik-component-button-md-padding-y);
+      --uik-button-radius: var(--uik-component-button-md-radius);
+    }
+
+    .size-sm {
+      --uik-button-padding-x: var(--uik-component-button-sm-padding-x);
+      --uik-button-padding-y: var(--uik-component-button-sm-padding-y);
+      --uik-button-radius: var(--uik-component-button-sm-radius);
+    }
+
+    .size-lg {
+      --uik-button-padding-x: var(--uik-component-button-lg-padding-x);
+      --uik-button-padding-y: var(--uik-component-button-lg-padding-y);
+      --uik-button-radius: var(--uik-component-button-lg-radius);
+    }
+
+    .size-icon {
+      --uik-button-padding-x: var(--uik-space-0);
+      --uik-button-padding-y: var(--uik-space-0);
+      --uik-button-radius: var(--uik-component-button-md-radius);
+    }
+
     .variant-default {
-      color: hsl(var(--primary-foreground, 240 5.9% 10%));
-      background-color: hsl(var(--primary, 0 0% 98%));
-      box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
-    }
-
-    .variant-default:hover {
-      background-color: hsl(var(--primary, 0 0% 98%) / 90%);
+      --uik-button-bg: oklch(var(--uik-component-button-solid-bg-default));
+      --uik-button-bg-hover: oklch(var(--uik-component-button-solid-bg-hover));
+      --uik-button-bg-active: oklch(var(--uik-component-button-solid-bg-active));
+      --uik-button-fg: oklch(var(--uik-component-button-solid-fg));
+      --uik-button-border-color: oklch(var(--uik-component-button-solid-border));
+      --uik-button-shadow: var(--uik-component-button-solid-shadow);
     }
 
     .variant-destructive {
-      color: hsl(var(--destructive-foreground, 0 0% 98%));
-      background-color: hsl(var(--destructive, 0 62.8% 30.6%));
-      box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
-    }
-
-    .variant-destructive:hover {
-      background-color: hsl(var(--destructive, 0 62.8% 30.6%) / 90%);
+      --uik-button-bg: oklch(var(--uik-component-button-danger-bg-default));
+      --uik-button-bg-hover: oklch(var(--uik-component-button-danger-bg-hover));
+      --uik-button-bg-active: oklch(var(--uik-component-button-danger-bg-active));
+      --uik-button-fg: oklch(var(--uik-component-button-danger-fg));
+      --uik-button-border-color: oklch(var(--uik-component-button-danger-border));
+      --uik-button-shadow: var(--uik-component-button-danger-shadow);
     }
 
     .variant-outline {
-      color: hsl(var(--foreground, 0 0% 98%));
-      background-color: transparent;
-      border: 1px solid hsl(var(--border, 240 3.7% 15.9%));
-      box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
-    }
-
-    .variant-outline:hover {
-      color: hsl(var(--accent-foreground, 0 0% 98%));
-      background-color: hsl(var(--accent, 240 3.7% 15.9%));
+      --uik-button-bg: oklch(var(--uik-component-button-outline-bg-default));
+      --uik-button-bg-hover: oklch(var(--uik-component-button-outline-bg-hover));
+      --uik-button-bg-active: oklch(var(--uik-component-button-outline-bg-active));
+      --uik-button-fg: oklch(var(--uik-component-button-outline-fg));
+      --uik-button-border-color: oklch(var(--uik-component-button-outline-border));
+      --uik-button-shadow: var(--uik-component-button-outline-shadow);
     }
 
     .variant-secondary {
-      color: hsl(var(--secondary-foreground, 0 0% 98%));
-      background-color: hsl(var(--secondary, 240 3.7% 15.9%));
-      box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
-    }
-
-    .variant-secondary:hover {
-      background-color: hsl(var(--secondary, 240 3.7% 15.9%) / 80%);
+      --uik-button-bg: oklch(var(--uik-component-button-secondary-bg-default));
+      --uik-button-bg-hover: oklch(var(--uik-component-button-secondary-bg-hover));
+      --uik-button-bg-active: oklch(var(--uik-component-button-secondary-bg-active));
+      --uik-button-fg: oklch(var(--uik-component-button-secondary-fg));
+      --uik-button-border-color: oklch(var(--uik-component-button-secondary-border));
+      --uik-button-shadow: var(--uik-component-button-secondary-shadow);
     }
 
     .variant-ghost {
-      color: hsl(var(--foreground, 0 0% 98%));
-      background-color: transparent;
+      --uik-button-bg: oklch(var(--uik-component-button-ghost-bg-default));
+      --uik-button-bg-hover: oklch(var(--uik-component-button-ghost-bg-hover));
+      --uik-button-bg-active: oklch(var(--uik-component-button-ghost-bg-active));
+      --uik-button-fg: oklch(var(--uik-component-button-ghost-fg));
+      --uik-button-border-color: oklch(var(--uik-component-button-ghost-border));
+      --uik-button-shadow: var(--uik-component-button-ghost-shadow);
     }
 
-    .variant-ghost:hover {
-      color: hsl(var(--accent-foreground, 0 0% 98%));
-      background-color: hsl(var(--accent, 240 3.7% 15.9%));
-    }
-
-    /* Active/Muted States for Ghost (and others if needed) */
     :host([muted]) .variant-ghost {
-      color: hsl(var(--muted-foreground, 240 5% 64.9%));
-    }
-
-    :host([muted]) .variant-ghost:hover {
-      color: hsl(var(--foreground, 0 0% 98%));
+      --uik-button-fg: oklch(var(--uik-text-muted));
+      --uik-button-fg-hover: oklch(var(--uik-component-button-ghost-fg));
     }
 
     :host([active]) .variant-ghost {
-      color: hsl(var(--accent-foreground, 0 0% 98%));
-      background-color: hsl(var(--accent, 240 3.7% 15.9%));
+      --uik-button-bg: oklch(var(--uik-component-button-ghost-bg-active));
+      --uik-button-bg-hover: oklch(var(--uik-component-button-ghost-bg-active));
     }
 
     .variant-link {
-      color: hsl(var(--primary, 0 0% 98%));
-      background-color: transparent;
-      text-decoration-offset: 4px;
+      --uik-button-bg: oklch(var(--uik-component-button-link-bg-default));
+      --uik-button-bg-hover: oklch(var(--uik-component-button-link-bg-hover));
+      --uik-button-bg-active: oklch(var(--uik-component-button-link-bg-active));
+      --uik-button-fg: oklch(var(--uik-component-button-link-fg));
+      --uik-button-border-color: oklch(var(--uik-component-button-link-border));
+      --uik-button-shadow: var(--uik-component-button-link-shadow);
+      text-decoration-offset: var(--uik-component-button-link-underline-offset);
     }
 
     .variant-link:hover {
       text-decoration: underline;
+      text-decoration-style: var(--uik-component-button-link-decoration-hover);
     }
   `;
 

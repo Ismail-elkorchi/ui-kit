@@ -41,6 +41,19 @@
       "$description": "Border warning."
     }
   },
+  "component": {
+    "button": {
+      "ghost": {
+        "bg": {
+          "active": {
+            "$value": "{color.neutral.9}",
+            "$type": "color",
+            "$description": "Component button ghost bg active."
+          }
+        }
+      }
+    }
+  },
   "field": {
     "bg": {
       "$value": "{surface.card}",

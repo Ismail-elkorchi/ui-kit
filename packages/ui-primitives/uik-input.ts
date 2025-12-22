@@ -21,31 +21,51 @@ export class UikInput extends LitElement {
     input {
       display: flex;
       width: 100%;
-      height: 2.25rem;
-      padding: 0.25rem 0.75rem;
-      font-size: 0.875rem;
-      color: hsl(var(--foreground, 0 0% 98%));
-      background-color: transparent;
-      border: 1px solid hsl(var(--input, 240 3.7% 15.9%));
-      border-radius: 0.375rem;
-      box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+      height: var(--uik-component-input-base-height);
+      padding: var(--uik-component-input-base-padding-y) var(--uik-component-input-base-padding-x);
+      font-size: var(--uik-component-input-base-font-size);
+      font-weight: var(--uik-component-input-base-font-weight);
+      line-height: var(--uik-component-input-base-line-height);
+      color: oklch(var(--uik-component-input-base-fg));
+      background-color: oklch(var(--uik-component-input-base-bg));
+      border-style: var(--uik-border-style-solid);
+      border-width: var(--uik-component-input-base-border-width);
+      border-color: oklch(var(--uik-component-input-base-border-default));
+      border-radius: var(--uik-component-input-base-radius);
+      box-shadow: var(--uik-component-input-base-shadow);
       transition:
-        border-color 0.15s,
-        box-shadow 0.15s;
+        border-color var(--uik-motion-transition-colors),
+        box-shadow var(--uik-motion-transition-shadow),
+        background-color var(--uik-motion-transition-colors),
+        color var(--uik-motion-transition-colors);
+    }
+
+    input:hover {
+      border-color: oklch(var(--uik-component-input-base-border-hover));
     }
 
     input::placeholder {
-      color: hsl(var(--muted-foreground, 240 5% 64.9%));
+      color: oklch(var(--uik-component-input-base-placeholder));
+    }
+
+    input::selection {
+      color: oklch(var(--uik-component-input-base-selection-fg));
+      background-color: oklch(var(--uik-component-input-base-selection-bg));
     }
 
     input:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 1px hsl(var(--ring, 240 4.9% 83.9%));
+      border-color: oklch(var(--uik-component-input-base-border-focus));
+      box-shadow:
+        var(--uik-component-input-base-shadow),
+        0 0 0 var(--uik-component-input-base-focus-ring-offset) oklch(var(--uik-focus-ring-offset-bg)),
+        0 0 0 calc(var(--uik-component-input-base-focus-ring-offset) + var(--uik-component-input-base-focus-ring-width))
+          oklch(var(--uik-component-input-base-focus-ring) / var(--uik-component-input-base-focus-ring-opacity));
     }
 
     input:disabled {
       cursor: not-allowed;
-      opacity: 0.5;
+      opacity: var(--uik-component-input-base-disabled-opacity);
     }
   `;
 
