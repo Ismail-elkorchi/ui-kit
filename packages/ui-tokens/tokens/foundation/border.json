@@ -1,0 +1,40 @@
+{
+  "border": {
+    "style": {
+      "solid": {
+        "$value": "solid",
+        "$type": "strokeStyle"
+      }
+    },
+    "width": {
+      "0": {
+        "$value": {
+          "value": 0,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "1": {
+        "$value": {
+          "value": 0.0625,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "2": {
+        "$value": {
+          "value": 0.125,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "4": {
+        "$value": {
+          "value": 0.25,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      }
+    }
+  }
+}

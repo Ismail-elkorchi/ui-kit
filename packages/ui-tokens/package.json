@@ -5,13 +5,38 @@
   "author": "Ismail El Korchi",
   "license": "Apache-2.0",
   "type": "module",
-  "keywords": ["design-tokens", "css-variables", "theme", "ui-kit"],
-  "engines": {"node": ">=20.11"},
-  "style": "./dist/index.css",
+  "keywords": [
+    "design-tokens",
+    "css-variables",
+    "theme",
+    "ui-kit"
+  ],
+  "engines": {
+    "node": ">=22.17.0"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "style": "./dist/base.css",
   "exports": {
-    ".": "./dist/index.css",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./base.css": "./dist/base.css",
     "./index.css": "./dist/index.css",
-    "./theme.css": "./dist/theme.css"
+    "./uik-tailwind.strict.css": "./dist/uik-tailwind.strict.css",
+    "./uik-tailwind.compat.css": "./dist/uik-tailwind.compat.css",
+    "./themes/uik-theme-base.css": "./dist/themes/uik-theme-base.css",
+    "./themes/uik-light.css": "./dist/themes/uik-light.css",
+    "./themes/uik-dark.css": "./dist/themes/uik-dark.css",
+    "./themes/uik-density-comfortable.css": "./dist/themes/uik-density-comfortable.css",
+    "./themes/uik-density-compact.css": "./dist/themes/uik-density-compact.css",
+    "./tokens.resolved.light.comfortable.json": "./dist/tokens.resolved.light.comfortable.json",
+    "./tokens.resolved.light.compact.json": "./dist/tokens.resolved.light.compact.json",
+    "./tokens.resolved.dark.comfortable.json": "./dist/tokens.resolved.dark.comfortable.json",
+    "./tokens.resolved.dark.compact.json": "./dist/tokens.resolved.dark.compact.json"
   },
   "sideEffects": [
     "./dist/**/*.css"
@@ -21,10 +46,13 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm run clean && node -e \"const fs = require('fs'); fs.mkdirSync('dist', {recursive: true}); ['index.css', 'theme.css'].forEach(file => fs.copyFileSync(file, 'dist/' + file));\"",
-    "clean": "node -e \"const fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true});\"",
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/build.mjs && node scripts/verify.mjs && node scripts/verify-tailwind.mjs",
+    "verify:tailwind": "node scripts/verify-tailwind.mjs",
+    "pre-release": "bash scripts/pre-release.sh",
     "cem": "node -e \"console.log('No custom elements manifest needed for @ismail-elkorchi/ui-tokens');\"",
-    "test": "node -e \"console.log('No tests yet for @ismail-elkorchi/ui-tokens');\"",
+    "verify": "npm run validate",
+    "test": "npm run verify",
     "typecheck": "node -e \"console.log('No TypeScript to typecheck for @ismail-elkorchi/ui-tokens');\"",
     "prepack": "npm run build"
   },
@@ -39,5 +67,9 @@
   "homepage": "https://github.com/Ismail-elkorchi/ui-kit",
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@terrazzo/parser": "^0.10.5",
+    "@terrazzo/plugin-css": "^0.10.4"
   }
 }

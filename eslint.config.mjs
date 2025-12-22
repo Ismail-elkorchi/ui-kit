@@ -68,6 +68,15 @@ export default defineConfig([
     linterOptions: {reportUnusedDisableDirectives: true},
   },
 
+  {
+    files: ['packages/**/scripts/**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {...globals.node, ...globals.es2021},
+    },
+  },
+
   ...strictTypeChecked,
   ...stylisticTypeChecked,
 

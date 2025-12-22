@@ -1,0 +1,36 @@
+{
+  "surface": {
+    "bg": {
+      "$value": "{color.neutral.1}",
+      "$type": "color",
+      "$description": "Surface bg."
+    },
+    "card": {
+      "$value": "{color.neutral.1}",
+      "$type": "color",
+      "$description": "Surface card."
+    },
+    "elevated": {
+      "1": {
+        "$value": "{color.neutral.1}",
+        "$type": "color",
+        "$description": "Surface elevated 1."
+      },
+      "2": {
+        "$value": "{color.neutral.2}",
+        "$type": "color",
+        "$description": "Surface elevated 2."
+      }
+    },
+    "muted": {
+      "$value": "{color.neutral.2}",
+      "$type": "color",
+      "$description": "Surface muted."
+    },
+    "popover": {
+      "$value": "{color.neutral.1}",
+      "$type": "color",
+      "$description": "Surface popover."
+    }
+  }
+}

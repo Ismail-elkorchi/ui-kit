@@ -1,0 +1,44 @@
+{
+  "border": {
+    "danger": {
+      "$value": "{color.danger.6}",
+      "$type": "color",
+      "$description": "Border danger."
+    },
+    "default": {
+      "$value": "{color.neutral.4}",
+      "$type": "color",
+      "$description": "Border default."
+    },
+    "focus": {
+      "$value": "{color.accent.7}",
+      "$type": "color",
+      "$description": "Border focus."
+    },
+    "info": {
+      "$value": "{color.info.6}",
+      "$type": "color",
+      "$description": "Border info."
+    },
+    "muted": {
+      "$value": "{color.neutral.3}",
+      "$type": "color",
+      "$description": "Border muted."
+    },
+    "strong": {
+      "$value": "{color.neutral.5}",
+      "$type": "color",
+      "$description": "Border strong."
+    },
+    "success": {
+      "$value": "{color.success.6}",
+      "$type": "color",
+      "$description": "Border success."
+    },
+    "warning": {
+      "$value": "{color.warning.6}",
+      "$type": "color",
+      "$description": "Border warning."
+    }
+  }
+}

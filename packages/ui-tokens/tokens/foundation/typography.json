@@ -1,0 +1,192 @@
+{
+  "typography": {
+    "fontFamily": {
+      "mono": {
+        "$value": [
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "Liberation Mono",
+          "Courier New",
+          "monospace"
+        ],
+        "$type": "fontFamily"
+      },
+      "sans": {
+        "$value": [
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "sans-serif"
+        ],
+        "$type": "fontFamily"
+      }
+    },
+    "fontSize": {
+      "1": {
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "2": {
+        "$value": {
+          "value": 0.875,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "3": {
+        "$value": {
+          "value": 1,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "4": {
+        "$value": {
+          "value": 1.125,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "5": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "6": {
+        "$value": {
+          "value": 1.5,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "7": {
+        "$value": {
+          "value": 1.875,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "8": {
+        "$value": {
+          "value": 2.25,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "9": {
+        "$value": {
+          "value": 3,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "10": {
+        "$value": {
+          "value": 3.75,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      }
+    },
+    "fontWeight": {
+      "bold": {
+        "$value": 700,
+        "$type": "fontWeight"
+      },
+      "medium": {
+        "$value": 500,
+        "$type": "fontWeight"
+      },
+      "regular": {
+        "$value": 400,
+        "$type": "fontWeight"
+      },
+      "semibold": {
+        "$value": 600,
+        "$type": "fontWeight"
+      }
+    },
+    "letterSpacing": {
+      "normal": {
+        "$value": {
+          "value": 0,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "tight": {
+        "$value": {
+          "value": -0.01,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "wide": {
+        "$value": {
+          "value": 0.02,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      }
+    },
+    "lineHeight": {
+      "1": {
+        "$value": 1,
+        "$type": "number"
+      },
+      "2": {
+        "$value": 1.25,
+        "$type": "number"
+      },
+      "3": {
+        "$value": 1.5,
+        "$type": "number"
+      },
+      "4": {
+        "$value": 1.75,
+        "$type": "number"
+      },
+      "5": {
+        "$value": 2,
+        "$type": "number"
+      },
+      "6": {
+        "$value": 2.25,
+        "$type": "number"
+      },
+      "7": {
+        "$value": 2.5,
+        "$type": "number"
+      },
+      "8": {
+        "$value": 2.75,
+        "$type": "number"
+      },
+      "9": {
+        "$value": 3.25,
+        "$type": "number"
+      },
+      "10": {
+        "$value": 3.75,
+        "$type": "number"
+      }
+    }
+  }
+}

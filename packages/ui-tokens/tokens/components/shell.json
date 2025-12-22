@@ -1,0 +1,100 @@
+{
+  "component": {
+    "shell": {
+      "activitybar": {
+        "bg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component shell activitybar bg."
+        },
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component shell activitybar fg."
+        },
+        "width": {
+          "$value": {
+            "value": 3.25,
+            "unit": "rem"
+          },
+          "$type": "dimension",
+          "$description": "Component shell activitybar width."
+        }
+      },
+      "divider": {
+        "color": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Component shell divider color."
+        }
+      },
+      "scrollbar": {
+        "thumb": {
+          "$value": "{scrollbar.thumb.default}",
+          "$type": "color",
+          "$description": "Component shell scrollbar thumb."
+        },
+        "track": {
+          "$value": "{scrollbar.track}",
+          "$type": "color",
+          "$description": "Component shell scrollbar track."
+        }
+      },
+      "secondarySidebar": {
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component shell secondary Sidebar bg."
+        },
+        "width": {
+          "$value": {
+            "value": 18,
+            "unit": "rem"
+          },
+          "$type": "dimension",
+          "$description": "Component shell secondary Sidebar width."
+        }
+      },
+      "sidebar": {
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component shell sidebar bg."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component shell sidebar fg."
+        },
+        "width": {
+          "$value": {
+            "value": 16,
+            "unit": "rem"
+          },
+          "$type": "dimension",
+          "$description": "Component shell sidebar width."
+        }
+      },
+      "statusbar": {
+        "bg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component shell statusbar bg."
+        },
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component shell statusbar fg."
+        },
+        "height": {
+          "$value": {
+            "value": 2.25,
+            "unit": "rem"
+          },
+          "$type": "dimension",
+          "$description": "Component shell statusbar height."
+        }
+      }
+    }
+  }
+}

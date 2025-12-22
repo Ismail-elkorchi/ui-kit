@@ -8,6 +8,7 @@ const getAbsolutePath = (value: string) =>
 /** @type {import('@storybook/web-components-vite').StorybookConfig} */
 const config = {
   stories: ['../packages/**/*.stories.@(js|ts)'],
+  staticDirs: ['../packages/ui-tokens/dist'],
   addons: [
     getAbsolutePath('@storybook/addon-docs'),
     getAbsolutePath('@storybook/addon-vitest'),

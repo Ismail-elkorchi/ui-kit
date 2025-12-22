@@ -1,0 +1,21 @@
+{
+  "scrollbar": {
+    "thumb": {
+      "default": {
+        "$value": "{color.neutral.6}",
+        "$type": "color",
+        "$description": "Scrollbar thumb."
+      },
+      "hover": {
+        "$value": "{color.neutral.7}",
+        "$type": "color",
+        "$description": "Scrollbar thumb hover."
+      }
+    },
+    "track": {
+      "$value": "{color.neutral.2}",
+      "$type": "color",
+      "$description": "Scrollbar track."
+    }
+  }
+}

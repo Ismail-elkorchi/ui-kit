@@ -1,0 +1,375 @@
+{
+  "component": {
+    "button": {
+      "base": {
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Component button base border Width."
+        },
+        "disabledOpacity": {
+          "$value": "{state.disabled.opacity}",
+          "$type": "number",
+          "$description": "Component button base disabled Opacity."
+        },
+        "focusRing": {
+          "$value": "{focus.ring.default}",
+          "$type": "color",
+          "$description": "Component button base focus Ring."
+        },
+        "focusRingOffset": {
+          "$value": "{focus.ring.offset.default}",
+          "$type": "dimension",
+          "$description": "Component button base focus Ring Offset."
+        },
+        "focusRingOpacity": {
+          "$value": "{focus.ring.opacity}",
+          "$type": "number",
+          "$description": "Component button base focus Ring Opacity."
+        },
+        "focusRingWidth": {
+          "$value": "{focus.ring.width}",
+          "$type": "dimension",
+          "$description": "Component button base focus Ring Width."
+        },
+        "fontFamily": {
+          "$value": "{typography.fontFamily.sans}",
+          "$type": "fontFamily",
+          "$description": "Component button base font Family."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.2}",
+          "$type": "dimension",
+          "$description": "Component button base font Size."
+        },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.medium}",
+          "$type": "fontWeight",
+          "$description": "Component button base font Weight."
+        },
+        "gap": {
+          "$value": "{layout.control.gap.2}",
+          "$type": "dimension",
+          "$description": "Component button base gap."
+        },
+        "lineHeight": {
+          "$value": "{typography.lineHeight.2}",
+          "$type": "number",
+          "$description": "Component button base line Height."
+        },
+        "transitionDuration": {
+          "$value": "{motion.duration.2}",
+          "$type": "duration",
+          "$description": "Component button base transition Duration."
+        },
+        "transitionEase": {
+          "$value": "{motion.ease.standard}",
+          "$type": "cubicBezier",
+          "$description": "Component button base transition Ease."
+        }
+      },
+      "danger": {
+        "bg": {
+          "default": {
+            "$value": "{intent.danger.bg.default}",
+            "$type": "color",
+            "$description": "Component button danger bg."
+          },
+          "active": {
+            "$value": "{intent.danger.bg.active}",
+            "$type": "color",
+            "$description": "Component button danger bg active."
+          },
+          "hover": {
+            "$value": "{intent.danger.bg.hover}",
+            "$type": "color",
+            "$description": "Component button danger bg hover."
+          }
+        },
+        "border": {
+          "$value": "{intent.danger.border.default}",
+          "$type": "color",
+          "$description": "Component button danger border."
+        },
+        "fg": {
+          "$value": "{intent.danger.fg}",
+          "$type": "color",
+          "$description": "Component button danger fg."
+        },
+        "shadow": {
+          "$value": "{shadow.1}",
+          "$type": "shadow",
+          "$description": "Component button danger shadow."
+        }
+      },
+      "ghost": {
+        "bg": {
+          "default": {
+            "$value": "{surface.bg}",
+            "$type": "color",
+            "$description": "Component button ghost bg."
+          },
+          "active": {
+            "$value": "{color.neutral.3}",
+            "$type": "color",
+            "$description": "Component button ghost bg active."
+          },
+          "hover": {
+            "$value": "{surface.muted}",
+            "$type": "color",
+            "$description": "Component button ghost bg hover."
+          }
+        },
+        "border": {
+          "$value": "{border.default}",
+          "$type": "color",
+          "$description": "Component button ghost border."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component button ghost fg."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component button ghost shadow."
+        }
+      },
+      "lg": {
+        "height": {
+          "$value": "{size.control.lg}",
+          "$type": "dimension",
+          "$description": "Component button lg height."
+        },
+        "iconSize": {
+          "$value": "{size.icon.lg}",
+          "$type": "dimension",
+          "$description": "Component button lg icon Size."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.4}",
+          "$type": "dimension",
+          "$description": "Component button lg padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.3}",
+          "$type": "dimension",
+          "$description": "Component button lg padding Y."
+        },
+        "radius": {
+          "$value": "{radius.4}",
+          "$type": "dimension",
+          "$description": "Component button lg radius."
+        }
+      },
+      "link": {
+        "bg": {
+          "default": {
+            "$value": "{surface.bg}",
+            "$type": "color",
+            "$description": "Component button link bg."
+          },
+          "active": {
+            "$value": "{surface.bg}",
+            "$type": "color",
+            "$description": "Component button link bg active."
+          },
+          "hover": {
+            "$value": "{surface.bg}",
+            "$type": "color",
+            "$description": "Component button link bg hover."
+          }
+        },
+        "border": {
+          "$value": "{border.default}",
+          "$type": "color",
+          "$description": "Component button link border."
+        },
+        "decoration": {
+          "hover": {
+            "$value": "solid",
+            "$type": "strokeStyle",
+            "$description": "Component button link decoration hover."
+          }
+        },
+        "fg": {
+          "$value": "{text.link.default}",
+          "$type": "color",
+          "$description": "Component button link fg."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component button link shadow."
+        },
+        "underline": {
+          "offset": {
+            "$value": {
+              "value": 0.2,
+              "unit": "rem"
+            },
+            "$type": "dimension",
+            "$description": "Component button link underline offset."
+          }
+        }
+      },
+      "md": {
+        "height": {
+          "$value": "{size.control.md}",
+          "$type": "dimension",
+          "$description": "Component button md height."
+        },
+        "iconSize": {
+          "$value": "{size.icon.md}",
+          "$type": "dimension",
+          "$description": "Component button md icon Size."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.3}",
+          "$type": "dimension",
+          "$description": "Component button md padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.2}",
+          "$type": "dimension",
+          "$description": "Component button md padding Y."
+        },
+        "radius": {
+          "$value": "{radius.3}",
+          "$type": "dimension",
+          "$description": "Component button md radius."
+        }
+      },
+      "outline": {
+        "bg": {
+          "default": {
+            "$value": "{surface.bg}",
+            "$type": "color",
+            "$description": "Component button outline bg."
+          },
+          "active": {
+            "$value": "{color.neutral.3}",
+            "$type": "color",
+            "$description": "Component button outline bg active."
+          },
+          "hover": {
+            "$value": "{surface.muted}",
+            "$type": "color",
+            "$description": "Component button outline bg hover."
+          }
+        },
+        "border": {
+          "$value": "{border.default}",
+          "$type": "color",
+          "$description": "Component button outline border."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component button outline fg."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component button outline shadow."
+        }
+      },
+      "secondary": {
+        "bg": {
+          "default": {
+            "$value": "{intent.neutral.bg.default}",
+            "$type": "color",
+            "$description": "Component button secondary bg."
+          },
+          "active": {
+            "$value": "{intent.neutral.bg.active}",
+            "$type": "color",
+            "$description": "Component button secondary bg active."
+          },
+          "hover": {
+            "$value": "{intent.neutral.bg.hover}",
+            "$type": "color",
+            "$description": "Component button secondary bg hover."
+          }
+        },
+        "border": {
+          "$value": "{intent.neutral.border.default}",
+          "$type": "color",
+          "$description": "Component button secondary border."
+        },
+        "fg": {
+          "$value": "{intent.neutral.fg}",
+          "$type": "color",
+          "$description": "Component button secondary fg."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component button secondary shadow."
+        }
+      },
+      "sm": {
+        "height": {
+          "$value": "{size.control.sm}",
+          "$type": "dimension",
+          "$description": "Component button sm height."
+        },
+        "iconSize": {
+          "$value": "{size.icon.sm}",
+          "$type": "dimension",
+          "$description": "Component button sm icon Size."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.2}",
+          "$type": "dimension",
+          "$description": "Component button sm padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.1}",
+          "$type": "dimension",
+          "$description": "Component button sm padding Y."
+        },
+        "radius": {
+          "$value": "{radius.3}",
+          "$type": "dimension",
+          "$description": "Component button sm radius."
+        }
+      },
+      "solid": {
+        "bg": {
+          "default": {
+            "$value": "{intent.primary.bg.default}",
+            "$type": "color",
+            "$description": "Component button solid bg."
+          },
+          "active": {
+            "$value": "{intent.primary.bg.active}",
+            "$type": "color",
+            "$description": "Component button solid bg active."
+          },
+          "hover": {
+            "$value": "{intent.primary.bg.hover}",
+            "$type": "color",
+            "$description": "Component button solid bg hover."
+          }
+        },
+        "border": {
+          "$value": "{intent.primary.border.default}",
+          "$type": "color",
+          "$description": "Component button solid border."
+        },
+        "fg": {
+          "$value": "{intent.primary.fg}",
+          "$type": "color",
+          "$description": "Component button solid fg."
+        },
+        "shadow": {
+          "$value": "{shadow.1}",
+          "$type": "shadow",
+          "$description": "Component button solid shadow."
+        }
+      }
+    }
+  }
+}

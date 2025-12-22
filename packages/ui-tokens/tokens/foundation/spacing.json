@@ -1,0 +1,95 @@
+{
+  "space": {
+    "0": {
+      "$value": {
+        "value": 0,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "1": {
+      "$value": {
+        "value": 0.25,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "2": {
+      "$value": {
+        "value": 0.5,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "3": {
+      "$value": {
+        "value": 0.75,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "4": {
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "5": {
+      "$value": {
+        "value": 1.25,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "6": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "7": {
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "8": {
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "9": {
+      "$value": {
+        "value": 3,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "10": {
+      "$value": {
+        "value": 4,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "11": {
+      "$value": {
+        "value": 5,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    },
+    "12": {
+      "$value": {
+        "value": 6,
+        "unit": "rem"
+      },
+      "$type": "dimension"
+    }
+  }
+}

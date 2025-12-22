@@ -1,0 +1,303 @@
+{
+  "shadow": {
+    "0": {
+      "$value": {
+        "color": {
+          "colorSpace": "oklch",
+          "components": [
+            0.2,
+            0.014,
+            260
+          ],
+          "alpha": 0
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 0,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 0,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "$type": "shadow"
+    },
+    "1": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.06
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 2,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.06
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 1,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -1,
+            "unit": "px"
+          }
+        }
+      ],
+      "$type": "shadow"
+    },
+    "2": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.1
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 4,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 10,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -2,
+            "unit": "px"
+          }
+        },
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.06
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 2,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 4,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -2,
+            "unit": "px"
+          }
+        }
+      ],
+      "$type": "shadow"
+    },
+    "3": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.16
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 10,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 25,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -8,
+            "unit": "px"
+          }
+        },
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.1
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 4,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 10,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -4,
+            "unit": "px"
+          }
+        }
+      ],
+      "$type": "shadow"
+    },
+    "4": {
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.28
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 24,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 60,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -18,
+            "unit": "px"
+          }
+        },
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.16
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 10,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 25,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -10,
+            "unit": "px"
+          }
+        }
+      ],
+      "$type": "shadow"
+    },
+    "inset": {
+      "1": {
+        "$value": {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.014,
+              260
+            ],
+            "alpha": 0.1
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 0,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          },
+          "inset": true
+        },
+        "$type": "shadow"
+      }
+    }
+  }
+}

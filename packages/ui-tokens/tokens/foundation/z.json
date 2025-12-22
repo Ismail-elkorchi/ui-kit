@@ -1,0 +1,44 @@
+{
+  "z": {
+    "context": {
+      "modal": {
+        "$value": 2000,
+        "$type": "number"
+      },
+      "overlay": {
+        "$value": 1000,
+        "$type": "number"
+      },
+      "page": {
+        "$value": 0,
+        "$type": "number"
+      },
+      "toast": {
+        "$value": 3000,
+        "$type": "number"
+      }
+    },
+    "local": {
+      "base": {
+        "$value": 0,
+        "$type": "number"
+      },
+      "dropdown": {
+        "$value": 10,
+        "$type": "number"
+      },
+      "overlay": {
+        "$value": 30,
+        "$type": "number"
+      },
+      "sticky": {
+        "$value": 20,
+        "$type": "number"
+      },
+      "tooltip": {
+        "$value": 40,
+        "$type": "number"
+      }
+    }
+  }
+}

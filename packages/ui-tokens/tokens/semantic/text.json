@@ -1,0 +1,116 @@
+{
+  "text": {
+    "danger": {
+      "$value": "{color.danger.9}",
+      "$type": "color",
+      "$description": "Text danger."
+    },
+    "default": {
+      "$value": "{color.neutral.12}",
+      "$type": "color",
+      "$description": "Text default.",
+      "$extensions": {
+        "com.ui-kit": {
+          "contrastPairs": [
+            {
+              "id": "text.default/surface.bg",
+              "fg": "text.default",
+              "bg": "surface.bg",
+              "min": 4.5
+            },
+            {
+              "id": "text.default/surface.bg.large",
+              "fg": "text.default",
+              "bg": "surface.bg",
+              "min": 4.5,
+              "note": "Large text"
+            }
+          ]
+        }
+      }
+    },
+    "disabled": {
+      "$value": "{color.neutral.8}",
+      "$type": "color",
+      "$description": "Text disabled."
+    },
+    "info": {
+      "$value": "{color.info.9}",
+      "$type": "color",
+      "$description": "Text info."
+    },
+    "inverse": {
+      "$value": "{color.neutral.1}",
+      "$type": "color",
+      "$description": "Text inverse.",
+      "$extensions": {
+        "com.ui-kit": {
+          "contrastPairs": [
+            {
+              "id": "text.inverse/intent.primary.bg.default",
+              "fg": "text.inverse",
+              "bg": "intent.primary.bg.default",
+              "min": 4.5
+            }
+          ]
+        }
+      }
+    },
+    "link": {
+      "default": {
+        "$value": "{color.accent.9}",
+        "$type": "color",
+        "$description": "Text link."
+      },
+      "hover": {
+        "$value": "{color.accent.10}",
+        "$type": "color",
+        "$description": "Text link hover."
+      }
+    },
+    "muted": {
+      "$value": "{color.neutral.9}",
+      "$type": "color",
+      "$description": "Text muted.",
+      "$extensions": {
+        "com.ui-kit": {
+          "contrastPairs": [
+            {
+              "id": "text.muted/surface.bg",
+              "fg": "text.muted",
+              "bg": "surface.bg",
+              "min": 3
+            },
+            {
+              "id": "text.muted/surface.bg.large",
+              "fg": "text.muted",
+              "bg": "surface.bg",
+              "min": 4.5,
+              "note": "Large text"
+            }
+          ]
+        }
+      }
+    },
+    "secondary": {
+      "$value": "{color.neutral.8}",
+      "$type": "color",
+      "$description": "Text secondary."
+    },
+    "strong": {
+      "$value": "{color.neutral.12}",
+      "$type": "color",
+      "$description": "Text strong."
+    },
+    "success": {
+      "$value": "{color.success.9}",
+      "$type": "color",
+      "$description": "Text success."
+    },
+    "warning": {
+      "$value": "{color.warning.9}",
+      "$type": "color",
+      "$description": "Text warning."
+    }
+  }
+}

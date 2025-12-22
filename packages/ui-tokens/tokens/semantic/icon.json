@@ -1,0 +1,39 @@
+{
+  "icon": {
+    "danger": {
+      "$value": "{text.danger}",
+      "$type": "color",
+      "$description": "Icon danger."
+    },
+    "default": {
+      "$value": "{text.default}",
+      "$type": "color",
+      "$description": "Icon default."
+    },
+    "info": {
+      "$value": "{text.info}",
+      "$type": "color",
+      "$description": "Icon info."
+    },
+    "inverse": {
+      "$value": "{text.inverse}",
+      "$type": "color",
+      "$description": "Icon inverse."
+    },
+    "muted": {
+      "$value": "{text.muted}",
+      "$type": "color",
+      "$description": "Icon muted."
+    },
+    "success": {
+      "$value": "{text.success}",
+      "$type": "color",
+      "$description": "Icon success."
+    },
+    "warning": {
+      "$value": "{text.warning}",
+      "$type": "color",
+      "$description": "Icon warning."
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "layout": {
+    "control": {
+      "gap": {
+        "1": {
+          "$value": "{space.0}",
+          "$type": "dimension",
+          "$description": "Layout control gap 1."
+        },
+        "2": {
+          "$value": "{space.1}",
+          "$type": "dimension",
+          "$description": "Layout control gap 2."
+        },
+        "3": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Layout control gap 3."
+        },
+        "4": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Layout control gap 4."
+        },
+        "5": {
+          "$value": "{space.4}",
+          "$type": "dimension",
+          "$description": "Layout control gap 5."
+        },
+        "6": {
+          "$value": "{space.5}",
+          "$type": "dimension",
+          "$description": "Layout control gap 6."
+        }
+      },
+      "paddingX": {
+        "1": {
+          "$value": "{space.1}",
+          "$type": "dimension",
+          "$description": "Layout control padding X 1."
+        },
+        "2": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Layout control padding X 2."
+        },
+        "3": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Layout control padding X 3."
+        },
+        "4": {
+          "$value": "{space.4}",
+          "$type": "dimension",
+          "$description": "Layout control padding X 4."
+        },
+        "5": {
+          "$value": "{space.5}",
+          "$type": "dimension",
+          "$description": "Layout control padding X 5."
+        },
+        "6": {
+          "$value": "{space.6}",
+          "$type": "dimension",
+          "$description": "Layout control padding X 6."
+        }
+      },
+      "paddingY": {
+        "1": {
+          "$value": "{space.0}",
+          "$type": "dimension",
+          "$description": "Layout control padding Y 1."
+        },
+        "2": {
+          "$value": "{space.1}",
+          "$type": "dimension",
+          "$description": "Layout control padding Y 2."
+        },
+        "3": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Layout control padding Y 3."
+        },
+        "4": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Layout control padding Y 4."
+        },
+        "5": {
+          "$value": "{space.4}",
+          "$type": "dimension",
+          "$description": "Layout control padding Y 5."
+        },
+        "6": {
+          "$value": "{space.5}",
+          "$type": "dimension",
+          "$description": "Layout control padding Y 6."
+        }
+      }
+    }
+  },
+  "size": {
+    "control": {
+      "lg": {
+        "$value": {
+          "value": 2.5,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "Size control lg."
+      },
+      "md": {
+        "$value": {
+          "value": 2.25,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "Size control md."
+      },
+      "sm": {
+        "$value": {
+          "value": 2,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "Size control sm."
+      },
+      "xl": {
+        "$value": {
+          "value": 3,
+          "unit": "rem"
+        },
+        "$type": "dimension",
+        "$description": "Size control xl."
+      }
+    }
+  }
+}

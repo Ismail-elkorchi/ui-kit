@@ -1,0 +1,141 @@
+{
+  "name": "UIK Tokens",
+  "version": "2025.10",
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/base"
+    },
+    {
+      "$ref": "#/modifiers/theme"
+    },
+    {
+      "$ref": "#/modifiers/density"
+    }
+  ],
+  "sets": {
+    "base": {
+      "sources": [
+        {
+          "$ref": "foundation/blur.json"
+        },
+        {
+          "$ref": "foundation/border.json"
+        },
+        {
+          "$ref": "foundation/color.json"
+        },
+        {
+          "$ref": "foundation/layout.json"
+        },
+        {
+          "$ref": "foundation/motion.json"
+        },
+        {
+          "$ref": "foundation/opacity.json"
+        },
+        {
+          "$ref": "foundation/outline.json"
+        },
+        {
+          "$ref": "foundation/radius.json"
+        },
+        {
+          "$ref": "foundation/shadow.json"
+        },
+        {
+          "$ref": "foundation/size.json"
+        },
+        {
+          "$ref": "foundation/spacing.json"
+        },
+        {
+          "$ref": "foundation/typography.json"
+        },
+        {
+          "$ref": "foundation/z.json"
+        },
+        {
+          "$ref": "semantic/border.json"
+        },
+        {
+          "$ref": "semantic/elevation.json"
+        },
+        {
+          "$ref": "semantic/field.json"
+        },
+        {
+          "$ref": "semantic/focus.json"
+        },
+        {
+          "$ref": "semantic/icon.json"
+        },
+        {
+          "$ref": "semantic/intent.json"
+        },
+        {
+          "$ref": "semantic/scrim.json"
+        },
+        {
+          "$ref": "semantic/scrollbar.json"
+        },
+        {
+          "$ref": "semantic/selection.json"
+        },
+        {
+          "$ref": "semantic/separator.json"
+        },
+        {
+          "$ref": "semantic/state.json"
+        },
+        {
+          "$ref": "semantic/surface.json"
+        },
+        {
+          "$ref": "semantic/text.json"
+        },
+        {
+          "$ref": "components/badge.json"
+        },
+        {
+          "$ref": "components/button.json"
+        },
+        {
+          "$ref": "components/input.json"
+        },
+        {
+          "$ref": "components/shell.json"
+        }
+      ]
+    }
+  },
+  "modifiers": {
+    "theme": {
+      "contexts": {
+        "light": [
+          {
+            "$ref": "themes/light.json"
+          }
+        ],
+        "dark": [
+          {
+            "$ref": "themes/dark.json"
+          }
+        ]
+      }
+    },
+    "density": {
+      "contexts": {
+        "comfortable": [
+          {
+            "$ref": "density/comfortable.json"
+          }
+        ],
+        "compact": [
+          {
+            "$ref": "density/compact.json"
+          }
+        ]
+      }
+    }
+  }
+}

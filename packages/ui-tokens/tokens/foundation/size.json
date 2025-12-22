@@ -1,0 +1,73 @@
+{
+  "size": {
+    "control": {
+      "lg": {
+        "$value": {
+          "value": 3,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "md": {
+        "$value": {
+          "value": 2.5,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "sm": {
+        "$value": {
+          "value": 2.25,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "xl": {
+        "$value": {
+          "value": 3.5,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      }
+    },
+    "hitTarget": {
+      "min": {
+        "$value": {
+          "value": 2.75,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      }
+    },
+    "icon": {
+      "lg": {
+        "$value": {
+          "value": 1.5,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "md": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "sm": {
+        "$value": {
+          "value": 1,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      },
+      "xs": {
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      }
+    }
+  }
+}

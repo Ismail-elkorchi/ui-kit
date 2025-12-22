@@ -1,0 +1,45 @@
+{
+  "focus": {
+    "ring": {
+      "default": {
+        "$value": "{color.accent.7}",
+        "$type": "color",
+        "$description": "Focus ring.",
+        "$extensions": {
+          "com.ui-kit": {
+            "contrastPairs": [
+              {
+                "id": "focus.ring.default/surface.bg",
+                "fg": "focus.ring.default",
+                "bg": "surface.bg",
+                "min": 3
+              }
+            ]
+          }
+        }
+      },
+      "offset": {
+        "default": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Focus ring offset."
+        },
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Focus ring offset bg."
+        }
+      },
+      "opacity": {
+        "$value": 0.85,
+        "$type": "number",
+        "$description": "Focus ring opacity."
+      },
+      "width": {
+        "$value": "{outline.width.1}",
+        "$type": "dimension",
+        "$description": "Focus ring width."
+      }
+    }
+  }
+}

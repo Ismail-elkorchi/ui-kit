@@ -1,0 +1,113 @@
+{
+  "layout": {
+    "control": {
+      "gap": {
+        "1": {
+          "$value": "{space.1}",
+          "$type": "dimension"
+        },
+        "2": {
+          "$value": "{space.2}",
+          "$type": "dimension"
+        },
+        "3": {
+          "$value": "{space.3}",
+          "$type": "dimension"
+        },
+        "4": {
+          "$value": "{space.4}",
+          "$type": "dimension"
+        },
+        "5": {
+          "$value": "{space.5}",
+          "$type": "dimension"
+        },
+        "6": {
+          "$value": "{space.6}",
+          "$type": "dimension"
+        }
+      },
+      "paddingX": {
+        "1": {
+          "$value": "{space.2}",
+          "$type": "dimension"
+        },
+        "2": {
+          "$value": "{space.3}",
+          "$type": "dimension"
+        },
+        "3": {
+          "$value": "{space.4}",
+          "$type": "dimension"
+        },
+        "4": {
+          "$value": "{space.5}",
+          "$type": "dimension"
+        },
+        "5": {
+          "$value": "{space.6}",
+          "$type": "dimension"
+        },
+        "6": {
+          "$value": "{space.7}",
+          "$type": "dimension"
+        }
+      },
+      "paddingY": {
+        "1": {
+          "$value": "{space.1}",
+          "$type": "dimension"
+        },
+        "2": {
+          "$value": "{space.2}",
+          "$type": "dimension"
+        },
+        "3": {
+          "$value": "{space.3}",
+          "$type": "dimension"
+        },
+        "4": {
+          "$value": "{space.4}",
+          "$type": "dimension"
+        },
+        "5": {
+          "$value": "{space.5}",
+          "$type": "dimension"
+        },
+        "6": {
+          "$value": "{space.6}",
+          "$type": "dimension"
+        }
+      }
+    },
+    "gutter": {
+      "$value": "{space.4}",
+      "$type": "dimension"
+    },
+    "panel": {
+      "width": {
+        "lg": {
+          "$value": {
+            "value": 30,
+            "unit": "rem"
+          },
+          "$type": "dimension"
+        },
+        "md": {
+          "$value": {
+            "value": 24,
+            "unit": "rem"
+          },
+          "$type": "dimension"
+        },
+        "sm": {
+          "$value": {
+            "value": 18,
+            "unit": "rem"
+          },
+          "$type": "dimension"
+        }
+      }
+    }
+  }
+}

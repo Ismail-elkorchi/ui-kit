@@ -1,0 +1,144 @@
+{
+  "motion": {
+    "delay": {
+      "0": {
+        "$value": {
+          "value": 0,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      },
+      "1": {
+        "$value": {
+          "value": 75,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      },
+      "2": {
+        "$value": {
+          "value": 150,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      }
+    },
+    "duration": {
+      "1": {
+        "$value": {
+          "value": 100,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      },
+      "2": {
+        "$value": {
+          "value": 150,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      },
+      "3": {
+        "$value": {
+          "value": 200,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      },
+      "4": {
+        "$value": {
+          "value": 250,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      },
+      "5": {
+        "$value": {
+          "value": 300,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      },
+      "6": {
+        "$value": {
+          "value": 400,
+          "unit": "ms"
+        },
+        "$type": "duration"
+      }
+    },
+    "ease": {
+      "emphasized": {
+        "$value": [
+          0.2,
+          0,
+          0,
+          1
+        ],
+        "$type": "cubicBezier"
+      },
+      "entrance": {
+        "$value": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "$type": "cubicBezier"
+      },
+      "exit": {
+        "$value": [
+          0.2,
+          0,
+          1,
+          1
+        ],
+        "$type": "cubicBezier"
+      },
+      "linear": {
+        "$value": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "$type": "cubicBezier"
+      },
+      "standard": {
+        "$value": [
+          0.2,
+          0,
+          0,
+          1
+        ],
+        "$type": "cubicBezier"
+      }
+    },
+    "transition": {
+      "colors": {
+        "$value": {
+          "duration": "{motion.duration.2}",
+          "delay": "{motion.delay.0}",
+          "timingFunction": "{motion.ease.standard}"
+        },
+        "$type": "transition"
+      },
+      "shadow": {
+        "$value": {
+          "duration": "{motion.duration.3}",
+          "delay": "{motion.delay.0}",
+          "timingFunction": "{motion.ease.standard}"
+        },
+        "$type": "transition"
+      },
+      "transform": {
+        "$value": {
+          "duration": "{motion.duration.3}",
+          "delay": "{motion.delay.0}",
+          "timingFunction": "{motion.ease.emphasized}"
+        },
+        "$type": "transition"
+      }
+    }
+  }
+}

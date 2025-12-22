@@ -1,0 +1,14 @@
+{
+  "selection": {
+    "bg": {
+      "$value": "{color.accent.4}",
+      "$type": "color",
+      "$description": "Selection bg."
+    },
+    "fg": {
+      "$value": "{color.neutral.12}",
+      "$type": "color",
+      "$description": "Selection fg."
+    }
+  }
+}

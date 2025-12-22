@@ -1,0 +1,439 @@
+{
+  "border": {
+    "danger": {
+      "$value": "{color.danger.7}",
+      "$type": "color",
+      "$description": "Border danger."
+    },
+    "default": {
+      "$value": "{color.neutral.9}",
+      "$type": "color",
+      "$description": "Border default."
+    },
+    "focus": {
+      "$value": "{color.accent.6}",
+      "$type": "color",
+      "$description": "Border focus."
+    },
+    "info": {
+      "$value": "{color.info.7}",
+      "$type": "color",
+      "$description": "Border info."
+    },
+    "muted": {
+      "$value": "{color.neutral.10}",
+      "$type": "color",
+      "$description": "Border muted."
+    },
+    "strong": {
+      "$value": "{color.neutral.8}",
+      "$type": "color",
+      "$description": "Border strong."
+    },
+    "success": {
+      "$value": "{color.success.7}",
+      "$type": "color",
+      "$description": "Border success."
+    },
+    "warning": {
+      "$value": "{color.warning.7}",
+      "$type": "color",
+      "$description": "Border warning."
+    }
+  },
+  "field": {
+    "bg": {
+      "$value": "{surface.card}",
+      "$type": "color",
+      "$description": "Field bg."
+    }
+  },
+  "focus": {
+    "ring": {
+      "default": {
+        "$value": "{color.accent.6}",
+        "$type": "color",
+        "$description": "Focus ring."
+      }
+    }
+  },
+  "intent": {
+    "danger": {
+      "bg": {
+        "default": {
+          "$value": "{color.danger.8}",
+          "$type": "color",
+          "$description": "Intent danger bg."
+        },
+        "active": {
+          "$value": "{color.danger.6}",
+          "$type": "color",
+          "$description": "Intent danger bg active."
+        },
+        "hover": {
+          "$value": "{color.danger.7}",
+          "$type": "color",
+          "$description": "Intent danger bg hover."
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{color.danger.8}",
+          "$type": "color",
+          "$description": "Intent danger border."
+        },
+        "hover": {
+          "$value": "{color.danger.7}",
+          "$type": "color",
+          "$description": "Intent danger border hover."
+        }
+      },
+      "fg": {
+        "$value": "{color.neutral.12}",
+        "$type": "color",
+        "$description": "Intent danger fg."
+      },
+      "ring": {
+        "$value": "{color.danger.5}",
+        "$type": "color",
+        "$description": "Intent danger ring."
+      }
+    },
+    "info": {
+      "bg": {
+        "default": {
+          "$value": "{color.info.8}",
+          "$type": "color",
+          "$description": "Intent info bg."
+        },
+        "active": {
+          "$value": "{color.info.6}",
+          "$type": "color",
+          "$description": "Intent info bg active."
+        },
+        "hover": {
+          "$value": "{color.info.7}",
+          "$type": "color",
+          "$description": "Intent info bg hover."
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{color.info.8}",
+          "$type": "color",
+          "$description": "Intent info border."
+        },
+        "hover": {
+          "$value": "{color.info.7}",
+          "$type": "color",
+          "$description": "Intent info border hover."
+        }
+      },
+      "fg": {
+        "$value": "{color.neutral.12}",
+        "$type": "color",
+        "$description": "Intent info fg."
+      },
+      "ring": {
+        "$value": "{color.info.5}",
+        "$type": "color",
+        "$description": "Intent info ring."
+      }
+    },
+    "neutral": {
+      "bg": {
+        "default": {
+          "$value": "{color.neutral.10}",
+          "$type": "color",
+          "$description": "Intent neutral bg."
+        },
+        "active": {
+          "$value": "{color.neutral.8}",
+          "$type": "color",
+          "$description": "Intent neutral bg active."
+        },
+        "hover": {
+          "$value": "{color.neutral.9}",
+          "$type": "color",
+          "$description": "Intent neutral bg hover."
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{color.neutral.9}",
+          "$type": "color",
+          "$description": "Intent neutral border."
+        },
+        "hover": {
+          "$value": "{color.neutral.8}",
+          "$type": "color",
+          "$description": "Intent neutral border hover."
+        }
+      },
+      "fg": {
+        "$value": "{color.neutral.1}",
+        "$type": "color",
+        "$description": "Intent neutral fg."
+      },
+      "ring": {
+        "$value": "{color.neutral.6}",
+        "$type": "color",
+        "$description": "Intent neutral ring."
+      }
+    },
+    "primary": {
+      "bg": {
+        "default": {
+          "$value": "{color.accent.7}",
+          "$type": "color",
+          "$description": "Intent primary bg."
+        },
+        "active": {
+          "$value": "{color.accent.5}",
+          "$type": "color",
+          "$description": "Intent primary bg active."
+        },
+        "hover": {
+          "$value": "{color.accent.6}",
+          "$type": "color",
+          "$description": "Intent primary bg hover."
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{color.accent.7}",
+          "$type": "color",
+          "$description": "Intent primary border."
+        },
+        "hover": {
+          "$value": "{color.accent.6}",
+          "$type": "color",
+          "$description": "Intent primary border hover."
+        }
+      },
+      "fg": {
+        "$value": "{color.neutral.12}",
+        "$type": "color",
+        "$description": "Intent primary fg."
+      },
+      "ring": {
+        "$value": "{color.accent.5}",
+        "$type": "color",
+        "$description": "Intent primary ring."
+      }
+    },
+    "success": {
+      "bg": {
+        "default": {
+          "$value": "{color.success.8}",
+          "$type": "color",
+          "$description": "Intent success bg."
+        },
+        "active": {
+          "$value": "{color.success.6}",
+          "$type": "color",
+          "$description": "Intent success bg active."
+        },
+        "hover": {
+          "$value": "{color.success.7}",
+          "$type": "color",
+          "$description": "Intent success bg hover."
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{color.success.8}",
+          "$type": "color",
+          "$description": "Intent success border."
+        },
+        "hover": {
+          "$value": "{color.success.7}",
+          "$type": "color",
+          "$description": "Intent success border hover."
+        }
+      },
+      "fg": {
+        "$value": "{color.neutral.12}",
+        "$type": "color",
+        "$description": "Intent success fg."
+      },
+      "ring": {
+        "$value": "{color.success.5}",
+        "$type": "color",
+        "$description": "Intent success ring."
+      }
+    },
+    "warning": {
+      "bg": {
+        "default": {
+          "$value": "{color.warning.8}",
+          "$type": "color",
+          "$description": "Intent warning bg."
+        },
+        "active": {
+          "$value": "{color.warning.6}",
+          "$type": "color",
+          "$description": "Intent warning bg active."
+        },
+        "hover": {
+          "$value": "{color.warning.7}",
+          "$type": "color",
+          "$description": "Intent warning bg hover."
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{color.warning.8}",
+          "$type": "color",
+          "$description": "Intent warning border."
+        },
+        "hover": {
+          "$value": "{color.warning.7}",
+          "$type": "color",
+          "$description": "Intent warning border hover."
+        }
+      },
+      "fg": {
+        "$value": "{color.neutral.12}",
+        "$type": "color",
+        "$description": "Intent warning fg."
+      },
+      "ring": {
+        "$value": "{color.warning.5}",
+        "$type": "color",
+        "$description": "Intent warning ring."
+      }
+    }
+  },
+  "scrim": {
+    "opacity": {
+      "$value": 0.6,
+      "$type": "number",
+      "$description": "Scrim opacity."
+    }
+  },
+  "scrollbar": {
+    "thumb": {
+      "default": {
+        "$value": "{color.neutral.8}",
+        "$type": "color",
+        "$description": "Scrollbar thumb."
+      }
+    },
+    "track": {
+      "$value": "{color.neutral.11}",
+      "$type": "color",
+      "$description": "Scrollbar track."
+    }
+  },
+  "selection": {
+    "bg": {
+      "$value": "{color.accent.9}",
+      "$type": "color",
+      "$description": "Selection bg."
+    },
+    "fg": {
+      "$value": "{color.neutral.1}",
+      "$type": "color",
+      "$description": "Selection fg."
+    }
+  },
+  "surface": {
+    "bg": {
+      "$value": "{color.neutral.12}",
+      "$type": "color",
+      "$description": "Surface bg."
+    },
+    "card": {
+      "$value": "{color.neutral.11}",
+      "$type": "color",
+      "$description": "Surface card."
+    },
+    "elevated": {
+      "1": {
+        "$value": "{color.neutral.11}",
+        "$type": "color",
+        "$description": "Surface elevated 1."
+      },
+      "2": {
+        "$value": "{color.neutral.10}",
+        "$type": "color",
+        "$description": "Surface elevated 2."
+      }
+    },
+    "muted": {
+      "$value": "{color.neutral.10}",
+      "$type": "color",
+      "$description": "Surface muted."
+    },
+    "popover": {
+      "$value": "{color.neutral.11}",
+      "$type": "color",
+      "$description": "Surface popover."
+    }
+  },
+  "text": {
+    "danger": {
+      "$value": "{color.danger.4}",
+      "$type": "color",
+      "$description": "Text danger."
+    },
+    "default": {
+      "$value": "{color.neutral.1}",
+      "$type": "color",
+      "$description": "Text default."
+    },
+    "disabled": {
+      "$value": "{color.neutral.6}",
+      "$type": "color",
+      "$description": "Text disabled."
+    },
+    "info": {
+      "$value": "{color.info.4}",
+      "$type": "color",
+      "$description": "Text info."
+    },
+    "inverse": {
+      "$value": "{color.neutral.12}",
+      "$type": "color",
+      "$description": "Text inverse."
+    },
+    "link": {
+      "default": {
+        "$value": "{color.accent.4}",
+        "$type": "color",
+        "$description": "Text link."
+      },
+      "hover": {
+        "$value": "{color.accent.3}",
+        "$type": "color",
+        "$description": "Text link hover."
+      }
+    },
+    "muted": {
+      "$value": "{color.neutral.4}",
+      "$type": "color",
+      "$description": "Text muted."
+    },
+    "secondary": {
+      "$value": "{color.neutral.3}",
+      "$type": "color",
+      "$description": "Text secondary."
+    },
+    "strong": {
+      "$value": "{color.neutral.1}",
+      "$type": "color",
+      "$description": "Text strong."
+    },
+    "success": {
+      "$value": "{color.success.4}",
+      "$type": "color",
+      "$description": "Text success."
+    },
+    "warning": {
+      "$value": "{color.warning.4}",
+      "$type": "color",
+      "$description": "Text warning."
+    }
+  }
+}

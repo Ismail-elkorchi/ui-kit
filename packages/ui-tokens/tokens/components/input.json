@@ -1,0 +1,122 @@
+{
+  "component": {
+    "input": {
+      "base": {
+        "bg": {
+          "$value": "{field.bg}",
+          "$type": "color",
+          "$description": "Component input base bg."
+        },
+        "border": {
+          "default": {
+            "$value": "{field.border.default}",
+            "$type": "color",
+            "$description": "Component input base border."
+          },
+          "focus": {
+            "$value": "{field.border.focus}",
+            "$type": "color",
+            "$description": "Component input base border focus."
+          },
+          "hover": {
+            "$value": "{field.border.hover}",
+            "$type": "color",
+            "$description": "Component input base border hover."
+          }
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Component input base border Width."
+        },
+        "disabledOpacity": {
+          "$value": "{field.disabled.opacity}",
+          "$type": "number",
+          "$description": "Component input base disabled Opacity."
+        },
+        "fg": {
+          "$value": "{field.fg}",
+          "$type": "color",
+          "$description": "Component input base fg."
+        },
+        "focusRing": {
+          "$value": "{focus.ring.default}",
+          "$type": "color",
+          "$description": "Component input base focus Ring."
+        },
+        "focusRingOffset": {
+          "$value": "{focus.ring.offset.default}",
+          "$type": "dimension",
+          "$description": "Component input base focus Ring Offset."
+        },
+        "focusRingOpacity": {
+          "$value": "{focus.ring.opacity}",
+          "$type": "number",
+          "$description": "Component input base focus Ring Opacity."
+        },
+        "focusRingWidth": {
+          "$value": "{focus.ring.width}",
+          "$type": "dimension",
+          "$description": "Component input base focus Ring Width."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.2}",
+          "$type": "dimension",
+          "$description": "Component input base font Size."
+        },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.regular}",
+          "$type": "fontWeight",
+          "$description": "Component input base font Weight."
+        },
+        "height": {
+          "$value": "{size.control.md}",
+          "$type": "dimension",
+          "$description": "Component input base height."
+        },
+        "lineHeight": {
+          "$value": "{typography.lineHeight.2}",
+          "$type": "number",
+          "$description": "Component input base line Height."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.3}",
+          "$type": "dimension",
+          "$description": "Component input base padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.2}",
+          "$type": "dimension",
+          "$description": "Component input base padding Y."
+        },
+        "placeholder": {
+          "$value": "{field.placeholder}",
+          "$type": "color",
+          "$description": "Component input base placeholder."
+        },
+        "radius": {
+          "$value": "{radius.3}",
+          "$type": "dimension",
+          "$description": "Component input base radius."
+        },
+        "selection": {
+          "bg": {
+            "$value": "{selection.bg}",
+            "$type": "color",
+            "$description": "Component input base selection bg."
+          },
+          "fg": {
+            "$value": "{selection.fg}",
+            "$type": "color",
+            "$description": "Component input base selection fg."
+          }
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component input base shadow."
+        }
+      }
+    }
+  }
+}

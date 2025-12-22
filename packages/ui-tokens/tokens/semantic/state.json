@@ -1,0 +1,32 @@
+{
+  "state": {
+    "active": {
+      "opacity": {
+        "$value": 0.1,
+        "$type": "number",
+        "$description": "State active opacity."
+      }
+    },
+    "disabled": {
+      "opacity": {
+        "$value": 0.5,
+        "$type": "number",
+        "$description": "State disabled opacity."
+      }
+    },
+    "hover": {
+      "opacity": {
+        "$value": 0.06,
+        "$type": "number",
+        "$description": "State hover opacity."
+      }
+    },
+    "selected": {
+      "opacity": {
+        "$value": 0.12,
+        "$type": "number",
+        "$description": "State selected opacity."
+      }
+    }
+  }
+}

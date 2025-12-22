@@ -1,0 +1,131 @@
+{
+  "component": {
+    "badge": {
+      "base": {
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Component badge base border Width."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.1}",
+          "$type": "dimension",
+          "$description": "Component badge base font Size."
+        },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.medium}",
+          "$type": "fontWeight",
+          "$description": "Component badge base font Weight."
+        },
+        "lineHeight": {
+          "$value": "{typography.lineHeight.1}",
+          "$type": "number",
+          "$description": "Component badge base line Height."
+        },
+        "paddingX": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Component badge base padding X."
+        },
+        "paddingY": {
+          "$value": "{space.1}",
+          "$type": "dimension",
+          "$description": "Component badge base padding Y."
+        },
+        "radius": {
+          "$value": "{radius.full}",
+          "$type": "dimension",
+          "$description": "Component badge base radius."
+        }
+      },
+      "danger": {
+        "bg": {
+          "$value": "{intent.danger.bg.default}",
+          "$type": "color",
+          "$description": "Component badge danger bg."
+        },
+        "border": {
+          "$value": "{intent.danger.border.default}",
+          "$type": "color",
+          "$description": "Component badge danger border."
+        },
+        "fg": {
+          "$value": "{intent.danger.fg}",
+          "$type": "color",
+          "$description": "Component badge danger fg."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component badge danger shadow."
+        }
+      },
+      "default": {
+        "bg": {
+          "$value": "{intent.neutral.bg.default}",
+          "$type": "color",
+          "$description": "Component badge default bg."
+        },
+        "border": {
+          "$value": "{intent.neutral.border.default}",
+          "$type": "color",
+          "$description": "Component badge default border."
+        },
+        "fg": {
+          "$value": "{intent.neutral.fg}",
+          "$type": "color",
+          "$description": "Component badge default fg."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component badge default shadow."
+        }
+      },
+      "outline": {
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component badge outline bg."
+        },
+        "border": {
+          "$value": "{border.default}",
+          "$type": "color",
+          "$description": "Component badge outline border."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component badge outline fg."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component badge outline shadow."
+        }
+      },
+      "secondary": {
+        "bg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component badge secondary bg."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Component badge secondary border."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component badge secondary fg."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component badge secondary shadow."
+        }
+      }
+    }
+  }
+}
