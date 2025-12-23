@@ -1,0 +1,1 @@
+export {UikIcon} from './element';

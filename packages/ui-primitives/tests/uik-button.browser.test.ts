@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 import {userEvent} from 'vitest/browser';
 
-import type {UikButton} from '../uik-button';
-import '../uik-button';
+import type {UikButton} from '../src/atomic/control/uik-button';
+import '../src/atomic/control/uik-button';
 
 describe('uik-button', () => {
   beforeEach(() => {

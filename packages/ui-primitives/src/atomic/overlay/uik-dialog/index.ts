@@ -1,0 +1,1 @@
+export {UikDialog} from './element';

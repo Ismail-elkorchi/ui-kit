@@ -1,4 +1,4 @@
-export const UIK_SHELL_NAV_EVENT = 'uik-shell:navigate';
+export const UIK_SHELL_NAVIGATION_EVENT = 'uik-shell:navigation';
 
 export interface UikShellRoute {
   id: string;
@@ -27,7 +27,7 @@ export interface UikShellRouterConfig {
 export type UikShellNavigationListener = (location: UikShellLocation) => void;
 
 export class UikShellRouter extends EventTarget {
-  private readonly routes = new Map<string, UikShellRoute>();
+  private readonly routeRegistry = new Map<string, UikShellRoute>();
   private readonly lastSubviews = new Map<string, string | undefined>();
   private location: UikShellLocation;
 
@@ -36,7 +36,7 @@ export class UikShellRouter extends EventTarget {
     if (config.routes.length === 0) throw new Error('UikShellRouter requires at least one route.');
 
     for (const route of config.routes) {
-      this.routes.set(route.id, route);
+      this.routeRegistry.set(route.id, route);
     }
 
     const view = this.resolveInitialView(config.initialView);
@@ -48,8 +48,8 @@ export class UikShellRouter extends EventTarget {
     return {...this.location};
   }
 
-  get routeList(): UikShellRoute[] {
-    return [...this.routes.values()];
+  get routes(): UikShellRoute[] {
+    return [...this.routeRegistry.values()];
   }
 
   subscribe(listener: UikShellNavigationListener): () => void {
@@ -58,16 +58,16 @@ export class UikShellRouter extends EventTarget {
       listener(detail.to);
     };
 
-    this.addEventListener(UIK_SHELL_NAV_EVENT, handler as EventListener);
+    this.addEventListener(UIK_SHELL_NAVIGATION_EVENT, handler as EventListener);
     listener(this.current);
 
     return () => {
-      this.removeEventListener(UIK_SHELL_NAV_EVENT, handler as EventListener);
+      this.removeEventListener(UIK_SHELL_NAVIGATION_EVENT, handler as EventListener);
     };
   }
 
   navigate(view: string, subview?: string) {
-    const route = this.routes.get(view);
+    const route = this.routeRegistry.get(view);
     if (!route) throw new Error(`Unknown route "${view}".`);
 
     const resolvedSubview = this.resolveSubview(view, subview);
@@ -79,26 +79,30 @@ export class UikShellRouter extends EventTarget {
     this.location = next;
 
     this.dispatchEvent(
-      new CustomEvent<UikShellNavigationDetail>(UIK_SHELL_NAV_EVENT, {detail: {from: previous, to: next, route}}),
+      new CustomEvent<UikShellNavigationDetail>(UIK_SHELL_NAVIGATION_EVENT, {
+        detail: {from: previous, to: next, route},
+      }),
     );
 
     const globalWindow = (globalThis as unknown as {window?: Window}).window;
     if (globalWindow) {
       globalWindow.dispatchEvent(
-        new CustomEvent<UikShellNavigationDetail>(UIK_SHELL_NAV_EVENT, {detail: {from: previous, to: next, route}}),
+        new CustomEvent<UikShellNavigationDetail>(UIK_SHELL_NAVIGATION_EVENT, {
+          detail: {from: previous, to: next, route},
+        }),
       );
     }
   }
 
   private resolveInitialView(initialView?: string): string {
-    if (initialView && this.routes.has(initialView)) return initialView;
-    const first = this.routes.values().next().value;
+    if (initialView && this.routeRegistry.has(initialView)) return initialView;
+    const first = this.routeRegistry.values().next().value;
     if (!first) throw new Error('UikShellRouter requires at least one route.');
     return first.id;
   }
 
   private resolveSubview(view: string, requested?: string): string | undefined {
-    const route = this.routes.get(view);
+    const route = this.routeRegistry.get(view);
     if (!route?.subviews?.length) return undefined;
 
     if (requested && route.subviews.includes(requested)) {

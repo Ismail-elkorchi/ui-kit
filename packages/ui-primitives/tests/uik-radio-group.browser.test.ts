@@ -1,10 +1,10 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 import {userEvent} from 'vitest/browser';
 
-import type {UikRadio} from '../uik-radio';
-import type {UikRadioGroup} from '../uik-radio-group';
-import '../uik-radio-group';
-import '../uik-radio';
+import type {UikRadio} from '../src/atomic/control/uik-radio';
+import type {UikRadioGroup} from '../src/composed/collection/uik-radio-group';
+import '../src/composed/collection/uik-radio-group';
+import '../src/atomic/control/uik-radio';
 
 describe('uik-radio-group', () => {
   beforeEach(() => {

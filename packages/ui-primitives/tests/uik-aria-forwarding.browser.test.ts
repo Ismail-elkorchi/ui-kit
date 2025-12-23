@@ -1,11 +1,11 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 
-import type {UikLink} from '../uik-link';
-import type {UikSelect} from '../uik-select';
-import type {UikTextarea} from '../uik-textarea';
-import '../uik-link';
-import '../uik-select';
-import '../uik-textarea';
+import type {UikLink} from '../src/atomic/control/uik-link';
+import type {UikSelect} from '../src/atomic/control/uik-select';
+import type {UikTextarea} from '../src/atomic/control/uik-textarea';
+import '../src/atomic/control/uik-link';
+import '../src/atomic/control/uik-select';
+import '../src/atomic/control/uik-textarea';
 
 describe('aria forwarding', () => {
   beforeEach(() => {

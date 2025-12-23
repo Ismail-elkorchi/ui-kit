@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 
-import type {UikSeparator} from '../uik-separator';
-import '../uik-separator';
+import type {UikSeparator} from '../src/atomic/layout/uik-separator';
+import '../src/atomic/layout/uik-separator';
 
 describe('uik-separator', () => {
   beforeEach(() => {

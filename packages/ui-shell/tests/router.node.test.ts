@@ -1,7 +1,7 @@
 import {describe, expect, it, vi} from 'vitest';
 
 import type {UikShellNavigationDetail} from '../router';
-import {UIK_SHELL_NAV_EVENT, UikShellRouter} from '../router';
+import {UIK_SHELL_NAVIGATION_EVENT, UikShellRouter} from '../router';
 
 class TestCustomEvent<T> extends Event {
   readonly detail: T;
@@ -32,7 +32,7 @@ describe('UikShellRouter', () => {
     router.subscribe(subscriber);
 
     const windowListener = vi.fn();
-    globalWindow.addEventListener(UIK_SHELL_NAV_EVENT, windowListener as EventListener);
+    globalWindow.addEventListener(UIK_SHELL_NAVIGATION_EVENT, windowListener as EventListener);
 
     router.navigate('page2');
 

@@ -6,7 +6,7 @@ import '@ismail-elkorchi/ui-primitives/uik-separator';
 
 @customElement('uik-shell-secondary-sidebar')
 export class UikShellSecondarySidebar extends LitElement {
-  @property({type: Boolean}) accessor open = false;
+  @property({type: Boolean}) accessor isOpen = false;
   @property({type: String}) accessor heading = '';
   @property({attribute: false}) accessor body: unknown = undefined;
   @property({attribute: false}) accessor footer: unknown = undefined;
@@ -16,11 +16,11 @@ export class UikShellSecondarySidebar extends LitElement {
   }
 
   private close = () => {
-    this.dispatchEvent(new CustomEvent('secondary-close', {bubbles: true, composed: true}));
+    this.dispatchEvent(new CustomEvent('secondary-sidebar-close', {bubbles: true, composed: true}));
   };
 
   override render() {
-    if (!this.open) return nothing;
+    if (!this.isOpen) return nothing;
 
     const headingText = this.heading === '' ? 'Secondary' : this.heading;
 

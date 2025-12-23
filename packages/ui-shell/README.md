@@ -38,7 +38,7 @@ html`
       <uik-shell-activity-bar
         .items=${activityItems}
         .activeId=${'explorer'}
-        @activity-select=${(e: CustomEvent<{id: string}>) => console.log(e.detail.id)}>
+        @activity-bar-select=${(e: CustomEvent<{id: string}>) => console.log(e.detail.id)}>
       </uik-shell-activity-bar>
     `}
     .primarySidebar=${html`
@@ -48,35 +48,35 @@ html`
         .body=${html`<!-- put your file tree or filters here -->`}>
       </uik-shell-sidebar>
     `}
-    .mainContent=${html`<main class="flex-1">Your editor or tabs</main>`}
+    .mainContent=${html`<main class="flex-1">Your editor or subviews</main>`}
     .secondarySidebar=${html`
       <uik-shell-secondary-sidebar
-        .open=${true}
+        .isOpen=${true}
         heading="AI Assistant"
         .body=${html`<p class="text-sm text-muted-foreground">Auxiliary tools live here.</p>`}
-        @secondary-close=${() => console.log('close secondary')}></uik-shell-secondary-sidebar>
+        @secondary-sidebar-close=${() => console.log('close secondary')}></uik-shell-secondary-sidebar>
     `}
     .statusBar=${html`
-      <uik-shell-statusbar message="Ready" tone="info" .meta=${'3 files selected'}></uik-shell-statusbar>
+      <uik-shell-status-bar message="Ready" tone="info" .meta=${'3 files selected'}></uik-shell-status-bar>
     `}
-    ?showSecondary=${true}>
+    ?isSecondarySidebarVisible=${true}>
   </uik-shell-layout>
 `;
 ```
 
 ### Component notes
 
-- `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-select`.
-- `uik-shell-sidebar`: header/heading with `.actions`, `.body`, and optional `.footer`; `paddedBody`/`scrollBody` toggle spacing and scroll.
-- `uik-shell-secondary-sidebar`: controlled via `.open`; emits `secondary-close` when the close button is clicked.
-- `uik-shell-statusbar`: `.message` + `.tone` colorizes the left side; `.meta` renders on the right (string becomes an outline badge).
+- `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-bar-select`.
+- `uik-shell-sidebar`: header/heading with `.actions`, `.body`, and optional `.footer`; `isBodyPadded`/`isBodyScrollable` toggle spacing and scroll.
+- `uik-shell-secondary-sidebar`: controlled via `.isOpen`; emits `secondary-sidebar-close` when the close button is clicked.
+- `uik-shell-status-bar`: `.message` + `.tone` colorizes the left side; `.meta` renders on the right (string becomes an outline badge).
 
 ## Routing store
 
-A tiny EventTarget-based router lives in `@ismail-elkorchi/ui-shell/router`. It is framework-light, keeps state in memory (no history), and is meant for desktop flows that only need named views and optional subviews/tabs.
+A tiny EventTarget-based router lives in `@ismail-elkorchi/ui-shell/router`. It is framework-light, keeps state in memory (no history), and is meant for desktop flows that only need named views and optional subviews.
 
 ```ts
-import {createUikShellRouter, UIK_SHELL_NAV_EVENT, type UikShellNavigationDetail} from '@ismail-elkorchi/ui-shell/router';
+import {createUikShellRouter, UIK_SHELL_NAVIGATION_EVENT, type UikShellNavigationDetail} from '@ismail-elkorchi/ui-shell/router';
 
 const routes = [
   {id: 'explorer', label: 'Explorer', subviews: ['code', 'prompt', 'apply'], defaultSubview: 'code'},
@@ -96,17 +96,18 @@ html`
   <uik-shell-activity-bar
     .items=${routes.map(r => ({id: r.id, label: r.label ?? r.id}))}
     .activeId=${shellRouter.current.view}
-    @activity-select=${(e: CustomEvent<{id: string}>) => shellRouter.navigate(e.detail.id)}>
+    @activity-bar-select=${(e: CustomEvent<{id: string}>) => shellRouter.navigate(e.detail.id)}>
   </uik-shell-activity-bar>
 
   <editor-area
-    .activeTab=${shellRouter.current.subview ?? 'code'}
-    @tab-change=${(e: CustomEvent<{tab: string}>) => shellRouter.navigate(shellRouter.current.view, e.detail.tab)}>
+    .activeSubview=${shellRouter.current.subview ?? 'code'}
+    @subview-change=${(e: CustomEvent<{subview: string}>) =>
+      shellRouter.navigate(shellRouter.current.view, e.detail.subview)}>
   </editor-area>
 `;
 
 // Listen to the low-level navigation event if you prefer EventTarget
-window.addEventListener(UIK_SHELL_NAV_EVENT, (event: Event) => {
+window.addEventListener(UIK_SHELL_NAVIGATION_EVENT, (event: Event) => {
   const detail = (event as CustomEvent<UikShellNavigationDetail>).detail;
   console.log(detail.from, detail.to, detail.route);
 });

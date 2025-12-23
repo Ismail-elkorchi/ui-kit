@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 
-import type {UikPopover} from '../uik-popover';
-import '../uik-popover';
+import type {UikPopover} from '../src/atomic/overlay/uik-popover';
+import '../src/atomic/overlay/uik-popover';
 
 describe('uik-popover', () => {
   beforeEach(() => {

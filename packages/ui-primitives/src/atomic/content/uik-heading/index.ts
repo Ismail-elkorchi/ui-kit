@@ -1,0 +1,1 @@
+export {UikHeading} from './element';

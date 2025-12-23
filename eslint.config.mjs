@@ -16,7 +16,7 @@ const tsFiles = ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'];
 const jsFiles = ['**/*.js', '**/*.cjs', '**/*.mjs'];
 const allSources = [...tsFiles, ...jsFiles];
 
-const tsconfigProjects = ['./tsconfig.base.json', './packages/*/tsconfig.build.json'];
+const tsconfigProjects = ['./tsconfig.eslint.json'];
 const packageDirs = [
   import.meta.dirname,
   path.join(import.meta.dirname, 'packages/ui-shell'),
@@ -162,6 +162,12 @@ export default defineConfig([
       ],
     },
   },
+  {
+    files: ['packages/ui-primitives/src/**/element.ts'],
+    rules: {
+      'wc/file-name-matches-element': 'off',
+    },
+  },
 
   {
     files: ['packages/**/*.{ts,tsx,mts,cts}'],
@@ -176,6 +182,33 @@ export default defineConfig([
             '@ismail-elkorchi/ui-primitives/*',
             '@ismail-elkorchi/ui-shell/*',
             '@ismail-elkorchi/ui-tokens/*',
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: [
+      'packages/ui-primitives/**/*.ts',
+      'packages/ui-primitives/**/*.tsx',
+      'packages/ui-primitives/**/*.mts',
+      'packages/ui-primitives/**/*.cts',
+    ],
+    rules: {
+      'import/no-internal-modules': [
+        'error',
+        {
+          allow: [
+            'lit/decorators.js',
+            'lit/directives/if-defined.js',
+            'vitest/browser',
+            '@ismail-elkorchi/ui-primitives/*',
+            '@ismail-elkorchi/ui-shell/*',
+            '@ismail-elkorchi/ui-tokens/*',
+            'src/**',
+            'internal/**',
+            'atomic/**',
+            'composed/**',
           ],
         },
       ],

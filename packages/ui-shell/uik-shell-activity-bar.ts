@@ -3,8 +3,8 @@ import {customElement, property} from 'lit/decorators.js';
 
 import '@ismail-elkorchi/ui-primitives/uik-button';
 
-import type {UikShellActivityBarItem} from './uik-activity-bar-types';
-export type {UikShellActivityBarIcon, UikShellActivityBarItem} from './uik-activity-bar-types';
+import type {UikShellActivityBarItem} from './uik-shell-activity-bar-contract';
+export type {UikShellActivityBarIcon, UikShellActivityBarItem} from './uik-shell-activity-bar-contract';
 
 @customElement('uik-shell-activity-bar')
 export class UikShellActivityBar extends LitElement {
@@ -17,7 +17,7 @@ export class UikShellActivityBar extends LitElement {
   }
 
   private emitSelect(id: string) {
-    this.dispatchEvent(new CustomEvent('activity-select', {detail: {id}, bubbles: true, composed: true}));
+    this.dispatchEvent(new CustomEvent('activity-bar-select', {detail: {id}, bubbles: true, composed: true}));
   }
 
   private renderIcon(item: UikShellActivityBarItem) {

@@ -5,34 +5,17 @@ Shadow DOM web components backed by the shared token CSS variables from `@ismail
 ## Build & distribution
 
 - `npm run build` emits ESM + `.d.ts` files into `dist/`.
-- Exported subpaths map directly to files:
-  - `dist/index.js`
-  - `dist/register.js`
-  - `dist/uik-alert.js`
-  - `dist/uik-badge.js`
-  - `dist/uik-box.js`
-  - `dist/uik-button.js`
-  - `dist/uik-checkbox.js`
-  - `dist/uik-dialog.js`
-  - `dist/uik-heading.js`
-  - `dist/uik-icon.js`
-  - `dist/uik-input.js`
-  - `dist/uik-link.js`
-  - `dist/uik-popover.js`
-  - `dist/uik-progress.js`
-  - `dist/uik-radio.js`
-  - `dist/uik-radio-group.js`
-  - `dist/uik-select.js`
-  - `dist/uik-separator.js`
-  - `dist/uik-spinner.js`
-  - `dist/uik-stack.js`
-  - `dist/uik-surface.js`
-  - `dist/uik-switch.js`
-  - `dist/uik-text.js`
-  - `dist/uik-textarea.js`
-  - `dist/uik-tooltip.js`
-  - `dist/uik-visually-hidden.js`
+- Exported subpaths are defined in `package.json#exports` and map to the built outputs.
 - Published artifacts include only `dist/` and this README; TypeScript sources stay in the workspace.
+
+## Internal layering
+
+Source is organized by dependency direction:
+- `src/internal/<area>`: shared helpers grouped by domain (a11y, dom, overlay, slots, styles, types)
+- `src/atomic/<kind>/<component>`: primitives without primitive dependencies
+- `src/composed/<kind>/<component>`: primitives built on other primitives
+
+See `packages/ui-primitives/LAYERING.md` for the dependency rules.
 
 ## Usage
 
@@ -91,7 +74,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 
 ### `<uik-badge>`
 
-- **Attributes/props**: `variant` (`default | secondary | destructive | outline`).
+- **Attributes/props**: `variant` (`default | secondary | danger | outline`).
 - **Events**: none special; behaves like an inline element.
 - **Styling hooks**: token-driven colors and `part="base"`.
 
@@ -104,7 +87,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 
 ### `<uik-button>`
 
-- **Attributes/props**: `variant` (`default | destructive | outline | secondary | ghost | link`), `size` (`default | sm | lg | icon`), `type` (`button | submit | reset` - defaults to `button`), `active` (boolean), `muted` (boolean), `disabled` (boolean).
+- **Attributes/props**: `variant` (`solid | danger | outline | secondary | ghost | link`), `size` (`default | sm | lg | icon`), `type` (`button | submit | reset` - defaults to `button`), `active` (boolean), `muted` (boolean), `disabled` (boolean).
 - **Events**: native button events (`click`, focus/blur) bubble from the internal button; disabled buttons swallow click.
 - **Styling hooks**:
   - Sizing is enforced on the `:host`. The internal button fills the host (100% width/height).
@@ -231,7 +214,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Attributes/props**: `direction` (`vertical | horizontal`), `gap` (`1-6`), `align` (`start | center | end | stretch`), `justify` (`start | center | end | between`).
 - **Slots**: default.
 - **Parts**: `base`.
-- **Custom properties**: `--uik-component-stack-gap-{1..6}`, `--uik-stack-align`, `--uik-stack-justify`, `--uik-stack-direction`.
+- **Custom properties**: `--uik-component-stack-gap-{1..6}`.
 
 ### `<uik-surface>`
 
@@ -269,7 +252,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 
 ### `<uik-tooltip>`
 
-- **Attributes/props**: inherits `open`, `placement`, `popover` from `uik-popover` (defaults to `popover="hint"`).
+- **Attributes/props**: `open`, `placement`, `popover` (defaults to `popover="hint"`).
 - **Slots**: `trigger`, default slot for tooltip content.
 - **Parts**: `control` (trigger wrapper), `base` (panel).
 - **A11y**: panel uses `role="tooltip"` and wires `aria-describedby` onto the trigger.

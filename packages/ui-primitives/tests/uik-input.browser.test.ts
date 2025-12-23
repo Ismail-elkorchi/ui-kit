@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 import {userEvent} from 'vitest/browser';
 
-import type {UikInput} from '../uik-input';
-import '../uik-input';
+import type {UikInput} from '../src/atomic/control/uik-input';
+import '../src/atomic/control/uik-input';
 
 describe('uik-input', () => {
   beforeEach(() => {

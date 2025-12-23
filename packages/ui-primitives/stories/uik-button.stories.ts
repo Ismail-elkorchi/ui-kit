@@ -6,7 +6,7 @@ import {runA11y} from '../../../.storybook/a11y';
 
 type ButtonArgs = {
   label: string;
-  variant: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  variant: 'solid' | 'danger' | 'outline' | 'secondary' | 'ghost' | 'link';
   size: 'default' | 'sm' | 'lg' | 'icon';
   disabled: boolean;
   active: boolean;
@@ -28,7 +28,7 @@ const meta: Meta<ButtonArgs> = {
   },
   args: {
     label: 'Click me',
-    variant: 'default',
+    variant: 'solid',
     size: 'default',
     disabled: false,
     active: false,
@@ -37,7 +37,7 @@ const meta: Meta<ButtonArgs> = {
   },
   argTypes: {
     variant: {
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
+      options: ['solid', 'danger', 'outline', 'secondary', 'ghost', 'link'],
       control: {type: 'select'},
     },
     size: {
@@ -70,13 +70,13 @@ type Story = StoryObj<ButtonArgs>;
 
 const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
-export const Default: Story = {
+export const Solid: Story = {
   play: playA11y,
 };
 
-export const Destructive: Story = {
+export const Danger: Story = {
   play: playA11y,
-  args: {variant: 'destructive', label: 'Delete'},
+  args: {variant: 'danger', label: 'Delete'},
 };
 
 export const GhostMuted: Story = {

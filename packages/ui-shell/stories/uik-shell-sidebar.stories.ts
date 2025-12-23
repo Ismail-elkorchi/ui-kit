@@ -6,9 +6,9 @@ import '@ismail-elkorchi/ui-primitives/register';
 type SidebarArgs = {
   heading: string;
   subtitle: string;
-  paddedBody: boolean;
-  scrollBody: boolean;
-  showFooter: boolean;
+  isBodyPadded: boolean;
+  isBodyScrollable: boolean;
+  isFooterVisible: boolean;
 };
 
 const meta: Meta<SidebarArgs> = {
@@ -19,9 +19,9 @@ const meta: Meta<SidebarArgs> = {
   args: {
     heading: 'Explorer',
     subtitle: 'Workspace',
-    paddedBody: true,
-    scrollBody: true,
-    showFooter: true,
+    isBodyPadded: true,
+    isBodyScrollable: true,
+    isFooterVisible: true,
   },
   render: args => {
     const actions = html`
@@ -42,7 +42,7 @@ const meta: Meta<SidebarArgs> = {
       </div>
     `;
 
-    const footer = args.showFooter
+    const footer = args.isFooterVisible
       ? html`<div class="text-xs text-muted-foreground">3 workspaces</div>`
       : undefined;
 
@@ -51,8 +51,8 @@ const meta: Meta<SidebarArgs> = {
         <uik-shell-sidebar
           heading=${args.heading}
           subtitle=${args.subtitle}
-          ?paddedBody=${args.paddedBody}
-          ?scrollBody=${args.scrollBody}
+          ?isBodyPadded=${args.isBodyPadded}
+          ?isBodyScrollable=${args.isBodyScrollable}
           .actions=${actions}
           .body=${body}
           .footer=${footer}></uik-shell-sidebar>

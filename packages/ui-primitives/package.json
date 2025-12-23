@@ -36,124 +36,124 @@
       "default": "./dist/register.js"
     },
     "./uik-alert": {
-      "types": "./dist/uik-alert.d.ts",
-      "import": "./dist/uik-alert.js",
-      "default": "./dist/uik-alert.js"
+      "types": "./dist/src/atomic/feedback/uik-alert/index.d.ts",
+      "import": "./dist/src/atomic/feedback/uik-alert/index.js",
+      "default": "./dist/src/atomic/feedback/uik-alert/index.js"
     },
     "./uik-box": {
-      "types": "./dist/uik-box.d.ts",
-      "import": "./dist/uik-box.js",
-      "default": "./dist/uik-box.js"
+      "types": "./dist/src/atomic/layout/uik-box/index.d.ts",
+      "import": "./dist/src/atomic/layout/uik-box/index.js",
+      "default": "./dist/src/atomic/layout/uik-box/index.js"
     },
     "./uik-button": {
-      "types": "./dist/uik-button.d.ts",
-      "import": "./dist/uik-button.js",
-      "default": "./dist/uik-button.js"
+      "types": "./dist/src/atomic/control/uik-button/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-button/index.js",
+      "default": "./dist/src/atomic/control/uik-button/index.js"
     },
     "./uik-badge": {
-      "types": "./dist/uik-badge.d.ts",
-      "import": "./dist/uik-badge.js",
-      "default": "./dist/uik-badge.js"
+      "types": "./dist/src/atomic/content/uik-badge/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-badge/index.js",
+      "default": "./dist/src/atomic/content/uik-badge/index.js"
     },
     "./uik-checkbox": {
-      "types": "./dist/uik-checkbox.d.ts",
-      "import": "./dist/uik-checkbox.js",
-      "default": "./dist/uik-checkbox.js"
+      "types": "./dist/src/atomic/control/uik-checkbox/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-checkbox/index.js",
+      "default": "./dist/src/atomic/control/uik-checkbox/index.js"
     },
     "./uik-dialog": {
-      "types": "./dist/uik-dialog.d.ts",
-      "import": "./dist/uik-dialog.js",
-      "default": "./dist/uik-dialog.js"
+      "types": "./dist/src/atomic/overlay/uik-dialog/index.d.ts",
+      "import": "./dist/src/atomic/overlay/uik-dialog/index.js",
+      "default": "./dist/src/atomic/overlay/uik-dialog/index.js"
     },
     "./uik-heading": {
-      "types": "./dist/uik-heading.d.ts",
-      "import": "./dist/uik-heading.js",
-      "default": "./dist/uik-heading.js"
+      "types": "./dist/src/atomic/content/uik-heading/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-heading/index.js",
+      "default": "./dist/src/atomic/content/uik-heading/index.js"
     },
     "./uik-icon": {
-      "types": "./dist/uik-icon.d.ts",
-      "import": "./dist/uik-icon.js",
-      "default": "./dist/uik-icon.js"
+      "types": "./dist/src/atomic/content/uik-icon/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-icon/index.js",
+      "default": "./dist/src/atomic/content/uik-icon/index.js"
     },
     "./uik-input": {
-      "types": "./dist/uik-input.d.ts",
-      "import": "./dist/uik-input.js",
-      "default": "./dist/uik-input.js"
+      "types": "./dist/src/atomic/control/uik-input/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-input/index.js",
+      "default": "./dist/src/atomic/control/uik-input/index.js"
     },
     "./uik-link": {
-      "types": "./dist/uik-link.d.ts",
-      "import": "./dist/uik-link.js",
-      "default": "./dist/uik-link.js"
+      "types": "./dist/src/atomic/control/uik-link/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-link/index.js",
+      "default": "./dist/src/atomic/control/uik-link/index.js"
     },
     "./uik-popover": {
-      "types": "./dist/uik-popover.d.ts",
-      "import": "./dist/uik-popover.js",
-      "default": "./dist/uik-popover.js"
+      "types": "./dist/src/atomic/overlay/uik-popover/index.d.ts",
+      "import": "./dist/src/atomic/overlay/uik-popover/index.js",
+      "default": "./dist/src/atomic/overlay/uik-popover/index.js"
     },
     "./uik-progress": {
-      "types": "./dist/uik-progress.d.ts",
-      "import": "./dist/uik-progress.js",
-      "default": "./dist/uik-progress.js"
+      "types": "./dist/src/atomic/feedback/uik-progress/index.d.ts",
+      "import": "./dist/src/atomic/feedback/uik-progress/index.js",
+      "default": "./dist/src/atomic/feedback/uik-progress/index.js"
     },
     "./uik-radio": {
-      "types": "./dist/uik-radio.d.ts",
-      "import": "./dist/uik-radio.js",
-      "default": "./dist/uik-radio.js"
+      "types": "./dist/src/atomic/control/uik-radio/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-radio/index.js",
+      "default": "./dist/src/atomic/control/uik-radio/index.js"
     },
     "./uik-radio-group": {
-      "types": "./dist/uik-radio-group.d.ts",
-      "import": "./dist/uik-radio-group.js",
-      "default": "./dist/uik-radio-group.js"
+      "types": "./dist/src/composed/collection/uik-radio-group/index.d.ts",
+      "import": "./dist/src/composed/collection/uik-radio-group/index.js",
+      "default": "./dist/src/composed/collection/uik-radio-group/index.js"
     },
     "./uik-separator": {
-      "types": "./dist/uik-separator.d.ts",
-      "import": "./dist/uik-separator.js",
-      "default": "./dist/uik-separator.js"
+      "types": "./dist/src/atomic/layout/uik-separator/index.d.ts",
+      "import": "./dist/src/atomic/layout/uik-separator/index.js",
+      "default": "./dist/src/atomic/layout/uik-separator/index.js"
     },
     "./uik-select": {
-      "types": "./dist/uik-select.d.ts",
-      "import": "./dist/uik-select.js",
-      "default": "./dist/uik-select.js"
+      "types": "./dist/src/atomic/control/uik-select/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-select/index.js",
+      "default": "./dist/src/atomic/control/uik-select/index.js"
     },
     "./uik-spinner": {
-      "types": "./dist/uik-spinner.d.ts",
-      "import": "./dist/uik-spinner.js",
-      "default": "./dist/uik-spinner.js"
+      "types": "./dist/src/atomic/feedback/uik-spinner/index.d.ts",
+      "import": "./dist/src/atomic/feedback/uik-spinner/index.js",
+      "default": "./dist/src/atomic/feedback/uik-spinner/index.js"
     },
     "./uik-stack": {
-      "types": "./dist/uik-stack.d.ts",
-      "import": "./dist/uik-stack.js",
-      "default": "./dist/uik-stack.js"
+      "types": "./dist/src/atomic/layout/uik-stack/index.d.ts",
+      "import": "./dist/src/atomic/layout/uik-stack/index.js",
+      "default": "./dist/src/atomic/layout/uik-stack/index.js"
     },
     "./uik-surface": {
-      "types": "./dist/uik-surface.d.ts",
-      "import": "./dist/uik-surface.js",
-      "default": "./dist/uik-surface.js"
+      "types": "./dist/src/atomic/layout/uik-surface/index.d.ts",
+      "import": "./dist/src/atomic/layout/uik-surface/index.js",
+      "default": "./dist/src/atomic/layout/uik-surface/index.js"
     },
     "./uik-switch": {
-      "types": "./dist/uik-switch.d.ts",
-      "import": "./dist/uik-switch.js",
-      "default": "./dist/uik-switch.js"
+      "types": "./dist/src/atomic/control/uik-switch/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-switch/index.js",
+      "default": "./dist/src/atomic/control/uik-switch/index.js"
     },
     "./uik-text": {
-      "types": "./dist/uik-text.d.ts",
-      "import": "./dist/uik-text.js",
-      "default": "./dist/uik-text.js"
+      "types": "./dist/src/atomic/content/uik-text/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-text/index.js",
+      "default": "./dist/src/atomic/content/uik-text/index.js"
     },
     "./uik-textarea": {
-      "types": "./dist/uik-textarea.d.ts",
-      "import": "./dist/uik-textarea.js",
-      "default": "./dist/uik-textarea.js"
+      "types": "./dist/src/atomic/control/uik-textarea/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-textarea/index.js",
+      "default": "./dist/src/atomic/control/uik-textarea/index.js"
     },
     "./uik-tooltip": {
-      "types": "./dist/uik-tooltip.d.ts",
-      "import": "./dist/uik-tooltip.js",
-      "default": "./dist/uik-tooltip.js"
+      "types": "./dist/src/composed/overlay/uik-tooltip/index.d.ts",
+      "import": "./dist/src/composed/overlay/uik-tooltip/index.js",
+      "default": "./dist/src/composed/overlay/uik-tooltip/index.js"
     },
     "./uik-visually-hidden": {
-      "types": "./dist/uik-visually-hidden.d.ts",
-      "import": "./dist/uik-visually-hidden.js",
-      "default": "./dist/uik-visually-hidden.js"
+      "types": "./dist/src/atomic/content/uik-visually-hidden/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-visually-hidden/index.js",
+      "default": "./dist/src/atomic/content/uik-visually-hidden/index.js"
     }
   },
   "sideEffects": [
@@ -167,10 +167,11 @@
     "build": "npm run clean && tsc -p tsconfig.build.json && npm run cem",
     "clean": "node -e \"const fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true}); fs.rmSync('.tsbuildinfo', {force: true});\"",
     "cem": "cem analyze --config ./custom-elements-manifest.config.cjs --litelement",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "eslint . --max-warnings=0 && npm run check:layering",
     "test": "npm run build && vitest --run --project browser --dir .",
     "typecheck": "tsc -p tsconfig.build.json --noEmit",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "check:layering": "node tools/check-layering.mjs"
   },
   "repository": {
     "type": "git",

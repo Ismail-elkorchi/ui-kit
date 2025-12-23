@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mts",
+    "**/*.cts"
+  ],
+  "exclude": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/coverage/**",
+    "**/storybook-static/**",
+    "**/playwright-report/**",
+    "**/test-results/**"
+  ],
+  "references": [
+    {"path": "./packages/ui-primitives/tsconfig.build.json"},
+    {"path": "./packages/ui-shell/tsconfig.build.json"}
+  ]
+}

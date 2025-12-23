@@ -7,8 +7,8 @@ import '@ismail-elkorchi/ui-primitives/uik-separator';
 export class UikShellSidebar extends LitElement {
   @property({type: String}) accessor heading = '';
   @property({type: String}) accessor subtitle = '';
-  @property({type: Boolean}) accessor paddedBody = true;
-  @property({type: Boolean}) accessor scrollBody = true;
+  @property({type: Boolean}) accessor isBodyPadded = true;
+  @property({type: Boolean}) accessor isBodyScrollable = true;
   @property({attribute: false}) accessor actions: unknown = undefined;
   @property({attribute: false}) accessor body: unknown = undefined;
   @property({attribute: false}) accessor footer: unknown = undefined;
@@ -23,8 +23,8 @@ export class UikShellSidebar extends LitElement {
       'min-h-0',
       'flex',
       'flex-col',
-      this.paddedBody ? 'p-3' : '',
-      this.scrollBody ? 'overflow-y-auto custom-scrollbar' : '',
+      this.isBodyPadded ? 'p-3' : '',
+      this.isBodyScrollable ? 'overflow-y-auto custom-scrollbar' : '',
       'gap-3',
     ]
       .filter(Boolean)

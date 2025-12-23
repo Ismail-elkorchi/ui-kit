@@ -1,0 +1,1 @@
+export {UikSwitch} from './element';

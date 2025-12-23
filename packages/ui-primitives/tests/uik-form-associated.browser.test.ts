@@ -1,16 +1,16 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 
-import type {UikCheckbox} from '../uik-checkbox';
-import type {UikRadioGroup} from '../uik-radio-group';
-import type {UikSelect} from '../uik-select';
-import type {UikSwitch} from '../uik-switch';
-import type {UikTextarea} from '../uik-textarea';
-import '../uik-checkbox';
-import '../uik-radio-group';
-import '../uik-radio';
-import '../uik-select';
-import '../uik-switch';
-import '../uik-textarea';
+import type {UikCheckbox} from '../src/atomic/control/uik-checkbox';
+import type {UikSelect} from '../src/atomic/control/uik-select';
+import type {UikSwitch} from '../src/atomic/control/uik-switch';
+import type {UikTextarea} from '../src/atomic/control/uik-textarea';
+import type {UikRadioGroup} from '../src/composed/collection/uik-radio-group';
+import '../src/atomic/control/uik-checkbox';
+import '../src/atomic/control/uik-radio';
+import '../src/atomic/control/uik-select';
+import '../src/atomic/control/uik-switch';
+import '../src/atomic/control/uik-textarea';
+import '../src/composed/collection/uik-radio-group';
 
 describe('form-associated primitives', () => {
   beforeEach(() => {

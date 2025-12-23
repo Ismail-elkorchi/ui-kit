@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 import {userEvent} from 'vitest/browser';
 
-import type {UikDialog} from '../uik-dialog';
-import '../uik-dialog';
+import type {UikDialog} from '../src/atomic/overlay/uik-dialog';
+import '../src/atomic/overlay/uik-dialog';
 
 describe('uik-dialog', () => {
   beforeEach(() => {

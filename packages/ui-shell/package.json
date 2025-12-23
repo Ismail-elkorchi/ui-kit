@@ -47,10 +47,10 @@
       "import": "./dist/uik-shell-secondary-sidebar.js",
       "default": "./dist/uik-shell-secondary-sidebar.js"
     },
-    "./statusbar": {
-      "types": "./dist/uik-shell-statusbar.d.ts",
-      "import": "./dist/uik-shell-statusbar.js",
-      "default": "./dist/uik-shell-statusbar.js"
+    "./status-bar": {
+      "types": "./dist/uik-shell-status-bar.d.ts",
+      "import": "./dist/uik-shell-status-bar.js",
+      "default": "./dist/uik-shell-status-bar.js"
     },
     "./router": {
       "types": "./dist/router.d.ts",

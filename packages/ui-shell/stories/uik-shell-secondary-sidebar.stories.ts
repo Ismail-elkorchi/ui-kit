@@ -3,9 +3,9 @@ import {html} from 'lit';
 import '@ismail-elkorchi/ui-shell/register';
 
 type SecondarySidebarArgs = {
-  open: boolean;
+  isOpen: boolean;
   heading: string;
-  showFooter: boolean;
+  isFooterVisible: boolean;
 };
 
 const meta: Meta<SecondarySidebarArgs> = {
@@ -14,9 +14,9 @@ const meta: Meta<SecondarySidebarArgs> = {
   tags: ['autodocs'],
   parameters: {layout: 'centered'},
   args: {
-    open: true,
+    isOpen: true,
     heading: 'Assistant',
-    showFooter: true,
+    isFooterVisible: true,
   },
   render: args => {
     const body = html`
@@ -26,14 +26,14 @@ const meta: Meta<SecondarySidebarArgs> = {
       </div>
     `;
 
-    const footer = args.showFooter
+    const footer = args.isFooterVisible
       ? html`<div class="text-xs text-muted-foreground">Powered by UIK</div>`
       : undefined;
 
     return html`
       <div style="height: 360px;">
         <uik-shell-secondary-sidebar
-          ?open=${args.open}
+          ?isOpen=${args.isOpen}
           heading=${args.heading}
           .body=${body}
           .footer=${footer}></uik-shell-secondary-sidebar>

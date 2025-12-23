@@ -6,7 +6,7 @@ import {runA11y} from '../../../.storybook/a11y';
 
 type BadgeArgs = {
   label: string;
-  variant: 'default' | 'secondary' | 'destructive' | 'outline';
+  variant: 'default' | 'secondary' | 'danger' | 'outline';
 };
 
 const meta: Meta<BadgeArgs> = {
@@ -27,7 +27,7 @@ const meta: Meta<BadgeArgs> = {
   },
   argTypes: {
     variant: {
-      options: ['default', 'secondary', 'destructive', 'outline'],
+      options: ['default', 'secondary', 'danger', 'outline'],
       control: {type: 'select'},
     },
   },
@@ -53,9 +53,9 @@ export const Secondary: Story = {
   args: {variant: 'secondary', label: 'Secondary'},
 };
 
-export const Destructive: Story = {
+export const Danger: Story = {
   play: playA11y,
-  args: {variant: 'destructive', label: 'Alert'},
+  args: {variant: 'danger', label: 'Alert'},
 };
 
 export const Outline: Story = {

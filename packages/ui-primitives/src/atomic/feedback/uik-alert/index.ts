@@ -1,0 +1,1 @@
+export {UikAlert} from './element';

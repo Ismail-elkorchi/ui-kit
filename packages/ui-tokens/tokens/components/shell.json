@@ -1,16 +1,16 @@
 {
   "component": {
     "shell": {
-      "activitybar": {
+      "activityBar": {
         "bg": {
           "$value": "{surface.muted}",
           "$type": "color",
-          "$description": "Component shell activitybar bg."
+          "$description": "Component shell activity bar bg."
         },
         "fg": {
           "$value": "{text.muted}",
           "$type": "color",
-          "$description": "Component shell activitybar fg."
+          "$description": "Component shell activity bar fg."
         },
         "width": {
           "$value": {
@@ -18,7 +18,7 @@
             "unit": "rem"
           },
           "$type": "dimension",
-          "$description": "Component shell activitybar width."
+          "$description": "Component shell activity bar width."
         }
       },
       "divider": {
@@ -44,7 +44,7 @@
         "bg": {
           "$value": "{surface.bg}",
           "$type": "color",
-          "$description": "Component shell secondary Sidebar bg."
+          "$description": "Component shell secondary sidebar bg."
         },
         "width": {
           "$value": {
@@ -52,7 +52,7 @@
             "unit": "rem"
           },
           "$type": "dimension",
-          "$description": "Component shell secondary Sidebar width."
+          "$description": "Component shell secondary sidebar width."
         }
       },
       "sidebar": {
@@ -75,16 +75,16 @@
           "$description": "Component shell sidebar width."
         }
       },
-      "statusbar": {
+      "statusBar": {
         "bg": {
           "$value": "{surface.muted}",
           "$type": "color",
-          "$description": "Component shell statusbar bg."
+          "$description": "Component shell status bar bg."
         },
         "fg": {
           "$value": "{text.muted}",
           "$type": "color",
-          "$description": "Component shell statusbar fg."
+          "$description": "Component shell status bar fg."
         },
         "height": {
           "$value": {
@@ -92,7 +92,7 @@
             "unit": "rem"
           },
           "$type": "dimension",
-          "$description": "Component shell statusbar height."
+          "$description": "Component shell status bar height."
         }
       }
     }

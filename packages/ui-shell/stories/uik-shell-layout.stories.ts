@@ -13,7 +13,7 @@ const activityItems = [
 ] as const;
 
 type LayoutArgs = {
-  showSecondary: boolean;
+  isSecondarySidebarVisible: boolean;
 };
 
 const meta: Meta<LayoutArgs> = {
@@ -22,7 +22,7 @@ const meta: Meta<LayoutArgs> = {
   tags: ['autodocs'],
   parameters: {layout: 'fullscreen'},
   args: {
-    showSecondary: true,
+    isSecondarySidebarVisible: true,
   },
   render: args => {
     const activityBar = html`
@@ -61,20 +61,20 @@ const meta: Meta<LayoutArgs> = {
 
     const secondarySidebar = html`
       <uik-shell-secondary-sidebar
-        .open=${true}
+        .isOpen=${true}
         heading="Assistant"
         .body=${html`<p class="text-sm text-muted-foreground">Context-aware suggestions appear here.</p>`}
         .footer=${html`<div class="text-xs text-muted-foreground">AI Ready</div>`}></uik-shell-secondary-sidebar>
     `;
 
     const statusBar = html`
-      <uik-shell-statusbar message="Ready" tone="info" .meta=${'3 files selected'}></uik-shell-statusbar>
+      <uik-shell-status-bar message="Ready" tone="info" .meta=${'3 files selected'}></uik-shell-status-bar>
     `;
 
     return html`
       <div style="height: 520px; border: 1px solid oklch(var(--uik-border-default));">
         <uik-shell-layout
-          ?showSecondary=${args.showSecondary}
+          ?isSecondarySidebarVisible=${args.isSecondarySidebarVisible}
           .activityBar=${activityBar}
           .primarySidebar=${primarySidebar}
           .mainContent=${mainContent}
