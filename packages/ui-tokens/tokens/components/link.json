@@ -1,0 +1,25 @@
+{
+  "component": {
+    "link": {
+      "fg": {
+        "default": {
+          "$value": "{text.link.default}",
+          "$type": "color",
+          "$description": "Component link fg default."
+        },
+        "hover": {
+          "$value": "{text.link.hover}",
+          "$type": "color",
+          "$description": "Component link fg hover."
+        }
+      },
+      "underline": {
+        "offset": {
+          "$value": "{space.1}",
+          "$type": "dimension",
+          "$description": "Component link underline offset."
+        }
+      }
+    }
+  }
+}

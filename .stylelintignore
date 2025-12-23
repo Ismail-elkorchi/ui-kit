@@ -1,5 +1,6 @@
 dist/
 node_modules/
 storybook-static/
+**/*.d.ts
 package.json
 package-lock.json

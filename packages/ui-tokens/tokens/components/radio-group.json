@@ -1,0 +1,11 @@
+{
+  "component": {
+    "radioGroup": {
+      "gap": {
+        "$value": "{layout.control.gap.2}",
+        "$type": "dimension",
+        "$description": "Component radio group gap."
+      }
+    }
+  }
+}

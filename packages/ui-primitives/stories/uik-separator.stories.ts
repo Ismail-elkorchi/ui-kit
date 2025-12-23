@@ -32,7 +32,8 @@ const meta: Meta<SeparatorArgs> = {
   render: args => {
     if (args.orientation === 'vertical') {
       return html`
-        <div style="display: flex; align-items: center; gap: 1rem; height: 140px; padding: 1rem;">
+        <div
+          style="display: flex; align-items: center; gap: var(--uik-space-4); height: var(--uik-space-12); padding: var(--uik-space-4);">
           <span>Left</span>
           <uik-separator orientation="vertical"></uik-separator>
           <span>Right</span>
@@ -41,7 +42,8 @@ const meta: Meta<SeparatorArgs> = {
     }
 
     return html`
-      <div style="display: grid; gap: 0.75rem; padding: 1rem; width: min(420px, 90vw);">
+      <div
+        style="display: grid; gap: var(--uik-space-3); padding: var(--uik-space-4); width: min(var(--uik-layout-panel-width-md), 90vw);">
         <span>Top</span>
         <uik-separator orientation="horizontal"></uik-separator>
         <span>Bottom</span>

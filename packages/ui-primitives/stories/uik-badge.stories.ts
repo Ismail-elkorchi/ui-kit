@@ -32,7 +32,7 @@ const meta: Meta<BadgeArgs> = {
     },
   },
   render: ({label, ...args}) => html`
-    <div style="display: inline-flex; gap: 0.75rem; align-items: center; padding: 1rem;">
+    <div style="display: inline-flex; gap: var(--uik-space-3); align-items: center; padding: var(--uik-space-4);">
       <uik-badge variant=${args.variant}>${label}</uik-badge>
     </div>
   `,

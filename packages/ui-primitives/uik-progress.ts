@@ -1,0 +1,54 @@
+import {LitElement, css, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import {ifDefined} from 'lit/directives/if-defined.js';
+
+@customElement('uik-progress')
+export class UikProgress extends LitElement {
+  @property({type: Number}) accessor value = 0;
+  @property({type: Number}) accessor max = 100;
+  @property({type: Boolean, reflect: true, useDefault: true}) accessor indeterminate = false;
+  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
+  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
+
+  static override readonly styles = css`
+    :host {
+      display: block;
+    }
+
+    progress {
+      width: 100%;
+      height: var(--uik-component-progress-height);
+      overflow: hidden;
+      background-color: oklch(var(--uik-component-progress-track-bg));
+      border: none;
+      border-radius: var(--uik-component-progress-radius);
+    }
+
+    progress::-webkit-progress-bar {
+      background-color: oklch(var(--uik-component-progress-track-bg));
+      border-radius: var(--uik-component-progress-radius);
+    }
+
+    progress::-webkit-progress-value {
+      background-color: oklch(var(--uik-component-progress-bar-bg));
+      border-radius: var(--uik-component-progress-radius);
+    }
+
+    progress::-moz-progress-bar {
+      background-color: oklch(var(--uik-component-progress-bar-bg));
+      border-radius: var(--uik-component-progress-radius);
+    }
+  `;
+
+  override render() {
+    const value = this.indeterminate ? undefined : String(this.value);
+    return html`
+      <progress
+        part="base"
+        value=${ifDefined(value)}
+        max=${this.max}
+        aria-label=${ifDefined(this.ariaLabelValue || undefined)}
+        aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}></progress>
+    `;
+  }
+}

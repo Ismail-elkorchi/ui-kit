@@ -4,8 +4,7 @@ import {html, nothing} from 'lit';
 
 import {runA11y} from '../../../.storybook/a11y';
 
-type InputArgs = {
-  type: string;
+type TextareaArgs = {
   placeholder: string;
   value: string;
   disabled: boolean;
@@ -16,9 +15,9 @@ type InputArgs = {
   error: string;
 };
 
-const meta: Meta<InputArgs> = {
-  title: 'Primitives/Input',
-  component: 'uik-input',
+const meta: Meta<TextareaArgs> = {
+  title: 'Primitives/Textarea',
+  component: 'uik-textarea',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
@@ -30,25 +29,18 @@ const meta: Meta<InputArgs> = {
     },
   },
   args: {
-    type: 'text',
-    placeholder: 'Type here...',
+    placeholder: 'Write a short message...',
     value: '',
     disabled: false,
     required: false,
     invalid: false,
-    label: 'Email',
-    hint: 'We will never share your email.',
+    label: 'Message',
+    hint: 'Keep it under 240 characters.',
     error: '',
-  },
-  argTypes: {
-    type: {
-      control: {type: 'text'},
-    },
   },
   render: args => html`
     <div style="padding: var(--uik-space-4); width: min(var(--uik-layout-panel-width-md), 90vw);">
-      <uik-input
-        type=${args.type}
+      <uik-textarea
         placeholder=${args.placeholder}
         .value=${args.value}
         ?disabled=${args.disabled}
@@ -57,14 +49,14 @@ const meta: Meta<InputArgs> = {
         ${args.label ? html`<span slot="label">${args.label}</span>` : nothing}
         ${args.hint ? html`<span slot="hint">${args.hint}</span>` : nothing}
         ${args.error ? html`<span slot="error">${args.error}</span>` : nothing}
-      </uik-input>
+      </uik-textarea>
     </div>
   `,
 };
 
 export default meta;
 
-type Story = StoryObj<InputArgs>;
+type Story = StoryObj<TextareaArgs>;
 
 const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
@@ -74,15 +66,10 @@ export const Default: Story = {
 
 export const Filled: Story = {
   play: playA11y,
-  args: {value: 'hello@uik.dev'},
-};
-
-export const Disabled: Story = {
-  play: playA11y,
-  args: {disabled: true, placeholder: 'Disabled'},
+  args: {value: 'This is a longer textarea value.'},
 };
 
 export const Invalid: Story = {
   play: playA11y,
-  args: {invalid: true, error: 'Please enter a valid email.'},
+  args: {invalid: true, error: 'Please enter at least 10 characters.'},
 };

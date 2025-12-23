@@ -1,0 +1,91 @@
+{
+  "component": {
+    "alert": {
+      "neutral": {
+        "bg": {
+          "$value": "{intent.neutral.bg.default}",
+          "$type": "color",
+          "$description": "Component alert neutral bg."
+        },
+        "border": {
+          "$value": "{intent.neutral.border.default}",
+          "$type": "color",
+          "$description": "Component alert neutral border."
+        },
+        "fg": {
+          "$value": "{intent.neutral.fg}",
+          "$type": "color",
+          "$description": "Component alert neutral fg."
+        }
+      },
+      "info": {
+        "bg": {
+          "$value": "{intent.info.bg.default}",
+          "$type": "color",
+          "$description": "Component alert info bg."
+        },
+        "border": {
+          "$value": "{intent.info.border.default}",
+          "$type": "color",
+          "$description": "Component alert info border."
+        },
+        "fg": {
+          "$value": "{intent.info.fg}",
+          "$type": "color",
+          "$description": "Component alert info fg."
+        }
+      },
+      "success": {
+        "bg": {
+          "$value": "{intent.success.bg.default}",
+          "$type": "color",
+          "$description": "Component alert success bg."
+        },
+        "border": {
+          "$value": "{intent.success.border.default}",
+          "$type": "color",
+          "$description": "Component alert success border."
+        },
+        "fg": {
+          "$value": "{intent.success.fg}",
+          "$type": "color",
+          "$description": "Component alert success fg."
+        }
+      },
+      "warning": {
+        "bg": {
+          "$value": "{intent.warning.bg.default}",
+          "$type": "color",
+          "$description": "Component alert warning bg."
+        },
+        "border": {
+          "$value": "{intent.warning.border.default}",
+          "$type": "color",
+          "$description": "Component alert warning border."
+        },
+        "fg": {
+          "$value": "{intent.warning.fg}",
+          "$type": "color",
+          "$description": "Component alert warning fg."
+        }
+      },
+      "danger": {
+        "bg": {
+          "$value": "{intent.danger.bg.default}",
+          "$type": "color",
+          "$description": "Component alert danger bg."
+        },
+        "border": {
+          "$value": "{intent.danger.border.default}",
+          "$type": "color",
+          "$description": "Component alert danger border."
+        },
+        "fg": {
+          "$value": "{intent.danger.fg}",
+          "$type": "color",
+          "$description": "Component alert danger fg."
+        }
+      }
+    }
+  }
+}

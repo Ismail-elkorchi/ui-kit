@@ -64,13 +64,13 @@ export class UikButton extends LitElement {
       font-size: var(--uik-component-button-base-font-size);
       font-weight: var(--uik-component-button-base-font-weight);
       line-height: var(--uik-component-button-base-line-height);
+      color: var(--uik-button-fg);
       white-space: nowrap;
       cursor: pointer;
-      color: var(--uik-button-fg);
       background-color: var(--uik-button-bg);
+      border-color: var(--uik-button-border-color);
       border-style: var(--uik-border-style-solid);
       border-width: var(--uik-component-button-base-border-width);
-      border-color: var(--uik-button-border-color);
       border-radius: var(--uik-button-radius);
       box-shadow: var(--uik-button-shadow);
       transition:
@@ -82,8 +82,8 @@ export class UikButton extends LitElement {
     }
 
     button:hover {
-      background-color: var(--uik-button-bg-hover);
       color: var(--uik-button-fg-hover, var(--uik-button-fg));
+      background-color: var(--uik-button-bg-hover);
     }
 
     button:active {
@@ -192,7 +192,8 @@ export class UikButton extends LitElement {
       --uik-button-fg: oklch(var(--uik-component-button-link-fg));
       --uik-button-border-color: oklch(var(--uik-component-button-link-border));
       --uik-button-shadow: var(--uik-component-button-link-shadow);
-      text-decoration-offset: var(--uik-component-button-link-underline-offset);
+
+      text-underline-offset: var(--uik-component-button-link-underline-offset);
     }
 
     .variant-link:hover {

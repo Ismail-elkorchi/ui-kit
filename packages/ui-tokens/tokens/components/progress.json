@@ -1,0 +1,30 @@
+{
+  "component": {
+    "progress": {
+      "track": {
+        "bg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component progress track bg."
+        }
+      },
+      "bar": {
+        "bg": {
+          "$value": "{intent.primary.bg.default}",
+          "$type": "color",
+          "$description": "Component progress bar bg."
+        }
+      },
+      "height": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component progress height."
+      },
+      "radius": {
+        "$value": "{radius.full}",
+        "$type": "dimension",
+        "$description": "Component progress radius."
+      }
+    }
+  }
+}

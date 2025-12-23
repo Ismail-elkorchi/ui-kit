@@ -50,7 +50,7 @@ const meta: Meta<ButtonArgs> = {
     },
   },
   render: ({label, ...args}) => html`
-    <div style="display: inline-flex; gap: 0.75rem; align-items: center; padding: 1rem;">
+    <div style="display: inline-flex; gap: var(--uik-space-3); align-items: center; padding: var(--uik-space-4);">
       <uik-button
         variant=${args.variant}
         size=${args.size}
@@ -88,7 +88,7 @@ export const IconButton: Story = {
   play: playA11y,
   args: {label: '★', size: 'icon', variant: 'secondary', type: 'button'},
   render: ({label, ...args}) => html`
-    <div style="display: inline-flex; gap: 0.75rem; align-items: center; padding: 1rem;">
+    <div style="display: inline-flex; gap: var(--uik-space-3); align-items: center; padding: var(--uik-space-4);">
       <uik-button
         variant=${args.variant}
         size=${args.size}

@@ -1,0 +1,75 @@
+{
+  "component": {
+    "box": {
+      "bg": {
+        "$value": "{surface.bg}",
+        "$type": "color",
+        "$description": "Component box bg."
+      },
+      "bgOpacity": {
+        "$value": "{opacity.0}",
+        "$type": "number",
+        "$description": "Component box bg opacity."
+      },
+      "border": {
+        "color": {
+          "$value": "{border.default}",
+          "$type": "color",
+          "$description": "Component box border color."
+        },
+        "opacity": {
+          "$value": "{opacity.0}",
+          "$type": "number",
+          "$description": "Component box border opacity."
+        },
+        "width": {
+          "$value": "{border.width.0}",
+          "$type": "dimension",
+          "$description": "Component box border width."
+        }
+      },
+      "padding": {
+        "0": {
+          "$value": "{space.0}",
+          "$type": "dimension",
+          "$description": "Component box padding 0."
+        },
+        "1": {
+          "$value": "{space.1}",
+          "$type": "dimension",
+          "$description": "Component box padding 1."
+        },
+        "2": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Component box padding 2."
+        },
+        "3": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Component box padding 3."
+        },
+        "4": {
+          "$value": "{space.4}",
+          "$type": "dimension",
+          "$description": "Component box padding 4."
+        },
+        "5": {
+          "$value": "{space.5}",
+          "$type": "dimension",
+          "$description": "Component box padding 5."
+        },
+        "6": {
+          "$value": "{space.6}",
+          "$type": "dimension",
+          "$description": "Component box padding 6."
+        }
+      },
+      "radius": {
+        "$value": "{radius.0}",
+        "$type": "dimension",
+        "$description": "Component box radius."
+      }
+    }
+  }
+}

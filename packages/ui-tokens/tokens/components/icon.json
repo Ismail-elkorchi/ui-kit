@@ -1,0 +1,65 @@
+{
+  "component": {
+    "icon": {
+      "size": {
+        "xs": {
+          "$value": "{size.icon.xs}",
+          "$type": "dimension",
+          "$description": "Component icon size xs."
+        },
+        "sm": {
+          "$value": "{size.icon.sm}",
+          "$type": "dimension",
+          "$description": "Component icon size sm."
+        },
+        "md": {
+          "$value": "{size.icon.md}",
+          "$type": "dimension",
+          "$description": "Component icon size md."
+        },
+        "lg": {
+          "$value": "{size.icon.lg}",
+          "$type": "dimension",
+          "$description": "Component icon size lg."
+        }
+      },
+      "color": {
+        "default": {
+          "$value": "{icon.default}",
+          "$type": "color",
+          "$description": "Component icon color default."
+        },
+        "muted": {
+          "$value": "{icon.muted}",
+          "$type": "color",
+          "$description": "Component icon color muted."
+        },
+        "danger": {
+          "$value": "{icon.danger}",
+          "$type": "color",
+          "$description": "Component icon color danger."
+        },
+        "success": {
+          "$value": "{icon.success}",
+          "$type": "color",
+          "$description": "Component icon color success."
+        },
+        "warning": {
+          "$value": "{icon.warning}",
+          "$type": "color",
+          "$description": "Component icon color warning."
+        },
+        "info": {
+          "$value": "{icon.info}",
+          "$type": "color",
+          "$description": "Component icon color info."
+        },
+        "inverse": {
+          "$value": "{icon.inverse}",
+          "$type": "color",
+          "$description": "Component icon color inverse."
+        }
+      }
+    }
+  }
+}

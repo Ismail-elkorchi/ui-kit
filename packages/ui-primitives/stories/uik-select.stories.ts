@@ -4,9 +4,7 @@ import {html, nothing} from 'lit';
 
 import {runA11y} from '../../../.storybook/a11y';
 
-type InputArgs = {
-  type: string;
-  placeholder: string;
+type SelectArgs = {
   value: string;
   disabled: boolean;
   required: boolean;
@@ -16,9 +14,9 @@ type InputArgs = {
   error: string;
 };
 
-const meta: Meta<InputArgs> = {
-  title: 'Primitives/Input',
-  component: 'uik-input',
+const meta: Meta<SelectArgs> = {
+  title: 'Primitives/Select',
+  component: 'uik-select',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
@@ -30,41 +28,31 @@ const meta: Meta<InputArgs> = {
     },
   },
   args: {
-    type: 'text',
-    placeholder: 'Type here...',
-    value: '',
+    value: 'beta',
     disabled: false,
     required: false,
     invalid: false,
-    label: 'Email',
-    hint: 'We will never share your email.',
+    label: 'Plan',
+    hint: 'Choose your billing tier.',
     error: '',
-  },
-  argTypes: {
-    type: {
-      control: {type: 'text'},
-    },
   },
   render: args => html`
     <div style="padding: var(--uik-space-4); width: min(var(--uik-layout-panel-width-md), 90vw);">
-      <uik-input
-        type=${args.type}
-        placeholder=${args.placeholder}
-        .value=${args.value}
-        ?disabled=${args.disabled}
-        ?required=${args.required}
-        ?invalid=${args.invalid}>
+      <uik-select .value=${args.value} ?disabled=${args.disabled} ?required=${args.required} ?invalid=${args.invalid}>
         ${args.label ? html`<span slot="label">${args.label}</span>` : nothing}
         ${args.hint ? html`<span slot="hint">${args.hint}</span>` : nothing}
         ${args.error ? html`<span slot="error">${args.error}</span>` : nothing}
-      </uik-input>
+        <option value="alpha">Alpha</option>
+        <option value="beta">Beta</option>
+        <option value="gamma">Gamma</option>
+      </uik-select>
     </div>
   `,
 };
 
 export default meta;
 
-type Story = StoryObj<InputArgs>;
+type Story = StoryObj<SelectArgs>;
 
 const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
@@ -72,17 +60,7 @@ export const Default: Story = {
   play: playA11y,
 };
 
-export const Filled: Story = {
-  play: playA11y,
-  args: {value: 'hello@uik.dev'},
-};
-
 export const Disabled: Story = {
   play: playA11y,
-  args: {disabled: true, placeholder: 'Disabled'},
-};
-
-export const Invalid: Story = {
-  play: playA11y,
-  args: {invalid: true, error: 'Please enter a valid email.'},
+  args: {disabled: true},
 };

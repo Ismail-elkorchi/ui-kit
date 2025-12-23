@@ -1,0 +1,65 @@
+{
+  "component": {
+    "select": {
+      "base": {
+        "bg": {
+          "$value": "{field.bg}",
+          "$type": "color",
+          "$description": "Component select base bg."
+        },
+        "border": {
+          "default": {
+            "$value": "{field.border.default}",
+            "$type": "color",
+            "$description": "Component select base border."
+          },
+          "hover": {
+            "$value": "{field.border.hover}",
+            "$type": "color",
+            "$description": "Component select base border hover."
+          },
+          "focus": {
+            "$value": "{field.border.focus}",
+            "$type": "color",
+            "$description": "Component select base border focus."
+          }
+        },
+        "fg": {
+          "$value": "{field.fg}",
+          "$type": "color",
+          "$description": "Component select base fg."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.3}",
+          "$type": "dimension",
+          "$description": "Component select base padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.3}",
+          "$type": "dimension",
+          "$description": "Component select base padding Y."
+        },
+        "radius": {
+          "$value": "{radius.3}",
+          "$type": "dimension",
+          "$description": "Component select base radius."
+        },
+        "shadow": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component select base shadow."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.3}",
+          "$type": "dimension",
+          "$description": "Component select base font size."
+        },
+        "lineHeight": {
+          "$value": "{typography.lineHeight.4}",
+          "$type": "number",
+          "$description": "Component select base line height."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "component": {
+    "surface": {
+      "bg": {
+        "default": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component surface bg default."
+        },
+        "muted": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component surface bg muted."
+        },
+        "card": {
+          "$value": "{surface.card}",
+          "$type": "color",
+          "$description": "Component surface bg card."
+        },
+        "elevated": {
+          "$value": "{surface.elevated.1}",
+          "$type": "color",
+          "$description": "Component surface bg elevated."
+        },
+        "popover": {
+          "$value": "{surface.popover}",
+          "$type": "color",
+          "$description": "Component surface bg popover."
+        }
+      },
+      "shadow": {
+        "default": {
+          "$value": "{shadow.0}",
+          "$type": "shadow",
+          "$description": "Component surface shadow default."
+        },
+        "card": {
+          "$value": "{elevation.card.shadow}",
+          "$type": "shadow",
+          "$description": "Component surface shadow card."
+        },
+        "elevated": {
+          "$value": "{elevation.card.shadow}",
+          "$type": "shadow",
+          "$description": "Component surface shadow elevated."
+        },
+        "popover": {
+          "$value": "{elevation.popover.shadow}",
+          "$type": "shadow",
+          "$description": "Component surface shadow popover."
+        }
+      },
+      "border": {
+        "color": {
+          "default": {
+            "$value": "{border.default}",
+            "$type": "color",
+            "$description": "Component surface border color default."
+          },
+          "bordered": {
+            "$value": "{border.default}",
+            "$type": "color",
+            "$description": "Component surface border color bordered."
+          }
+        },
+        "width": {
+          "default": {
+            "$value": "{border.width.0}",
+            "$type": "dimension",
+            "$description": "Component surface border width default."
+          },
+          "bordered": {
+            "$value": "{border.width.1}",
+            "$type": "dimension",
+            "$description": "Component surface border width bordered."
+          }
+        }
+      },
+      "radius": {
+        "$value": "{radius.3}",
+        "$type": "dimension",
+        "$description": "Component surface radius."
+      }
+    }
+  }
+}

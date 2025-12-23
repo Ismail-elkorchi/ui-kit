@@ -2,34 +2,32 @@ import {LitElement, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {ifDefined} from 'lit/directives/if-defined.js';
 
-let inputId = 0;
+import {buildDescribedBy, createId, hasSlotContent} from './internal';
 
 type SlotName = 'label' | 'hint' | 'error';
 
-@customElement('uik-input')
-export class UikInput extends LitElement {
+@customElement('uik-textarea')
+export class UikTextarea extends LitElement {
   static formAssociated = true;
 
-  @property({type: String}) accessor type = 'text';
   @property({type: String}) accessor placeholder = '';
   @property({type: String}) accessor value = '';
-  @property({type: String, reflect: true}) accessor name = '';
-  @property({attribute: 'autocomplete'}) accessor autocomplete = '';
-  @property({attribute: 'inputmode'}) override accessor inputMode = '';
-  @property({attribute: 'enterkeyhint'}) override accessor enterKeyHint = '';
-  @property({type: Boolean, reflect: true}) accessor disabled = false;
-  @property({type: Boolean, reflect: true}) accessor required = false;
-  @property({type: Boolean, reflect: true}) accessor readonly = false;
-  @property({type: Boolean, reflect: true}) accessor invalid = false;
+  @property({type: String, reflect: true, useDefault: true}) accessor name = '';
+  @property({type: Number}) accessor rows = 3;
+  @property({type: Boolean, reflect: true, useDefault: true}) accessor disabled = false;
+  @property({type: Boolean, reflect: true, useDefault: true}) accessor required = false;
+  @property({type: Boolean, reflect: true, useDefault: true}) accessor readonly = false;
+  @property({type: Boolean, reflect: true, useDefault: true}) accessor invalid = false;
   @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
   @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
   @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
 
   private readonly internals = this.attachInternals();
-  private readonly controlId = `uik-input-${String(++inputId)}`;
+  private readonly controlId = createId('uik-textarea');
   private readonly labelId = `${this.controlId}-label`;
   private readonly hintId = `${this.controlId}-hint`;
   private readonly errorId = `${this.controlId}-error`;
+  private defaultValue = '';
 
   static override readonly styles = css`
     :host {
@@ -65,21 +63,22 @@ export class UikInput extends LitElement {
       color: oklch(var(--uik-text-disabled));
     }
 
-    input {
-      display: flex;
+    textarea {
       width: 100%;
-      height: var(--uik-component-input-base-height);
-      padding: var(--uik-component-input-base-padding-y) var(--uik-component-input-base-padding-x);
-      font-size: var(--uik-component-input-base-font-size);
-      font-weight: var(--uik-component-input-base-font-weight);
-      line-height: var(--uik-component-input-base-line-height);
-      color: oklch(var(--uik-component-input-base-fg));
-      background-color: oklch(var(--uik-component-input-base-bg));
-      border-color: oklch(var(--uik-component-input-base-border-default));
+      min-height: var(--uik-component-textarea-base-min-height);
+      padding: var(--uik-component-textarea-base-padding-y) var(--uik-component-textarea-base-padding-x);
+      font-family: var(--uik-typography-font-family-sans);
+      font-size: var(--uik-component-textarea-base-font-size);
+      font-weight: var(--uik-typography-font-weight-regular);
+      line-height: var(--uik-component-textarea-base-line-height);
+      color: oklch(var(--uik-component-textarea-base-fg));
+      resize: vertical;
+      background-color: oklch(var(--uik-component-textarea-base-bg));
+      border-color: oklch(var(--uik-component-textarea-base-border-default));
       border-style: var(--uik-border-style-solid);
-      border-width: var(--uik-component-input-base-border-width);
-      border-radius: var(--uik-component-input-base-radius);
-      box-shadow: var(--uik-component-input-base-shadow);
+      border-width: var(--uik-border-width-1);
+      border-radius: var(--uik-component-textarea-base-radius);
+      box-shadow: var(--uik-component-textarea-base-shadow);
       transition:
         border-color var(--uik-motion-transition-colors),
         box-shadow var(--uik-motion-transition-shadow),
@@ -87,40 +86,54 @@ export class UikInput extends LitElement {
         color var(--uik-motion-transition-colors);
     }
 
-    input:hover {
-      border-color: oklch(var(--uik-component-input-base-border-hover));
+    textarea:hover {
+      border-color: oklch(var(--uik-component-textarea-base-border-hover));
     }
 
-    input::placeholder {
-      color: oklch(var(--uik-component-input-base-placeholder));
+    textarea::placeholder {
+      color: oklch(var(--uik-component-textarea-base-placeholder));
     }
 
-    input::selection {
-      color: oklch(var(--uik-component-input-base-selection-fg));
-      background-color: oklch(var(--uik-component-input-base-selection-bg));
+    textarea::selection {
+      color: oklch(var(--uik-selection-fg));
+      background-color: oklch(var(--uik-selection-bg));
     }
 
-    input:focus-visible {
+    textarea:focus-visible {
       outline: none;
-      border-color: oklch(var(--uik-component-input-base-border-focus));
+      border-color: oklch(var(--uik-component-textarea-base-border-focus));
       box-shadow:
-        var(--uik-component-input-base-shadow),
-        0 0 0 var(--uik-component-input-base-focus-ring-offset) oklch(var(--uik-focus-ring-offset-bg)),
-        0 0 0 calc(var(--uik-component-input-base-focus-ring-offset) + var(--uik-component-input-base-focus-ring-width))
-          oklch(var(--uik-component-input-base-focus-ring) / var(--uik-component-input-base-focus-ring-opacity));
+        var(--uik-component-textarea-base-shadow),
+        0 0 0 var(--uik-focus-ring-offset-default) oklch(var(--uik-focus-ring-offset-bg)),
+        0 0 0 calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
+          oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
     }
 
-    input:disabled {
+    textarea:disabled {
       cursor: not-allowed;
-      opacity: var(--uik-component-input-base-disabled-opacity);
+      opacity: var(--uik-field-disabled-opacity);
+    }
+
+    @media (forced-colors: active) {
+      textarea:focus-visible {
+        outline: var(--uik-border-width-1) solid currentcolor;
+        outline-offset: var(--uik-space-1);
+        box-shadow: none;
+      }
     }
   `;
 
-  private get inputElement(): HTMLInputElement | null {
-    return this.renderRoot.querySelector('input');
+  private get textareaElement(): HTMLTextAreaElement | null {
+    return this.renderRoot.querySelector('textarea');
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.defaultValue = this.value;
   }
 
   override firstUpdated() {
+    this.defaultValue = this.value;
     this.syncFormValue();
     this.syncValidity();
   }
@@ -130,7 +143,7 @@ export class UikInput extends LitElement {
       this.syncFormValue();
     }
 
-    if (changed.has('required') || changed.has('type') || changed.has('invalid')) {
+    if (changed.has('required') || changed.has('invalid')) {
       this.syncValidity();
     }
   }
@@ -140,14 +153,16 @@ export class UikInput extends LitElement {
   }
 
   formResetCallback() {
-    this.value = '';
+    this.value = this.defaultValue;
     this.syncFormValue();
+    this.syncValidity();
   }
 
   formStateRestoreCallback(state: string | File | FormData | null) {
     if (typeof state === 'string') {
       this.value = state;
       this.syncFormValue();
+      this.syncValidity();
     }
   }
 
@@ -156,26 +171,23 @@ export class UikInput extends LitElement {
   }
 
   private syncValidity() {
-    const input = this.inputElement;
-    if (!input) return;
+    const textarea = this.textareaElement;
+    if (!textarea) return;
+
     if (this.invalid || this.hasSlotContent('error')) {
-      this.internals.setValidity({customError: true}, 'Invalid', input);
+      this.internals.setValidity({customError: true}, 'Invalid', textarea);
       return;
     }
-    if (input.checkValidity()) {
+
+    if (textarea.checkValidity()) {
       this.internals.setValidity({});
     } else {
-      this.internals.setValidity(input.validity, input.validationMessage, input);
+      this.internals.setValidity(textarea.validity, textarea.validationMessage, textarea);
     }
   }
 
   private hasSlotContent(name: SlotName): boolean {
-    const elements = Array.from(this.querySelectorAll(`[slot="${name}"]`));
-    if (elements.length === 0) return false;
-    return elements.some(element => {
-      const text = element.textContent;
-      return text.trim().length > 0 || element.childElementCount > 0;
-    });
+    return hasSlotContent(this, name);
   }
 
   private onSlotChange = (event: Event) => {
@@ -187,15 +199,15 @@ export class UikInput extends LitElement {
   };
 
   private onChange = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    this.value = input.value;
+    const textarea = event.target as HTMLTextAreaElement;
+    this.value = textarea.value;
     this.syncFormValue();
     this.syncValidity();
   };
 
   private onInput = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    this.value = input.value;
+    const textarea = event.target as HTMLTextAreaElement;
+    this.value = textarea.value;
     this.syncFormValue();
     this.syncValidity();
   };
@@ -204,13 +216,11 @@ export class UikInput extends LitElement {
     const hasLabel = this.hasSlotContent('label');
     const hasHint = this.hasSlotContent('hint');
     const hasError = this.hasSlotContent('error');
-    const describedBy = [
+    const describedBy = buildDescribedBy(
       this.ariaDescribedbyValue,
       hasHint ? this.hintId : null,
       hasError ? this.errorId : null,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    );
 
     const ariaInvalid = this.invalid || hasError ? 'true' : undefined;
     const ariaLabel = hasLabel ? undefined : this.ariaLabelValue || undefined;
@@ -222,25 +232,22 @@ export class UikInput extends LitElement {
           <slot name="label" @slotchange=${this.onSlotChange}></slot>
         </label>
         <div part="control" class="control">
-          <input
+          <textarea
             part="base"
             id=${this.controlId}
-            type=${this.type}
             name=${this.name}
-            autocomplete=${ifDefined(this.autocomplete || undefined)}
-            inputmode=${ifDefined(this.inputMode || undefined)}
-            enterkeyhint=${ifDefined(this.enterKeyHint || undefined)}
             placeholder=${this.placeholder}
+            rows=${this.rows}
             .value=${this.value}
             ?disabled=${this.disabled}
             ?required=${this.required}
             ?readonly=${this.readonly}
             aria-invalid=${ifDefined(ariaInvalid)}
-            aria-describedby=${ifDefined(describedBy || undefined)}
+            aria-describedby=${ifDefined(describedBy)}
             aria-label=${ifDefined(ariaLabel)}
             aria-labelledby=${ifDefined(ariaLabelledby)}
             @change=${this.onChange}
-            @input=${this.onInput} />
+            @input=${this.onInput}></textarea>
         </div>
         <div part="hint" class="hint" id=${this.hintId} ?hidden=${!hasHint}>
           <slot name="hint" @slotchange=${this.onSlotChange}></slot>

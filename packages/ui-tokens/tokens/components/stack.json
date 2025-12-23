@@ -1,0 +1,38 @@
+{
+  "component": {
+    "stack": {
+      "gap": {
+        "1": {
+          "$value": "{layout.control.gap.1}",
+          "$type": "dimension",
+          "$description": "Component stack gap 1."
+        },
+        "2": {
+          "$value": "{layout.control.gap.2}",
+          "$type": "dimension",
+          "$description": "Component stack gap 2."
+        },
+        "3": {
+          "$value": "{layout.control.gap.3}",
+          "$type": "dimension",
+          "$description": "Component stack gap 3."
+        },
+        "4": {
+          "$value": "{layout.control.gap.4}",
+          "$type": "dimension",
+          "$description": "Component stack gap 4."
+        },
+        "5": {
+          "$value": "{layout.control.gap.5}",
+          "$type": "dimension",
+          "$description": "Component stack gap 5."
+        },
+        "6": {
+          "$value": "{layout.control.gap.6}",
+          "$type": "dimension",
+          "$description": "Component stack gap 6."
+        }
+      }
+    }
+  }
+}

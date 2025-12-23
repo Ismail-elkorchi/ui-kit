@@ -1,0 +1,41 @@
+import '@ismail-elkorchi/ui-primitives/register';
+import type {Meta, StoryObj} from '@storybook/web-components-vite';
+import {html} from 'lit';
+
+import {runA11y} from '../../../.storybook/a11y';
+
+type BoxArgs = {
+  padding: '0' | '1' | '2' | '3' | '4' | '5' | '6';
+  inline: boolean;
+};
+
+const meta: Meta<BoxArgs> = {
+  title: 'Primitives/Box',
+  component: 'uik-box',
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+  },
+  args: {
+    padding: '4',
+    inline: false,
+  },
+  render: args => html`
+    <uik-box
+      padding=${args.padding}
+      ?inline=${args.inline}
+      style="--uik-component-box-bg: var(--uik-surface-muted); --uik-component-box-radius: var(--uik-radius-3);">
+      <uik-text size="md">Token-backed box content</uik-text>
+    </uik-box>
+  `,
+};
+
+export default meta;
+
+type Story = StoryObj<BoxArgs>;
+
+const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
+
+export const Default: Story = {
+  play: playA11y,
+};

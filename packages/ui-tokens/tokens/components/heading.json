@@ -1,0 +1,112 @@
+{
+  "component": {
+    "heading": {
+      "size": {
+        "1": {
+          "$value": "{typography.fontSize.8}",
+          "$type": "dimension",
+          "$description": "Component heading size 1."
+        },
+        "2": {
+          "$value": "{typography.fontSize.7}",
+          "$type": "dimension",
+          "$description": "Component heading size 2."
+        },
+        "3": {
+          "$value": "{typography.fontSize.6}",
+          "$type": "dimension",
+          "$description": "Component heading size 3."
+        },
+        "4": {
+          "$value": "{typography.fontSize.5}",
+          "$type": "dimension",
+          "$description": "Component heading size 4."
+        },
+        "5": {
+          "$value": "{typography.fontSize.4}",
+          "$type": "dimension",
+          "$description": "Component heading size 5."
+        },
+        "6": {
+          "$value": "{typography.fontSize.3}",
+          "$type": "dimension",
+          "$description": "Component heading size 6."
+        }
+      },
+      "lineHeight": {
+        "1": {
+          "$value": "{typography.lineHeight.8}",
+          "$type": "number",
+          "$description": "Component heading line height 1."
+        },
+        "2": {
+          "$value": "{typography.lineHeight.7}",
+          "$type": "number",
+          "$description": "Component heading line height 2."
+        },
+        "3": {
+          "$value": "{typography.lineHeight.6}",
+          "$type": "number",
+          "$description": "Component heading line height 3."
+        },
+        "4": {
+          "$value": "{typography.lineHeight.5}",
+          "$type": "number",
+          "$description": "Component heading line height 4."
+        },
+        "5": {
+          "$value": "{typography.lineHeight.4}",
+          "$type": "number",
+          "$description": "Component heading line height 5."
+        },
+        "6": {
+          "$value": "{typography.lineHeight.4}",
+          "$type": "number",
+          "$description": "Component heading line height 6."
+        }
+      },
+      "weight": {
+        "$value": "{typography.fontWeight.semibold}",
+        "$type": "fontWeight",
+        "$description": "Component heading weight."
+      },
+      "color": {
+        "default": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component heading color default."
+        },
+        "strong": {
+          "$value": "{text.strong}",
+          "$type": "color",
+          "$description": "Component heading color strong."
+        },
+        "muted": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component heading color muted."
+        },
+        "danger": {
+          "$value": "{text.danger}",
+          "$type": "color",
+          "$description": "Component heading color danger."
+        },
+        "success": {
+          "$value": "{text.success}",
+          "$type": "color",
+          "$description": "Component heading color success."
+        },
+        "warning": {
+          "$value": "{text.warning}",
+          "$type": "color",
+          "$description": "Component heading color warning."
+        },
+        "info": {
+          "$value": "{text.info}",
+          "$type": "color",
+          "$description": "Component heading color info."
+        }
+      }
+    }
+  }
+}

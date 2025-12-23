@@ -12,8 +12,8 @@ export class UikSeparator extends LitElement {
     }
 
     .separator {
-      border: none;
       background-color: oklch(var(--uik-separator-color));
+      border: none;
       border-radius: var(--uik-separator-radius);
     }
 

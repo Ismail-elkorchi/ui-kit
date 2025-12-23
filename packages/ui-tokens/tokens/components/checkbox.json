@@ -1,0 +1,16 @@
+{
+  "component": {
+    "checkbox": {
+      "accent": {
+        "$value": "{intent.primary.bg.default}",
+        "$type": "color",
+        "$description": "Component checkbox accent."
+      },
+      "size": {
+        "$value": "{size.icon.md}",
+        "$type": "dimension",
+        "$description": "Component checkbox size."
+      }
+    }
+  }
+}

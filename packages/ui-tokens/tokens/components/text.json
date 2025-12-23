@@ -1,0 +1,109 @@
+{
+  "component": {
+    "text": {
+      "size": {
+        "sm": {
+          "$value": "{typography.fontSize.2}",
+          "$type": "dimension",
+          "$description": "Component text size sm."
+        },
+        "md": {
+          "$value": "{typography.fontSize.3}",
+          "$type": "dimension",
+          "$description": "Component text size md."
+        },
+        "lg": {
+          "$value": "{typography.fontSize.4}",
+          "$type": "dimension",
+          "$description": "Component text size lg."
+        },
+        "xl": {
+          "$value": "{typography.fontSize.5}",
+          "$type": "dimension",
+          "$description": "Component text size xl."
+        }
+      },
+      "lineHeight": {
+        "sm": {
+          "$value": "{typography.lineHeight.3}",
+          "$type": "number",
+          "$description": "Component text line height sm."
+        },
+        "md": {
+          "$value": "{typography.lineHeight.4}",
+          "$type": "number",
+          "$description": "Component text line height md."
+        },
+        "lg": {
+          "$value": "{typography.lineHeight.4}",
+          "$type": "number",
+          "$description": "Component text line height lg."
+        },
+        "xl": {
+          "$value": "{typography.lineHeight.5}",
+          "$type": "number",
+          "$description": "Component text line height xl."
+        }
+      },
+      "weight": {
+        "regular": {
+          "$value": "{typography.fontWeight.regular}",
+          "$type": "fontWeight",
+          "$description": "Component text weight regular."
+        },
+        "medium": {
+          "$value": "{typography.fontWeight.medium}",
+          "$type": "fontWeight",
+          "$description": "Component text weight medium."
+        },
+        "semibold": {
+          "$value": "{typography.fontWeight.semibold}",
+          "$type": "fontWeight",
+          "$description": "Component text weight semibold."
+        },
+        "bold": {
+          "$value": "{typography.fontWeight.bold}",
+          "$type": "fontWeight",
+          "$description": "Component text weight bold."
+        }
+      },
+      "color": {
+        "default": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component text color default."
+        },
+        "muted": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component text color muted."
+        },
+        "strong": {
+          "$value": "{text.strong}",
+          "$type": "color",
+          "$description": "Component text color strong."
+        },
+        "danger": {
+          "$value": "{text.danger}",
+          "$type": "color",
+          "$description": "Component text color danger."
+        },
+        "success": {
+          "$value": "{text.success}",
+          "$type": "color",
+          "$description": "Component text color success."
+        },
+        "warning": {
+          "$value": "{text.warning}",
+          "$type": "color",
+          "$description": "Component text color warning."
+        },
+        "info": {
+          "$value": "{text.info}",
+          "$type": "color",
+          "$description": "Component text color info."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "component": {
+    "spinner": {
+      "size": {
+        "sm": {
+          "$value": "{size.icon.sm}",
+          "$type": "dimension",
+          "$description": "Component spinner size sm."
+        },
+        "md": {
+          "$value": "{size.icon.md}",
+          "$type": "dimension",
+          "$description": "Component spinner size md."
+        },
+        "lg": {
+          "$value": "{size.icon.lg}",
+          "$type": "dimension",
+          "$description": "Component spinner size lg."
+        }
+      },
+      "track": {
+        "$value": "{border.muted}",
+        "$type": "color",
+        "$description": "Component spinner track."
+      },
+      "indicator": {
+        "default": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component spinner indicator default."
+        },
+        "muted": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component spinner indicator muted."
+        },
+        "primary": {
+          "$value": "{intent.primary.bg.default}",
+          "$type": "color",
+          "$description": "Component spinner indicator primary."
+        },
+        "danger": {
+          "$value": "{text.danger}",
+          "$type": "color",
+          "$description": "Component spinner indicator danger."
+        },
+        "success": {
+          "$value": "{text.success}",
+          "$type": "color",
+          "$description": "Component spinner indicator success."
+        },
+        "warning": {
+          "$value": "{text.warning}",
+          "$type": "color",
+          "$description": "Component spinner indicator warning."
+        },
+        "info": {
+          "$value": "{text.info}",
+          "$type": "color",
+          "$description": "Component spinner indicator info."
+        }
+      }
+    }
+  }
+}

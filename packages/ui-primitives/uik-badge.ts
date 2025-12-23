@@ -24,9 +24,9 @@ export class UikBadge extends LitElement {
       line-height: var(--uik-component-badge-base-line-height);
       color: var(--uik-badge-fg);
       background-color: var(--uik-badge-bg);
+      border-color: var(--uik-badge-border-color);
       border-style: var(--uik-border-style-solid);
       border-width: var(--uik-component-badge-base-border-width);
-      border-color: var(--uik-badge-border-color);
       border-radius: var(--uik-component-badge-base-radius);
       box-shadow: var(--uik-badge-shadow);
       transition:

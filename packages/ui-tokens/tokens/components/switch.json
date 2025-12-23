@@ -1,0 +1,64 @@
+{
+  "component": {
+    "switch": {
+      "height": {
+        "$value": "{size.control.sm}",
+        "$type": "dimension",
+        "$description": "Component switch height."
+      },
+      "width": {
+        "$value": "{size.control.xl}",
+        "$type": "dimension",
+        "$description": "Component switch width."
+      },
+      "padding": {
+        "$value": "{space.1}",
+        "$type": "dimension",
+        "$description": "Component switch padding."
+      },
+      "thumb": {
+        "size": {
+          "$value": "{size.icon.sm}",
+          "$type": "dimension",
+          "$description": "Component switch thumb size."
+        },
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component switch thumb bg."
+        },
+        "shadow": {
+          "$value": "{shadow.1}",
+          "$type": "shadow",
+          "$description": "Component switch thumb shadow."
+        }
+      },
+      "track": {
+        "bg": {
+          "default": {
+            "$value": "{surface.muted}",
+            "$type": "color",
+            "$description": "Component switch track bg default."
+          },
+          "checked": {
+            "$value": "{intent.primary.bg.default}",
+            "$type": "color",
+            "$description": "Component switch track bg checked."
+          }
+        },
+        "border": {
+          "default": {
+            "$value": "{border.default}",
+            "$type": "color",
+            "$description": "Component switch track border default."
+          },
+          "checked": {
+            "$value": "{intent.primary.border.default}",
+            "$type": "color",
+            "$description": "Component switch track border checked."
+          }
+        }
+      }
+    }
+  }
+}

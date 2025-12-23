@@ -35,6 +35,16 @@
       "import": "./dist/register.js",
       "default": "./dist/register.js"
     },
+    "./uik-alert": {
+      "types": "./dist/uik-alert.d.ts",
+      "import": "./dist/uik-alert.js",
+      "default": "./dist/uik-alert.js"
+    },
+    "./uik-box": {
+      "types": "./dist/uik-box.d.ts",
+      "import": "./dist/uik-box.js",
+      "default": "./dist/uik-box.js"
+    },
     "./uik-button": {
       "types": "./dist/uik-button.d.ts",
       "import": "./dist/uik-button.js",
@@ -45,15 +55,105 @@
       "import": "./dist/uik-badge.js",
       "default": "./dist/uik-badge.js"
     },
+    "./uik-checkbox": {
+      "types": "./dist/uik-checkbox.d.ts",
+      "import": "./dist/uik-checkbox.js",
+      "default": "./dist/uik-checkbox.js"
+    },
+    "./uik-dialog": {
+      "types": "./dist/uik-dialog.d.ts",
+      "import": "./dist/uik-dialog.js",
+      "default": "./dist/uik-dialog.js"
+    },
+    "./uik-heading": {
+      "types": "./dist/uik-heading.d.ts",
+      "import": "./dist/uik-heading.js",
+      "default": "./dist/uik-heading.js"
+    },
+    "./uik-icon": {
+      "types": "./dist/uik-icon.d.ts",
+      "import": "./dist/uik-icon.js",
+      "default": "./dist/uik-icon.js"
+    },
     "./uik-input": {
       "types": "./dist/uik-input.d.ts",
       "import": "./dist/uik-input.js",
       "default": "./dist/uik-input.js"
     },
+    "./uik-link": {
+      "types": "./dist/uik-link.d.ts",
+      "import": "./dist/uik-link.js",
+      "default": "./dist/uik-link.js"
+    },
+    "./uik-popover": {
+      "types": "./dist/uik-popover.d.ts",
+      "import": "./dist/uik-popover.js",
+      "default": "./dist/uik-popover.js"
+    },
+    "./uik-progress": {
+      "types": "./dist/uik-progress.d.ts",
+      "import": "./dist/uik-progress.js",
+      "default": "./dist/uik-progress.js"
+    },
+    "./uik-radio": {
+      "types": "./dist/uik-radio.d.ts",
+      "import": "./dist/uik-radio.js",
+      "default": "./dist/uik-radio.js"
+    },
+    "./uik-radio-group": {
+      "types": "./dist/uik-radio-group.d.ts",
+      "import": "./dist/uik-radio-group.js",
+      "default": "./dist/uik-radio-group.js"
+    },
     "./uik-separator": {
       "types": "./dist/uik-separator.d.ts",
       "import": "./dist/uik-separator.js",
       "default": "./dist/uik-separator.js"
+    },
+    "./uik-select": {
+      "types": "./dist/uik-select.d.ts",
+      "import": "./dist/uik-select.js",
+      "default": "./dist/uik-select.js"
+    },
+    "./uik-spinner": {
+      "types": "./dist/uik-spinner.d.ts",
+      "import": "./dist/uik-spinner.js",
+      "default": "./dist/uik-spinner.js"
+    },
+    "./uik-stack": {
+      "types": "./dist/uik-stack.d.ts",
+      "import": "./dist/uik-stack.js",
+      "default": "./dist/uik-stack.js"
+    },
+    "./uik-surface": {
+      "types": "./dist/uik-surface.d.ts",
+      "import": "./dist/uik-surface.js",
+      "default": "./dist/uik-surface.js"
+    },
+    "./uik-switch": {
+      "types": "./dist/uik-switch.d.ts",
+      "import": "./dist/uik-switch.js",
+      "default": "./dist/uik-switch.js"
+    },
+    "./uik-text": {
+      "types": "./dist/uik-text.d.ts",
+      "import": "./dist/uik-text.js",
+      "default": "./dist/uik-text.js"
+    },
+    "./uik-textarea": {
+      "types": "./dist/uik-textarea.d.ts",
+      "import": "./dist/uik-textarea.js",
+      "default": "./dist/uik-textarea.js"
+    },
+    "./uik-tooltip": {
+      "types": "./dist/uik-tooltip.d.ts",
+      "import": "./dist/uik-tooltip.js",
+      "default": "./dist/uik-tooltip.js"
+    },
+    "./uik-visually-hidden": {
+      "types": "./dist/uik-visually-hidden.d.ts",
+      "import": "./dist/uik-visually-hidden.js",
+      "default": "./dist/uik-visually-hidden.js"
     }
   },
   "sideEffects": [
