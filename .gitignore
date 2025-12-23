@@ -21,3 +21,5 @@ debug-storybook.log
 .storybook/tailwind.css
 .storybook/tailwind.css.map
 package-lock.json
+packages/ui-primitives/WORKING-NOTES.md
+docs/tokens-primitives-audit.data.json
