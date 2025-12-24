@@ -35,10 +35,10 @@ export const styles = css`
   }
 
   input {
+    box-sizing: border-box;
     display: flex;
     width: 100%;
     height: var(--uik-component-input-base-height);
-    box-sizing: border-box;
     padding: var(--uik-component-input-base-padding-y) var(--uik-component-input-base-padding-x);
     font-size: var(--uik-component-input-base-font-size);
     font-weight: var(--uik-component-input-base-font-weight);

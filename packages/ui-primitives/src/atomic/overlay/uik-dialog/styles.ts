@@ -6,13 +6,12 @@ export const styles = css`
   }
 
   dialog {
+    box-sizing: border-box;
     width: 100%;
     max-width: var(--uik-layout-panel-width-md);
     padding: var(--uik-space-0);
     margin: auto;
-    box-sizing: border-box;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden auto;
     color: oklch(var(--uik-text-default));
     background-color: oklch(var(--uik-surface-card));
     border: none;

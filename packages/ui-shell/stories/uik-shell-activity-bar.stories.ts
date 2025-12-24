@@ -28,7 +28,19 @@ const meta: Meta<ActivityBarArgs> = {
   title: 'Shell/Activity Bar',
   component: 'uik-shell-activity-bar',
   tags: ['autodocs'],
-  parameters: {layout: 'centered'},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: [
+          'Props: items, activeId. Event: activity-bar-select.',
+          'Slots: footer.',
+          'Parts: activity-bar, item, item-indicator, item-button, item-icon, spacer, footer.',
+          'Custom properties: `--uik-component-shell-activity-bar-bg`, `--uik-component-shell-activity-bar-fg`, `--uik-component-shell-activity-bar-width`.',
+        ].join('\n'),
+      },
+    },
+  },
   args: {
     activeId: 'explorer',
   },
@@ -39,11 +51,19 @@ const meta: Meta<ActivityBarArgs> = {
     },
   },
   render: args => html`
-    <div style="height: 360px;">
-      <uik-shell-activity-bar
-        .items=${items}
-        .activeId=${args.activeId}
-        .footer=${html`<div class="pb-2 text-xs text-muted-foreground">v0.1</div>`}></uik-shell-activity-bar>
+    <div style="height: var(--uik-layout-panel-width-md);">
+      <uik-shell-activity-bar .items=${items} .activeId=${args.activeId}>
+        <div
+          slot="footer"
+          style="
+            padding-bottom: var(--uik-space-2);
+            font-size: var(--uik-typography-font-size-1);
+            line-height: var(--uik-typography-line-height-2);
+            color: oklch(var(--uik-text-muted));
+          ">
+          v0.1
+        </div>
+      </uik-shell-activity-bar>
     </div>
   `,
 };

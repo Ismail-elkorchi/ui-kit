@@ -1,5 +1,5 @@
-import './uik-shell-layout';
-import './uik-shell-activity-bar';
-import './uik-shell-sidebar';
-import './uik-shell-secondary-sidebar';
-import './uik-shell-status-bar';
+import './src/structures/uik-shell-layout';
+import './src/structures/uik-shell-activity-bar';
+import './src/structures/uik-shell-sidebar';
+import './src/structures/uik-shell-secondary-sidebar';
+import './src/structures/uik-shell-status-bar';

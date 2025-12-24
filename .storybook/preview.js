@@ -1,4 +1,4 @@
-import './tailwind.css';
+import {html} from 'lit';
 import '@ismail-elkorchi/ui-tokens/index.css';
 import '@ismail-elkorchi/ui-primitives/register';
 import '@ismail-elkorchi/ui-shell/register';
@@ -59,7 +59,12 @@ const preview = {
       const density = context.globals.density ?? 'comfortable';
       root.setAttribute('data-uik-theme', theme);
       root.setAttribute('data-uik-density', density);
-      return Story();
+      return html`<div
+        data-uik-story-root
+        tabindex="0"
+        style="display: block; min-height: var(--uik-space-0);">
+        ${Story()}
+      </div>`;
     },
   ],
 };

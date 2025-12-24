@@ -20,39 +20,101 @@ const meta: Meta<LayoutArgs> = {
   title: 'Shell/Layout',
   component: 'uik-shell-layout',
   tags: ['autodocs'],
-  parameters: {layout: 'fullscreen'},
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        component: [
+          'Props: isSecondarySidebarVisible.',
+          'Slots: activity-bar, primary-sidebar, main-content, secondary-sidebar, status-bar.',
+          'Parts: layout, row, activity-bar, primary-sidebar, main-content, secondary-sidebar, status-bar.',
+          'Custom properties: `--uik-surface-bg`, `--uik-text-default`.',
+        ].join('\n'),
+      },
+    },
+  },
   args: {
     isSecondarySidebarVisible: true,
   },
   render: args => {
     const activityBar = html`
-      <uik-shell-activity-bar .items=${activityItems} activeId="explorer"></uik-shell-activity-bar>
+      <uik-shell-activity-bar slot="activity-bar" .items=${activityItems} activeId="explorer">
+      </uik-shell-activity-bar>
     `;
 
     const primarySidebar = html`
-      <uik-shell-sidebar
-        heading="Explorer"
-        subtitle="Workspace"
-        .actions=${html`
-          <uik-button variant="ghost" size="icon" aria-label="Add">+</uik-button>
-        `}
-        .body=${html`
-          <div class="space-y-2">
-            <div class="text-sm">src</div>
-            <div class="text-sm text-muted-foreground">components</div>
-            <div class="text-sm text-muted-foreground">tokens</div>
+      <uik-shell-sidebar slot="primary-sidebar" heading="Explorer" subtitle="Workspace">
+        <uik-button slot="actions" variant="ghost" size="icon" aria-label="Add">+</uik-button>
+        <div style="display: flex; flex-direction: column; gap: var(--uik-space-2);">
+          <div style="font-size: var(--uik-typography-font-size-2);">src</div>
+          <div
+            style="
+              font-size: var(--uik-typography-font-size-2);
+              color: oklch(var(--uik-text-muted));
+            ">
+            components
           </div>
-        `}></uik-shell-sidebar>
+          <div
+            style="
+              font-size: var(--uik-typography-font-size-2);
+              color: oklch(var(--uik-text-muted));
+            ">
+            tokens
+          </div>
+        </div>
+      </uik-shell-sidebar>
     `;
 
     const mainContent = html`
-      <main class="flex-1 min-h-0 flex flex-col">
-        <div class="flex items-center justify-between px-4 h-10 border-b border-border">
-          <div class="text-sm font-medium">Editor</div>
-          <div class="text-xs text-muted-foreground">main.ts</div>
+      <main
+        slot="main-content"
+        style="
+          display: flex;
+          flex: 1 1 auto;
+          min-height: var(--uik-space-0);
+          flex-direction: column;
+        ">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-inline: var(--uik-space-4);
+            height: var(--uik-size-control-md);
+            border-bottom: var(--uik-border-width-1) solid oklch(var(--uik-border-default));
+          ">
+          <div
+            style="
+              font-size: var(--uik-typography-font-size-2);
+              font-weight: var(--uik-typography-font-weight-medium);
+            ">
+            Editor
+          </div>
+          <div
+            style="
+              font-size: var(--uik-typography-font-size-1);
+              line-height: var(--uik-typography-line-height-2);
+              color: oklch(var(--uik-text-muted));
+            ">
+            main.ts
+          </div>
         </div>
-        <div class="flex-1 overflow-auto p-4">
-          <div class="bg-card border border-border rounded-md p-4 text-sm text-muted-foreground">
+        <div
+          style="
+            flex: 1 1 auto;
+            min-height: var(--uik-space-0);
+            overflow: auto;
+            padding: var(--uik-space-4);
+          ">
+          <div
+            style="
+              background-color: oklch(var(--uik-surface-card));
+              border: var(--uik-border-width-1) solid oklch(var(--uik-border-default));
+              border-radius: var(--uik-radius-3);
+              padding: var(--uik-space-4);
+              font-size: var(--uik-typography-font-size-2);
+              color: oklch(var(--uik-text-muted));
+            ">
             Start editing to see live changes.
           </div>
         </div>
@@ -61,25 +123,51 @@ const meta: Meta<LayoutArgs> = {
 
     const secondarySidebar = html`
       <uik-shell-secondary-sidebar
-        .isOpen=${true}
-        heading="Assistant"
-        .body=${html`<p class="text-sm text-muted-foreground">Context-aware suggestions appear here.</p>`}
-        .footer=${html`<div class="text-xs text-muted-foreground">AI Ready</div>`}></uik-shell-secondary-sidebar>
+        slot="secondary-sidebar"
+        .isOpen=${args.isSecondarySidebarVisible}
+        heading="Assistant">
+        <p
+          style="
+            font-size: var(--uik-typography-font-size-2);
+            color: oklch(var(--uik-text-muted));
+          ">
+          Context-aware suggestions appear here.
+        </p>
+        <div
+          slot="footer"
+          style="
+            font-size: var(--uik-typography-font-size-1);
+            line-height: var(--uik-typography-line-height-2);
+            color: oklch(var(--uik-text-muted));
+          ">
+          AI Ready
+        </div>
+      </uik-shell-secondary-sidebar>
     `;
 
     const statusBar = html`
-      <uik-shell-status-bar message="Ready" tone="info" .meta=${'3 files selected'}></uik-shell-status-bar>
+      <uik-shell-status-bar slot="status-bar" message="Ready" tone="info" meta="3 files selected">
+        <span
+          slot="actions"
+          style="
+            font-size: var(--uik-typography-font-size-1);
+            line-height: var(--uik-typography-line-height-2);
+            color: oklch(var(--uik-text-muted));
+          ">
+          Main
+        </span>
+      </uik-shell-status-bar>
     `;
 
     return html`
-      <div style="height: 520px; border: 1px solid oklch(var(--uik-border-default));">
-        <uik-shell-layout
-          ?isSecondarySidebarVisible=${args.isSecondarySidebarVisible}
-          .activityBar=${activityBar}
-          .primarySidebar=${primarySidebar}
-          .mainContent=${mainContent}
-          .secondarySidebar=${secondarySidebar}
-          .statusBar=${statusBar}></uik-shell-layout>
+      <div
+        style="
+          height: var(--uik-layout-panel-width-lg);
+          border: var(--uik-border-width-1) solid oklch(var(--uik-border-default));
+        ">
+        <uik-shell-layout ?isSecondarySidebarVisible=${args.isSecondarySidebarVisible}>
+          ${activityBar} ${primarySidebar} ${mainContent} ${secondarySidebar} ${statusBar}
+        </uik-shell-layout>
       </div>
     `;
   },

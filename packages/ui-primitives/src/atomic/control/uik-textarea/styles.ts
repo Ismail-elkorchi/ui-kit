@@ -35,9 +35,9 @@ export const styles = css`
   }
 
   textarea {
+    box-sizing: border-box;
     width: 100%;
     min-height: var(--uik-component-textarea-base-min-height);
-    box-sizing: border-box;
     padding: var(--uik-component-textarea-base-padding-y) var(--uik-component-textarea-base-padding-x);
     font-family: var(--uik-typography-font-family-sans);
     font-size: var(--uik-component-textarea-base-font-size);

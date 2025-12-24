@@ -1,11 +1,11 @@
 # @ismail-elkorchi/ui-shell
 
-Tailwind-friendly shell components (activity bar, sidebars, status bar, and an optional frame layout) for Light DOM layouts. They render Tailwind utility classes, depend on `@ismail-elkorchi/ui-primitives` for controls, and stay framework-agnostic.
+Token-driven shell components (activity bar, sidebars, status bar, and an optional frame layout) for Light DOM composition. They depend on `@ismail-elkorchi/ui-primitives` for controls, expose slots + parts, and read all visual values from `@ismail-elkorchi/ui-tokens` CSS variables.
 
 ## Build & distribution
 
 - `npm run build` emits ESM + `.d.ts` modules into `dist/` for `index/register/router`, layout, activity bar, sidebar, secondary sidebar, and status bar.
-- Tailwind scanning helper ships as `dist/tailwind-source.css`.
+- Compiled output mirrors the layered source layout under `dist/src/**`.
 - Published output contains only `dist/` plus this README; TypeScript sources stay in the workspace.
 
 ## Layout layer
@@ -13,7 +13,8 @@ Tailwind-friendly shell components (activity bar, sidebars, status bar, and an o
 - Regions: left rail (`activity-bar`), primary sidebar, main content, optional secondary sidebar, and status bar.
 - `uik-shell-layout` stitches the regions together and tags them with `data-region` attributes to keep the layout contract visible in the DOM.
 - Shell components expose only UI surface/state; business logic should live in the host app.
-- **Contract**: Shell components use `ui-primitives` strictly via their public API (attributes/props). They do not rely on Tailwind utility injection to style the internals of primitives (no `class="text-red-500"` on a `uik-button`).
+- **Contract**: Shell components use `ui-primitives` strictly via their public API (attributes/props). Visual styling comes from `--uik-*` custom properties (no framework utility classes).
+- Layering source layout: `src/internal`, `src/structures`, `src/patterns` (see `LAYERING.md`).
 
 ## Using the components
 
@@ -33,43 +34,69 @@ const activityItems: UikShellActivityBarItem[] = [
 ];
 
 html`
-  <uik-shell-layout
-    .activityBar=${html`
-      <uik-shell-activity-bar
-        .items=${activityItems}
-        .activeId=${'explorer'}
-        @activity-bar-select=${(e: CustomEvent<{id: string}>) => console.log(e.detail.id)}>
-      </uik-shell-activity-bar>
-    `}
-    .primarySidebar=${html`
-      <uik-shell-sidebar
-        heading="Explorer"
-        .actions=${html`<uik-button variant="ghost" size="icon">…</uik-button>`}
-        .body=${html`<!-- put your file tree or filters here -->`}>
-      </uik-shell-sidebar>
-    `}
-    .mainContent=${html`<main class="flex-1">Your editor or subviews</main>`}
-    .secondarySidebar=${html`
-      <uik-shell-secondary-sidebar
-        .isOpen=${true}
-        heading="AI Assistant"
-        .body=${html`<p class="text-sm text-muted-foreground">Auxiliary tools live here.</p>`}
-        @secondary-sidebar-close=${() => console.log('close secondary')}></uik-shell-secondary-sidebar>
-    `}
-    .statusBar=${html`
-      <uik-shell-status-bar message="Ready" tone="info" .meta=${'3 files selected'}></uik-shell-status-bar>
-    `}
-    ?isSecondarySidebarVisible=${true}>
+  <uik-shell-layout ?isSecondarySidebarVisible=${true}>
+    <uik-shell-activity-bar
+      slot="activity-bar"
+      .items=${activityItems}
+      .activeId=${'explorer'}
+      @activity-bar-select=${(e: CustomEvent<{id: string}>) => console.log(e.detail.id)}>
+    </uik-shell-activity-bar>
+    <uik-shell-sidebar slot="primary-sidebar" heading="Explorer">
+      <uik-button slot="actions" variant="ghost" size="icon">…</uik-button>
+      <div style="font-size: var(--uik-typography-font-size-2);">
+        <!-- put your file tree or filters here -->
+      </div>
+    </uik-shell-sidebar>
+    <main slot="main-content" style="flex: 1 1 auto; min-height: var(--uik-space-0);">
+      Your editor or subviews
+    </main>
+    <uik-shell-secondary-sidebar
+      slot="secondary-sidebar"
+      .isOpen=${true}
+      heading="AI Assistant"
+      @secondary-sidebar-close=${() => console.log('close secondary')}>
+      <p
+        style="
+          font-size: var(--uik-typography-font-size-2);
+          color: oklch(var(--uik-text-muted));
+        ">
+        Auxiliary tools live here.
+      </p>
+    </uik-shell-secondary-sidebar>
+    <uik-shell-status-bar slot="status-bar" message="Ready" tone="info" meta="3 files selected"></uik-shell-status-bar>
   </uik-shell-layout>
 `;
 ```
 
 ### Component notes
 
-- `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-bar-select`.
-- `uik-shell-sidebar`: header/heading with `.actions`, `.body`, and optional `.footer`; `isBodyPadded`/`isBodyScrollable` toggle spacing and scroll.
-- `uik-shell-secondary-sidebar`: controlled via `.isOpen`; emits `secondary-sidebar-close` when the close button is clicked.
-- `uik-shell-status-bar`: `.message` + `.tone` colorizes the left side; `.meta` renders on the right (string becomes an outline badge).
+- `uik-shell-layout`: named slots `activity-bar`, `primary-sidebar`, `main-content`, `secondary-sidebar`, `status-bar`.
+- `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-bar-select`; optional `footer` slot.
+- `uik-shell-sidebar`: `slot="actions"` for header actions, default slot for body, optional `slot="footer"`; `isBodyPadded`/`isBodyScrollable` toggle spacing + scroll.
+- `uik-shell-secondary-sidebar`: controlled via `.isOpen`; default slot for body, optional `slot="footer"`; emits `secondary-sidebar-close` on close.
+- `uik-shell-status-bar`: `.message` + `.tone` colorize the left side; `meta` string (outline badge) or `slot="meta"` for custom content; optional `slot="actions"`.
+
+### Custom properties
+
+- Activity bar: `--uik-component-shell-activity-bar-bg`, `--uik-component-shell-activity-bar-fg`, `--uik-component-shell-activity-bar-width`.
+- Sidebar: `--uik-component-shell-sidebar-bg`, `--uik-component-shell-sidebar-fg`, `--uik-component-shell-sidebar-width`.
+- Secondary sidebar: `--uik-component-shell-secondary-sidebar-bg`, `--uik-component-shell-secondary-sidebar-width`.
+- Status bar: `--uik-component-shell-status-bar-bg`, `--uik-component-shell-status-bar-fg`, `--uik-component-shell-status-bar-height`.
+- Shared: `--uik-component-shell-divider-color`, `--uik-component-shell-scrollbar-track`, `--uik-component-shell-scrollbar-thumb`.
+
+## Tokens & theming
+
+Load tokens once and set theme/density attributes on a shared container (often `:root`):
+
+```css
+@import '@ismail-elkorchi/ui-tokens/index.css';
+```
+
+```html
+<html data-uik-theme="light" data-uik-density="comfortable">
+  ...
+</html>
+```
 
 ## Routing store
 
@@ -116,22 +143,3 @@ window.addEventListener(UIK_SHELL_NAVIGATION_EVENT, (event: Event) => {
 - Routes are simple `{id, label?, subviews?, defaultSubview?}` objects.
 - `navigate(view, subview?)` resolves subviews per route (keeping the last used subview for that route).
 - `subscribe` immediately fires with the current location and returns an unsubscribe function.
-
-## Tailwind v4 scanning
-
-The package ships Tailwind class strings in TypeScript. Add the source hint before importing Tailwind:
-
-```css
-@import '@ismail-elkorchi/ui-tokens/index.css';
-@import '@ismail-elkorchi/ui-shell/tailwind-source.css'; /* pulls in @source "./**/*.{ts,js}" */
-@source "./**/*.{ts,js,html}";
-@import 'tailwindcss';
-```
-
-Adjust the `@source` path to match the location of your entry CSS. Alternatively, add the line yourself:
-
-```css
-@source "../../node_modules/@ismail-elkorchi/ui-shell/**/*.{ts,js}";
-```
-
-Make sure these appear in the renderer entry CSS so Tailwind keeps the shell utilities during tree-shaking.

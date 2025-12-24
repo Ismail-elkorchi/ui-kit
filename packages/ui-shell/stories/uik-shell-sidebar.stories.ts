@@ -15,7 +15,19 @@ const meta: Meta<SidebarArgs> = {
   title: 'Shell/Sidebar',
   component: 'uik-shell-sidebar',
   tags: ['autodocs'],
-  parameters: {layout: 'centered'},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: [
+          'Props: heading, subtitle, isBodyPadded, isBodyScrollable.',
+          'Slots: actions, default, footer.',
+          'Parts: sidebar, header, header-content, heading, subtitle, actions, body-container, body, footer.',
+          'Custom properties: `--uik-component-shell-sidebar-bg`, `--uik-component-shell-sidebar-fg`, `--uik-component-shell-sidebar-width`, `--uik-component-shell-divider-color`, `--uik-component-shell-scrollbar-track`, `--uik-component-shell-scrollbar-thumb`.',
+        ].join('\n'),
+      },
+    },
+  },
   args: {
     heading: 'Explorer',
     subtitle: 'Workspace',
@@ -25,37 +37,62 @@ const meta: Meta<SidebarArgs> = {
   },
   render: args => {
     const actions = html`
-      <uik-button variant="ghost" size="icon" aria-label="Add">
+      <uik-button slot="actions" variant="ghost" size="icon" aria-label="Add">
         <span>+</span>
       </uik-button>
-      <uik-button variant="ghost" size="icon" aria-label="More">
+      <uik-button slot="actions" variant="ghost" size="icon" aria-label="More">
         <span>...</span>
       </uik-button>
     `;
 
     const body = html`
-      <div class="text-xs text-muted-foreground">Recent</div>
-      <div class="space-y-2">
-        <div class="text-sm">design-system</div>
-        <div class="text-sm text-muted-foreground">marketing-site</div>
-        <div class="text-sm text-muted-foreground">platform-app</div>
+      <div
+        style="
+          font-size: var(--uik-typography-font-size-1);
+          line-height: var(--uik-typography-line-height-2);
+          color: oklch(var(--uik-text-muted));
+        ">
+        Recent
+      </div>
+      <div style="display: flex; flex-direction: column; gap: var(--uik-space-2);">
+        <div style="font-size: var(--uik-typography-font-size-2);">design-system</div>
+        <div
+          style="
+            font-size: var(--uik-typography-font-size-2);
+            color: oklch(var(--uik-text-muted));
+          ">
+          marketing-site
+        </div>
+        <div
+          style="
+            font-size: var(--uik-typography-font-size-2);
+            color: oklch(var(--uik-text-muted));
+          ">
+          platform-app
+        </div>
       </div>
     `;
 
     const footer = args.isFooterVisible
-      ? html`<div class="text-xs text-muted-foreground">3 workspaces</div>`
+      ? html`<div
+          slot="footer"
+          style="
+            font-size: var(--uik-typography-font-size-1);
+            line-height: var(--uik-typography-line-height-2);
+            color: oklch(var(--uik-text-muted));
+          ">
+          3 workspaces
+        </div>`
       : undefined;
 
     return html`
-      <div style="height: 360px;">
+      <div style="height: var(--uik-layout-panel-width-md);">
         <uik-shell-sidebar
           heading=${args.heading}
           subtitle=${args.subtitle}
           ?isBodyPadded=${args.isBodyPadded}
           ?isBodyScrollable=${args.isBodyScrollable}
-          .actions=${actions}
-          .body=${body}
-          .footer=${footer}></uik-shell-sidebar>
+          >${actions}${body}${footer}</uik-shell-sidebar>
       </div>
     `;
   },

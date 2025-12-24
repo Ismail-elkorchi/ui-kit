@@ -1,7 +1,7 @@
 import {describe, expect, it, vi} from 'vitest';
 
-import type {UikShellNavigationDetail} from '../router';
-import {UIK_SHELL_NAVIGATION_EVENT, UikShellRouter} from '../router';
+import type {UikShellNavigationDetail} from '../index';
+import {UIK_SHELL_NAVIGATION_EVENT, UikShellRouter} from '../index';
 
 class TestCustomEvent<T> extends Event {
   readonly detail: T;

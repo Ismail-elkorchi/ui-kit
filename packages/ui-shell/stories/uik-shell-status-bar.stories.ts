@@ -12,7 +12,19 @@ const meta: Meta<StatusBarArgs> = {
   title: 'Shell/Status Bar',
   component: 'uik-shell-status-bar',
   tags: ['autodocs'],
-  parameters: {layout: 'centered'},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: [
+          'Props: message, tone, meta.',
+          'Slots: actions, meta.',
+          'Parts: status-bar, status-main, message, actions, meta.',
+          'Custom properties: `--uik-component-shell-status-bar-bg`, `--uik-component-shell-status-bar-fg`, `--uik-component-shell-status-bar-height`, `--uik-component-shell-divider-color`.',
+        ].join('\n'),
+      },
+    },
+  },
   args: {
     message: 'Ready',
     tone: 'info',
@@ -25,12 +37,18 @@ const meta: Meta<StatusBarArgs> = {
     },
   },
   render: args => html`
-    <div style="width: min(720px, 95vw);">
-      <uik-shell-status-bar
-        message=${args.message}
-        tone=${args.tone}
-        .meta=${args.meta}
-        .actions=${html`<span class="text-xs text-muted-foreground">Main</span>`}></uik-shell-status-bar>
+    <div style="width: min(100%, var(--uik-layout-panel-width-lg));">
+      <uik-shell-status-bar message=${args.message} tone=${args.tone} meta=${args.meta}>
+        <span
+          slot="actions"
+          style="
+            font-size: var(--uik-typography-font-size-1);
+            line-height: var(--uik-typography-line-height-2);
+            color: oklch(var(--uik-text-muted));
+          ">
+          Main
+        </span>
+      </uik-shell-status-bar>
     </div>
   `,
 };

@@ -1,11 +1,11 @@
 {
   "name": "@ismail-elkorchi/ui-shell",
   "version": "0.1.0",
-  "description": "Light DOM shell components for Tailwind-friendly layouts built with Lit.",
+  "description": "Token-driven Light DOM shell components for application layouts built with Lit.",
   "author": "Ismail El Korchi",
   "license": "Apache-2.0",
   "type": "module",
-  "keywords": ["lit", "web-components", "layout", "shell", "tailwind", "ui"],
+  "keywords": ["lit", "web-components", "layout", "shell", "ui"],
   "engines": {"node": ">=20.11"},
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -28,36 +28,35 @@
       "default": "./dist/register.js"
     },
     "./layout": {
-      "types": "./dist/uik-shell-layout.d.ts",
-      "import": "./dist/uik-shell-layout.js",
-      "default": "./dist/uik-shell-layout.js"
+      "types": "./dist/src/structures/uik-shell-layout.d.ts",
+      "import": "./dist/src/structures/uik-shell-layout.js",
+      "default": "./dist/src/structures/uik-shell-layout.js"
     },
     "./activity-bar": {
-      "types": "./dist/uik-shell-activity-bar.d.ts",
-      "import": "./dist/uik-shell-activity-bar.js",
-      "default": "./dist/uik-shell-activity-bar.js"
+      "types": "./dist/src/structures/uik-shell-activity-bar.d.ts",
+      "import": "./dist/src/structures/uik-shell-activity-bar.js",
+      "default": "./dist/src/structures/uik-shell-activity-bar.js"
     },
     "./sidebar": {
-      "types": "./dist/uik-shell-sidebar.d.ts",
-      "import": "./dist/uik-shell-sidebar.js",
-      "default": "./dist/uik-shell-sidebar.js"
+      "types": "./dist/src/structures/uik-shell-sidebar.d.ts",
+      "import": "./dist/src/structures/uik-shell-sidebar.js",
+      "default": "./dist/src/structures/uik-shell-sidebar.js"
     },
     "./secondary-sidebar": {
-      "types": "./dist/uik-shell-secondary-sidebar.d.ts",
-      "import": "./dist/uik-shell-secondary-sidebar.js",
-      "default": "./dist/uik-shell-secondary-sidebar.js"
+      "types": "./dist/src/structures/uik-shell-secondary-sidebar.d.ts",
+      "import": "./dist/src/structures/uik-shell-secondary-sidebar.js",
+      "default": "./dist/src/structures/uik-shell-secondary-sidebar.js"
     },
     "./status-bar": {
-      "types": "./dist/uik-shell-status-bar.d.ts",
-      "import": "./dist/uik-shell-status-bar.js",
-      "default": "./dist/uik-shell-status-bar.js"
+      "types": "./dist/src/structures/uik-shell-status-bar.d.ts",
+      "import": "./dist/src/structures/uik-shell-status-bar.js",
+      "default": "./dist/src/structures/uik-shell-status-bar.js"
     },
     "./router": {
-      "types": "./dist/router.d.ts",
-      "import": "./dist/router.js",
-      "default": "./dist/router.js"
-    },
-    "./tailwind-source.css": "./dist/tailwind-source.css"
+      "types": "./dist/src/internal/router.d.ts",
+      "import": "./dist/src/internal/router.js",
+      "default": "./dist/src/internal/router.js"
+    }
   },
   "sideEffects": [
     "./dist/**/*.js",
@@ -68,13 +67,14 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.build.json && npm run cem && node -e \"const fs = require('fs'); fs.mkdirSync('dist', {recursive: true}); fs.copyFileSync('tailwind-source.css', 'dist/tailwind-source.css');\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json && npm run cem",
     "clean": "node -e \"const fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true}); fs.rmSync('.tsbuildinfo', {force: true});\"",
     "cem": "cem analyze --config ./custom-elements-manifest.config.cjs --litelement",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "eslint . --max-warnings=0 && npm run check:layering",
     "test": "npm run build && vitest --run --project node --dir .",
     "typecheck": "tsc -p tsconfig.build.json --noEmit",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "check:layering": "node tools/check-layering.mjs"
   },
   "repository": {
     "type": "git",

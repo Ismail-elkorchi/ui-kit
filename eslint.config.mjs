@@ -178,10 +178,56 @@ export default defineConfig([
           allow: [
             'lit/decorators.js',
             'lit/directives/if-defined.js',
+            'lit/directives/style-map.js',
             'vitest/browser',
             '@ismail-elkorchi/ui-primitives/*',
             '@ismail-elkorchi/ui-shell/*',
             '@ismail-elkorchi/ui-tokens/*',
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/ui-shell/index.ts', 'packages/ui-shell/register.ts'],
+    rules: {
+      'import/no-internal-modules': [
+        'error',
+        {
+          allow: ['src/**', './src/**', '../src/**'],
+        },
+      ],
+    },
+  },
+  {
+    files: [
+      'src/**/*.ts',
+      'src/**/*.tsx',
+      'src/**/*.mts',
+      'src/**/*.cts',
+      'packages/ui-shell/src/**/*.ts',
+      'packages/ui-shell/src/**/*.tsx',
+      'packages/ui-shell/src/**/*.mts',
+      'packages/ui-shell/src/**/*.cts',
+    ],
+    rules: {
+      'import/no-internal-modules': [
+        'error',
+        {
+          allow: [
+            'lit/decorators.js',
+            'lit/directives/if-defined.js',
+            'lit/directives/style-map.js',
+            'vitest/browser',
+            '@ismail-elkorchi/ui-primitives/*',
+            '@ismail-elkorchi/ui-shell/*',
+            '@ismail-elkorchi/ui-tokens/*',
+            'src/**',
+            'internal/**',
+            'structures/**',
+            'patterns/**',
+            './**',
+            '../**',
           ],
         },
       ],
