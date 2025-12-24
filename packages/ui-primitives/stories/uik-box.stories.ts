@@ -21,10 +21,7 @@ const meta: Meta<BoxArgs> = {
     inline: false,
   },
   render: args => html`
-    <uik-box
-      padding=${args.padding}
-      ?inline=${args.inline}
-      style="--uik-component-box-bg: var(--uik-surface-muted); --uik-component-box-radius: var(--uik-radius-3);">
+    <uik-box padding=${args.padding} ?inline=${args.inline}>
       <uik-text size="md">Token-backed box content</uik-text>
     </uik-box>
   `,

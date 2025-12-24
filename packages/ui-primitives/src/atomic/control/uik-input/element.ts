@@ -49,7 +49,7 @@ export class UikInput extends LitElement {
       this.syncFormValue();
     }
 
-    if (changed.has('required') || changed.has('type') || changed.has('invalid')) {
+    if (changed.has('required') || changed.has('type') || changed.has('invalid') || changed.has('value')) {
       this.syncValidity();
     }
   }
@@ -89,7 +89,9 @@ export class UikInput extends LitElement {
   }
 
   private hasSlotContent(name: SlotName): boolean {
-    const elements = Array.from(this.querySelectorAll(`[slot="${name}"]`));
+    const elements = Array.from(this.children).filter(
+      element => element.getAttribute('slot') === name,
+    );
     if (elements.length === 0) return false;
     return elements.some(element => {
       const text = element.textContent;

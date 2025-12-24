@@ -124,6 +124,7 @@ export class UikRadio extends LitElement {
     this.checked = input.checked;
     this.syncFormValue();
     this.syncValidity();
+    this.dispatchEvent(new Event('change', {bubbles: true, composed: true}));
   };
 
   override focus(options?: FocusOptions) {

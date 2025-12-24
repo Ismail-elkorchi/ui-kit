@@ -50,17 +50,15 @@ const meta: Meta<ButtonArgs> = {
     },
   },
   render: ({label, ...args}) => html`
-    <div style="display: inline-flex; gap: var(--uik-space-3); align-items: center; padding: var(--uik-space-4);">
-      <uik-button
-        variant=${args.variant}
-        size=${args.size}
-        type=${args.type}
-        ?disabled=${args.disabled}
-        ?active=${args.active}
-        ?muted=${args.muted}>
-        ${label}
-      </uik-button>
-    </div>
+    <uik-button
+      variant=${args.variant}
+      size=${args.size}
+      type=${args.type}
+      ?disabled=${args.disabled}
+      ?active=${args.active}
+      ?muted=${args.muted}>
+      ${label}
+    </uik-button>
   `,
 };
 
@@ -88,17 +86,15 @@ export const IconButton: Story = {
   play: playA11y,
   args: {label: '★', size: 'icon', variant: 'secondary', type: 'button'},
   render: ({label, ...args}) => html`
-    <div style="display: inline-flex; gap: var(--uik-space-3); align-items: center; padding: var(--uik-space-4);">
-      <uik-button
-        variant=${args.variant}
-        size=${args.size}
-        type=${args.type}
-        aria-label="Favorite"
-        ?disabled=${args.disabled}
-        ?active=${args.active}
-        ?muted=${args.muted}>
-        ${label}
-      </uik-button>
-    </div>
+    <uik-button
+      variant=${args.variant}
+      size=${args.size}
+      type=${args.type}
+      aria-label="Favorite"
+      ?disabled=${args.disabled}
+      ?active=${args.active}
+      ?muted=${args.muted}>
+      ${label}
+    </uik-button>
   `,
 };

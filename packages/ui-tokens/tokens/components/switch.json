@@ -12,13 +12,13 @@
         "$description": "Component switch width."
       },
       "padding": {
-        "$value": "{space.1}",
+        "$value": "{space.2}",
         "$type": "dimension",
         "$description": "Component switch padding."
       },
       "thumb": {
         "size": {
-          "$value": "{size.icon.sm}",
+          "$value": "{size.icon.md}",
           "$type": "dimension",
           "$description": "Component switch thumb size."
         },

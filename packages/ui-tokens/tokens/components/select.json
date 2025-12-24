@@ -35,7 +35,7 @@
           "$description": "Component select base padding X."
         },
         "paddingY": {
-          "$value": "{layout.control.paddingY.3}",
+          "$value": "{layout.control.paddingY.2}",
           "$type": "dimension",
           "$description": "Component select base padding Y."
         },

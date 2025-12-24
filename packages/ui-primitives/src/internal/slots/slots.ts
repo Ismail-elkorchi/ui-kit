@@ -1,5 +1,7 @@
 export const hasSlotContent = (host: Element, name: string) => {
-  const elements = Array.from(host.querySelectorAll(`[slot="${name}"]`));
+  const elements = Array.from(host.children).filter(
+    element => element.getAttribute('slot') === name,
+  );
   if (elements.length === 0) return false;
   return elements.some(element => {
     const text = element.textContent;

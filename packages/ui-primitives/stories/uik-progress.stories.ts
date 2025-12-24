@@ -23,13 +23,11 @@ const meta: Meta<ProgressArgs> = {
     indeterminate: false,
   },
   render: args => html`
-    <div style="width: min(var(--uik-layout-panel-width-md), 80vw);">
-      <uik-progress
-        .value=${args.value}
-        .max=${args.max}
-        ?indeterminate=${args.indeterminate}
-        aria-label="Upload progress"></uik-progress>
-    </div>
+    <uik-progress
+      .value=${args.value}
+      .max=${args.max}
+      ?indeterminate=${args.indeterminate}
+      aria-label="Upload progress"></uik-progress>
   `,
 };
 

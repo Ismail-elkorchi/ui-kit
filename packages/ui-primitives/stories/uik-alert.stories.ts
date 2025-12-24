@@ -19,7 +19,7 @@ const meta: Meta<AlertArgs> = {
     variant: 'neutral',
   },
   render: args => html`
-    <uik-alert variant=${args.variant} style="max-width: var(--uik-layout-panel-width-md);">
+    <uik-alert variant=${args.variant}>
       <span slot="title">Heads up</span>
       This is an alert message that uses intent tokens.
     </uik-alert>

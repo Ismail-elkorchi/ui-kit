@@ -39,18 +39,16 @@ const meta: Meta<TextareaArgs> = {
     error: '',
   },
   render: args => html`
-    <div style="padding: var(--uik-space-4); width: min(var(--uik-layout-panel-width-md), 90vw);">
-      <uik-textarea
-        placeholder=${args.placeholder}
-        .value=${args.value}
-        ?disabled=${args.disabled}
-        ?required=${args.required}
-        ?invalid=${args.invalid}>
-        ${args.label ? html`<span slot="label">${args.label}</span>` : nothing}
-        ${args.hint ? html`<span slot="hint">${args.hint}</span>` : nothing}
-        ${args.error ? html`<span slot="error">${args.error}</span>` : nothing}
-      </uik-textarea>
-    </div>
+    <uik-textarea
+      placeholder=${args.placeholder}
+      .value=${args.value}
+      ?disabled=${args.disabled}
+      ?required=${args.required}
+      ?invalid=${args.invalid}>
+      ${args.label ? html`<span slot="label">${args.label}</span>` : nothing}
+      ${args.hint ? html`<span slot="hint">${args.hint}</span>` : nothing}
+      ${args.error ? html`<span slot="error">${args.error}</span>` : nothing}
+    </uik-textarea>
   `,
 };
 

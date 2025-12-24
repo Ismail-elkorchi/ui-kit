@@ -33,7 +33,6 @@ export class UikTooltip extends LitElement {
 
   private readonly panelRole = 'tooltip';
   private readonly openOn: 'hover' | 'click' = 'hover';
-  private readonly defaultPopoverType: 'auto' | 'manual' | 'hint' = 'hint';
 
   private get panelElement(): HTMLElement | null {
     return this.renderRoot.querySelector('.panel');
@@ -41,6 +40,10 @@ export class UikTooltip extends LitElement {
 
   private get popoverSupported(): boolean {
     return Object.hasOwn(HTMLElement.prototype, 'popover');
+  }
+
+  private get usesNativePopover(): boolean {
+    return this.popoverSupported && this.popover !== '';
   }
 
   override firstUpdated() {
@@ -70,7 +73,7 @@ export class UikTooltip extends LitElement {
     const panel = this.panelElement;
     if (!panel) return;
 
-    if (this.popoverSupported) {
+    if (this.usesNativePopover) {
       const popoverElement = panel as HTMLElement & {
         showPopover: () => void;
         hidePopover: () => void;
@@ -180,8 +183,7 @@ export class UikTooltip extends LitElement {
   }
 
   override render() {
-    const popoverValue = this.popover || this.defaultPopoverType;
-    const shouldSetPopover = this.popoverSupported ? popoverValue : undefined;
+    const shouldSetPopover = this.usesNativePopover ? this.popover : undefined;
     const placement = resolvePlacement(this.placement);
 
     return html`

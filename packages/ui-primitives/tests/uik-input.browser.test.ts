@@ -60,6 +60,76 @@ describe('uik-input', () => {
     expect(input.value).toBe('hello');
   });
 
+  it('syncs value on change and form callbacks', async () => {
+    const input = document.createElement('uik-input') as UikInput;
+    input.value = 'start';
+    document.body.append(input);
+
+    await input.updateComplete;
+
+    const control = input.shadowRoot?.querySelector('input');
+    if (!control) throw new Error('Expected internal input.');
+
+    control.value = 'updated';
+    control.dispatchEvent(new Event('change', {bubbles: true}));
+    await input.updateComplete;
+    expect(input.value).toBe('updated');
+
+    input.formStateRestoreCallback('restored');
+    expect(input.value).toBe('restored');
+
+    input.formStateRestoreCallback(new FormData());
+
+    input.formResetCallback();
+    expect(input.value).toBe('');
+
+    input.formDisabledCallback(true);
+    expect(input.disabled).toBe(true);
+  });
+
+  it('treats nested label elements as slot content', async () => {
+    const input = document.createElement('uik-input') as UikInput;
+    input.setAttribute('aria-label', 'Search');
+    input.setAttribute('aria-labelledby', 'external');
+    input.innerHTML = '<span slot="label"><strong></strong></span>';
+    document.body.append(input);
+
+    await input.updateComplete;
+
+    const label = input.shadowRoot?.querySelector('label');
+    const control = input.shadowRoot?.querySelector('input');
+    expect(label?.hasAttribute('hidden')).toBe(false);
+    expect(control?.getAttribute('aria-label')).toBeNull();
+    expect(control?.getAttribute('aria-labelledby')).toBeNull();
+  });
+
+  it('marks required inputs as invalid when empty', async () => {
+    const form = document.createElement('form');
+    const input = document.createElement('uik-input') as UikInput;
+    input.name = 'email';
+    input.required = true;
+    form.append(input);
+    document.body.append(form);
+
+    await input.updateComplete;
+    expect(form.checkValidity()).toBe(false);
+
+    input.value = 'hello@uik.dev';
+    await input.updateComplete;
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('ignores validity sync when the internal input is missing', async () => {
+    const input = document.createElement('uik-input') as UikInput;
+    document.body.append(input);
+
+    await input.updateComplete;
+    input.shadowRoot?.querySelector('input')?.remove();
+
+    (input as unknown as {syncValidity: () => void}).syncValidity();
+    expect(true).toBe(true);
+  });
+
   it('participates in form submission via ElementInternals', async () => {
     const form = document.createElement('form');
     const input = document.createElement('uik-input') as UikInput;

@@ -31,11 +31,7 @@ const meta: Meta<BadgeArgs> = {
       control: {type: 'select'},
     },
   },
-  render: ({label, ...args}) => html`
-    <div style="display: inline-flex; gap: var(--uik-space-3); align-items: center; padding: var(--uik-space-4);">
-      <uik-badge variant=${args.variant}>${label}</uik-badge>
-    </div>
-  `,
+  render: ({label, ...args}) => html`<uik-badge variant=${args.variant}>${label}</uik-badge>`,
 };
 
 export default meta;

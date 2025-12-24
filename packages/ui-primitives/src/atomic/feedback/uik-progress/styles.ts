@@ -3,6 +3,7 @@ import {css} from 'lit';
 export const styles = css`
   :host {
     display: block;
+    min-width: var(--uik-component-progress-min-width);
   }
 
   progress {

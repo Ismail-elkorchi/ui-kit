@@ -162,7 +162,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Slots**: none.
 - **Parts**: `base`.
 - **A11y**: forwards `aria-label`/`aria-labelledby` to the internal `<progress>`.
-- **Custom properties**: `--uik-component-progress-track-bg`, `--uik-component-progress-bar-bg`, `--uik-component-progress-height`, `--uik-component-progress-radius`.
+- **Custom properties**: `--uik-component-progress-track-bg`, `--uik-component-progress-bar-bg`, `--uik-component-progress-height`, `--uik-component-progress-min-width`, `--uik-component-progress-radius`.
 
 ### `<uik-radio>`
 

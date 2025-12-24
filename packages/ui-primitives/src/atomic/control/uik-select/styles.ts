@@ -37,6 +37,7 @@ export const styles = css`
   select {
     width: 100%;
     height: var(--uik-size-control-md);
+    box-sizing: border-box;
     padding: var(--uik-component-select-base-padding-y) var(--uik-component-select-base-padding-x);
     font-family: var(--uik-typography-font-family-sans);
     font-size: var(--uik-component-select-base-font-size);

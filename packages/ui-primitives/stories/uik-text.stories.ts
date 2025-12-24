@@ -32,8 +32,7 @@ const meta: Meta<TextArgs> = {
       size=${args.size}
       weight=${args.weight}
       tone=${args.tone}
-      ?truncate=${args.truncate}
-      style="max-width: var(--uik-layout-panel-width-sm);">
+      ?truncate=${args.truncate}>
       Typography token sample for the UI primitives.
     </uik-text>
   `,

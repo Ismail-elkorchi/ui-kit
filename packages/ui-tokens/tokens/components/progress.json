@@ -20,6 +20,11 @@
         "$type": "dimension",
         "$description": "Component progress height."
       },
+      "minWidth": {
+        "$value": "{size.control.xl}",
+        "$type": "dimension",
+        "$description": "Component progress minimum width."
+      },
       "radius": {
         "$value": "{radius.full}",
         "$type": "dimension",

@@ -36,7 +36,6 @@ export class UikPopover extends LitElement {
 
   protected readonly panelRole?: string;
   protected readonly openOn: 'click' | 'hover' = 'click';
-  protected readonly defaultPopoverType: 'auto' | 'manual' | 'hint' = 'auto';
 
   protected onTriggerSlotChange() {
     // intended for subclasses
@@ -48,6 +47,10 @@ export class UikPopover extends LitElement {
 
   private get popoverSupported(): boolean {
     return Object.hasOwn(HTMLElement.prototype, 'popover');
+  }
+
+  private get usesNativePopover(): boolean {
+    return this.popoverSupported && this.popover !== '';
   }
 
   override firstUpdated() {
@@ -78,7 +81,7 @@ export class UikPopover extends LitElement {
     const panel = this.panelElement;
     if (!panel) return;
 
-    if (this.popoverSupported) {
+    if (this.usesNativePopover) {
       const popoverElement = panel as HTMLElement & {
         showPopover: () => void;
         hidePopover: () => void;
@@ -171,7 +174,7 @@ export class UikPopover extends LitElement {
   };
 
   private syncDismissListeners() {
-    const shouldDismissOnOutsideClick = this.open && this.openOn === 'click' && !this.popoverSupported;
+    const shouldDismissOnOutsideClick = this.open && this.openOn === 'click' && !this.usesNativePopover;
     if (shouldDismissOnOutsideClick) {
       this.outsideDismiss.connect();
     } else {
@@ -185,8 +188,7 @@ export class UikPopover extends LitElement {
   }
 
   override render() {
-    const popoverValue = this.popover || this.defaultPopoverType;
-    const shouldSetPopover = this.popoverSupported ? popoverValue : undefined;
+    const shouldSetPopover = this.usesNativePopover ? this.popover : undefined;
     const placement = resolvePlacement(this.placement);
 
     return html`

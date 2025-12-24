@@ -28,6 +28,7 @@ export class UikRadioGroup extends LitElement {
   private readonly hintId = `${this.controlId}-hint`;
   private readonly errorId = `${this.controlId}-error`;
   private defaultValue = '';
+  private hasResolvedInitialValue = false;
 
   static override readonly styles = styles;
 
@@ -37,6 +38,16 @@ export class UikRadioGroup extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
+    if (!this.hasResolvedInitialValue && this.value === '') {
+      const radios = this.getRadios();
+      if (radios.length > 0) {
+        const checkedRadio = radios.find(radio => radio.checked);
+        if (checkedRadio) {
+          this.value = checkedRadio.value;
+        }
+        this.hasResolvedInitialValue = true;
+      }
+    }
     this.defaultValue = this.value;
   }
 
@@ -86,21 +97,13 @@ export class UikRadioGroup extends LitElement {
     const radios = this.getRadios();
     if (radios.length === 0) return;
 
-    let selected = this.value;
+    const selected = this.value;
 
     radios.forEach(radio => {
       radio.name = this.name;
       radio.groupDisabled = this.disabled;
-      if (selected) {
-        radio.checked = radio.value === selected;
-      } else if (radio.checked) {
-        selected = radio.value;
-      }
+      radio.checked = selected !== '' && radio.value === selected;
     });
-
-    if (selected && selected !== this.value) {
-      this.value = selected;
-    }
 
     const enabledRadios = radios.filter(radio => !radio.disabled && !radio.groupDisabled);
     if (enabledRadios.length === 0) return;
@@ -142,6 +145,13 @@ export class UikRadioGroup extends LitElement {
     if (slot.name === 'error') {
       this.syncValidity();
     } else {
+      if (!this.hasResolvedInitialValue && this.value === '') {
+        const checkedRadio = this.getRadios().find(radio => radio.checked);
+        if (checkedRadio) {
+          this.value = checkedRadio.value;
+        }
+        this.hasResolvedInitialValue = true;
+      }
       this.syncRadios();
     }
     this.requestUpdate();

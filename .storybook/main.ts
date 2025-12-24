@@ -11,6 +11,7 @@ const config = {
   staticDirs: ['../packages/ui-tokens/dist'],
   addons: [
     getAbsolutePath('@storybook/addon-docs'),
+    getAbsolutePath('@storybook/addon-a11y'),
     getAbsolutePath('@storybook/addon-vitest'),
   ],
   framework: {

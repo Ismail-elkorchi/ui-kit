@@ -52,7 +52,7 @@ export class UikTextarea extends LitElement {
       this.syncFormValue();
     }
 
-    if (changed.has('required') || changed.has('invalid')) {
+    if (changed.has('required') || changed.has('invalid') || changed.has('value')) {
       this.syncValidity();
     }
   }

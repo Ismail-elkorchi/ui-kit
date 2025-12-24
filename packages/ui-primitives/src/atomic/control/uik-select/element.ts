@@ -26,6 +26,7 @@ export class UikSelect extends LitElement {
   private readonly hintId = `${this.controlId}-hint`;
   private readonly errorId = `${this.controlId}-error`;
   private defaultValue = '';
+  private hasInitializedDefault = false;
 
   static override readonly styles = styles;
 
@@ -33,23 +34,60 @@ export class UikSelect extends LitElement {
     return this.renderRoot.querySelector('select');
   }
 
+  private get optionsSlot(): HTMLSlotElement | null {
+    return this.renderRoot.querySelector('slot[data-options]');
+  }
+
+  private syncOptions() {
+    const select = this.selectElement;
+    if (!select) return;
+    const slot = this.optionsSlot;
+    const assigned = slot?.assignedElements({flatten: true}) ?? [];
+    const options = assigned.filter(
+      element => element instanceof HTMLOptionElement || element instanceof HTMLOptGroupElement,
+    );
+    const clones = options.map(option => option.cloneNode(true));
+    select.replaceChildren(...clones);
+    if (!this.hasInitializedDefault && this.value === '' && select.value) {
+      this.value = select.value;
+      this.defaultValue = this.value;
+      this.hasInitializedDefault = true;
+    }
+    this.syncControlValue();
+    this.syncValidity();
+  }
+
+  private syncControlValue() {
+    const select = this.selectElement;
+    if (!select) return;
+    select.value = this.value;
+  }
+
   override connectedCallback() {
     super.connectedCallback();
+    const firstOption = this.querySelector('option');
+    if (this.value === '' && firstOption) {
+      this.value = firstOption.value;
+      this.defaultValue = this.value;
+      this.hasInitializedDefault = true;
+      return;
+    }
     this.defaultValue = this.value;
+    this.hasInitializedDefault = this.value !== '' || Boolean(firstOption);
   }
 
   override firstUpdated() {
-    this.defaultValue = this.value;
+    this.syncOptions();
     this.syncFormValue();
-    this.syncValidity();
   }
 
   override updated(changed: Map<string, unknown>) {
     if (changed.has('value') || changed.has('disabled')) {
       this.syncFormValue();
+      this.syncControlValue();
     }
 
-    if (changed.has('required') || changed.has('invalid')) {
+    if (changed.has('required') || changed.has('invalid') || changed.has('value')) {
       this.syncValidity();
     }
   }
@@ -104,6 +142,10 @@ export class UikSelect extends LitElement {
     this.requestUpdate();
   };
 
+  private onOptionsSlotChange = () => {
+    this.syncOptions();
+  };
+
   private onChange = (event: Event) => {
     const select = event.target as HTMLSelectElement;
     this.value = select.value;
@@ -142,9 +184,10 @@ export class UikSelect extends LitElement {
             aria-describedby=${ifDefined(describedBy)}
             aria-label=${ifDefined(ariaLabel)}
             aria-labelledby=${ifDefined(ariaLabelledby)}
-            @change=${this.onChange}>
-            <slot></slot>
-          </select>
+            @change=${this.onChange}></select>
+        </div>
+        <div hidden>
+          <slot data-options @slotchange=${this.onOptionsSlotChange}></slot>
         </div>
         <div part="hint" class="hint" id=${this.hintId} ?hidden=${!hasHint}>
           <slot name="hint" @slotchange=${this.onSlotChange}></slot>
