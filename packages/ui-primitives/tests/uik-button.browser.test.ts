@@ -162,4 +162,39 @@ describe('uik-button', () => {
     const internal = button.shadowRoot?.querySelector('button');
     expect(internal?.getAttribute('aria-label')).toBe('Close');
   });
+
+  it('forwards aria-pressed to the internal button', async () => {
+    const button = document.createElement('uik-button') as UikButton;
+    button.setAttribute('aria-pressed', 'true');
+    document.body.append(button);
+
+    await button.updateComplete;
+
+    const internal = button.shadowRoot?.querySelector('button');
+    expect(internal?.getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('forwards tabIndexValue to the internal button', async () => {
+    const button = document.createElement('uik-button') as UikButton;
+    button.tabIndexValue = -1;
+    document.body.append(button);
+
+    await button.updateComplete;
+
+    const internal = button.shadowRoot?.querySelector('button');
+    expect(internal?.tabIndex).toBe(-1);
+  });
+
+  it('forwards focus to the internal button', async () => {
+    const button = document.createElement('uik-button') as UikButton;
+    button.textContent = 'Focus';
+    document.body.append(button);
+
+    await button.updateComplete;
+
+    button.focus();
+    const internal = button.shadowRoot?.querySelector('button');
+
+    expect(button.shadowRoot?.activeElement).toBe(internal ?? null);
+  });
 });

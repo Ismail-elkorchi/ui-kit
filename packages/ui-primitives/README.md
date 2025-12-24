@@ -87,13 +87,13 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 
 ### `<uik-button>`
 
-- **Attributes/props**: `variant` (`solid | danger | outline | secondary | ghost | link`), `size` (`default | sm | lg | icon`), `type` (`button | submit | reset` - defaults to `button`), `active` (boolean), `muted` (boolean), `disabled` (boolean).
+- **Attributes/props**: `variant` (`solid | danger | outline | secondary | ghost | link`), `size` (`default | sm | lg | icon`), `type` (`button | submit | reset` - defaults to `button`), `tabIndexValue` (number), `active` (boolean), `muted` (boolean), `disabled` (boolean).
 - **Events**: native button events (`click`, focus/blur) bubble from the internal button; disabled buttons swallow click.
 - **Styling hooks**:
   - Sizing is enforced on the `:host`. The internal button fills the host (100% width/height).
   - `active`/`muted` props control stateful colors (especially for ghost variant).
   - `part="base"` allows overrides, but avoid fighting the host sizing.
-- **A11y**: `aria-label`/`aria-labelledby` are forwarded to the internal `<button>` for icon-only buttons.
+- **A11y**: `aria-label`/`aria-labelledby`/`aria-pressed` are forwarded to the internal `<button>` for icon-only buttons and toggle states.
 - **Forms**: `type="submit"` and `type="reset"` invoke `form.requestSubmit()`/`form.reset()` when inside a form.
 
 ### `<uik-checkbox>`

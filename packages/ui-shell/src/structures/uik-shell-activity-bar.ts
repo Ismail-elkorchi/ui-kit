@@ -1,5 +1,5 @@
-import {LitElement, html, nothing, svg} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {LitElement, html, nothing, svg, type PropertyValues} from 'lit';
+import {customElement, property, state} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
 import '@ismail-elkorchi/ui-primitives/uik-button';
@@ -13,6 +13,7 @@ export type {UikShellActivityBarIcon, UikShellActivityBarItem} from './uik-shell
 export class UikShellActivityBar extends LitElement {
   @property({attribute: false}) accessor items: UikShellActivityBarItem[] = [];
   @property({type: String}) accessor activeId = '';
+  @state() private accessor focusedId = '';
   private slotController?: LightDomSlotController;
 
   override connectedCallback() {
@@ -37,12 +38,36 @@ export class UikShellActivityBar extends LitElement {
     this.slotController?.sync();
   }
 
+  override updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('items')) {
+      const hasFocused = this.items.some(item => item.id === this.focusedId);
+      if (!hasFocused) {
+        this.focusedId = this.resolveDefaultFocusId();
+      }
+    }
+
+    if (changedProperties.has('activeId') && this.activeId && !this.contains(document.activeElement)) {
+      this.focusedId = this.resolveDefaultFocusId();
+    }
+  }
+
   override createRenderRoot() {
     return ensureLightDomRoot(this);
   }
 
   private emitSelect(id: string) {
     this.dispatchEvent(new CustomEvent('activity-bar-select', {detail: {id}, bubbles: true, composed: true}));
+  }
+
+  private resolveDefaultFocusId() {
+    if (this.activeId && this.items.some(item => item.id === this.activeId)) return this.activeId;
+    return this.items[0]?.id ?? '';
+  }
+
+  private focusItemById(id: string) {
+    const root = this.renderRoot as HTMLElement | undefined;
+    const button = root?.querySelector<HTMLElement>(`uik-button[data-activity-id="${id}"]`);
+    button?.focus();
   }
 
   private renderIcon(item: UikShellActivityBarItem) {
@@ -72,14 +97,67 @@ export class UikShellActivityBar extends LitElement {
     const currentTarget = event.currentTarget;
     if (!(currentTarget instanceof HTMLElement)) return;
 
-    const {id} = currentTarget.dataset;
-    if (!id) return;
+    const {activityId} = currentTarget.dataset;
+    if (!activityId) return;
 
-    this.emitSelect(id);
+    this.emitSelect(activityId);
   };
 
-  private renderItem(item: UikShellActivityBarItem) {
+  private readonly onItemFocus = (event: FocusEvent) => {
+    const currentTarget = event.currentTarget;
+    if (!(currentTarget instanceof HTMLElement)) return;
+    const {activityId} = currentTarget.dataset;
+    if (!activityId) return;
+    this.focusedId = activityId;
+  };
+
+  private readonly onItemKeydown = (event: KeyboardEvent) => {
+    const currentTarget = event.currentTarget;
+    if (!(currentTarget instanceof HTMLElement)) return;
+    const {index} = currentTarget.dataset;
+    if (!index) return;
+
+    const currentIndex = Number(index);
+    if (!Number.isFinite(currentIndex)) return;
+
+    const lastIndex = this.items.length - 1;
+    if (lastIndex < 0) return;
+
+    let nextIndex = currentIndex;
+    switch (event.key) {
+      case 'ArrowUp':
+      case 'ArrowLeft':
+        nextIndex = Math.max(0, currentIndex - 1);
+        break;
+      case 'ArrowDown':
+      case 'ArrowRight':
+        nextIndex = Math.min(lastIndex, currentIndex + 1);
+        break;
+      case 'Home':
+        nextIndex = 0;
+        break;
+      case 'End':
+        nextIndex = lastIndex;
+        break;
+      default:
+        return;
+    }
+
+    if (nextIndex === currentIndex) return;
+    event.preventDefault();
+
+    const nextItem = this.items[nextIndex];
+    if (!nextItem) return;
+
+    this.focusedId = nextItem.id;
+    void this.updateComplete.then(() => {
+      this.focusItemById(nextItem.id);
+    });
+  };
+
+  private renderItem(item: UikShellActivityBarItem, index: number, focusId: string) {
     const isActive = this.activeId === item.id;
+    const isFocused = focusId === item.id;
     const itemStyles = {
       width: 'var(--uik-size-control-lg)',
       height: 'var(--uik-size-control-lg)',
@@ -96,13 +174,6 @@ export class UikShellActivityBar extends LitElement {
       backgroundColor: 'oklch(var(--uik-intent-primary-bg-default))',
       borderTopRightRadius: 'var(--uik-radius-1)',
       borderBottomRightRadius: 'var(--uik-radius-1)',
-    };
-    const buttonStyles = {
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
     };
     const iconStyles = {
       width: 'var(--uik-size-icon-md)',
@@ -126,16 +197,21 @@ export class UikShellActivityBar extends LitElement {
         ${isActive ? html`<div part="item-indicator" style=${styleMap(indicatorStyles)}></div>` : nothing}
         <uik-button
           part="item-button"
-          data-id=${item.id}
+          data-activity-item="true"
+          data-activity-id=${item.id}
+          data-index=${String(index)}
           variant="ghost"
           size="icon"
-          style=${styleMap(buttonStyles)}
+          style=${styleMap({width: '100%', height: '100%'})}
           ?muted=${!isActive}
           ?active=${isActive}
+          .tabIndexValue=${isFocused ? 0 : -1}
           aria-pressed=${isActive ? 'true' : 'false'}
           aria-label=${item.label}
           title=${item.tooltip ?? item.label}
-          @click=${this.onItemClick}>
+          @click=${this.onItemClick}
+          @focusin=${this.onItemFocus}
+          @keydown=${this.onItemKeydown}>
           ${iconTemplate}
         </uik-button>
       </div>
@@ -143,6 +219,12 @@ export class UikShellActivityBar extends LitElement {
   }
 
   override render() {
+    const ariaLabelledby = this.getAttribute('aria-labelledby');
+    const ariaLabel = this.getAttribute('aria-label');
+    const hasLabelledby = Boolean(ariaLabelledby);
+    const hasLabel = typeof ariaLabel === 'string' && ariaLabel.trim().length > 0;
+    const resolvedLabel = hasLabel ? ariaLabel : hasLabelledby ? null : 'Activity bar';
+    const focusId = this.focusedId || this.resolveDefaultFocusId();
     const containerStyles = {
       width: 'var(--uik-component-shell-activity-bar-width)',
       backgroundColor: 'oklch(var(--uik-component-shell-activity-bar-bg))',
@@ -165,9 +247,16 @@ export class UikShellActivityBar extends LitElement {
       alignItems: 'center',
       width: '100%',
     };
-    const items = this.items.map(item => this.renderItem(item));
+    const items = this.items.map((item, index) => this.renderItem(item, index, focusId));
     return html`
-      <aside part="activity-bar" data-region="activity-bar" style=${styleMap(containerStyles)}>
+      <aside
+        part="activity-bar"
+        data-region="activity-bar"
+        role="toolbar"
+        aria-orientation="vertical"
+        aria-label=${resolvedLabel ?? nothing}
+        aria-labelledby=${ariaLabelledby ?? nothing}
+        style=${styleMap(containerStyles)}>
         ${items}
         <div part="spacer" style=${styleMap(spacerStyles)}></div>
         <div part="footer" style=${styleMap(footerStyles)} data-shell-slot="footer">

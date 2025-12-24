@@ -71,7 +71,7 @@ html`
 ### Component notes
 
 - `uik-shell-layout`: named slots `activity-bar`, `primary-sidebar`, `main-content`, `secondary-sidebar`, `status-bar`.
-- `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-bar-select`; optional `footer` slot.
+- `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-bar-select`; optional `footer` slot; roving focus with Arrow keys/Home/End and Enter/Space activation (set `aria-label` if you need a custom name).
 - `uik-shell-sidebar`: `slot="actions"` for header actions, default slot for body, optional `slot="footer"`; `isBodyPadded`/`isBodyScrollable` toggle spacing + scroll.
 - `uik-shell-secondary-sidebar`: controlled via `.isOpen`; default slot for body, optional `slot="footer"`; emits `secondary-sidebar-close` on close.
 - `uik-shell-status-bar`: `.message` + `.tone` colorize the left side; `meta` string (outline badge) or `slot="meta"` for custom content; optional `slot="actions"`.

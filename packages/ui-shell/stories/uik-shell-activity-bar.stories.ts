@@ -34,6 +34,7 @@ const meta: Meta<ActivityBarArgs> = {
       description: {
         component: [
           'Props: items, activeId. Event: activity-bar-select.',
+          'Keyboard: Arrow keys/Home/End move focus; Enter/Space selects.',
           'Slots: footer.',
           'Parts: activity-bar, item, item-indicator, item-button, item-icon, spacer, footer.',
           'Custom properties: `--uik-component-shell-activity-bar-bg`, `--uik-component-shell-activity-bar-fg`, `--uik-component-shell-activity-bar-width`.',

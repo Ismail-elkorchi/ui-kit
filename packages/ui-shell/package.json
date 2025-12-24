@@ -71,7 +71,7 @@
     "clean": "node -e \"const fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true}); fs.rmSync('.tsbuildinfo', {force: true});\"",
     "cem": "cem analyze --config ./custom-elements-manifest.config.cjs --litelement",
     "lint": "eslint . --max-warnings=0 && npm run check:layering",
-    "test": "npm run build && vitest --run --project node --dir .",
+    "test": "npm run build && vitest --run --project browser --dir . && vitest --run --project node --dir .",
     "typecheck": "tsc -p tsconfig.build.json --noEmit",
     "prepack": "npm run build",
     "check:layering": "node tools/check-layering.mjs"

@@ -12,6 +12,7 @@ type ButtonArgs = {
   active: boolean;
   muted: boolean;
   type: 'button' | 'submit' | 'reset';
+  tabIndexValue: number;
 };
 
 const meta: Meta<ButtonArgs> = {
@@ -22,7 +23,8 @@ const meta: Meta<ButtonArgs> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A11y: native <button> semantics, ensure visible text/aria-label, use disabled for non-interactive state.',
+        component:
+          'A11y: native <button> semantics, ensure visible text/aria-label, use aria-pressed for toggle state, use disabled for non-interactive state. Use tabIndexValue for roving focus.',
       },
     },
   },
@@ -34,6 +36,7 @@ const meta: Meta<ButtonArgs> = {
     active: false,
     muted: false,
     type: 'button',
+    tabIndexValue: 0,
   },
   argTypes: {
     variant: {
@@ -48,12 +51,16 @@ const meta: Meta<ButtonArgs> = {
       options: ['button', 'submit', 'reset'],
       control: {type: 'radio'},
     },
+    tabIndexValue: {
+      control: {type: 'number'},
+    },
   },
   render: ({label, ...args}) => html`
     <uik-button
       variant=${args.variant}
       size=${args.size}
       type=${args.type}
+      .tabIndexValue=${args.tabIndexValue}
       ?disabled=${args.disabled}
       ?active=${args.active}
       ?muted=${args.muted}>
@@ -90,6 +97,7 @@ export const IconButton: Story = {
       variant=${args.variant}
       size=${args.size}
       type=${args.type}
+      .tabIndexValue=${args.tabIndexValue}
       aria-label="Favorite"
       ?disabled=${args.disabled}
       ?active=${args.active}

@@ -19,7 +19,7 @@
 | Component | Layer | Purpose | Why it belongs |
 | --- | --- | --- | --- |
 | `uik-shell-layout` | structures | Compose app frame regions with named slots. | Pure layout building block. |
-| `uik-shell-activity-bar` | structures | Vertical activity rail with toggle buttons. | Region building block; no composite APG behavior. |
+| `uik-shell-activity-bar` | structures | Vertical activity rail with toggle buttons. | Region building block; toolbar-style roving focus for keyboard navigation. |
 | `uik-shell-sidebar` | structures | Primary sidebar with header/actions/body/footer slots. | Frame region container. |
 | `uik-shell-secondary-sidebar` | structures | Optional secondary panel with close affordance. | Frame region container. |
 | `uik-shell-status-bar` | structures | Status/footer bar with message + meta content. | Frame region container. |
