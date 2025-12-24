@@ -2,19 +2,12 @@
 
 Token-driven shell components (activity bar, sidebars, status bar, and an optional frame layout) for Light DOM composition. They depend on `@ismail-elkorchi/ui-primitives` for controls, expose slots + parts, and read all visual values from `@ismail-elkorchi/ui-tokens` CSS variables.
 
-## Build & distribution
-
-- `npm run build` emits ESM + `.d.ts` modules into `dist/` for `index/register/router`, layout, activity bar, sidebar, secondary sidebar, and status bar.
-- Compiled output mirrors the layered source layout under `dist/src/**`.
-- Published output contains only `dist/` plus this README; TypeScript sources stay in the workspace.
-
 ## Layout layer
 
 - Regions: left rail (`activity-bar`), primary sidebar, main content, optional secondary sidebar, and status bar.
 - `uik-shell-layout` stitches the regions together and tags them with `data-region` attributes to keep the layout contract visible in the DOM.
 - Shell components expose only UI surface/state; business logic should live in the host app.
 - **Contract**: Shell components use `ui-primitives` strictly via their public API (attributes/props). Visual styling comes from `--uik-*` custom properties (no framework utility classes).
-- Layering source layout: `src/internal`, `src/structures`, `src/patterns` (see `LAYERING.md`).
 
 ## Using the components
 

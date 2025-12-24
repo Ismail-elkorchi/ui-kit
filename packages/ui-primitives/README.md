@@ -2,21 +2,6 @@
 
 Shadow DOM web components backed by the shared token CSS variables from `@ismail-elkorchi/ui-tokens`. They ship no Tailwind and assume tokens are loaded on `:root`.
 
-## Build & distribution
-
-- `npm run build` emits ESM + `.d.ts` files into `dist/`.
-- Exported subpaths are defined in `package.json#exports` and map to the built outputs.
-- Published artifacts include only `dist/` and this README; TypeScript sources stay in the workspace.
-
-## Internal layering
-
-Source is organized by dependency direction:
-- `src/internal/<area>`: shared helpers grouped by domain (a11y, dom, overlay, slots, styles, types)
-- `src/atomic/<kind>/<component>`: primitives without primitive dependencies
-- `src/composed/<kind>/<component>`: primitives built on other primitives
-
-See `packages/ui-primitives/LAYERING.md` for the dependency rules.
-
 ## Usage
 
 ```ts

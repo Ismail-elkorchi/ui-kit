@@ -1,7 +1,6 @@
 # UI Tokens
 
 Design tokens for UIK with W3C DTCG JSON sources, CSS custom properties, and a Tailwind v4 bridge.
-Builds are produced with Terrazzo using a resolver-based context model.
 
 ## What this package provides
 
@@ -9,7 +8,6 @@ Builds are produced with Terrazzo using a resolver-based context model.
 - CSS custom properties under the `--uik-` prefix.
 - Tailwind v4 theme mappings (strict + compat) for utility classes.
 - A tiny JS/TS runtime for programmatic access.
-- Terrazzo JS build uses resolver contexts in `tokens/uik.resolver.json`.
 
 ## Installation
 
@@ -116,42 +114,8 @@ document.documentElement.setAttribute(THEME_ATTRIBUTE, 'dark');
 document.documentElement.setAttribute(DENSITY_ATTRIBUTE, 'compact');
 ```
 
-## Build + verify
-
-- `npm run --workspace @ismail-elkorchi/ui-tokens build`
-- `npm run --workspace @ismail-elkorchi/ui-tokens verify`
-- `npm run --workspace @ismail-elkorchi/ui-tokens validate`
-
-Notes:
-
-- The build runs Terrazzo, then assembles theme/density CSS and Tailwind mappings to preserve the existing `--uik-` variable contract.
-
 ## Guarantees
 
 - All CSS custom properties are prefixed with `--uik-`.
 - Tailwind utilities are derived from tokens; no hard-coded design values.
 - Validation gates cover build output presence and Tailwind parsing.
-
-## Adding tokens (contributors)
-
-Place new DTCG tokens in the right layer:
-
-- Foundation: `tokens/foundation/*.json`
-- Semantic: `tokens/semantic/*.json`
-- Components: `tokens/components/*.json`
-- Themes: `tokens/themes/light.json` and `tokens/themes/dark.json`
-- Density: `tokens/density/comfortable.json` and `tokens/density/compact.json`
-
-Example:
-
-```json
-{
-  "surface": {
-    "bg": {
-      "$value": "{color.neutral.1}",
-      "$type": "color",
-      "$description": "Surface background."
-    }
-  }
-}
-```
