@@ -3,6 +3,21 @@ import {customElement, property} from 'lit/decorators.js';
 
 import {styles} from './styles';
 
+/**
+ * Tokenized text wrapper for size, weight, tone, and truncation.
+ * @attr as (span | p | div | label)
+ * @attr size (sm | md | lg | xl)
+ * @attr weight
+ * @attr tone
+ * @attr truncate (boolean)
+ * @slot default
+ * @part base
+ * @a11y Use as=label for form labels when needed.
+ * @cssprop --uik-component-text-size-{sm|md|lg|xl}
+ * @cssprop --uik-component-text-line-height-{sm|md|lg|xl}
+ * @cssprop --uik-component-text-weight-{regular|medium|semibold|bold}
+ * @cssprop --uik-component-text-color-{default|muted|strong|danger|success|warning|info}
+ */
 @customElement('uik-text')
 export class UikText extends LitElement {
   @property({type: String}) accessor as: 'p' | 'span' | 'div' | 'label' = 'span';

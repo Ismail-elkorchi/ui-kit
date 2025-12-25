@@ -4,6 +4,25 @@ import {styleMap} from 'lit/directives/style-map.js';
 
 import {ensureLightDomRoot, LightDomSlotController} from '../internal/light-dom-slot-controller';
 
+/**
+ * Shell region layout container with named slots.
+ * @attr isSecondarySidebarVisible (boolean)
+ * @slot activity-bar
+ * @slot primary-sidebar
+ * @slot main-content
+ * @slot secondary-sidebar
+ * @slot status-bar
+ * @part layout
+ * @part row
+ * @part activity-bar
+ * @part primary-sidebar
+ * @part main-content
+ * @part secondary-sidebar
+ * @part status-bar
+ * @a11y Use semantic elements inside slots for landmarks.
+ * @cssprop --uik-component-shell-divider-color
+ * @cssprop --uik-component-shell-scrollbar-*
+ */
 @customElement('uik-shell-layout')
 export class UikShellLayout extends LitElement {
   @property({type: Boolean}) accessor isSecondarySidebarVisible = false;

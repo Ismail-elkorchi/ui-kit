@@ -7,6 +7,27 @@ import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
 
 type SlotName = 'label' | 'hint' | 'error';
 
+/**
+ * Form-associated radio control with label, hint, and error slots.
+ * @attr name
+ * @attr value
+ * @attr checked
+ * @attr disabled
+ * @attr required
+ * @attr invalid
+ * @slot label
+ * @slot hint
+ * @slot error
+ * @part base
+ * @part control
+ * @part label
+ * @part hint
+ * @part error
+ * @event Native change bubbles from the internal <input>.
+ * @a11y Provide a label slot or aria-label; hint/error are wired via aria-describedby.
+ * @cssprop --uik-component-radio-accent
+ * @cssprop --uik-component-radio-size
+ */
 @customElement('uik-radio')
 export class UikRadio extends LitElement {
   static formAssociated = true;

@@ -7,6 +7,28 @@ import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
 
 type SlotName = 'label' | 'hint' | 'error';
 
+/**
+ * Form-associated textarea with label, hint, and error slots.
+ * @attr name
+ * @attr value
+ * @attr placeholder
+ * @attr rows
+ * @attr disabled
+ * @attr required
+ * @attr readonly
+ * @attr invalid
+ * @slot label
+ * @slot hint
+ * @slot error
+ * @part base
+ * @part control
+ * @part label
+ * @part hint
+ * @part error
+ * @event Native input and change bubble from the internal <textarea>.
+ * @a11y Provide a label slot or aria-label; hint/error are wired via aria-describedby.
+ * @cssprop --uik-component-textarea-base-* (bg, border, fg, padding, radius, shadow, min-height)
+ */
 @customElement('uik-textarea')
 export class UikTextarea extends LitElement {
   static formAssociated = true;

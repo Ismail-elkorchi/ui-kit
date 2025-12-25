@@ -25,6 +25,24 @@ export interface UikNavToggleDetail {
   item: UikNavItem;
 }
 
+/**
+ * Navigation list with grouped links and current state.
+ * @attr items (array)
+ * @attr openIds (string[])
+ * @attr currentId
+ * @part base
+ * @part item
+ * @part toggle
+ * @part link
+ * @part label
+ * @event nav-select
+ * @event nav-toggle
+ * @a11y Renders anchors inside a nav landmark; active links expose aria-current.
+ * @cssprop --uik-component-nav-item-*
+ * @cssprop --uik-component-nav-indent
+ * @cssprop --uik-component-nav-text-*
+ * @cssprop --uik-component-nav-toggle-fg
+ */
 @customElement('uik-nav')
 export class UikNav extends LitElement {
   @property({attribute: false}) accessor items: UikNavItem[] = [];

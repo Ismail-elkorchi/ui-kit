@@ -35,6 +35,25 @@ export interface UikTreeViewToggleDetail {
 
 type SelectionState = 'checked' | 'mixed' | 'unchecked';
 
+/**
+ * Tree view list with tri-state selection and open state.
+ * @attr items (array)
+ * @attr selectedIds (string[])
+ * @attr openIds (string[])
+ * @part base
+ * @part item
+ * @part toggle
+ * @part selection
+ * @part label
+ * @event tree-view-select
+ * @event tree-view-open
+ * @event tree-view-toggle
+ * @a11y Treeview role with roving focus; Space toggles selection and Enter opens items.
+ * @cssprop --uik-component-tree-view-item-*
+ * @cssprop --uik-component-tree-view-indent
+ * @cssprop --uik-component-tree-view-text-*
+ * @cssprop --uik-component-tree-view-toggle-fg
+ */
 @customElement('uik-tree-view')
 export class UikTreeView extends LitElement {
   @property({attribute: false}) accessor items: UikTreeViewItem[] = [];

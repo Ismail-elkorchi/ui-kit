@@ -4,6 +4,24 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 
 import {styles} from './styles';
 
+/**
+ * Primary action control with variants and sizes.
+ * @attr variant (solid | danger | outline | secondary | ghost | link)
+ * @attr size (default | sm | lg | icon)
+ * @attr type (button | submit | reset)
+ * @attr tabIndexValue (number)
+ * @attr active (boolean)
+ * @attr muted (boolean)
+ * @attr disabled (boolean)
+ * @slot default (label or icon)
+ * @part base
+ * @event Native button events bubble from the internal <button>.
+ * @a11y Forward aria-label, aria-labelledby, and aria-pressed to the internal button.
+ * @a11y Icon-only buttons should provide an accessible name.
+ * @cssprop --uik-component-button-base-* (gap, font, focus ring, border)
+ * @cssprop --uik-component-button-{solid|ghost|outline|secondary|danger|link}-*
+ * @cssprop --uik-component-button-{sm|md|lg}-*
+ */
 @customElement('uik-button')
 export class UikButton extends LitElement {
   static formAssociated = true;

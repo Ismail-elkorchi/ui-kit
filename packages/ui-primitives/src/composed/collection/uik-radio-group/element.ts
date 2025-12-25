@@ -8,6 +8,27 @@ import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
 
 type SlotName = 'label' | 'hint' | 'error';
 
+/**
+ * Radio group wrapper with keyboard arrow navigation.
+ * @attr name
+ * @attr value
+ * @attr orientation (vertical | horizontal)
+ * @attr disabled
+ * @attr required
+ * @attr invalid
+ * @slot label
+ * @slot hint
+ * @slot error
+ * @slot default (<uik-radio> children)
+ * @part base
+ * @part control
+ * @part label
+ * @part hint
+ * @part error
+ * @event Native change bubbles from child radios.
+ * @a11y Label slot wires aria-labelledby; hint/error are announced via aria-describedby.
+ * @cssprop --uik-component-radio-group-gap
+ */
 @customElement('uik-radio-group')
 export class UikRadioGroup extends LitElement {
   static formAssociated = true;

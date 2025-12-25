@@ -21,6 +21,29 @@ export interface UikNavRailSelectDetail {
   item: UikNavRailItem;
 }
 
+/**
+ * Navigation rail with roving focus and icon buttons.
+ * @attr items (array)
+ * @attr activeId
+ * @attr orientation (vertical | horizontal)
+ * @part base
+ * @part item
+ * @part item-button
+ * @part item-indicator
+ * @part item-icon
+ * @event nav-rail-select
+ * @a11y Toolbar role with roving focus; Arrow/Home/End move focus; Enter/Space activate items.
+ * @cssprop --uik-component-nav-rail-bg
+ * @cssprop --uik-component-nav-rail-fg
+ * @cssprop --uik-component-nav-rail-width
+ * @cssprop --uik-component-nav-rail-gap
+ * @cssprop --uik-component-nav-rail-padding-y
+ * @cssprop --uik-component-nav-rail-item-size
+ * @cssprop --uik-component-nav-rail-item-indicator-bg
+ * @cssprop --uik-component-nav-rail-item-indicator-radius
+ * @cssprop --uik-component-nav-rail-item-indicator-width
+ * @cssprop --uik-component-nav-rail-icon-size
+ */
 @customElement('uik-nav-rail')
 export class UikNavRail extends LitElement {
   @property({attribute: false}) accessor items: UikNavRailItem[] = [];

@@ -8,6 +8,22 @@ import {ensureLightDomRoot, LightDomSlotController} from '../internal/light-dom-
 
 type StatusBarTone = 'info' | 'success' | 'danger' | 'muted';
 
+/**
+ * Status bar for global status and actions.
+ * @attr message
+ * @attr tone (info | success | danger | muted)
+ * @attr meta
+ * @slot actions
+ * @slot meta
+ * @part status-bar
+ * @part message
+ * @part actions
+ * @part meta
+ * @a11y Use short status text; provide accessible names for actions.
+ * @cssprop --uik-component-shell-status-bar-bg
+ * @cssprop --uik-component-shell-status-bar-fg
+ * @cssprop --uik-component-shell-status-bar-height
+ */
 @customElement('uik-shell-status-bar')
 export class UikShellStatusBar extends LitElement {
   @property({type: String}) accessor message = 'Ready';

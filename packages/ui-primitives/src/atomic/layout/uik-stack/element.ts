@@ -3,6 +3,17 @@ import {customElement, property} from 'lit/decorators.js';
 
 import {styles} from './styles';
 
+/**
+ * Flex stack for layout spacing and alignment.
+ * @attr direction (vertical | horizontal)
+ * @attr gap (1-6)
+ * @attr align
+ * @attr justify
+ * @slot default
+ * @part base
+ * @a11y Use semantic wrappers for landmark content.
+ * @cssprop --uik-component-stack-gap-{1..6}
+ */
 @customElement('uik-stack')
 export class UikStack extends LitElement {
   @property({type: String, reflect: true, useDefault: true}) accessor direction: 'vertical' | 'horizontal' = 'vertical';

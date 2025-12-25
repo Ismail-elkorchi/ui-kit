@@ -6,6 +6,27 @@ import '@ismail-elkorchi/ui-primitives/uik-separator';
 
 import {ensureLightDomRoot, LightDomSlotController} from '../internal/light-dom-slot-controller';
 
+/**
+ * Primary sidebar with heading, actions, body, and footer slots.
+ * @attr heading
+ * @attr subtitle
+ * @attr isBodyPadded
+ * @attr isBodyScrollable
+ * @slot actions
+ * @slot default
+ * @slot footer
+ * @part sidebar
+ * @part header
+ * @part heading
+ * @part subtitle
+ * @part actions
+ * @part body
+ * @part footer
+ * @a11y Sidebar is an <aside>; ensure internal landmarks and labels.
+ * @cssprop --uik-component-shell-sidebar-bg
+ * @cssprop --uik-component-shell-sidebar-fg
+ * @cssprop --uik-component-shell-sidebar-width
+ */
 @customElement('uik-shell-sidebar')
 export class UikShellSidebar extends LitElement {
   @property({type: String}) accessor heading = '';

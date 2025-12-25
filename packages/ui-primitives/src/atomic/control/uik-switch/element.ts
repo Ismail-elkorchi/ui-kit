@@ -7,6 +7,37 @@ import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
 
 type SlotName = 'label' | 'hint' | 'error';
 
+/**
+ * Form-associated switch control with label, hint, and error slots.
+ * @attr name
+ * @attr value
+ * @attr checked
+ * @attr disabled
+ * @attr required
+ * @attr invalid
+ * @slot label
+ * @slot hint
+ * @slot error
+ * @part base
+ * @part control
+ * @part track
+ * @part thumb
+ * @part label
+ * @part hint
+ * @part error
+ * @event Native change bubbles from the internal <input>.
+ * @a11y Uses role="switch" and supports label slot or aria-label.
+ * @cssprop --uik-component-switch-height
+ * @cssprop --uik-component-switch-width
+ * @cssprop --uik-component-switch-padding
+ * @cssprop --uik-component-switch-thumb-size
+ * @cssprop --uik-component-switch-thumb-bg
+ * @cssprop --uik-component-switch-thumb-shadow
+ * @cssprop --uik-component-switch-track-bg-default
+ * @cssprop --uik-component-switch-track-bg-checked
+ * @cssprop --uik-component-switch-track-border-default
+ * @cssprop --uik-component-switch-track-border-checked
+ */
 @customElement('uik-switch')
 export class UikSwitch extends LitElement {
   static formAssociated = true;

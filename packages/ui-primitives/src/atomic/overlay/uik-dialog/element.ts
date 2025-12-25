@@ -8,6 +8,37 @@ import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
 type SlotName = 'title' | 'description';
 type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
 
+/**
+ * Native dialog wrapper with slots for title, description, and actions.
+ * @attr open
+ * @attr modal (boolean)
+ * @slot title
+ * @slot description
+ * @slot default (body)
+ * @slot actions
+ * @part base
+ * @part panel
+ * @part title
+ * @part description
+ * @part body
+ * @part actions
+ * @event Native close and cancel bubble from <dialog>.
+ * @event overlay-close (detail: {reason})
+ * @a11y Uses native dialog semantics; forwards aria-* attributes to <dialog>.
+ * @a11y Escape closes and overlay-close reports reason; focus returns to the opener.
+ * @cssprop --uik-component-dialog-bg
+ * @cssprop --uik-component-dialog-fg
+ * @cssprop --uik-component-dialog-border
+ * @cssprop --uik-component-dialog-radius
+ * @cssprop --uik-component-dialog-padding
+ * @cssprop --uik-component-dialog-shadow
+ * @cssprop --uik-component-dialog-max-width
+ * @cssprop --uik-component-dialog-title-fg
+ * @cssprop --uik-component-dialog-description-fg
+ * @cssprop --uik-component-dialog-actions-gap
+ * @cssprop --uik-scrim-color
+ * @cssprop --uik-scrim-opacity
+ */
 @customElement('uik-dialog')
 export class UikDialog extends LitElement {
   @property({type: Boolean, reflect: true, useDefault: true}) accessor open = false;

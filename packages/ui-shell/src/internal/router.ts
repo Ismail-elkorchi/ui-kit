@@ -119,4 +119,13 @@ export class UikShellRouter extends EventTarget {
   }
 }
 
+/**
+ * Tiny EventTarget-based router for view + subview state.
+ * @uikContract kind=utility id=shell-router name=createUikShellRouter()
+ * @attr routes (array)
+ * @attr initialView
+ * @attr initialSubview
+ * @event uik-shell:navigation (CustomEvent<UikShellNavigationDetail>)
+ * @a11y Keep focus management in the host app when views change.
+ */
 export const createUikShellRouter = (config: UikShellRouterConfig) => new UikShellRouter(config);

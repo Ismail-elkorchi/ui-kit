@@ -7,6 +7,29 @@ import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
 
 type SlotName = 'label' | 'hint' | 'error';
 
+/**
+ * Form-associated checkbox control with label, hint, and error slots.
+ * @attr name
+ * @attr value
+ * @attr checked
+ * @attr indeterminate (boolean)
+ * @attr disabled
+ * @attr required
+ * @attr invalid
+ * @attr tabIndexValue (number)
+ * @slot label
+ * @slot hint
+ * @slot error
+ * @part base
+ * @part control
+ * @part label
+ * @part hint
+ * @part error
+ * @event Native change bubbles from the internal <input>.
+ * @a11y Provide a label slot or aria-label; hint/error are wired via aria-describedby.
+ * @cssprop --uik-component-checkbox-accent
+ * @cssprop --uik-component-checkbox-size
+ */
 @customElement('uik-checkbox')
 export class UikCheckbox extends LitElement {
   static formAssociated = true;

@@ -8,6 +8,24 @@ import '@ismail-elkorchi/ui-primitives/uik-separator';
 
 import {ensureLightDomRoot, LightDomSlotController} from '../internal/light-dom-slot-controller';
 
+/**
+ * Secondary sidebar panel with header and optional footer.
+ * @attr isOpen (boolean)
+ * @attr heading
+ * @attr focusReturnTarget (selector | element)
+ * @slot default
+ * @slot footer
+ * @part secondary-sidebar
+ * @part header
+ * @part heading
+ * @part close-button
+ * @part body
+ * @part footer
+ * @event secondary-sidebar-close
+ * @a11y Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading.
+ * @cssprop --uik-component-shell-secondary-sidebar-bg
+ * @cssprop --uik-component-shell-secondary-sidebar-width
+ */
 @customElement('uik-shell-secondary-sidebar')
 export class UikShellSecondarySidebar extends LitElement {
   @property({type: Boolean}) accessor isOpen = false;

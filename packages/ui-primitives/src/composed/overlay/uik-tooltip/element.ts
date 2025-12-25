@@ -9,6 +9,27 @@ import {resolvePlacement} from '../../../internal/overlay/positioning';
 
 type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
 
+/**
+ * Tooltip panel with trigger slot.
+ * @attr open
+ * @attr placement
+ * @attr popover (defaults to hint)
+ * @slot trigger
+ * @slot default (tooltip content)
+ * @part control
+ * @part base
+ * @event Trigger events bubble from slotted trigger.
+ * @event overlay-close (detail: {reason})
+ * @a11y Panel uses role="tooltip" and wires aria-describedby to trigger.
+ * @cssprop --uik-component-tooltip-bg
+ * @cssprop --uik-component-tooltip-fg
+ * @cssprop --uik-component-tooltip-radius
+ * @cssprop --uik-component-tooltip-padding-x
+ * @cssprop --uik-component-tooltip-padding-y
+ * @cssprop --uik-component-tooltip-shadow
+ * @cssprop --uik-component-tooltip-offset
+ * @cssprop --uik-z-local-tooltip
+ */
 @customElement('uik-tooltip')
 export class UikTooltip extends LitElement {
   @property({type: Boolean, reflect: true, useDefault: true}) accessor open = false;

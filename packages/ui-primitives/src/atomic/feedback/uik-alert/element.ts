@@ -4,6 +4,17 @@ import {customElement, property} from 'lit/decorators.js';
 import {styles} from './styles';
 import {hasSlotContent} from '../../../internal';
 
+/**
+ * Inline status messaging for neutral and semantic feedback.
+ * @attr variant (neutral | info | success | warning | danger)
+ * @slot title
+ * @slot default (message body)
+ * @part base
+ * @part title
+ * @part body
+ * @a11y role="status" by default; warning/danger switches to role="alert".
+ * @cssprop --uik-component-alert-{neutral|info|success|warning|danger}-{bg|border|fg}
+ */
 @customElement('uik-alert')
 export class UikAlert extends LitElement {
   @property({type: String, reflect: true, useDefault: true}) accessor variant:

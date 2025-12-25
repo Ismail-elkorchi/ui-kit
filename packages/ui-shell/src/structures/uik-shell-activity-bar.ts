@@ -8,6 +8,25 @@ import {ensureLightDomRoot, LightDomSlotController} from '../internal/light-dom-
 
 export type {UikShellActivityBarIcon, UikShellActivityBarItem} from './uik-shell-activity-bar-contract';
 
+/**
+ * Vertical activity bar composed with uik-nav-rail.
+ * @attr items (array)
+ * @attr activeId (string)
+ * @slot footer
+ * @part activity-bar
+ * @part spacer
+ * @part footer
+ * @event activity-bar-select (detail: {id})
+ * @a11y Delegates roving focus behavior to uik-nav-rail; set aria-label if needed.
+ * @cssprop --uik-component-shell-activity-bar-bg
+ * @cssprop --uik-component-shell-activity-bar-fg
+ * @cssprop --uik-component-shell-activity-bar-width
+ * @cssprop --uik-component-shell-activity-bar-item-size
+ * @cssprop --uik-component-shell-activity-bar-item-icon-size
+ * @cssprop --uik-component-shell-activity-bar-item-indicator-bg
+ * @cssprop --uik-component-shell-activity-bar-item-indicator-radius
+ * @cssprop --uik-component-shell-activity-bar-item-indicator-width
+ */
 @customElement('uik-shell-activity-bar')
 export class UikShellActivityBar extends LitElement {
   @property({attribute: false}) accessor items: UikShellActivityBarItem[] = [];

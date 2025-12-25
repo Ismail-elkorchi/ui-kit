@@ -4,6 +4,19 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 
 import {styles} from './styles';
 
+/**
+ * Progress indicator with determinate and indeterminate modes.
+ * @attr value
+ * @attr max
+ * @attr indeterminate (boolean)
+ * @part base
+ * @a11y Forward aria-label and aria-labelledby to the internal <progress>.
+ * @cssprop --uik-component-progress-track-bg
+ * @cssprop --uik-component-progress-bar-bg
+ * @cssprop --uik-component-progress-height
+ * @cssprop --uik-component-progress-min-width
+ * @cssprop --uik-component-progress-radius
+ */
 @customElement('uik-progress')
 export class UikProgress extends LitElement {
   @property({type: Number}) accessor value = 0;

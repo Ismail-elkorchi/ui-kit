@@ -8,6 +8,32 @@ let inputId = 0;
 
 type SlotName = 'label' | 'hint' | 'error';
 
+/**
+ * Form-associated text input with labels, hints, and errors.
+ * @attr type
+ * @attr name
+ * @attr value
+ * @attr placeholder
+ * @attr disabled
+ * @attr required
+ * @attr readonly
+ * @attr invalid
+ * @attr autocomplete
+ * @attr inputmode
+ * @attr enterkeyhint
+ * @slot label
+ * @slot hint
+ * @slot error
+ * @part base
+ * @part control
+ * @part label
+ * @part hint
+ * @part error
+ * @event Native input and change bubble from the internal <input>.
+ * @a11y Label slot associates via for; hint and error are wired to aria-describedby.
+ * @a11y aria-invalid is set when invalid or error content is present.
+ * @cssprop --uik-component-input-base-* (bg, border, fg, padding, radius, shadow, selection)
+ */
 @customElement('uik-input')
 export class UikInput extends LitElement {
   static formAssociated = true;

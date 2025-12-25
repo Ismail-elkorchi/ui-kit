@@ -3,6 +3,18 @@ import {customElement, property} from 'lit/decorators.js';
 
 import {styles} from './styles';
 
+/**
+ * Tokenized heading typography with semantic levels.
+ * @attr level (1-6)
+ * @attr tone (default | strong | muted | danger | success | warning | info)
+ * @slot default
+ * @part base
+ * @a11y Renders the matching native heading element.
+ * @cssprop --uik-component-heading-size-{1..6}
+ * @cssprop --uik-component-heading-line-height-{1..6}
+ * @cssprop --uik-component-heading-weight
+ * @cssprop --uik-component-heading-color-{default|strong|muted|danger|success|warning|info}
+ */
 @customElement('uik-heading')
 export class UikHeading extends LitElement {
   @property({type: Number, reflect: true, useDefault: true}) accessor level = 2;

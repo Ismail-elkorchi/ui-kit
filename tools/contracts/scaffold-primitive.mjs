@@ -68,22 +68,6 @@ const updateExports = async (packageJsonPath, key, value) => {
   await fs.writeFile(packageJsonPath, `${JSON.stringify(pkg, null, 2)}\n`);
 };
 
-const updateContracts = async (contractsPath, entry) => {
-  const data = JSON.parse(await fs.readFile(contractsPath, 'utf8'));
-  const list = data.components ?? data.entries ?? [];
-  if (list.some(item => item.id === entry.id || item.tagName === entry.tagName)) {
-    throw new Error(`Contract entry already exists for ${entry.id}.`);
-  }
-  list.push(entry);
-  list.sort((a, b) => a.id.localeCompare(b.id));
-  if (data.components) {
-    data.components = list;
-  } else {
-    data.entries = list;
-  }
-  await fs.writeFile(contractsPath, `${JSON.stringify(data, null, 2)}\n`);
-};
-
 const run = async () => {
   const options = parseArgs(process.argv.slice(2));
   const rawTag = options.tag ?? options.name;
@@ -117,9 +101,19 @@ const run = async () => {
     '',
     "import {styles} from './styles';",
     '',
+    '/**',
+    ` * ${summary}`,
+    ' * @slot default',
+    ' * @part base',
+    ` * @cssprop --uik-component-${id}-bg`,
+    ` * @cssprop --uik-component-${id}-fg`,
+    ` * @cssprop --uik-component-${id}-border`,
+    ` * @cssprop --uik-component-${id}-radius`,
+    ` * @cssprop --uik-component-${id}-padding`,
+    ' */',
     `@customElement('${tagName}')`,
     `export class ${className} extends LitElement {`,
-    '  static override styles = styles;',
+      '  static override styles = styles;',
     '',
     '  override render() {',
     '    return html`<div class="base" part="base"><slot></slot></div>`;',
@@ -199,25 +193,6 @@ const run = async () => {
     testPath,
     `import {describe, expect, it} from 'vitest';\n\nimport '@ismail-elkorchi/ui-primitives/register';\n\nconst nextFrame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));\n\ndescribe('${tagName}', () => {\n  it('renders', async () => {\n    document.body.innerHTML = '<${tagName}>${storyTitle}</${tagName}>';\n    await customElements.whenDefined('${tagName}');\n    await nextFrame();\n    const element = document.querySelector('${tagName}');\n    expect(element).toBeTruthy();\n  });\n});\n`,
   );
-
-  const contractsPath = path.join(repoRoot, 'packages/ui-primitives/contracts/components.json');
-  await updateContracts(contractsPath, {
-    id,
-    tagName,
-    summary,
-    attributes: [],
-    slots: ['default'],
-    parts: ['base'],
-    events: [],
-    a11y: [],
-    cssVars: [
-      `--uik-component-${id}-bg`,
-      `--uik-component-${id}-fg`,
-      `--uik-component-${id}-border`,
-      `--uik-component-${id}-radius`,
-      `--uik-component-${id}-padding`,
-    ],
-  });
 
   const tokensPath = path.join(repoRoot, 'packages/ui-tokens/tokens/components', `${id}.json`);
   await writeFileIfMissing(

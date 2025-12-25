@@ -7,6 +7,26 @@ import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
 
 type SlotName = 'label' | 'hint' | 'error';
 
+/**
+ * Form-associated select with label, hint, and error slots.
+ * @attr name
+ * @attr value
+ * @attr disabled
+ * @attr required
+ * @attr invalid
+ * @slot label
+ * @slot hint
+ * @slot error
+ * @slot default (<option> elements)
+ * @part base
+ * @part control
+ * @part label
+ * @part hint
+ * @part error
+ * @event Native change bubbles from the internal <select>.
+ * @a11y Provide a label slot or aria-label; hint/error are wired via aria-describedby.
+ * @cssprop --uik-component-select-base-* (bg, border, fg, padding, radius, shadow, font)
+ */
 @customElement('uik-select')
 export class UikSelect extends LitElement {
   static formAssociated = true;

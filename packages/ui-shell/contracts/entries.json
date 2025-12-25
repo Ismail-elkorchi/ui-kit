@@ -2,12 +2,53 @@
   "schemaVersion": "1.0.0",
   "entries": [
     {
-      "kind": "component",
+      "id": "shell-activity-bar",
+      "tagName": "uik-shell-activity-bar",
+      "summary": "Vertical activity bar composed with uik-nav-rail.",
+      "attributes": [
+        "items (array)",
+        "activeId (string)"
+      ],
+      "slots": [
+        "footer"
+      ],
+      "parts": [
+        "activity-bar",
+        "spacer",
+        "footer"
+      ],
+      "events": [
+        "activity-bar-select (detail: {id})"
+      ],
+      "a11y": [
+        "Delegates roving focus behavior to uik-nav-rail; set aria-label if needed."
+      ],
+      "cssVars": [
+        "--uik-component-shell-activity-bar-bg",
+        "--uik-component-shell-activity-bar-fg",
+        "--uik-component-shell-activity-bar-width",
+        "--uik-component-shell-activity-bar-item-size",
+        "--uik-component-shell-activity-bar-item-icon-size",
+        "--uik-component-shell-activity-bar-item-indicator-bg",
+        "--uik-component-shell-activity-bar-item-indicator-radius",
+        "--uik-component-shell-activity-bar-item-indicator-width"
+      ],
+      "kind": "component"
+    },
+    {
       "id": "shell-layout",
       "tagName": "uik-shell-layout",
       "summary": "Shell region layout container with named slots.",
-      "attributes": ["isSecondarySidebarVisible (boolean)"],
-      "slots": ["activity-bar", "primary-sidebar", "main-content", "secondary-sidebar", "status-bar"],
+      "attributes": [
+        "isSecondarySidebarVisible (boolean)"
+      ],
+      "slots": [
+        "activity-bar",
+        "primary-sidebar",
+        "main-content",
+        "secondary-sidebar",
+        "status-bar"
+      ],
       "parts": [
         "layout",
         "row",
@@ -18,82 +59,131 @@
         "status-bar"
       ],
       "events": [],
-      "a11y": ["Use semantic elements inside slots for landmarks."],
-      "cssVars": ["--uik-component-shell-divider-color", "--uik-component-shell-scrollbar-*"]
-    },
-    {
-      "kind": "component",
-      "id": "shell-activity-bar",
-      "tagName": "uik-shell-activity-bar",
-      "summary": "Vertical activity bar composed with uik-nav-rail.",
-      "attributes": ["items (array)", "activeId (string)"],
-      "slots": ["footer"],
-      "parts": ["activity-bar", "spacer", "footer"],
-      "events": ["activity-bar-select (detail: {id})"],
-      "a11y": ["Delegates roving focus behavior to uik-nav-rail; set aria-label if needed."],
+      "a11y": [
+        "Use semantic elements inside slots for landmarks."
+      ],
       "cssVars": [
-        "--uik-component-shell-activity-bar-bg",
-        "--uik-component-shell-activity-bar-fg",
-        "--uik-component-shell-activity-bar-width",
-        "--uik-component-shell-activity-bar-item-size",
-        "--uik-component-shell-activity-bar-item-icon-size",
-        "--uik-component-shell-activity-bar-item-indicator-bg",
-        "--uik-component-shell-activity-bar-item-indicator-radius",
-        "--uik-component-shell-activity-bar-item-indicator-width"
-      ]
+        "--uik-component-shell-divider-color",
+        "--uik-component-shell-scrollbar-*"
+      ],
+      "kind": "component"
     },
     {
-      "kind": "component",
-      "id": "shell-sidebar",
-      "tagName": "uik-shell-sidebar",
-      "summary": "Primary sidebar with heading, actions, body, and footer slots.",
-      "attributes": ["heading", "subtitle", "isBodyPadded", "isBodyScrollable"],
-      "slots": ["actions", "default", "footer"],
-      "parts": ["sidebar", "header", "heading", "subtitle", "actions", "body", "footer"],
-      "events": [],
-      "a11y": ["Sidebar is an <aside>; ensure internal landmarks and labels."],
-      "cssVars": ["--uik-component-shell-sidebar-bg", "--uik-component-shell-sidebar-fg", "--uik-component-shell-sidebar-width"]
-    },
-    {
-      "kind": "component",
       "id": "shell-secondary-sidebar",
       "tagName": "uik-shell-secondary-sidebar",
       "summary": "Secondary sidebar panel with header and optional footer.",
-      "attributes": ["isOpen (boolean)", "heading", "focusReturnTarget (selector | element)"],
-      "slots": ["default", "footer"],
-      "parts": ["secondary-sidebar", "header", "heading", "close-button", "body", "footer"],
-      "events": ["secondary-sidebar-close"],
+      "attributes": [
+        "isOpen (boolean)",
+        "heading",
+        "focusReturnTarget (selector | element)"
+      ],
+      "slots": [
+        "default",
+        "footer"
+      ],
+      "parts": [
+        "secondary-sidebar",
+        "header",
+        "heading",
+        "close-button",
+        "body",
+        "footer"
+      ],
+      "events": [
+        "secondary-sidebar-close"
+      ],
       "a11y": [
         "Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading."
       ],
-      "cssVars": ["--uik-component-shell-secondary-sidebar-bg", "--uik-component-shell-secondary-sidebar-width"]
+      "cssVars": [
+        "--uik-component-shell-secondary-sidebar-bg",
+        "--uik-component-shell-secondary-sidebar-width"
+      ],
+      "kind": "component"
     },
     {
-      "kind": "component",
+      "id": "shell-sidebar",
+      "tagName": "uik-shell-sidebar",
+      "summary": "Primary sidebar with heading, actions, body, and footer slots.",
+      "attributes": [
+        "heading",
+        "subtitle",
+        "isBodyPadded",
+        "isBodyScrollable"
+      ],
+      "slots": [
+        "actions",
+        "default",
+        "footer"
+      ],
+      "parts": [
+        "sidebar",
+        "header",
+        "heading",
+        "subtitle",
+        "actions",
+        "body",
+        "footer"
+      ],
+      "events": [],
+      "a11y": [
+        "Sidebar is an <aside>; ensure internal landmarks and labels."
+      ],
+      "cssVars": [
+        "--uik-component-shell-sidebar-bg",
+        "--uik-component-shell-sidebar-fg",
+        "--uik-component-shell-sidebar-width"
+      ],
+      "kind": "component"
+    },
+    {
       "id": "shell-status-bar",
       "tagName": "uik-shell-status-bar",
       "summary": "Status bar for global status and actions.",
-      "attributes": ["message", "tone (info | success | danger | muted)", "meta"],
-      "slots": ["actions", "meta"],
-      "parts": ["status-bar", "message", "actions", "meta"],
+      "attributes": [
+        "message",
+        "tone (info | success | danger | muted)",
+        "meta"
+      ],
+      "slots": [
+        "actions",
+        "meta"
+      ],
+      "parts": [
+        "status-bar",
+        "message",
+        "actions",
+        "meta"
+      ],
       "events": [],
-      "a11y": ["Use short status text; provide accessible names for actions."],
+      "a11y": [
+        "Use short status text; provide accessible names for actions."
+      ],
       "cssVars": [
         "--uik-component-shell-status-bar-bg",
         "--uik-component-shell-status-bar-fg",
         "--uik-component-shell-status-bar-height"
-      ]
+      ],
+      "kind": "component"
     },
     {
       "kind": "utility",
       "id": "shell-router",
       "name": "createUikShellRouter()",
       "summary": "Tiny EventTarget-based router for view + subview state.",
-      "attributes": ["routes (array)", "initialView", "initialSubview"],
+      "attributes": [
+        "routes (array)",
+        "initialView",
+        "initialSubview"
+      ],
       "slots": [],
       "parts": [],
-      "events": ["uik-shell:navigation (CustomEvent<UikShellNavigationDetail>)"],
-      "a11y": ["Keep focus management in the host app when views change."],
+      "events": [
+        "uik-shell:navigation (CustomEvent<UikShellNavigationDetail>)"
+      ],
+      "a11y": [
+        "Keep focus management in the host app when views change."
+      ],
       "cssVars": []
     }
   ]

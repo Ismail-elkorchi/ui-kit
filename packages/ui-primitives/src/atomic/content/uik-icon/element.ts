@@ -4,6 +4,16 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 
 import {styles} from './styles';
 
+/**
+ * Sized icon wrapper for inline SVG content.
+ * @attr size (xs | sm | md | lg)
+ * @attr tone (default | muted | danger | success | warning | info | inverse)
+ * @slot default (svg)
+ * @part base
+ * @a11y Use aria-label for meaningful icons or aria-hidden for decorative icons.
+ * @cssprop --uik-component-icon-size-{xs|sm|md|lg}
+ * @cssprop --uik-component-icon-color-{default|muted|danger|success|warning|info|inverse}
+ */
 @customElement('uik-icon')
 export class UikIcon extends LitElement {
   @property({type: String, reflect: true, useDefault: true}) accessor size: 'xs' | 'sm' | 'md' | 'lg' = 'md';

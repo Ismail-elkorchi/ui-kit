@@ -9,6 +9,28 @@ import {resolvePlacement} from '../../../internal/overlay/positioning';
 
 type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
 
+/**
+ * Popover panel with trigger slot and optional native popover support.
+ * @attr open
+ * @attr placement
+ * @attr popover (auto | manual | hint)
+ * @slot trigger
+ * @slot default (panel content)
+ * @part control
+ * @part base
+ * @event Trigger events bubble; panel listens to native popover toggle when supported.
+ * @event overlay-close (detail: {reason})
+ * @a11y Forward aria-* attributes to the panel.
+ * @cssprop --uik-component-popover-bg
+ * @cssprop --uik-component-popover-fg
+ * @cssprop --uik-component-popover-border
+ * @cssprop --uik-component-popover-radius
+ * @cssprop --uik-component-popover-padding-x
+ * @cssprop --uik-component-popover-padding-y
+ * @cssprop --uik-component-popover-shadow
+ * @cssprop --uik-component-popover-offset
+ * @cssprop --uik-z-local-overlay
+ */
 @customElement('uik-popover')
 export class UikPopover extends LitElement {
   @property({type: Boolean, reflect: true, useDefault: true}) accessor open = false;
