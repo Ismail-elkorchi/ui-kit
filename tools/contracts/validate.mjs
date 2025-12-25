@@ -6,6 +6,7 @@ import Ajv from 'ajv';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '../..');
+const buildHint = 'npm run contracts:validate:build';
 
 const paths = {
   tokensCss: path.join(repoRoot, 'packages/ui-tokens/dist/base.css'),
@@ -34,6 +35,32 @@ const ajv = new Ajv({allErrors: true, strict: false});
 
 const readJson = async filePath => JSON.parse(await fs.readFile(filePath, 'utf8'));
 const readText = async filePath => fs.readFile(filePath, 'utf8');
+
+const reportMissingArtifacts = missing => {
+  console.error('Contract validation requires build artifacts.');
+  console.error('Missing:');
+  for (const item of missing) {
+    console.error(`- ${item.label} (${path.relative(repoRoot, item.path)})`);
+  }
+  console.error(`Run \`${buildHint}\` to build required artifacts, then retry.`);
+};
+
+const ensureArtifacts = async artifacts => {
+  const missing = [];
+  for (const artifact of artifacts) {
+    try {
+      await fs.access(artifact.path);
+    } catch {
+      missing.push(artifact);
+    }
+  }
+  if (missing.length) {
+    reportMissingArtifacts(missing);
+    process.exitCode = 1;
+    return false;
+  }
+  return true;
+};
 
 const loadSchemaValidator = async schemaPath => {
   const schema = await readJson(schemaPath);
@@ -242,6 +269,13 @@ const run = async () => {
   const warnings = [];
   let primitivesSchemaValidator;
   let shellSchemaValidator;
+
+  const artifactsOk = await ensureArtifacts([
+    {label: 'ui-tokens base.css', path: paths.tokensCss},
+    {label: 'ui-primitives custom-elements.json', path: paths.primitives.cem},
+    {label: 'ui-shell custom-elements.json', path: paths.shell.cem},
+  ]);
+  if (!artifactsOk) return;
 
   let tokenSet;
   try {

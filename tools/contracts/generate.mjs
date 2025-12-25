@@ -11,6 +11,8 @@ const schemaPaths = {
   shell: path.join(repoRoot, 'tools/contracts/schemas/contracts-entries.schema.json'),
 };
 
+const buildHint = 'npm run contracts:validate:build';
+
 const toPosixPath = value => value.replace(/\\/g, '/');
 
 const parseArgs = args => {
@@ -31,6 +33,32 @@ const parseArgs = args => {
 };
 
 const readJson = async filePath => JSON.parse(await fs.readFile(filePath, 'utf8'));
+
+const reportMissingArtifacts = (missing, context) => {
+  console.error(`Contracts ${context} requires build artifacts.`);
+  console.error('Missing:');
+  for (const item of missing) {
+    console.error(`- ${item.label} (${path.relative(repoRoot, item.path)})`);
+  }
+  console.error(`Run \`${buildHint}\` to build required artifacts, then retry.`);
+};
+
+const ensureArtifacts = async (artifacts, context) => {
+  const missing = [];
+  for (const artifact of artifacts) {
+    try {
+      await fs.access(artifact.path);
+    } catch {
+      missing.push(artifact);
+    }
+  }
+  if (missing.length) {
+    reportMissingArtifacts(missing, context);
+    process.exitCode = 1;
+    return false;
+  }
+  return true;
+};
 
 const normalizeComment = comment => {
   if (!comment) return '';
@@ -279,6 +307,20 @@ const run = async () => {
 
   const primitivesRoot = path.join(repoRoot, 'packages/ui-primitives');
   const shellRoot = path.join(repoRoot, 'packages/ui-shell');
+  const artifactsOk = await ensureArtifacts(
+    [
+      {
+        label: 'ui-primitives custom-elements.json',
+        path: path.join(primitivesRoot, 'dist/custom-elements.json'),
+      },
+      {
+        label: 'ui-shell custom-elements.json',
+        path: path.join(shellRoot, 'dist/custom-elements.json'),
+      },
+    ],
+    checkOnly ? 'check' : 'generation',
+  );
+  if (!artifactsOk) return;
 
   const primitivesContracts = await buildComponentContracts({
     packageRoot: primitivesRoot,
