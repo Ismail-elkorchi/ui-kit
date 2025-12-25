@@ -23,7 +23,11 @@
   ],
   "scripts": {
     "build": "npm run --workspaces --if-present build",
+    "postbuild": "npm run contracts:validate",
     "build-storybook": "storybook build -c .storybook -o storybook-static --disable-telemetry",
+    "contracts:scaffold:primitive": "node tools/contracts/scaffold-primitive.mjs",
+    "contracts:validate": "node tools/contracts/validate.mjs",
+    "contracts:validate:build": "npm -w packages/ui-tokens run build && npm -w packages/ui-primitives run build && npm -w packages/ui-shell run build && npm run contracts:validate",
     "prebuild-storybook": "npm run --workspaces --if-present build && npm run storybook:css",
     "cem": "npm run --workspaces --if-present cem",
     "lint": "eslint . --max-warnings=0",

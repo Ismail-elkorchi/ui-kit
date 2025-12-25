@@ -1,0 +1,56 @@
+{
+  "docs": [
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "summary": "Install UIK packages, load tokens, and compose primitives and shell components.",
+      "source": "packages/docs/content/getting-started.md",
+      "format": "markdown"
+    },
+    {
+      "id": "tokens",
+      "title": "Tokens Reference",
+      "summary": "UIK tokens are the single source of truth for all visual values and component hooks.",
+      "source": "packages/ui-tokens/README.md",
+      "format": "markdown"
+    },
+    {
+      "id": "primitives",
+      "title": "Primitives Reference",
+      "summary": "Shadow DOM building blocks that read tokens and expose explicit contracts.",
+      "type": "components",
+      "package": "ui-primitives",
+      "readme": "packages/ui-primitives/README.md",
+      "contracts": "packages/ui-primitives/contracts/components.json",
+      "cem": "packages/ui-primitives/dist/custom-elements.json",
+      "componentsTitle": "Components and contracts"
+    },
+    {
+      "id": "shell",
+      "title": "Shell Patterns",
+      "summary": "Light DOM layout primitives that compose the UI into a consistent application shell.",
+      "type": "components",
+      "package": "ui-shell",
+      "readme": "packages/ui-shell/README.md",
+      "contracts": "packages/ui-shell/contracts/entries.json",
+      "cem": "packages/ui-shell/dist/custom-elements.json",
+      "componentsTitle": "Shell component contracts"
+    }
+  ],
+  "lab": [
+    {
+      "id": "shell-patterns",
+      "title": "Lab: Shell Patterns",
+      "summary": "Dogfood shell patterns with live controls that update the layout and status bar.",
+      "source": "packages/docs/content/lab/shell-patterns.md",
+      "format": "markdown"
+    },
+    {
+      "id": "overlays",
+      "title": "Lab: Overlays and Feedback",
+      "summary": "Exercise dialogs, popovers, tooltips, and progress indicators.",
+      "source": "packages/docs/content/lab/overlays.md",
+      "format": "markdown"
+    }
+  ]
+}
