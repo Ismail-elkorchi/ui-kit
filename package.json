@@ -66,6 +66,7 @@
     "@vitest/browser": "^4.0.16",
     "@vitest/browser-playwright": "^4.0.16",
     "@vitest/coverage-v8": "^4.0.16",
+    "ajv": "^8.17.1",
     "axe-core": "^4.10.3",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",

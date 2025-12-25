@@ -2,6 +2,8 @@ import {promises as fs} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
+import Ajv from 'ajv';
+
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '../..');
 
@@ -23,8 +25,27 @@ const paths = {
   },
 };
 
+const schemaPaths = {
+  primitives: path.join(repoRoot, 'tools/contracts/schemas/contracts-components.schema.json'),
+  shell: path.join(repoRoot, 'tools/contracts/schemas/contracts-entries.schema.json'),
+};
+
+const ajv = new Ajv({allErrors: true, strict: false});
+
 const readJson = async filePath => JSON.parse(await fs.readFile(filePath, 'utf8'));
 const readText = async filePath => fs.readFile(filePath, 'utf8');
+
+const loadSchemaValidator = async schemaPath => {
+  const schema = await readJson(schemaPath);
+  return ajv.compile(schema);
+};
+
+const formatSchemaErrors = errors =>
+  (errors ?? []).map(error => {
+    const pointer = error.instancePath ? `at ${error.instancePath}` : 'at (root)';
+    const message = error.message ?? 'is invalid';
+    return `${pointer} ${message}`;
+  });
 
 const stripDescription = value => value.split(' (')[0].trim();
 
@@ -109,10 +130,18 @@ const validateCssVars = (entry, tokenSet, errors, warnings) => {
   }
 };
 
-const validateContracts = async ({name, contractsPath, cemPath, tokenSet, enforceStories}) => {
+const validateContracts = async ({name, contractsPath, cemPath, tokenSet, enforceStories, schemaValidator}) => {
   const errors = [];
   const warnings = [];
   const contracts = await readJson(contractsPath);
+  if (schemaValidator) {
+    const valid = schemaValidator(contracts);
+    if (!valid) {
+      for (const message of formatSchemaErrors(schemaValidator.errors)) {
+        errors.push(`${name}: schema ${message}.`);
+      }
+    }
+  }
   const cem = await readJson(cemPath);
   const cemTags = loadCemTagNames(cem);
   const entries = contracts.components ?? contracts.entries ?? [];
@@ -211,6 +240,8 @@ const validateIndexAndRegister = async (tagNames, registerPath, indexPath, error
 const run = async () => {
   const errors = [];
   const warnings = [];
+  let primitivesSchemaValidator;
+  let shellSchemaValidator;
 
   let tokenSet;
   try {
@@ -220,12 +251,29 @@ const run = async () => {
     tokenSet = new Set();
   }
 
+  try {
+    primitivesSchemaValidator = await loadSchemaValidator(schemaPaths.primitives);
+  } catch {
+    errors.push(
+      `schema: unable to read primitives schema (${path.relative(repoRoot, schemaPaths.primitives)}).`,
+    );
+  }
+
+  try {
+    shellSchemaValidator = await loadSchemaValidator(schemaPaths.shell);
+  } catch {
+    errors.push(
+      `schema: unable to read shell schema (${path.relative(repoRoot, schemaPaths.shell)}).`,
+    );
+  }
+
   const primitives = await validateContracts({
     name: 'ui-primitives',
     contractsPath: paths.primitives.contracts,
     cemPath: paths.primitives.cem,
     tokenSet,
     enforceStories: true,
+    schemaValidator: primitivesSchemaValidator,
   });
   errors.push(...primitives.errors);
   warnings.push(...primitives.warnings);
@@ -247,6 +295,7 @@ const run = async () => {
     cemPath: paths.shell.cem,
     tokenSet,
     enforceStories: false,
+    schemaValidator: shellSchemaValidator,
   });
   errors.push(...shell.errors);
   warnings.push(...shell.warnings);

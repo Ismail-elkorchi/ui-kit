@@ -6,6 +6,12 @@ import ts from 'typescript';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '../..');
+const schemaPaths = {
+  primitives: path.join(repoRoot, 'tools/contracts/schemas/contracts-components.schema.json'),
+  shell: path.join(repoRoot, 'tools/contracts/schemas/contracts-entries.schema.json'),
+};
+
+const toPosixPath = value => value.replace(/\\/g, '/');
 
 const parseArgs = args => {
   const options = {};
@@ -288,17 +294,25 @@ const run = async () => {
   const shellUtilities = await collectUtilityContracts(path.join(shellRoot, 'src'));
   shellUtilities.sort((a, b) => a.id.localeCompare(b.id));
 
+  const primitivesPath = path.join(primitivesRoot, 'contracts/components.json');
+  const shellPath = path.join(shellRoot, 'contracts/entries.json');
+  const primitivesSchemaRef = toPosixPath(
+    path.relative(path.dirname(primitivesPath), schemaPaths.primitives),
+  );
+  const shellSchemaRef = toPosixPath(
+    path.relative(path.dirname(shellPath), schemaPaths.shell),
+  );
+
   const primitivesOutput = {
+    $schema: primitivesSchemaRef,
     schemaVersion: '1.0.0',
     components: primitivesContracts,
   };
   const shellOutput = {
+    $schema: shellSchemaRef,
     schemaVersion: '1.0.0',
     entries: [...shellComponents, ...shellUtilities],
   };
-
-  const primitivesPath = path.join(primitivesRoot, 'contracts/components.json');
-  const shellPath = path.join(shellRoot, 'contracts/entries.json');
 
   if (checkOnly) {
     await checkJson(primitivesPath, primitivesOutput);
