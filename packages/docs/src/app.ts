@@ -141,6 +141,7 @@ const wireLabShellControls = (
 
   const secondaryToggle = container.querySelector<UikSwitch>('[data-docs-control="secondary-toggle"]');
   if (secondaryToggle) {
+    secondary.focusReturnTarget = secondaryToggle;
     secondaryToggle.checked = secondary.isOpen;
     secondaryToggle.addEventListener('change', () => {
       setOutlineOpen(layout, secondary, secondaryToggle.checked);

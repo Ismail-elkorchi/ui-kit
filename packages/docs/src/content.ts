@@ -467,11 +467,11 @@ export const shellDocs: ComponentDoc[] = [
     id: 'shell-secondary-sidebar',
     name: '<uik-shell-secondary-sidebar>',
     summary: 'Secondary sidebar panel with header and optional footer.',
-    attributes: ['isOpen (boolean)', 'heading'],
+    attributes: ['isOpen (boolean)', 'heading', 'focusReturnTarget (selector | element)'],
     slots: ['default', 'footer'],
     parts: ['secondary-sidebar', 'header', 'heading', 'close-button', 'body', 'footer'],
     events: ['secondary-sidebar-close'],
-    a11y: ['Close button is labeled; provide meaningful heading.'],
+    a11y: ['Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading.'],
     cssVars: ['--uik-component-shell-secondary-sidebar-bg', '--uik-component-shell-secondary-sidebar-width'],
   },
   {

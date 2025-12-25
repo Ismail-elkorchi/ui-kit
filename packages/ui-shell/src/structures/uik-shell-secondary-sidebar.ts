@@ -1,4 +1,5 @@
 import {LitElement, html, nothing} from 'lit';
+import type {PropertyValues} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
@@ -11,11 +12,15 @@ import {ensureLightDomRoot, LightDomSlotController} from '../internal/light-dom-
 export class UikShellSecondarySidebar extends LitElement {
   @property({type: Boolean}) accessor isOpen = false;
   @property({type: String}) accessor heading = '';
+  @property({attribute: 'focus-return-target'}) accessor focusReturnTarget: string | HTMLElement | null = null;
   @state() private accessor hasFooter = false;
   private slotController?: LightDomSlotController;
+  private previousActiveElement: HTMLElement | null = null;
+  private shouldRestoreFocus = false;
 
   override connectedCallback() {
     super.connectedCallback();
+    this.addEventListener('keydown', this.onKeydown);
     if (!this.style.display) this.style.display = 'block';
     if (!this.style.boxSizing) this.style.boxSizing = 'border-box';
     if (!this.style.height) this.style.height = '100%';
@@ -36,6 +41,7 @@ export class UikShellSecondarySidebar extends LitElement {
   }
 
   override disconnectedCallback() {
+    this.removeEventListener('keydown', this.onKeydown);
     this.slotController?.disconnect();
     super.disconnectedCallback();
   }
@@ -44,13 +50,60 @@ export class UikShellSecondarySidebar extends LitElement {
     this.slotController?.sync();
   }
 
+  override willUpdate(changedProps: PropertyValues<this>) {
+    const wasOpen = changedProps.get('isOpen');
+    if (changedProps.has('isOpen') && this.isOpen && (wasOpen === false || wasOpen === undefined)) {
+      const active = document.activeElement;
+      this.previousActiveElement = active instanceof HTMLElement ? active : null;
+    }
+  }
+
   override createRenderRoot() {
     return ensureLightDomRoot(this);
   }
 
   private close = () => {
+    if (!this.isOpen) return;
+    this.shouldRestoreFocus = true;
+    this.isOpen = false;
     this.dispatchEvent(new CustomEvent('secondary-sidebar-close', {bubbles: true, composed: true}));
   };
+
+  private onKeydown = (event: KeyboardEvent) => {
+    if (event.defaultPrevented) return;
+    if (event.key !== 'Escape') return;
+    event.stopPropagation();
+    event.preventDefault();
+    this.close();
+  };
+
+  private restoreFocus() {
+    const target = this.resolveFocusReturnTarget();
+    if (target) target.focus();
+    this.previousActiveElement = null;
+  }
+
+  private resolveFocusReturnTarget(): HTMLElement | null {
+    if (this.focusReturnTarget instanceof HTMLElement && this.focusReturnTarget.isConnected) {
+      return this.focusReturnTarget;
+    }
+    if (typeof this.focusReturnTarget === 'string' && this.focusReturnTarget.trim()) {
+      const resolved = document.querySelector<HTMLElement>(this.focusReturnTarget);
+      if (resolved) return resolved;
+    }
+    if (this.previousActiveElement?.isConnected) {
+      return this.previousActiveElement;
+    }
+    return null;
+  }
+
+  override updated(changedProps: PropertyValues<this>) {
+    const wasOpen = changedProps.get('isOpen');
+    if ((changedProps.has('isOpen') && wasOpen === true && !this.isOpen) || this.shouldRestoreFocus) {
+      this.restoreFocus();
+      this.shouldRestoreFocus = false;
+    }
+  }
 
   override render() {
     if (!this.isOpen) return nothing;
@@ -110,7 +163,10 @@ export class UikShellSecondarySidebar extends LitElement {
     };
 
     return html`
-      <aside part="secondary-sidebar" data-region="secondary-sidebar" style=${styleMap(sidebarStyles)}>
+      <aside
+        part="secondary-sidebar"
+        data-region="secondary-sidebar"
+        style=${styleMap(sidebarStyles)}>
         <div part="header" style=${styleMap(headerStyles)}>
           <span part="heading" style=${styleMap(headingStyles)}>${this.heading}</span>
           <uik-button
