@@ -14,9 +14,11 @@ export class UikCheckbox extends LitElement {
   @property({type: String}) accessor value = 'on';
   @property({type: String, reflect: true, useDefault: true}) accessor name = '';
   @property({type: Boolean, reflect: true, useDefault: true}) accessor checked = false;
+  @property({type: Boolean, reflect: true, useDefault: true}) accessor indeterminate = false;
   @property({type: Boolean, reflect: true, useDefault: true}) accessor disabled = false;
   @property({type: Boolean, reflect: true, useDefault: true}) accessor required = false;
   @property({type: Boolean, reflect: true, useDefault: true}) accessor invalid = false;
+  @property({type: Number}) accessor tabIndexValue = 0;
   @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
   @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
   @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
@@ -26,6 +28,7 @@ export class UikCheckbox extends LitElement {
   private readonly hintId = `${this.controlId}-hint`;
   private readonly errorId = `${this.controlId}-error`;
   private defaultChecked = false;
+  private defaultIndeterminate = false;
 
   static override readonly styles = styles;
 
@@ -36,10 +39,12 @@ export class UikCheckbox extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     this.defaultChecked = this.checked;
+    this.defaultIndeterminate = this.indeterminate;
   }
 
   override firstUpdated() {
     this.defaultChecked = this.checked;
+    this.defaultIndeterminate = this.indeterminate;
     this.syncFormValue();
     this.syncValidity();
   }
@@ -60,6 +65,7 @@ export class UikCheckbox extends LitElement {
 
   formResetCallback() {
     this.checked = this.defaultChecked;
+    this.indeterminate = this.defaultIndeterminate;
     this.syncFormValue();
     this.syncValidity();
   }
@@ -67,8 +73,10 @@ export class UikCheckbox extends LitElement {
   formStateRestoreCallback(state: string | File | FormData | null) {
     if (state === null) {
       this.checked = false;
+      this.indeterminate = false;
     } else if (typeof state === 'string') {
       this.checked = true;
+      this.indeterminate = false;
       this.value = state;
     }
     this.syncFormValue();
@@ -111,6 +119,7 @@ export class UikCheckbox extends LitElement {
   private onChange = (event: Event) => {
     const input = event.target as HTMLInputElement;
     this.checked = input.checked;
+    this.indeterminate = false;
     this.syncFormValue();
     this.syncValidity();
   };
@@ -139,8 +148,10 @@ export class UikCheckbox extends LitElement {
             name=${this.name}
             .value=${this.value}
             ?checked=${this.checked}
+            .indeterminate=${this.indeterminate}
             ?disabled=${this.disabled}
             ?required=${this.required}
+            tabindex=${this.tabIndexValue}
             aria-invalid=${ifDefined(ariaInvalid)}
             aria-describedby=${ifDefined(describedBy)}
             aria-label=${ifDefined(ariaLabel)}

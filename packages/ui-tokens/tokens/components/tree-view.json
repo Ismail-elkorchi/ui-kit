@@ -1,0 +1,72 @@
+{
+  "component": {
+    "treeView": {
+      "indent": {
+        "$value": "{space.3}",
+        "$type": "dimension",
+        "$description": "Component tree view indent."
+      },
+      "item": {
+        "activeBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component tree view item active bg."
+        },
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component tree view item bg."
+        },
+        "gap": {
+          "$value": "{layout.control.gap.2}",
+          "$type": "dimension",
+          "$description": "Component tree view item gap."
+        },
+        "height": {
+          "$value": "{size.control.sm}",
+          "$type": "dimension",
+          "$description": "Component tree view item height."
+        },
+        "hoverBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component tree view item hover bg."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.1}",
+          "$type": "dimension",
+          "$description": "Component tree view item padding X."
+        },
+        "radius": {
+          "$value": "{radius.2}",
+          "$type": "dimension",
+          "$description": "Component tree view item radius."
+        }
+      },
+      "text": {
+        "leaf": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component tree view leaf text."
+        },
+        "branch": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component tree view branch text."
+        },
+        "hover": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component tree view text hover."
+        }
+      },
+      "toggle": {
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component tree view toggle fg."
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import {runA11y} from '../../../.storybook/a11y';
 
 type CheckboxArgs = {
   checked: boolean;
+  indeterminate: boolean;
   disabled: boolean;
   required: boolean;
   invalid: boolean;
@@ -28,6 +29,7 @@ const meta: Meta<CheckboxArgs> = {
   },
   args: {
     checked: false,
+    indeterminate: false,
     disabled: false,
     required: false,
     invalid: false,
@@ -38,6 +40,7 @@ const meta: Meta<CheckboxArgs> = {
   render: args => html`
     <uik-checkbox
       ?checked=${args.checked}
+      ?indeterminate=${args.indeterminate}
       ?disabled=${args.disabled}
       ?required=${args.required}
       ?invalid=${args.invalid}>
@@ -61,4 +64,9 @@ export const Default: Story = {
 export const Checked: Story = {
   play: playA11y,
   args: {checked: true},
+};
+
+export const Indeterminate: Story = {
+  play: playA11y,
+  args: {indeterminate: true},
 };

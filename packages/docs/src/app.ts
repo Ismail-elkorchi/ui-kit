@@ -2,6 +2,8 @@ import type {
   UikButton,
   UikDialog,
   UikInput,
+  UikNav,
+  UikNavItem,
   UikProgress,
   UikRadioGroup,
   UikSelect,
@@ -12,8 +14,6 @@ import {
   createUikShellRouter,
   type UikShellActivityBar,
   type UikShellActivityBarItem,
-  type UikShellFileTree,
-  type UikShellFileTreeNode,
   type UikShellLayout,
   type UikShellLocation,
   type UikShellSecondarySidebar,
@@ -61,25 +61,23 @@ const buildActivityItems = (routes: UikShellRoute[]): UikShellActivityBarItem[] 
   }));
 };
 
-const buildNavItems = (): UikShellFileTreeNode[] => [
+const buildNavItems = (): UikNavItem[] => [
   {
-    path: 'docs',
-    name: 'Docs',
-    isDirectory: true,
+    id: 'docs',
+    label: 'Docs',
     children: docsPages.map(page => ({
-      path: `docs/${page.id}`,
-      name: page.title,
-      isDirectory: false,
+      id: `docs/${page.id}`,
+      label: page.title,
+      href: `#docs/${page.id}`,
     })),
   },
   {
-    path: 'lab',
-    name: 'Lab',
-    isDirectory: true,
+    id: 'lab',
+    label: 'Lab',
     children: labPages.map(page => ({
-      path: `lab/${page.id}`,
-      name: page.title,
-      isDirectory: false,
+      id: `lab/${page.id}`,
+      label: page.title,
+      href: `#lab/${page.id}`,
     })),
   },
 ];
@@ -191,9 +189,7 @@ export const mountDocsApp = (container: HTMLElement) => {
         class="docs-activity-bar"
         aria-label="Primary navigation"></uik-shell-activity-bar>
       <uik-shell-sidebar slot="primary-sidebar" class="docs-sidebar" heading="Navigation" subtitle="UIK">
-        <nav class="docs-nav" aria-label="Docs navigation">
-          <uik-shell-file-tree class="docs-file-tree"></uik-shell-file-tree>
-        </nav>
+        <uik-nav class="docs-nav" aria-label="Docs navigation"></uik-nav>
         <div slot="footer" class="docs-sidebar-footer">
           <uik-text as="p" size="sm" tone="muted">Tokens-first, standards-based UI.</uik-text>
         </div>
@@ -251,7 +247,7 @@ export const mountDocsApp = (container: HTMLElement) => {
 
   const layout = container.querySelector<UikShellLayout>('uik-shell-layout');
   const activityBar = container.querySelector<UikShellActivityBar>('uik-shell-activity-bar');
-  const fileTree = container.querySelector<UikShellFileTree>('uik-shell-file-tree');
+  const nav = container.querySelector<UikNav>('uik-nav');
   const statusBar = container.querySelector<UikShellStatusBar>('uik-shell-status-bar');
   const secondarySidebar = container.querySelector<UikShellSecondarySidebar>('uik-shell-secondary-sidebar');
   const titleElement = container.querySelector<HTMLElement>('[data-docs-title]');
@@ -263,13 +259,13 @@ export const mountDocsApp = (container: HTMLElement) => {
   const densitySelect = container.querySelector<UikSelect>('uik-select[data-docs-control="density"]');
   const mobileNavSelect = container.querySelector<UikSelect>('uik-select[data-docs-control="mobile-nav"]');
 
-  if (!layout || !activityBar || !fileTree || !statusBar || !secondarySidebar) {
+  if (!layout || !activityBar || !nav || !statusBar || !secondarySidebar) {
     throw new Error('Docs layout could not be initialized.');
   }
 
   activityBar.items = buildActivityItems(routes);
-  fileTree.items = buildNavItems();
-  fileTree.openPaths = ['docs'];
+  nav.items = buildNavItems();
+  nav.openIds = ['docs', 'lab'];
   setOutlineOpen(layout, secondarySidebar, true);
 
   const applyLocation = (location: UikShellLocation) => {
@@ -279,10 +275,10 @@ export const mountDocsApp = (container: HTMLElement) => {
 
     activityBar.activeId = location.view;
 
-    const nextOpen = new Set(fileTree.openPaths);
+    const nextOpen = new Set(nav.openIds);
     nextOpen.add(location.view);
-    fileTree.openPaths = [...nextOpen];
-    fileTree.selectedPaths = [key];
+    nav.openIds = [...nextOpen];
+    nav.currentId = key;
 
     if (titleElement) titleElement.textContent = page.title;
     if (summaryElement) summaryElement.textContent = page.summary;
@@ -318,10 +314,11 @@ export const mountDocsApp = (container: HTMLElement) => {
     router.navigate(detail.id);
   });
 
-  fileTree.addEventListener('file-tree-open', event => {
-    const detail = (event as CustomEvent<{path: string}>).detail;
-    const [view, subview] = detail.path.split('/');
+  nav.addEventListener('nav-select', event => {
+    const detail = (event as CustomEvent<{id: string}>).detail;
+    const [view, subview] = detail.id.split('/');
     if (!view || !subview) return;
+    event.preventDefault();
     router.navigate(view, subview);
   });
 

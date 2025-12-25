@@ -1,4 +1,4 @@
-import type {UikShellFileTree} from '@ismail-elkorchi/ui-shell';
+import type {UikNav} from '@ismail-elkorchi/ui-primitives';
 import '@ismail-elkorchi/ui-tokens/base.css';
 import {beforeEach, describe, expect, it} from 'vitest';
 import {userEvent} from 'vitest/browser';
@@ -16,16 +16,14 @@ describe('docs navigation', () => {
   });
 
   it('navigates to the tokens page via keyboard', async () => {
-    await customElements.whenDefined('uik-shell-file-tree');
-    const tree = document.querySelector<UikShellFileTree>('uik-shell-file-tree');
-    await tree?.updateComplete;
+    await customElements.whenDefined('uik-nav');
+    const nav = document.querySelector<UikNav>('uik-nav');
+    await nav?.updateComplete;
 
-    const label = document.querySelector<HTMLButtonElement>(
-      'uik-shell-file-tree button[part="label"][data-node-path="docs/tokens"]',
-    );
-    expect(label).toBeTruthy();
+    const link = nav?.shadowRoot?.querySelector<HTMLAnchorElement>('a[href="#docs/tokens"]');
+    expect(link).toBeTruthy();
 
-    label?.focus();
+    link?.focus();
     await userEvent.keyboard('{Enter}');
     await nextFrame();
 

@@ -90,6 +90,16 @@
       "import": "./dist/src/atomic/overlay/uik-popover/index.js",
       "default": "./dist/src/atomic/overlay/uik-popover/index.js"
     },
+    "./uik-nav": {
+      "types": "./dist/src/composed/collection/uik-nav/index.d.ts",
+      "import": "./dist/src/composed/collection/uik-nav/index.js",
+      "default": "./dist/src/composed/collection/uik-nav/index.js"
+    },
+    "./uik-tree-view": {
+      "types": "./dist/src/composed/collection/uik-tree-view/index.d.ts",
+      "import": "./dist/src/composed/collection/uik-tree-view/index.js",
+      "default": "./dist/src/composed/collection/uik-tree-view/index.js"
+    },
     "./uik-progress": {
       "types": "./dist/src/atomic/feedback/uik-progress/index.d.ts",
       "import": "./dist/src/atomic/feedback/uik-progress/index.js",

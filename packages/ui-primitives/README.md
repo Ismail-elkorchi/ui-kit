@@ -17,6 +17,8 @@ import '@ismail-elkorchi/ui-primitives/uik-heading';
 import '@ismail-elkorchi/ui-primitives/uik-icon';
 import '@ismail-elkorchi/ui-primitives/uik-input';
 import '@ismail-elkorchi/ui-primitives/uik-link';
+import '@ismail-elkorchi/ui-primitives/uik-nav';
+import '@ismail-elkorchi/ui-primitives/uik-tree-view';
 import '@ismail-elkorchi/ui-primitives/uik-popover';
 import '@ismail-elkorchi/ui-primitives/uik-progress';
 import '@ismail-elkorchi/ui-primitives/uik-radio';
@@ -83,7 +85,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 
 ### `<uik-checkbox>`
 
-- **Attributes/props**: `name`, `value`, `checked`, `disabled`, `required`, `invalid`.
+- **Attributes/props**: `name`, `value`, `checked`, `indeterminate` (boolean), `disabled`, `required`, `invalid`, `tabIndexValue` (number).
 - **Slots**: `label`, `hint`, `error`.
 - **Parts**: `base`, `control`, `label`, `hint`, `error`.
 - **Events**: native `change` bubbles from the internal `<input>`.
@@ -131,6 +133,24 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Events**: native anchor events bubble from the internal `<a>`.
 - **A11y**: forwards `aria-label`/`aria-labelledby`/`aria-describedby` to `<a>`.
 - **Custom properties**: `--uik-component-link-fg-default`, `--uik-component-link-fg-hover`, `--uik-component-link-underline-offset`.
+
+### `<uik-tree-view>`
+
+- **Attributes/props**: `items` (array), `selectedIds` (string[]), `openIds` (string[]).
+- **Slots**: none.
+- **Parts**: `base`, `item`, `toggle`, `selection`, `label`.
+- **Events**: `tree-view-select`, `tree-view-open`, `tree-view-toggle`.
+- **A11y**: `role="tree"` with roving focus; Space toggles selection, Enter opens/toggles; `aria-checked` reflects tri-state.
+- **Custom properties**: `--uik-component-tree-view-item-*`, `--uik-component-tree-view-indent`, `--uik-component-tree-view-text-*`, `--uik-component-tree-view-toggle-fg`.
+
+### `<uik-nav>`
+
+- **Attributes/props**: `items` (array), `openIds` (string[]), `currentId`.
+- **Slots**: none.
+- **Parts**: `base`, `item`, `toggle`, `link`, `label`.
+- **Events**: `nav-select`, `nav-toggle`.
+- **A11y**: renders links inside a `<nav>` element with `aria-current="page"` for the active item.
+- **Custom properties**: `--uik-component-nav-item-*`, `--uik-component-nav-indent`, `--uik-component-nav-text-*`, `--uik-component-nav-toggle-fg`.
 
 ### `<uik-popover>`
 

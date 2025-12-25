@@ -1,0 +1,77 @@
+{
+  "component": {
+    "nav": {
+      "indent": {
+        "$value": "{space.3}",
+        "$type": "dimension",
+        "$description": "Component nav indent."
+      },
+      "item": {
+        "activeBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component nav item active bg."
+        },
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component nav item bg."
+        },
+        "gap": {
+          "$value": "{layout.control.gap.2}",
+          "$type": "dimension",
+          "$description": "Component nav item gap."
+        },
+        "height": {
+          "$value": "{size.control.sm}",
+          "$type": "dimension",
+          "$description": "Component nav item height."
+        },
+        "hoverBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component nav item hover bg."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.1}",
+          "$type": "dimension",
+          "$description": "Component nav item padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.1}",
+          "$type": "dimension",
+          "$description": "Component nav item padding Y."
+        },
+        "radius": {
+          "$value": "{radius.2}",
+          "$type": "dimension",
+          "$description": "Component nav item radius."
+        }
+      },
+      "text": {
+        "active": {
+          "$value": "{text.strong}",
+          "$type": "color",
+          "$description": "Component nav text active."
+        },
+        "default": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component nav text default."
+        },
+        "hover": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component nav text hover."
+        }
+      },
+      "toggle": {
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component nav toggle fg."
+        }
+      }
+    }
+  }
+}

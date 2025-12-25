@@ -154,6 +154,26 @@ describe('uik control primitives', () => {
     expect(true).toBe(true);
   });
 
+  it('supports indeterminate state and custom tabindex on checkbox', async () => {
+    const checkbox = document.createElement('uik-checkbox') as UikCheckbox;
+    checkbox.indeterminate = true;
+    checkbox.tabIndexValue = -1;
+    document.body.append(checkbox);
+
+    await checkbox.updateComplete;
+
+    const control = checkbox.shadowRoot?.querySelector('input');
+    expect(control?.indeterminate).toBe(true);
+    expect(control?.getAttribute('tabindex')).toBe('-1');
+
+    if (control) {
+      control.checked = true;
+      control.dispatchEvent(new Event('change', {bubbles: true}));
+      await checkbox.updateComplete;
+      expect(checkbox.indeterminate).toBe(false);
+    }
+  });
+
   it('handles switch state, aria, and form callbacks', async () => {
     const toggle = document.createElement('uik-switch') as UikSwitch;
     toggle.checked = true;

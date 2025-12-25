@@ -1,0 +1,57 @@
+import '@ismail-elkorchi/ui-primitives/register';
+import type {Meta, StoryObj} from '@storybook/web-components-vite';
+import {html} from 'lit';
+
+import {runA11y} from '../../../.storybook/a11y';
+
+type TreeViewArgs = {
+  openIds: string[];
+  selectedIds: string[];
+};
+
+const items = [
+  {
+    id: 'apps',
+    label: 'apps',
+    children: [
+      {id: 'apps/main.ts', label: 'main.ts'},
+      {id: 'apps/routes.ts', label: 'routes.ts'},
+    ],
+  },
+  {
+    id: 'packages',
+    label: 'packages',
+    children: [
+      {id: 'packages/ui-primitives', label: 'ui-primitives'},
+      {id: 'packages/ui-shell', label: 'ui-shell'},
+    ],
+  },
+];
+
+const meta: Meta<TreeViewArgs> = {
+  title: 'Primitives/Tree View',
+  component: 'uik-tree-view',
+  tags: ['autodocs'],
+  args: {
+    openIds: ['apps', 'packages'],
+    selectedIds: ['apps/main.ts'],
+  },
+  render: args => html`
+    <uik-tree-view
+      .items=${items}
+      .openIds=${args.openIds}
+      .selectedIds=${args.selectedIds}
+      aria-label="Project files">
+    </uik-tree-view>
+  `,
+};
+
+export default meta;
+
+type Story = StoryObj<TreeViewArgs>;
+
+const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
+
+export const Default: Story = {
+  play: playA11y,
+};
