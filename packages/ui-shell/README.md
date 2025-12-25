@@ -66,6 +66,7 @@ html`
 - `uik-shell-layout`: named slots `activity-bar`, `primary-sidebar`, `main-content`, `secondary-sidebar`, `status-bar`.
 - `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-bar-select`; optional `footer` slot; roving focus with Arrow keys/Home/End and Enter/Space activation (set `aria-label` if you need a custom name).
 - `uik-shell-sidebar`: `slot="actions"` for header actions, default slot for body, optional `slot="footer"`; `isBodyPadded`/`isBodyScrollable` toggle spacing + scroll.
+- `uik-shell-file-tree`: accepts `.items`, `.selectedPaths`, and `.openPaths`; emits `file-tree-select`, `file-tree-open`, and `file-tree-toggle` for selection/open/toggle events.
 - `uik-shell-secondary-sidebar`: controlled via `.isOpen`; default slot for body, optional `slot="footer"`; emits `secondary-sidebar-close` on close.
 - `uik-shell-status-bar`: `.message` + `.tone` colorize the left side; `meta` string (outline badge) or `slot="meta"` for custom content; optional `slot="actions"`.
 
@@ -75,6 +76,7 @@ html`
 - Sidebar: `--uik-component-shell-sidebar-bg`, `--uik-component-shell-sidebar-fg`, `--uik-component-shell-sidebar-width`.
 - Secondary sidebar: `--uik-component-shell-secondary-sidebar-bg`, `--uik-component-shell-secondary-sidebar-width`.
 - Status bar: `--uik-component-shell-status-bar-bg`, `--uik-component-shell-status-bar-fg`, `--uik-component-shell-status-bar-height`.
+- File tree: `--uik-component-shell-file-tree-row-bg`, `--uik-component-shell-file-tree-row-hover-bg`, `--uik-component-shell-file-tree-row-active-bg`, `--uik-component-shell-file-tree-row-height`, `--uik-component-shell-file-tree-row-gap`, `--uik-component-shell-file-tree-row-padding-x`, `--uik-component-shell-file-tree-row-radius`, `--uik-component-shell-file-tree-indent`, `--uik-component-shell-file-tree-text-file`, `--uik-component-shell-file-tree-text-folder`, `--uik-component-shell-file-tree-text-hover`, `--uik-component-shell-file-tree-toggle-fg`.
 - Shared: `--uik-component-shell-divider-color`, `--uik-component-shell-scrollbar-track`, `--uik-component-shell-scrollbar-thumb`.
 
 ## Tokens & theming

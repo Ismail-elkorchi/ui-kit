@@ -3,3 +3,4 @@ import './src/structures/uik-shell-activity-bar';
 import './src/structures/uik-shell-sidebar';
 import './src/structures/uik-shell-secondary-sidebar';
 import './src/structures/uik-shell-status-bar';
+import './src/structures/uik-shell-file-tree';

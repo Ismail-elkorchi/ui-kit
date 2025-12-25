@@ -28,6 +28,74 @@
           "$description": "Component shell divider color."
         }
       },
+      "fileTree": {
+        "indent": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Component shell file tree indent."
+        },
+        "row": {
+          "activeBg": {
+            "$value": "{surface.muted}",
+            "$type": "color",
+            "$description": "Component shell file tree row active bg."
+          },
+          "bg": {
+            "$value": "{surface.bg}",
+            "$type": "color",
+            "$description": "Component shell file tree row bg."
+          },
+          "gap": {
+            "$value": "{layout.control.gap.2}",
+            "$type": "dimension",
+            "$description": "Component shell file tree row gap."
+          },
+          "height": {
+            "$value": "{size.control.sm}",
+            "$type": "dimension",
+            "$description": "Component shell file tree row height."
+          },
+          "hoverBg": {
+            "$value": "{surface.muted}",
+            "$type": "color",
+            "$description": "Component shell file tree row hover bg."
+          },
+          "paddingX": {
+            "$value": "{layout.control.paddingX.1}",
+            "$type": "dimension",
+            "$description": "Component shell file tree row padding X."
+          },
+          "radius": {
+            "$value": "{radius.2}",
+            "$type": "dimension",
+            "$description": "Component shell file tree row radius."
+          }
+        },
+        "text": {
+          "file": {
+            "$value": "{text.muted}",
+            "$type": "color",
+            "$description": "Component shell file tree file text."
+          },
+          "folder": {
+            "$value": "{text.default}",
+            "$type": "color",
+            "$description": "Component shell file tree folder text."
+          },
+          "hover": {
+            "$value": "{text.default}",
+            "$type": "color",
+            "$description": "Component shell file tree text hover."
+          }
+        },
+        "toggle": {
+          "fg": {
+            "$value": "{text.muted}",
+            "$type": "color",
+            "$description": "Component shell file tree toggle fg."
+          }
+        }
+      },
       "scrollbar": {
         "thumb": {
           "$value": "{scrollbar.thumb.default}",
