@@ -1,5 +1,19 @@
 import docsContent from './generated/docs-content.json';
 
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+export interface DocTocItem {
+  id: string;
+  title: string;
+  level: number;
+}
+
 export interface DocSection {
   id: string;
   title: string;
@@ -11,6 +25,7 @@ export interface DocPage {
   title: string;
   summary: string;
   sections: DocSection[];
+  toc: DocTocItem[];
 }
 
 interface DocsContent {
@@ -35,11 +50,13 @@ export const buildPageMap = () => {
 };
 
 export const renderToc = (page: DocPage) => {
-  if (!page.sections.length) return '';
-  return `<nav aria-label="On this page" class="docs-toc"><ul class="docs-list">${page.sections
+  if (page.toc.length === 0) return '';
+  return `<nav aria-label="On this page" class="docs-toc"><ul class="docs-toc-list">${page.toc
     .map(
-      sectionItem =>
-        `<li><uik-text as="p" class="docs-paragraph"><uik-link href="#${sectionItem.id}">${sectionItem.title}</uik-link></uik-text></li>`,
+      item =>
+        `<li class="docs-toc-item" data-level="${String(item.level)}"><uik-text as="p" class="docs-paragraph"><uik-link href="#${item.id}">${escapeHtml(
+          item.title,
+        )}</uik-link></uik-text></li>`,
     )
     .join('')}</ul></nav>`;
 };
@@ -49,7 +66,12 @@ export const renderPageSections = (page: DocPage) => {
     .map(sectionItem => {
       return `
         <section class="docs-section" id="${sectionItem.id}">
-          <uik-heading level="2">${sectionItem.title}</uik-heading>
+          <uik-heading level="2" class="docs-heading docs-section-heading" data-heading-level="2">
+            <a class="docs-heading-anchor" href="#${sectionItem.id}" aria-label="Link to ${escapeHtml(
+              sectionItem.title,
+            )}">#</a>
+            <span class="docs-heading-text">${escapeHtml(sectionItem.title)}</span>
+          </uik-heading>
           <div class="docs-section-body">${sectionItem.body}</div>
         </section>
       `;

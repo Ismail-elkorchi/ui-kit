@@ -187,12 +187,49 @@ uik-heading[data-docs-title]::part(base) {
   margin: var(--uik-space-0);
 }
 
+.docs-heading {
+  scroll-margin-top: var(--uik-space-6);
+}
+
+.docs-heading-anchor {
+  color: oklch(var(--uik-text-muted));
+  text-decoration: none;
+  opacity: var(--uik-opacity-0);
+  transition: opacity var(--uik-motion-duration-2) var(--uik-motion-ease-standard);
+}
+
+.docs-heading:hover .docs-heading-anchor,
+.docs-heading:focus-within .docs-heading-anchor {
+  opacity: var(--uik-opacity-100);
+}
+
+.docs-heading-anchor:focus-visible {
+  outline: var(--uik-focus-ring-width) solid oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
+  outline-offset: var(--uik-focus-ring-offset-default);
+  border-radius: var(--uik-radius-2);
+}
+
+.docs-heading-text {
+  color: oklch(var(--uik-text-strong));
+}
+
 .docs-list {
   display: flex;
   flex-direction: column;
   gap: var(--uik-space-2);
   padding-left: var(--uik-space-5);
   margin: var(--uik-space-0);
+}
+
+.docs-code-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--uik-space-2);
+}
+
+.docs-code-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .docs-code {
@@ -206,6 +243,12 @@ uik-heading[data-docs-title]::part(base) {
   background-color: oklch(var(--uik-surface-muted));
   border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
   border-radius: var(--uik-radius-3);
+}
+
+.docs-code code {
+  padding: var(--uik-space-0);
+  background-color: transparent;
+  border-radius: var(--uik-radius-0);
 }
 
 .docs-section-body code {
@@ -288,6 +331,27 @@ uik-heading[data-docs-title]::part(base) {
   gap: var(--uik-space-3);
 }
 
+.docs-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--uik-space-2);
+  padding-left: var(--uik-space-0);
+  margin: var(--uik-space-0);
+  list-style: none;
+}
+
+.docs-toc-item[data-level='3'] {
+  padding-left: var(--uik-space-3);
+}
+
+.docs-toc-item[data-level='4'] {
+  padding-left: var(--uik-space-4);
+}
+
+.docs-toc-item[data-level='5'] {
+  padding-left: var(--uik-space-5);
+}
+
 .docs-outline [part='body'] {
   gap: var(--uik-space-3);
 }
@@ -324,6 +388,10 @@ uik-heading[data-docs-title]::part(base) {
   }
 
   .docs-skip-link {
+    transition: none;
+  }
+
+  .docs-heading-anchor {
     transition: none;
   }
 }

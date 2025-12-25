@@ -10,14 +10,15 @@
     "node": ">=20.11"
   },
   "scripts": {
+    "deps:build": "cd ../.. && npm -w packages/ui-tokens run build && npm -w packages/ui-primitives run build && npm -w packages/ui-shell run build",
     "generate:content": "node ./tools/generate-docs-content.mjs",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest --run --project browser --config ../../vitest.config.ts --dir .",
-    "prebuild": "npm run generate:content",
-    "predev": "npm run generate:content",
-    "pretest": "npm run generate:content"
+    "prebuild": "npm run deps:build && npm run generate:content",
+    "predev": "npm run deps:build && npm run generate:content",
+    "pretest": "npm run deps:build && npm run generate:content"
   },
   "dependencies": {
     "@ismail-elkorchi/ui-primitives": "0.1.1",

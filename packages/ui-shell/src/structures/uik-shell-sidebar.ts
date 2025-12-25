@@ -141,8 +141,20 @@ export class UikShellSidebar extends LitElement {
       padding: 'var(--uik-space-3)',
       backgroundColor: 'oklch(var(--uik-surface-card))',
     };
+
+    const ariaLabelledby = this.getAttribute('aria-labelledby');
+    const ariaLabel = this.getAttribute('aria-label');
+    const hasLabelledby = Boolean(ariaLabelledby);
+    const hasLabel = typeof ariaLabel === 'string' && ariaLabel.trim().length > 0;
+    const resolvedLabel = hasLabel ? ariaLabel : hasLabelledby ? null : this.heading || 'Sidebar';
+
     return html`
-      <aside part="sidebar" data-region="primary-sidebar" style=${styleMap(sidebarStyles)}>
+      <aside
+        part="sidebar"
+        data-region="primary-sidebar"
+        aria-label=${resolvedLabel ?? nothing}
+        aria-labelledby=${ariaLabelledby ?? nothing}
+        style=${styleMap(sidebarStyles)}>
         <div part="header" style=${styleMap(headerStyles)}>
           <div part="header-content" style=${styleMap({minWidth: 'var(--uik-space-0)'})}>
             ${this.heading ? html`<div part="heading" style=${styleMap(headingStyles)}>${this.heading}</div>` : nothing}

@@ -180,10 +180,18 @@ export class UikShellSecondarySidebar extends LitElement {
       backgroundColor: 'oklch(var(--uik-surface-card))',
     };
 
+    const ariaLabelledby = this.getAttribute('aria-labelledby');
+    const ariaLabel = this.getAttribute('aria-label');
+    const hasLabelledby = Boolean(ariaLabelledby);
+    const hasLabel = typeof ariaLabel === 'string' && ariaLabel.trim().length > 0;
+    const resolvedLabel = hasLabel ? ariaLabel : hasLabelledby ? null : this.heading || 'Secondary sidebar';
+
     return html`
       <aside
         part="secondary-sidebar"
         data-region="secondary-sidebar"
+        aria-label=${resolvedLabel ?? nothing}
+        aria-labelledby=${ariaLabelledby ?? nothing}
         style=${styleMap(sidebarStyles)}>
         <div part="header" style=${styleMap(headerStyles)}>
           <span part="heading" style=${styleMap(headingStyles)}>${this.heading}</span>

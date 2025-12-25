@@ -20,7 +20,7 @@ describe('docs navigation', () => {
     const nav = document.querySelector<UikNav>('uik-nav');
     await nav?.updateComplete;
 
-    const link = nav?.shadowRoot?.querySelector<HTMLAnchorElement>('a[href="#docs/tokens"]');
+    const link = nav?.shadowRoot?.querySelector<HTMLAnchorElement>('a[href="/docs/tokens"]');
     expect(link).toBeTruthy();
 
     link?.focus();

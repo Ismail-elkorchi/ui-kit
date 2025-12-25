@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
@@ -110,23 +110,47 @@ export class UikShellLayout extends LitElement {
       width: '100%',
     };
 
+    const ariaLabelledby = this.getAttribute('aria-labelledby');
+    const ariaLabel = this.getAttribute('aria-label');
+    const hasLabelledby = Boolean(ariaLabelledby);
+    const hasLabel = typeof ariaLabel === 'string' && ariaLabel.trim().length > 0;
+    const resolvedLabel = hasLabel ? ariaLabel : hasLabelledby ? null : 'App shell';
+
     return html`
-      <div part="layout" style=${styleMap(layoutStyles)} data-layout-layer="shell">
+      <div
+        part="layout"
+        style=${styleMap(layoutStyles)}
+        data-layout-layer="shell"
+        role="region"
+        aria-label=${resolvedLabel ?? nothing}
+        aria-labelledby=${ariaLabelledby ?? nothing}>
         <div part="row" style=${styleMap(rowStyles)}>
-          <div part="activity-bar" style=${styleMap(fixedRegionStyles)} data-region="activity-bar">
+          <div
+            part="activity-bar"
+            style=${styleMap(fixedRegionStyles)}
+            data-region="activity-bar"
+            role="presentation">
             <div data-shell-slot="activity-bar" style=${styleMap(slotColumnStyles)}></div>
           </div>
-          <div part="primary-sidebar" style=${styleMap(fixedRegionStyles)} data-region="primary-sidebar">
+          <div
+            part="primary-sidebar"
+            style=${styleMap(fixedRegionStyles)}
+            data-region="primary-sidebar"
+            role="presentation">
             <div data-shell-slot="primary-sidebar" style=${styleMap(slotColumnStyles)}></div>
           </div>
-          <div part="main-content" style=${styleMap(mainStyles)} data-region="main-content">
+          <div part="main-content" style=${styleMap(mainStyles)} data-region="main-content" role="presentation">
             <div data-shell-slot="main-content" style=${styleMap(mainSlotStyles)}></div>
           </div>
-          <div part="secondary-sidebar" style=${styleMap(secondaryStyles)} data-region="secondary-sidebar">
+          <div
+            part="secondary-sidebar"
+            style=${styleMap(secondaryStyles)}
+            data-region="secondary-sidebar"
+            role="presentation">
             <div data-shell-slot="secondary-sidebar" style=${styleMap(slotColumnStyles)}></div>
           </div>
         </div>
-        <div part="status-bar" style=${styleMap(statusBarStyles)} data-region="status-bar">
+        <div part="status-bar" style=${styleMap(statusBarStyles)} data-region="status-bar" role="presentation">
           <div data-shell-slot="status-bar" style=${styleMap(statusSlotStyles)}></div>
         </div>
       </div>

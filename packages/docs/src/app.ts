@@ -28,6 +28,22 @@ const ensureDefaultAttribute = (target: HTMLElement, name: string, fallback: str
   if (!target.getAttribute(name)) target.setAttribute(name, fallback);
 };
 
+const normalizeBaseUrl = (value: string) => {
+  if (!value) return '/';
+  const withLeading = value.startsWith('/') ? value : `/${value}`;
+  return withLeading.endsWith('/') ? withLeading : `${withLeading}/`;
+};
+
+const getRouteFromLocation = (baseUrl: string) => {
+  const pathname = window.location.pathname;
+  const base = normalizeBaseUrl(baseUrl);
+  const relative = pathname.startsWith(base) ? pathname.slice(base.length) : pathname.replace(/^\/+/, '');
+  const segments = relative.split('/').filter(Boolean);
+  const view = segments[0];
+  const subview = segments[1];
+  return {view, subview};
+};
+
 const buildRoutes = (): UikShellRoute[] => {
   const docsSubviewIds = docsPages.map(page => page.id);
   const labSubviewIds = labPages.map(page => page.id);
@@ -61,26 +77,31 @@ const buildActivityItems = (routes: UikShellRoute[]): UikShellActivityBarItem[] 
   }));
 };
 
-const buildNavItems = (): UikNavItem[] => [
-  {
-    id: 'docs',
-    label: 'Docs',
-    children: docsPages.map(page => ({
-      id: `docs/${page.id}`,
-      label: page.title,
-      href: `#docs/${page.id}`,
-    })),
-  },
-  {
-    id: 'lab',
-    label: 'Lab',
-    children: labPages.map(page => ({
-      id: `lab/${page.id}`,
-      label: page.title,
-      href: `#lab/${page.id}`,
-    })),
-  },
-];
+const buildNavItems = (baseUrl: string): UikNavItem[] => {
+  const base = normalizeBaseUrl(baseUrl);
+  const toHref = (key: string) => `${base}${key}`;
+
+  return [
+    {
+      id: 'docs',
+      label: 'Docs',
+      children: docsPages.map(page => ({
+        id: `docs/${page.id}`,
+        label: page.title,
+        href: toHref(`docs/${page.id}`),
+      })),
+    },
+    {
+      id: 'lab',
+      label: 'Lab',
+      children: labPages.map(page => ({
+        id: `lab/${page.id}`,
+        label: page.title,
+        href: toHref(`lab/${page.id}`),
+      })),
+    },
+  ];
+};
 
 const buildMobileNavOptions = () => {
   const docsOptions = docsPages
@@ -115,6 +136,25 @@ const updateStatusMeta = (statusBar: UikShellStatusBar) => {
   const theme = root.getAttribute('data-uik-theme') ?? 'light';
   const density = root.getAttribute('data-uik-density') ?? 'comfortable';
   statusBar.meta = `Theme: ${theme} | Density: ${density}`;
+};
+
+const getBaseUrlFromVite = () => {
+  const meta = import.meta as unknown as {env?: {BASE_URL?: unknown}};
+  const baseUrl = meta.env?.BASE_URL;
+  return typeof baseUrl === 'string' ? baseUrl : '/';
+};
+
+const copyToClipboard = async (value: string) => {
+  await navigator.clipboard.writeText(value);
+};
+
+const scrollToHashTarget = async () => {
+  const raw = window.location.hash;
+  if (!raw || raw === '#') return;
+  const id = decodeURIComponent(raw.slice(1));
+  if (!id) return;
+  await nextFrame();
+  document.getElementById(id)?.scrollIntoView({block: 'start'});
 };
 
 const wireLabShellControls = (
@@ -181,15 +221,23 @@ const wireLabOverlayControls = (container: HTMLElement) => {
 export const mountDocsApp = (container: HTMLElement) => {
   ensureDefaultAttribute(document.documentElement, 'data-uik-theme', 'light');
   ensureDefaultAttribute(document.documentElement, 'data-uik-density', 'comfortable');
+  const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
 
   container.innerHTML = `
-    <a class="docs-skip-link" href="#docs-main">Skip to content</a>
+    <nav aria-label="Skip links">
+      <a class="docs-skip-link" href="#docs-main">Skip to content</a>
+    </nav>
     <uik-shell-layout class="docs-shell">
       <uik-shell-activity-bar
         slot="activity-bar"
         class="docs-activity-bar"
         aria-label="Primary navigation"></uik-shell-activity-bar>
-      <uik-shell-sidebar slot="primary-sidebar" class="docs-sidebar" heading="Navigation" subtitle="UIK">
+      <uik-shell-sidebar
+        slot="primary-sidebar"
+        class="docs-sidebar"
+        heading="Navigation"
+        subtitle="UIK"
+        aria-label="Docs navigation">
         <uik-nav class="docs-nav" aria-label="Docs navigation"></uik-nav>
         <div slot="footer" class="docs-sidebar-footer">
           <uik-text as="p" size="sm" tone="muted">Tokens-first, standards-based UI.</uik-text>
@@ -231,7 +279,11 @@ export const mountDocsApp = (container: HTMLElement) => {
           <div class="docs-page-content" data-docs-content></div>
         </div>
       </main>
-      <uik-shell-secondary-sidebar slot="secondary-sidebar" class="docs-outline" heading="On this page">
+      <uik-shell-secondary-sidebar
+        slot="secondary-sidebar"
+        class="docs-outline"
+        heading="On this page"
+        aria-label="On this page">
         <div data-docs-outline></div>
       </uik-shell-secondary-sidebar>
       <uik-shell-status-bar slot="status-bar" class="docs-status"></uik-shell-status-bar>
@@ -240,10 +292,11 @@ export const mountDocsApp = (container: HTMLElement) => {
 
   const pageMap = buildPageMap();
   const routes = buildRoutes();
+  const initialRoute = getRouteFromLocation(baseUrl);
   const router = createUikShellRouter({
     routes,
-    initialView: 'docs',
-    initialSubview: docsPages[0]?.id,
+    initialView: initialRoute.view ?? 'docs',
+    initialSubview: initialRoute.subview ?? docsPages[0]?.id,
   });
 
   const layout = container.querySelector<UikShellLayout>('uik-shell-layout');
@@ -265,9 +318,20 @@ export const mountDocsApp = (container: HTMLElement) => {
   }
 
   activityBar.items = buildActivityItems(routes);
-  nav.items = buildNavItems();
+  nav.items = buildNavItems(baseUrl);
   nav.openIds = ['docs', 'lab'];
   setOutlineOpen(layout, secondarySidebar, true);
+
+  const syncUrl = (location: UikShellLocation, mode: 'push' | 'replace' = 'push') => {
+    const key = locationKey(location);
+    const nextPath = `${baseUrl}${key}`;
+    if (window.location.pathname === nextPath) return;
+    if (mode === 'replace') {
+      window.history.replaceState({}, '', nextPath);
+    } else {
+      window.history.pushState({}, '', nextPath);
+    }
+  };
 
   const applyLocation = (location: UikShellLocation) => {
     const key = locationKey(location);
@@ -297,6 +361,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (page.id !== 'shell-patterns') statusBar.tone = 'info';
     updateStatusMeta(statusBar);
     document.title = `UIK Docs - ${page.title}`;
+    void scrollToHashTarget();
 
     if (contentElement) {
       if (page.id === 'shell-patterns') {
@@ -309,10 +374,42 @@ export const mountDocsApp = (container: HTMLElement) => {
   };
 
   router.subscribe(applyLocation);
+  syncUrl(router.current, 'replace');
+
+  const onCodeCopyClick = async (event: Event) => {
+    const target = event.target as HTMLElement | null;
+    const copyButton = target?.closest<HTMLElement>('[data-docs-action="copy-code"]');
+    if (!copyButton) return;
+
+    const code = copyButton.closest('.docs-code-block')?.querySelector('pre code');
+    const text = code?.textContent ?? '';
+    if (!text) return;
+
+    const previous = copyButton.textContent || 'Copy';
+    try {
+      await copyToClipboard(text);
+      copyButton.textContent = 'Copied';
+    } catch {
+      copyButton.textContent = 'Failed';
+    } finally {
+      window.setTimeout(() => {
+        copyButton.textContent = previous;
+      }, 1200);
+    }
+  };
+
+  contentElement?.addEventListener('click', event => {
+    void onCodeCopyClick(event);
+  });
+
+  window.addEventListener('hashchange', () => {
+    void scrollToHashTarget();
+  });
 
   activityBar.addEventListener('activity-bar-select', event => {
     const detail = (event as CustomEvent<{id: string}>).detail;
     router.navigate(detail.id);
+    syncUrl(router.current);
   });
 
   nav.addEventListener('nav-select', event => {
@@ -321,6 +418,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (!view || !subview) return;
     event.preventDefault();
     router.navigate(view, subview);
+    syncUrl(router.current);
   });
 
   outlineToggle?.addEventListener('click', () => {
@@ -345,6 +443,18 @@ export const mountDocsApp = (container: HTMLElement) => {
     const [view, subview] = mobileNavSelect.value.split('/');
     if (!view || !subview) return;
     router.navigate(view, subview);
+    syncUrl(router.current);
+  });
+
+  window.addEventListener('popstate', () => {
+    const next = getRouteFromLocation(baseUrl);
+    if (!next.view) return;
+    try {
+      router.navigate(next.view, next.subview);
+    } catch {
+      router.navigate('docs', docsPages[0]?.id);
+      syncUrl(router.current, 'replace');
+    }
   });
 
   const syncSelects = async () => {

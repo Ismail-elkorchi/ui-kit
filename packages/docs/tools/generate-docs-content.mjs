@@ -25,26 +25,73 @@ const slugify = value =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
-const renderer = new marked.Renderer();
-renderer.paragraph = text => `<uik-text as="p" class="docs-paragraph">${text}</uik-text>`;
-renderer.list = (body, ordered) => {
-  const tag = ordered ? 'ol' : 'ul';
-  return `<${tag} class="docs-list">${body}</${tag}>`;
-};
-renderer.listitem = text => `<li><uik-text as="p" class="docs-paragraph">${text}</uik-text></li>`;
-renderer.code = code => `<pre class="docs-code"><code>${escapeHtml(code)}</code></pre>`;
-renderer.codespan = text => `<code>${escapeHtml(text)}</code>`;
-renderer.heading = (text, level) => {
-  const safeLevel = Math.min(Math.max(level, 1), 6);
-  return `<uik-heading level="${safeLevel}">${text}</uik-heading>`;
+const stripInlineMarkdown = value =>
+  value
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\*{1,3}([^*]+)\*{1,3}/g, '$1')
+    .replace(/_{1,3}([^_]+)_{1,3}/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .trim();
+
+const stripHeadingMarkup = rawLine => rawLine.replace(/^#{1,6}\s+/, '').trim();
+
+const stripHtml = value => value.replace(/<[^>]+>/g, '').trim();
+
+const createSlugger = () => {
+  const counts = new Map();
+  return {
+    slug(value) {
+      const baseCandidate = slugify(stripInlineMarkdown(String(value)));
+      const base = baseCandidate || 'section';
+      const nextCount = (counts.get(base) ?? 0) + 1;
+      counts.set(base, nextCount);
+      return nextCount === 1 ? base : `${base}-${nextCount - 1}`;
+    },
+  };
 };
 
-marked.use({
-  renderer,
-  gfm: true,
-  mangle: false,
-  headerIds: false,
-});
+const createRenderer = slugger => {
+  const renderer = new marked.Renderer();
+  renderer.paragraph = text => `<uik-text as="p" class="docs-paragraph">${text}</uik-text>`;
+  renderer.list = (body, ordered) => {
+    const tag = ordered ? 'ol' : 'ul';
+    return `<${tag} class="docs-list">${body}</${tag}>`;
+  };
+  renderer.listitem = text => `<li><uik-text as="p" class="docs-paragraph">${text}</uik-text></li>`;
+  renderer.code = (code, infostring) => {
+    const language = (infostring ?? '').trim().split(/\s+/)[0] ?? '';
+    const langClass = language ? `language-${escapeHtml(language)}` : '';
+    return `
+      <div class="docs-code-block">
+        <div class="docs-code-actions">
+          <uik-button
+            variant="ghost"
+            size="sm"
+            class="docs-code-copy"
+            data-docs-action="copy-code"
+            aria-label="Copy code block">
+            Copy
+          </uik-button>
+        </div>
+        <pre class="docs-code"><code class="${langClass}">${escapeHtml(code)}</code></pre>
+      </div>
+    `.trim();
+  };
+  renderer.codespan = text => `<code>${escapeHtml(text)}</code>`;
+  renderer.heading = (text, level, raw) => {
+    const safeLevel = Math.min(Math.max(level, 1), 6);
+    const plain = raw ? stripInlineMarkdown(stripHeadingMarkup(raw)) : stripHtml(text);
+    const id = slugger.slug(plain);
+    const label = escapeHtml(plain);
+    return `
+      <uik-heading level="${safeLevel}" id="${id}" class="docs-heading" data-heading-level="${safeLevel}">
+        <a class="docs-heading-anchor" href="#${id}" aria-label="Link to ${label}">#</a>
+        <span class="docs-heading-text">${text}</span>
+      </uik-heading>
+    `.trim();
+  };
+  return renderer;
+};
 
 const readRepoFile = async relativePath => {
   const filePath = path.resolve(repoRoot, relativePath);
@@ -61,14 +108,9 @@ const parseMarkdownSections = (markdown, introTitle = 'Overview') => {
   let buffer = [];
 
   const flush = () => {
-    const body = buffer.join('\n').trim();
-    if (!body) return;
-    const title = currentTitle ?? introTitle;
-    sections.push({
-      id: slugify(title),
-      title,
-      body: marked.parse(body).trim(),
-    });
+    const bodyMarkdown = buffer.join('\n').trim();
+    if (!bodyMarkdown) return;
+    sections.push({title: currentTitle ?? introTitle, bodyMarkdown});
   };
 
   for (const line of lines) {
@@ -141,6 +183,59 @@ const buildComponentsFromContracts = (contracts, cem) => {
 
 const renderInlineMarkdown = value => marked.parseInline(value);
 
+const extractHeadingsFromMarkdown = markdown => {
+  const tokens = marked.lexer(markdown);
+  return tokens
+    .filter(token => token.type === 'heading')
+    .map(token => ({
+      level: token.depth,
+      title: stripInlineMarkdown(stripHeadingMarkup(token.raw ?? token.text ?? '')),
+      raw: token.raw ?? '',
+    }));
+};
+
+const buildSectionsAndTocFromRawSections = rawSections => {
+  const tocSlugger = createSlugger();
+  const htmlSlugger = createSlugger();
+
+  const sections = rawSections.map(section => ({
+    id: tocSlugger.slug(section.title),
+    title: section.title,
+    bodyMarkdown: section.bodyMarkdown,
+  }));
+
+  sections.forEach(section => {
+    htmlSlugger.slug(section.title);
+  });
+
+  const toc = [];
+  for (const section of sections) {
+    toc.push({id: section.id, title: section.title, level: 2});
+
+    const headings = extractHeadingsFromMarkdown(section.bodyMarkdown)
+      .filter(heading => heading.level >= 2)
+      .map(heading => ({
+        id: tocSlugger.slug(heading.title),
+        title: heading.title,
+        level: heading.level,
+      }));
+
+    toc.push(...headings);
+  }
+
+  const renderer = createRenderer(htmlSlugger);
+  const renderedSections = sections.map(section => ({
+    id: section.id,
+    title: section.title,
+    body: marked.parse(section.bodyMarkdown, {renderer, gfm: true, mangle: false, headerIds: false}).trim(),
+  }));
+
+  return {sections: renderedSections, toc};
+};
+
+const buildMarkdownPageSections = (markdown, introTitle = 'Overview') =>
+  buildSectionsAndTocFromRawSections(parseMarkdownSections(markdown, introTitle));
+
 const renderComponentCards = components => {
   const buildList = items => {
     if (!items.length) {
@@ -205,9 +300,8 @@ const renderComponentCards = components => {
 
 const buildComponentsPage = async entry => {
   const readme = await readRepoFile(entry.readme);
-  const sections = parseMarkdownSections(readme, 'Overview');
   const componentsTitle = entry.componentsTitle ?? 'Components and contracts';
-  const withoutComponents = sections.filter(
+  const rawSections = parseMarkdownSections(readme, 'Overview').filter(
     section => section.title.toLowerCase() !== componentsTitle.toLowerCase(),
   );
 
@@ -215,30 +309,33 @@ const buildComponentsPage = async entry => {
   const cem = entry.cem ? await readJson(entry.cem) : null;
   const components = contracts ? buildComponentsFromContracts(contracts, cem) : [];
 
+  const nextSections = [...rawSections];
+
   if (components.length) {
     const cards = renderComponentCards(components);
-    withoutComponents.push({
-      id: slugify(componentsTitle),
-      title: componentsTitle,
-      body: `<div class="docs-components">${cards}</div>`,
-    });
+    nextSections.push({title: componentsTitle, bodyMarkdown: `<div class="docs-components">${cards}</div>`});
   }
+
+  const {sections, toc} = buildSectionsAndTocFromRawSections(nextSections);
 
   return {
     id: entry.id,
     title: entry.title,
     summary: entry.summary,
-    sections: withoutComponents,
+    sections,
+    toc,
   };
 };
 
 const buildMarkdownPage = async entry => {
   const markdown = await readRepoFile(entry.source);
+  const {sections, toc} = buildMarkdownPageSections(markdown, 'Overview');
   return {
     id: entry.id,
     title: entry.title,
     summary: entry.summary,
-    sections: parseMarkdownSections(markdown, 'Overview'),
+    sections,
+    toc,
   };
 };
 
