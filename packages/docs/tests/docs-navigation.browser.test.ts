@@ -3,7 +3,7 @@ import '@ismail-elkorchi/ui-tokens/base.css';
 import {beforeEach, describe, expect, it} from 'vitest';
 import {userEvent} from 'vitest/browser';
 
-import {mountDocsApp} from '../src/app';
+import {mountDocsApp} from '../app';
 
 const nextFrame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
 

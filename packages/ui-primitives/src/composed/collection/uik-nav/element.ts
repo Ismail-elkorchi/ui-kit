@@ -54,7 +54,7 @@ export class UikNav extends LitElement {
   }
 
   private getOpenSet(): Set<string> {
-    return new Set(this.openIds ?? []);
+    return new Set(this.openIds);
   }
 
   private resolveOpenIds(nextOpen: Set<string>) {
@@ -126,9 +126,9 @@ export class UikNav extends LitElement {
             class="link"
             data-current=${isCurrent ? 'true' : 'false'}
             data-disabled=${dataItem.isDisabled ? 'true' : 'false'}
-            href=${ifDefined(dataItem.href || undefined)}
-            target=${ifDefined(dataItem.target || undefined)}
-            rel=${ifDefined(dataItem.rel || undefined)}
+            href=${ifDefined(dataItem.href ?? undefined)}
+            target=${ifDefined(dataItem.target ?? undefined)}
+            rel=${ifDefined(dataItem.rel ?? undefined)}
             aria-current=${ifDefined(isCurrent ? 'page' : undefined)}
             aria-disabled=${ifDefined(dataItem.isDisabled ? 'true' : undefined)}
             tabindex=${ifDefined(dataItem.isDisabled ? '-1' : undefined)}

@@ -109,12 +109,12 @@ export const collectLeafIds = <T extends TreeItemBase>(index: TreeIndex<T>, id: 
   return leaves;
 };
 
-export const collectTreeIds = <T extends TreeItemBase>(items: T[]): string[] => {
+export const collectTreeIds = (items: TreeItemBase[]): string[] => {
   const ids: string[] = [];
-  const walk = (entries: T[]) => {
+  const walk = (entries: TreeItemBase[]) => {
     entries.forEach(entry => {
       ids.push(entry.id);
-      if (entry.children && entry.children.length > 0) walk(entry.children as T[]);
+      if (entry.children && entry.children.length > 0) walk(entry.children);
     });
   };
   walk(items);

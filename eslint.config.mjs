@@ -60,6 +60,7 @@ export default defineConfig([
       '**/storybook-static/**',
       '**/playwright-report/**',
       '**/test-results/**',
+      'llm-context-studio/**',
     ],
   },
 
@@ -248,6 +249,7 @@ export default defineConfig([
           allow: [
             'lit/decorators.js',
             'lit/directives/if-defined.js',
+            'lit/directives/style-map.js',
             'vitest/browser',
             '@ismail-elkorchi/ui-primitives/*',
             '@ismail-elkorchi/ui-shell/*',
@@ -256,6 +258,34 @@ export default defineConfig([
             'internal/**',
             'atomic/**',
             'composed/**',
+          ],
+        },
+      ],
+    },
+  },
+
+  {
+    files: [
+      'packages/docs/**/*.ts',
+      'packages/docs/**/*.tsx',
+      'packages/docs/**/*.mts',
+      'packages/docs/**/*.cts',
+    ],
+    rules: {
+      'import/no-internal-modules': [
+        'error',
+        {
+          allow: [
+            'lit/decorators.js',
+            'lit/directives/if-defined.js',
+            'lit/directives/style-map.js',
+            'vitest/browser',
+            '@ismail-elkorchi/ui-primitives/*',
+            '@ismail-elkorchi/ui-shell/*',
+            '@ismail-elkorchi/ui-tokens/*',
+            'src/**',
+            './src/**',
+            '../src/**',
           ],
         },
       ],

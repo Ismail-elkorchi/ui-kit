@@ -573,7 +573,7 @@ export const docsPages: DocPage[] = [
       section(
         'compose-shell',
         'Compose the shell',
-        `${p('Use ${codeInline('<uik-shell-layout>')} to wire regions with named slots.')}
+        `${p(`Use ${codeInline('<uik-shell-layout>')} to wire regions with named slots.`)}
         ${codeBlock(
           `<uik-shell-layout>
   <uik-shell-activity-bar slot="activity-bar"></uik-shell-activity-bar>
@@ -592,7 +592,7 @@ export const docsPages: DocPage[] = [
       section(
         'next',
         'Next steps',
-        `${p('Continue with the Tokens, Primitives, and Shell reference pages for full contracts and usage patterns.')}`,
+        p('Continue with the Tokens, Primitives, and Shell reference pages for full contracts and usage patterns.'),
       ),
     ],
   },
@@ -604,26 +604,26 @@ export const docsPages: DocPage[] = [
       section(
         'outputs',
         'Outputs and entrypoints',
-        `${p('Import CSS outputs directly from ${codeInline('@ismail-elkorchi/ui-tokens')}.')}
+        `${p(`Import CSS outputs directly from ${codeInline('@ismail-elkorchi/ui-tokens')}.`)}
         ${list([
           `${codeInline('@ismail-elkorchi/ui-tokens/index.css')} (base + theme wiring)`,
           `${codeInline('@ismail-elkorchi/ui-tokens/base.css')} (variables + theme layers)`,
-          `${codeInline('@ismail-elkorchi/ui-tokens/themes/uik-light.css')}`,
-          `${codeInline('@ismail-elkorchi/ui-tokens/themes/uik-dark.css')}`,
-          `${codeInline('@ismail-elkorchi/ui-tokens/themes/uik-density-comfortable.css')}`,
-          `${codeInline('@ismail-elkorchi/ui-tokens/themes/uik-density-compact.css')}`,
+          codeInline('@ismail-elkorchi/ui-tokens/themes/uik-light.css'),
+          codeInline('@ismail-elkorchi/ui-tokens/themes/uik-dark.css'),
+          codeInline('@ismail-elkorchi/ui-tokens/themes/uik-density-comfortable.css'),
+          codeInline('@ismail-elkorchi/ui-tokens/themes/uik-density-compact.css'),
         ])}`,
       ),
       section(
         'theme-density',
         'Theme and density',
-        `${p('Theme and density are CSS-first. Toggle them via ${codeInline('data-uik-theme')} and ${codeInline('data-uik-density')} attributes.')}
+        `${p(`Theme and density are CSS-first. Toggle them via ${codeInline('data-uik-theme')} and ${codeInline('data-uik-density')} attributes.`)}
         ${codeBlock('<html data-uik-theme="light" data-uik-density="comfortable">')}`,
       ),
       section(
         'consume-css',
         'Consume tokens in CSS',
-        `${p('Use ${codeInline('--uik-*')} custom properties directly. Avoid hard-coded values.')}
+        `${p(`Use ${codeInline('--uik-*')} custom properties directly. Avoid hard-coded values.`)}
         ${codeBlock(
           `.card {
   background: oklch(var(--uik-surface-card));
@@ -637,7 +637,7 @@ export const docsPages: DocPage[] = [
       section(
         'component-hooks',
         'Component hooks',
-        `${p('Component-specific hooks live under ${codeInline('tokens/components')} and emit ${codeInline('--uik-component-*')} variables.')}
+        `${p(`Component-specific hooks live under ${codeInline('tokens/components')} and emit ${codeInline('--uik-component-*')} variables.`)}
         ${p('If you need a new hook, add it to ui-tokens first and consume it in the primitive or shell component.')}`,
       ),
       section(
@@ -683,7 +683,7 @@ setDensity(document.documentElement, 'compact');`,
       section(
         'layout-recipe',
         'Layout recipe',
-        `${p('Use ${codeInline('<uik-shell-layout>')} to wire regions and keep layout explicit.')}
+        `${p(`Use ${codeInline('<uik-shell-layout>')} to wire regions and keep layout explicit.`)}
         ${codeBlock(
           `<uik-shell-layout>
   <uik-shell-activity-bar slot="activity-bar"></uik-shell-activity-bar>

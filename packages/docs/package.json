@@ -1,6 +1,6 @@
 {
   "name": "@ismail-elkorchi/ui-docs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "description": "UIK documentation site and dogfooding lab.",
@@ -16,9 +16,9 @@
     "test": "vitest --run --project browser --config ../../vitest.config.ts --dir ."
   },
   "dependencies": {
-    "@ismail-elkorchi/ui-primitives": "^0.1.0",
-    "@ismail-elkorchi/ui-shell": "^0.1.0",
-    "@ismail-elkorchi/ui-tokens": "^0.1.0"
+    "@ismail-elkorchi/ui-primitives": "0.1.1",
+    "@ismail-elkorchi/ui-shell": "0.1.1",
+    "@ismail-elkorchi/ui-tokens": "0.1.1"
   },
   "devDependencies": {
     "@vitest/browser": "^4.0.16",

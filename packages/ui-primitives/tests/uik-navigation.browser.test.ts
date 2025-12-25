@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, it} from 'vitest';
 import {userEvent} from 'vitest/browser';
 
-import type {UikTreeView} from '../src/composed/collection/uik-tree-view';
 import type {UikNav} from '../src/composed/collection/uik-nav';
+import type {UikTreeView} from '../src/composed/collection/uik-tree-view';
 import '../src/composed/collection/uik-tree-view';
 import '../src/composed/collection/uik-nav';
 

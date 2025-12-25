@@ -12,7 +12,7 @@ import {
 } from '../../../internal';
 import type {TreeIndex, TreeItem, TreeItemBase} from '../../../internal';
 
-export interface UikTreeViewItem extends TreeItemBase {}
+export type UikTreeViewItem = TreeItemBase;
 
 export interface UikTreeViewSelectDetail {
   id: string;
@@ -57,7 +57,7 @@ export class UikTreeView extends LitElement {
   }
 
   private getOpenSet(): Set<string> {
-    return new Set(this.openIds ?? []);
+    return new Set(this.openIds);
   }
 
   private getVisibleItems(): TreeItem<UikTreeViewItem>[] {
@@ -128,7 +128,7 @@ export class UikTreeView extends LitElement {
   private toggleSelection(item: UikTreeViewItem) {
     if (item.isDisabled) return;
     const treeIndex = this.getTreeIndex();
-    const selectedSet = new Set(this.selectedIds ?? []);
+    const selectedSet = new Set(this.selectedIds);
     const state = this.resolveSelectionState(treeIndex, selectedSet, item.id);
     const leafIds = collectLeafIds(treeIndex, item.id);
     const targets = leafIds.length > 0 ? leafIds : [item.id];
@@ -301,17 +301,20 @@ export class UikTreeView extends LitElement {
         class="item"
         role="treeitem"
         tabindex=${entry.id === this.focusId ? 0 : -1}
+        aria-label=${dataItem.label}
         aria-level=${String(entry.depth + 1)}
         aria-posinset=${String(entry.index + 1)}
         aria-setsize=${String(entry.setSize)}
         aria-expanded=${ifDefined(isBranch ? (isOpen ? 'true' : 'false') : undefined)}
         aria-checked=${state === 'mixed' ? 'mixed' : state === 'checked' ? 'true' : 'false'}
+        aria-selected=${state === 'checked' ? 'true' : 'false'}
         aria-disabled=${ifDefined(dataItem.isDisabled ? 'true' : undefined)}
         data-kind=${isBranch ? 'branch' : 'leaf'}
         data-item-id=${dataItem.id}
         data-disabled=${dataItem.isDisabled ? 'true' : 'false'}
         style=${styleMap(itemStyles)}
         @click=${() => this.onItemClick(dataItem)}
+        @keydown=${this.onKeyDown}
         @focus=${this.onItemFocus}>
         ${isBranch
           ? html`
@@ -347,7 +350,7 @@ export class UikTreeView extends LitElement {
   override render() {
     const treeIndex = this.getTreeIndex();
     const items = this.getVisibleItems();
-    const selectedSet = new Set(this.selectedIds ?? []);
+    const selectedSet = new Set(this.selectedIds);
 
     return html`
       <div
@@ -357,7 +360,7 @@ export class UikTreeView extends LitElement {
         aria-multiselectable="true"
         aria-label=${ifDefined(this.ariaLabelValue || undefined)}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
-        @keydown=${this.onKeyDown}>
+        >
         ${items.map(item => this.renderItem(item, treeIndex, selectedSet))}
       </div>
     `;
