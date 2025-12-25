@@ -111,15 +111,45 @@ const run = async () => {
 
   await fs.mkdir(componentDir, {recursive: true});
 
-  await writeFileIfMissing(
-    elementPath,
-    `import {LitElement, html} from 'lit';\nimport {customElement} from 'lit/decorators.js';\n\nimport {styles} from './styles';\n\n@customElement('${tagName}')\nexport class ${className} extends LitElement {\n  static override styles = styles;\n\n  override render() {\n    return html\\`<div class=\"base\" part=\"base\"><slot></slot></div>\\`;\n  }\n}\n`,
-  );
+  const elementSource = [
+    "import {LitElement, html} from 'lit';",
+    "import {customElement} from 'lit/decorators.js';",
+    '',
+    "import {styles} from './styles';",
+    '',
+    `@customElement('${tagName}')`,
+    `export class ${className} extends LitElement {`,
+    '  static override styles = styles;',
+    '',
+    '  override render() {',
+    '    return html`<div class="base" part="base"><slot></slot></div>`;',
+    '  }',
+    '}',
+    '',
+  ].join('\n');
 
-  await writeFileIfMissing(
-    stylesPath,
-    `import {css} from 'lit';\n\nexport const styles = css\\`\n  :host {\n    display: block;\n  }\n\n  .base {\n    padding: var(--uik-component-${id}-padding);\n    color: oklch(var(--uik-component-${id}-fg));\n    background-color: oklch(var(--uik-component-${id}-bg));\n    border-radius: var(--uik-component-${id}-radius);\n    border: var(--uik-border-width-1) solid oklch(var(--uik-component-${id}-border));\n  }\n\\`;\n`,
-  );
+  await writeFileIfMissing(elementPath, elementSource);
+
+  const stylesSource = [
+    "import {css} from 'lit';",
+    '',
+    'export const styles = css`',
+    '  :host {',
+    '    display: block;',
+    '  }',
+    '',
+    '  .base {',
+    `    padding: var(--uik-component-${id}-padding);`,
+    `    color: oklch(var(--uik-component-${id}-fg));`,
+    `    background-color: oklch(var(--uik-component-${id}-bg));`,
+    `    border-radius: var(--uik-component-${id}-radius);`,
+    `    border: var(--uik-border-width-1) solid oklch(var(--uik-component-${id}-border));`,
+    '  }',
+    '`;',
+    '',
+  ].join('\n');
+
+  await writeFileIfMissing(stylesPath, stylesSource);
 
   await writeFileIfMissing(indexPath, `export {${className}} from './element';\n`);
 
@@ -138,10 +168,31 @@ const run = async () => {
 
   const storyPath = path.join(repoRoot, 'packages/ui-primitives/stories', `${tagName}.stories.ts`);
   const storyTitle = toTitle(id);
-  await writeFileIfMissing(
-    storyPath,
-    `import '@ismail-elkorchi/ui-primitives/register';\nimport type {Meta, StoryObj} from '@storybook/web-components-vite';\nimport {html} from 'lit';\n\nimport {runA11y} from '../../../.storybook/a11y';\n\ntype ${className}Args = Record<string, never>;\n\nconst meta: Meta<${className}Args> = {\n  title: 'Primitives/${storyTitle}',\n  component: '${tagName}',\n  tags: ['autodocs'],\n  render: () => html\\`<${tagName}>${storyTitle}</${tagName}>\\`,\n};\n\nexport default meta;\n\nexport const Default: StoryObj<${className}Args> = {\n  play: async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement),\n};\n`,
-  );
+  const storySource = [
+    "import '@ismail-elkorchi/ui-primitives/register';",
+    "import type {Meta, StoryObj} from '@storybook/web-components-vite';",
+    "import {html} from 'lit';",
+    '',
+    "import {runA11y} from '../../../.storybook/a11y';",
+    '',
+    `type ${className}Args = Record<string, never>;`,
+    '',
+    `const meta: Meta<${className}Args> = {`,
+    `  title: 'Primitives/${storyTitle}',`,
+    `  component: '${tagName}',`,
+    "  tags: ['autodocs'],",
+    `  render: () => html\`<${tagName}>${storyTitle}</${tagName}>\`,`,
+    '};',
+    '',
+    'export default meta;',
+    '',
+    `export const Default: StoryObj<${className}Args> = {`,
+    '  play: async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement),',
+    '};',
+    '',
+  ].join('\n');
+
+  await writeFileIfMissing(storyPath, storySource);
 
   const testPath = path.join(repoRoot, 'packages/ui-primitives/tests', `${tagName}.browser.test.ts`);
   await writeFileIfMissing(

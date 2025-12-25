@@ -25,16 +25,21 @@
       "kind": "component",
       "id": "shell-activity-bar",
       "tagName": "uik-shell-activity-bar",
-      "summary": "Vertical activity bar with roving focus and icon buttons.",
+      "summary": "Vertical activity bar composed with uik-nav-rail.",
       "attributes": ["items (array)", "activeId (string)"],
       "slots": ["footer"],
-      "parts": ["activity-bar", "item", "item-indicator", "item-button", "item-icon", "spacer", "footer"],
+      "parts": ["activity-bar", "spacer", "footer"],
       "events": ["activity-bar-select (detail: {id})"],
-      "a11y": ["Arrow keys, Home/End, Enter/Space activation; set aria-label if needed."],
+      "a11y": ["Delegates roving focus behavior to uik-nav-rail; set aria-label if needed."],
       "cssVars": [
         "--uik-component-shell-activity-bar-bg",
         "--uik-component-shell-activity-bar-fg",
-        "--uik-component-shell-activity-bar-width"
+        "--uik-component-shell-activity-bar-width",
+        "--uik-component-shell-activity-bar-item-size",
+        "--uik-component-shell-activity-bar-item-icon-size",
+        "--uik-component-shell-activity-bar-item-indicator-bg",
+        "--uik-component-shell-activity-bar-item-indicator-radius",
+        "--uik-component-shell-activity-bar-item-indicator-width"
       ]
     },
     {

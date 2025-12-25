@@ -1,0 +1,41 @@
+{
+  "component": {
+    "tooltip": {
+      "bg": {
+        "$value": "{text.strong}",
+        "$type": "color",
+        "$description": "Component tooltip background."
+      },
+      "fg": {
+        "$value": "{text.inverse}",
+        "$type": "color",
+        "$description": "Component tooltip foreground."
+      },
+      "radius": {
+        "$value": "{radius.2}",
+        "$type": "dimension",
+        "$description": "Component tooltip radius."
+      },
+      "paddingX": {
+        "$value": "{space.3}",
+        "$type": "dimension",
+        "$description": "Component tooltip horizontal padding."
+      },
+      "paddingY": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component tooltip vertical padding."
+      },
+      "shadow": {
+        "$value": "{shadow.2}",
+        "$type": "shadow",
+        "$description": "Component tooltip shadow."
+      },
+      "offset": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component tooltip offset from trigger."
+      }
+    }
+  }
+}

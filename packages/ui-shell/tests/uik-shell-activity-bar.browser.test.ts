@@ -1,4 +1,3 @@
-import type {UikButton} from '@ismail-elkorchi/ui-primitives';
 import '@ismail-elkorchi/ui-tokens/index.css';
 import {beforeEach, describe, expect, it} from 'vitest';
 import {userEvent} from 'vitest/browser';
@@ -12,8 +11,20 @@ const items = [
   {id: 'settings', label: 'Settings', icon: 'M10 4h4l1 3 3 1v4l-3 1-1 3h-4l-1-3-3-1V8l3-1 1-3z'},
 ] as const;
 
-const getButtons = (bar: UikShellActivityBar) =>
-  Array.from(bar.querySelectorAll<UikButton>('uik-button[data-activity-item="true"]'));
+type NavRailButton = HTMLElement & {tabIndexValue: number};
+
+const getNavRail = (bar: UikShellActivityBar) => bar.querySelector<HTMLElement>('uik-nav-rail');
+
+const getButtons = (bar: UikShellActivityBar) => {
+  const rail = getNavRail(bar);
+  if (!rail?.shadowRoot) return [];
+  return Array.from(rail.shadowRoot.querySelectorAll<NavRailButton>('uik-button'));
+};
+
+const getActiveButton = (bar: UikShellActivityBar) => {
+  const rail = getNavRail(bar);
+  return rail?.shadowRoot?.activeElement ?? null;
+};
 
 describe('uik-shell-activity-bar', () => {
   beforeEach(() => {
@@ -38,19 +49,19 @@ describe('uik-shell-activity-bar', () => {
     await bar.updateComplete;
 
     buttons = getButtons(bar);
-    expect(document.activeElement).toBe(buttons[1]);
+    expect(getActiveButton(bar)).toBe(buttons[1]);
     expect(buttons[1]?.tabIndexValue).toBe(0);
     expect(buttons[0]?.tabIndexValue).toBe(-1);
 
     await userEvent.keyboard('{End}');
     await bar.updateComplete;
     buttons = getButtons(bar);
-    expect(document.activeElement).toBe(buttons[2]);
+    expect(getActiveButton(bar)).toBe(buttons[2]);
 
     await userEvent.keyboard('{Home}');
     await bar.updateComplete;
     buttons = getButtons(bar);
-    expect(document.activeElement).toBe(buttons[0]);
+    expect(getActiveButton(bar)).toBe(buttons[0]);
   });
 
   it('emits selection on keyboard activation', async () => {
@@ -90,7 +101,7 @@ describe('uik-shell-activity-bar', () => {
     await userEvent.tab();
 
     const after = getComputedStyle(internal).boxShadow;
-    expect(document.activeElement).toBe(target);
+    expect(getActiveButton(bar)).toBe(target);
     expect(internal.matches(':focus-visible')).toBe(true);
     expect(after).not.toBe(before);
   });

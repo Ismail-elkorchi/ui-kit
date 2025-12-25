@@ -95,6 +95,11 @@
       "import": "./dist/src/composed/collection/uik-nav/index.js",
       "default": "./dist/src/composed/collection/uik-nav/index.js"
     },
+    "./uik-nav-rail": {
+      "types": "./dist/src/composed/collection/uik-nav-rail/index.d.ts",
+      "import": "./dist/src/composed/collection/uik-nav-rail/index.js",
+      "default": "./dist/src/composed/collection/uik-nav-rail/index.js"
+    },
     "./uik-tree-view": {
       "types": "./dist/src/composed/collection/uik-tree-view/index.d.ts",
       "import": "./dist/src/composed/collection/uik-tree-view/index.js",

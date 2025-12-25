@@ -7,6 +7,8 @@ import {createId} from '../../../internal';
 import {createEscapeKeyHandler} from '../../../internal/overlay/dismiss';
 import {resolvePlacement} from '../../../internal/overlay/positioning';
 
+type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
+
 @customElement('uik-tooltip')
 export class UikTooltip extends LitElement {
   @property({type: Boolean, reflect: true, useDefault: true}) accessor open = false;
@@ -28,6 +30,7 @@ export class UikTooltip extends LitElement {
 
   private readonly panelId = createId('uik-tooltip');
   private pointerInPanel = false;
+  private pendingCloseReason: OverlayCloseReason | null = null;
 
   static override readonly styles = styles;
 
@@ -54,6 +57,10 @@ export class UikTooltip extends LitElement {
   override updated(changed: Map<string, unknown>) {
     if (changed.has('open')) {
       this.syncOpenState();
+      const previous = changed.get('open') as boolean | undefined;
+      if (previous && !this.open) {
+        this.emitCloseReason();
+      }
     }
   }
 
@@ -62,11 +69,32 @@ export class UikTooltip extends LitElement {
   }
 
   hide() {
-    this.open = false;
+    this.requestClose('programmatic');
   }
 
   toggle() {
-    this.open = !this.open;
+    if (this.open) {
+      this.requestClose('toggle');
+    } else {
+      this.open = true;
+    }
+  }
+
+  private requestClose(reason: OverlayCloseReason) {
+    this.pendingCloseReason = reason;
+    this.open = false;
+  }
+
+  private emitCloseReason() {
+    const reason = this.pendingCloseReason ?? 'programmatic';
+    this.pendingCloseReason = null;
+    this.dispatchEvent(
+      new CustomEvent('overlay-close', {
+        detail: {reason},
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   private syncOpenState() {
@@ -123,7 +151,7 @@ export class UikTooltip extends LitElement {
   private onTriggerMouseLeave = () => {
     if (this.openOn !== 'hover') return;
     if (this.pointerInPanel) return;
-    this.open = false;
+    this.requestClose('outside');
   };
 
   private onTriggerFocusIn = () => {
@@ -134,7 +162,7 @@ export class UikTooltip extends LitElement {
   private onTriggerFocusOut = () => {
     if (this.openOn !== 'hover') return;
     if (this.pointerInPanel) return;
-    this.open = false;
+    this.requestClose('outside');
   };
 
   private onPanelMouseEnter = () => {
@@ -144,12 +172,12 @@ export class UikTooltip extends LitElement {
   private onPanelMouseLeave = () => {
     this.pointerInPanel = false;
     if (this.openOn === 'hover') {
-      this.open = false;
+      this.requestClose('outside');
     }
   };
 
   private readonly onPanelKeyDown = createEscapeKeyHandler(() => {
-    this.open = false;
+    this.requestClose('escape');
   });
 
   private onToggle = (event: Event) => {
@@ -157,6 +185,7 @@ export class UikTooltip extends LitElement {
     if (nextState === 'open') {
       this.open = true;
     } else if (nextState === 'closed') {
+      this.pendingCloseReason ??= 'toggle';
       this.open = false;
     }
   };

@@ -6,6 +6,7 @@ import {styles} from './styles';
 import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
 
 type SlotName = 'title' | 'description';
+type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
 
 @customElement('uik-dialog')
 export class UikDialog extends LitElement {
@@ -18,6 +19,8 @@ export class UikDialog extends LitElement {
   private readonly dialogId = createId('uik-dialog');
   private readonly titleId = `${this.dialogId}-title`;
   private readonly descriptionId = `${this.dialogId}-description`;
+  private pendingCloseReason: OverlayCloseReason | null = null;
+  private focusReturnElement: HTMLElement | null = null;
 
   static override readonly styles = styles;
 
@@ -28,6 +31,10 @@ export class UikDialog extends LitElement {
   override updated(changed: Map<string, unknown>) {
     if (changed.has('open') || changed.has('modal')) {
       this.syncOpenState();
+    }
+
+    if (changed.has('open') && this.open) {
+      this.captureFocusOrigin();
     }
   }
 
@@ -42,6 +49,7 @@ export class UikDialog extends LitElement {
   }
 
   close(returnValue?: string) {
+    this.pendingCloseReason ??= 'programmatic';
     this.dialogElement?.close(returnValue);
     this.open = false;
   }
@@ -57,6 +65,7 @@ export class UikDialog extends LitElement {
         dialog.show();
       }
     } else if (dialog.open) {
+      this.pendingCloseReason ??= 'programmatic';
       dialog.close();
     }
   }
@@ -66,14 +75,40 @@ export class UikDialog extends LitElement {
   }
 
   private onClose = () => {
+    const reason = this.pendingCloseReason ?? 'programmatic';
+    this.pendingCloseReason = null;
     if (this.open) {
       this.open = false;
     }
+    this.dispatchEvent(
+      new CustomEvent('overlay-close', {
+        detail: {reason},
+        bubbles: true,
+        composed: true,
+      }),
+    );
+    this.restoreFocus();
   };
+
+  private captureFocusOrigin() {
+    const active = document.activeElement;
+    if (active instanceof HTMLElement && !this.contains(active)) {
+      this.focusReturnElement = active;
+    }
+  }
+
+  private restoreFocus() {
+    const target = this.focusReturnElement;
+    this.focusReturnElement = null;
+    if (target?.isConnected) {
+      target.focus();
+    }
+  }
 
   private onKeyDown = (event: KeyboardEvent) => {
     if (event.key !== 'Escape') return;
     event.preventDefault();
+    this.pendingCloseReason = 'escape';
     this.close();
   };
 

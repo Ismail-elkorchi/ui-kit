@@ -18,6 +18,7 @@ import '@ismail-elkorchi/ui-primitives/uik-icon';
 import '@ismail-elkorchi/ui-primitives/uik-input';
 import '@ismail-elkorchi/ui-primitives/uik-link';
 import '@ismail-elkorchi/ui-primitives/uik-nav';
+import '@ismail-elkorchi/ui-primitives/uik-nav-rail';
 import '@ismail-elkorchi/ui-primitives/uik-tree-view';
 import '@ismail-elkorchi/ui-primitives/uik-popover';
 import '@ismail-elkorchi/ui-primitives/uik-progress';
@@ -98,9 +99,10 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Attributes/props**: `open`, `modal` (boolean).
 - **Slots**: `title`, `description`, default slot for body, `actions`.
 - **Parts**: `base`, `panel`, `title`, `description`, `body`, `actions`.
-- **Events**: native `close`/`cancel` from `<dialog>` bubble.
-- **A11y**: uses native dialog semantics and forwards `aria-label`/`aria-labelledby`/`aria-describedby` to `<dialog>`.
+- **Events**: native `close`/`cancel` from `<dialog>` bubble; `overlay-close` (`detail: {reason}`).
+- **A11y**: uses native dialog semantics and forwards `aria-label`/`aria-labelledby`/`aria-describedby` to `<dialog>`; Escape closes and focus returns to the opener.
 - **Methods**: `showModal()`, `show()`, `close()`.
+- **Custom properties**: `--uik-component-dialog-bg`, `--uik-component-dialog-fg`, `--uik-component-dialog-border`, `--uik-component-dialog-radius`, `--uik-component-dialog-padding`, `--uik-component-dialog-shadow`, `--uik-component-dialog-max-width`, `--uik-component-dialog-title-fg`, `--uik-component-dialog-description-fg`, `--uik-component-dialog-actions-gap`.
 
 ### `<uik-heading>`
 
@@ -152,14 +154,24 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **A11y**: renders links inside a `<nav>` element with `aria-current="page"` for the active item.
 - **Custom properties**: `--uik-component-nav-item-*`, `--uik-component-nav-indent`, `--uik-component-nav-text-*`, `--uik-component-nav-toggle-fg`.
 
+### `<uik-nav-rail>`
+
+- **Attributes/props**: `items` (array), `activeId`, `orientation` (`vertical | horizontal`).
+- **Slots**: none.
+- **Parts**: `base`, `item`, `item-button`, `item-indicator`, `item-icon`.
+- **Events**: `nav-rail-select`.
+- **A11y**: toolbar role with roving focus; Arrow/Home/End move focus; Enter/Space activate items.
+- **Custom properties**: `--uik-component-nav-rail-bg`, `--uik-component-nav-rail-fg`, `--uik-component-nav-rail-width`, `--uik-component-nav-rail-gap`, `--uik-component-nav-rail-padding-y`, `--uik-component-nav-rail-item-size`, `--uik-component-nav-rail-item-indicator-bg`, `--uik-component-nav-rail-item-indicator-radius`, `--uik-component-nav-rail-item-indicator-width`, `--uik-component-nav-rail-icon-size`.
+
 ### `<uik-popover>`
 
 - **Attributes/props**: `open`, `placement` (`bottom-start | bottom | bottom-end | top-start | top | top-end`), `popover` (`auto | manual | hint`).
 - **Slots**: `trigger`, default slot for panel content.
 - **Parts**: `control` (trigger wrapper), `base` (panel).
-- **Events**: native events bubble from slotted trigger; panel listens for `toggle` when supported.
+- **Events**: native events bubble from slotted trigger; panel listens for `toggle` when supported; `overlay-close` (`detail: {reason}`).
 - **A11y**: forwards `aria-label`/`aria-labelledby`/`aria-describedby` to the panel.
 - **Behavior**: uses the Popover API when available; falls back to a positioned panel in Shadow DOM.
+- **Custom properties**: `--uik-component-popover-bg`, `--uik-component-popover-fg`, `--uik-component-popover-border`, `--uik-component-popover-radius`, `--uik-component-popover-padding-x`, `--uik-component-popover-padding-y`, `--uik-component-popover-shadow`, `--uik-component-popover-offset`.
 
 ### `<uik-progress>`
 
@@ -260,7 +272,9 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Attributes/props**: `open`, `placement`, `popover` (defaults to `popover="hint"`).
 - **Slots**: `trigger`, default slot for tooltip content.
 - **Parts**: `control` (trigger wrapper), `base` (panel).
+- **Events**: `overlay-close` (`detail: {reason}`).
 - **A11y**: panel uses `role="tooltip"` and wires `aria-describedby` onto the trigger.
+- **Custom properties**: `--uik-component-tooltip-bg`, `--uik-component-tooltip-fg`, `--uik-component-tooltip-radius`, `--uik-component-tooltip-padding-x`, `--uik-component-tooltip-padding-y`, `--uik-component-tooltip-shadow`, `--uik-component-tooltip-offset`.
 
 ### `<uik-visually-hidden>`
 

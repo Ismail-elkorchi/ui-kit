@@ -8,15 +8,15 @@ export const styles = css`
   dialog {
     box-sizing: border-box;
     width: 100%;
-    max-width: var(--uik-layout-panel-width-md);
+    max-width: var(--uik-component-dialog-max-width);
     padding: var(--uik-space-0);
     margin: auto;
     overflow: hidden auto;
-    color: oklch(var(--uik-text-default));
-    background-color: oklch(var(--uik-surface-card));
-    border: none;
-    border-radius: var(--uik-radius-4);
-    box-shadow: var(--uik-elevation-modal-shadow);
+    color: oklch(var(--uik-component-dialog-fg));
+    background-color: oklch(var(--uik-component-dialog-bg));
+    border: var(--uik-border-width-1) solid oklch(var(--uik-component-dialog-border));
+    border-radius: var(--uik-component-dialog-radius);
+    box-shadow: var(--uik-component-dialog-shadow);
   }
 
   dialog::backdrop {
@@ -26,7 +26,7 @@ export const styles = css`
   .panel {
     display: grid;
     gap: var(--uik-space-4);
-    padding: var(--uik-space-5);
+    padding: var(--uik-component-dialog-padding);
   }
 
   .title {
@@ -34,17 +34,18 @@ export const styles = css`
     font-size: var(--uik-typography-font-size-5);
     font-weight: var(--uik-typography-font-weight-semibold);
     line-height: var(--uik-typography-line-height-5);
+    color: oklch(var(--uik-component-dialog-title-fg));
   }
 
   .description {
     font-size: var(--uik-typography-font-size-2);
     line-height: var(--uik-typography-line-height-3);
-    color: oklch(var(--uik-text-muted));
+    color: oklch(var(--uik-component-dialog-description-fg));
   }
 
   .actions {
     display: flex;
-    gap: var(--uik-space-2);
+    gap: var(--uik-component-dialog-actions-gap);
     justify-content: flex-end;
   }
 `;

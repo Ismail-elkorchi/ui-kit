@@ -1,0 +1,46 @@
+{
+  "component": {
+    "popover": {
+      "bg": {
+        "$value": "{surface.popover}",
+        "$type": "color",
+        "$description": "Component popover background."
+      },
+      "fg": {
+        "$value": "{text.default}",
+        "$type": "color",
+        "$description": "Component popover foreground."
+      },
+      "border": {
+        "$value": "{border.default}",
+        "$type": "color",
+        "$description": "Component popover border."
+      },
+      "radius": {
+        "$value": "{radius.3}",
+        "$type": "dimension",
+        "$description": "Component popover radius."
+      },
+      "paddingX": {
+        "$value": "{space.4}",
+        "$type": "dimension",
+        "$description": "Component popover horizontal padding."
+      },
+      "paddingY": {
+        "$value": "{space.3}",
+        "$type": "dimension",
+        "$description": "Component popover vertical padding."
+      },
+      "shadow": {
+        "$value": "{elevation.popover.shadow}",
+        "$type": "shadow",
+        "$description": "Component popover shadow."
+      },
+      "offset": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component popover offset from trigger."
+      }
+    }
+  }
+}

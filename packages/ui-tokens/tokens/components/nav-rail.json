@@ -1,0 +1,62 @@
+{
+  "component": {
+    "navRail": {
+      "bg": {
+        "$value": "{surface.muted}",
+        "$type": "color",
+        "$description": "Component nav rail background."
+      },
+      "fg": {
+        "$value": "{text.muted}",
+        "$type": "color",
+        "$description": "Component nav rail foreground."
+      },
+      "width": {
+        "$value": "{size.control.lg}",
+        "$type": "dimension",
+        "$description": "Component nav rail width."
+      },
+      "gap": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component nav rail item gap."
+      },
+      "paddingY": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component nav rail vertical padding."
+      },
+      "item": {
+        "size": {
+          "$value": "{size.control.lg}",
+          "$type": "dimension",
+          "$description": "Component nav rail item size."
+        },
+        "indicator": {
+          "bg": {
+            "$value": "{intent.primary.bg.default}",
+            "$type": "color",
+            "$description": "Component nav rail active indicator bg."
+          },
+          "radius": {
+            "$value": "{radius.1}",
+            "$type": "dimension",
+            "$description": "Component nav rail active indicator radius."
+          },
+          "width": {
+            "$value": "{border.width.2}",
+            "$type": "dimension",
+            "$description": "Component nav rail active indicator width."
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$value": "{size.icon.md}",
+          "$type": "dimension",
+          "$description": "Component nav rail icon size."
+        }
+      }
+    }
+  }
+}

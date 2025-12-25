@@ -21,6 +21,7 @@ import './src/atomic/content/uik-text';
 import './src/atomic/control/uik-textarea';
 import './src/atomic/content/uik-visually-hidden';
 import './src/composed/collection/uik-nav';
+import './src/composed/collection/uik-nav-rail';
 import './src/composed/collection/uik-radio-group';
 import './src/composed/overlay/uik-tooltip';
 import './src/composed/collection/uik-tree-view';

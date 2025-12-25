@@ -98,11 +98,22 @@
       "attributes": ["open", "modal (boolean)"],
       "slots": ["title", "description", "default (body)", "actions"],
       "parts": ["base", "panel", "title", "description", "body", "actions"],
-      "events": ["Native close and cancel bubble from <dialog>."],
-      "a11y": ["Uses native dialog semantics; forwards aria-* attributes to <dialog>."],
+      "events": ["Native close and cancel bubble from <dialog>.", "overlay-close (detail: {reason})"],
+      "a11y": [
+        "Uses native dialog semantics; forwards aria-* attributes to <dialog>.",
+        "Escape closes and overlay-close reports reason; focus returns to the opener."
+      ],
       "cssVars": [
-        "--uik-layout-panel-width-md",
-        "--uik-elevation-modal-shadow",
+        "--uik-component-dialog-bg",
+        "--uik-component-dialog-fg",
+        "--uik-component-dialog-border",
+        "--uik-component-dialog-radius",
+        "--uik-component-dialog-padding",
+        "--uik-component-dialog-shadow",
+        "--uik-component-dialog-max-width",
+        "--uik-component-dialog-title-fg",
+        "--uik-component-dialog-description-fg",
+        "--uik-component-dialog-actions-gap",
         "--uik-scrim-color",
         "--uik-scrim-opacity"
       ]
@@ -195,15 +206,47 @@
       ]
     },
     {
+      "id": "nav-rail",
+      "tagName": "uik-nav-rail",
+      "summary": "Navigation rail with roving focus and icon buttons.",
+      "attributes": ["items (array)", "activeId", "orientation (vertical | horizontal)"],
+      "slots": [],
+      "parts": ["base", "item", "item-button", "item-indicator", "item-icon"],
+      "events": ["nav-rail-select"],
+      "a11y": ["Toolbar role with roving focus; Arrow/Home/End move focus; Enter/Space activate items."],
+      "cssVars": [
+        "--uik-component-nav-rail-bg",
+        "--uik-component-nav-rail-fg",
+        "--uik-component-nav-rail-width",
+        "--uik-component-nav-rail-gap",
+        "--uik-component-nav-rail-padding-y",
+        "--uik-component-nav-rail-item-size",
+        "--uik-component-nav-rail-item-indicator-bg",
+        "--uik-component-nav-rail-item-indicator-radius",
+        "--uik-component-nav-rail-item-indicator-width",
+        "--uik-component-nav-rail-icon-size"
+      ]
+    },
+    {
       "id": "popover",
       "tagName": "uik-popover",
       "summary": "Popover panel with trigger slot and optional native popover support.",
       "attributes": ["open", "placement", "popover (auto | manual | hint)"],
       "slots": ["trigger", "default (panel content)"],
       "parts": ["control", "base"],
-      "events": ["Trigger events bubble; panel listens to native popover toggle when supported."],
+      "events": ["Trigger events bubble; panel listens to native popover toggle when supported.", "overlay-close (detail: {reason})"],
       "a11y": ["Forward aria-* attributes to the panel."],
-      "cssVars": ["--uik-elevation-popover-shadow", "--uik-surface-popover", "--uik-z-local-overlay", "--uik-radius-3"]
+      "cssVars": [
+        "--uik-component-popover-bg",
+        "--uik-component-popover-fg",
+        "--uik-component-popover-border",
+        "--uik-component-popover-radius",
+        "--uik-component-popover-padding-x",
+        "--uik-component-popover-padding-y",
+        "--uik-component-popover-shadow",
+        "--uik-component-popover-offset",
+        "--uik-z-local-overlay"
+      ]
     },
     {
       "id": "progress",
@@ -372,9 +415,18 @@
       "attributes": ["open", "placement", "popover (defaults to hint)"],
       "slots": ["trigger", "default (tooltip content)"],
       "parts": ["control", "base"],
-      "events": ["Trigger events bubble from slotted trigger."],
+      "events": ["Trigger events bubble from slotted trigger.", "overlay-close (detail: {reason})"],
       "a11y": ["Panel uses role=\"tooltip\" and wires aria-describedby to trigger."],
-      "cssVars": ["--uik-z-local-tooltip", "--uik-text-inverse", "--uik-text-strong", "--uik-shadow-2"]
+      "cssVars": [
+        "--uik-component-tooltip-bg",
+        "--uik-component-tooltip-fg",
+        "--uik-component-tooltip-radius",
+        "--uik-component-tooltip-padding-x",
+        "--uik-component-tooltip-padding-y",
+        "--uik-component-tooltip-shadow",
+        "--uik-component-tooltip-offset",
+        "--uik-z-local-tooltip"
+      ]
     },
     {
       "id": "tree-view",

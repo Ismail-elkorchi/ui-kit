@@ -1,4 +1,5 @@
 import '@ismail-elkorchi/ui-tokens/base.css';
+import {createBreakpointObserver} from '@ismail-elkorchi/ui-tokens';
 
 import {mountDocsApp} from './app';
 import './styles.css';
@@ -9,3 +10,4 @@ if (!appRoot) {
 }
 
 mountDocsApp(appRoot);
+createBreakpointObserver();

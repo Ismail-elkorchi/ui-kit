@@ -215,7 +215,7 @@ const run = async () => {
   let tokenSet;
   try {
     tokenSet = await loadTokenSet();
-  } catch (error) {
+  } catch {
     errors.push(`tokens: unable to read base.css (${paths.tokensCss}). Run ui-tokens build first.`);
     tokenSet = new Set();
   }

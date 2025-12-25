@@ -1,0 +1,36 @@
+{
+  "breakpoint": {
+    "sm": {
+      "$value": {
+        "value": 40,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "Small breakpoint."
+    },
+    "md": {
+      "$value": {
+        "value": 60,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "Medium breakpoint."
+    },
+    "lg": {
+      "$value": {
+        "value": 80,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "Large breakpoint."
+    },
+    "xl": {
+      "$value": {
+        "value": 96,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$description": "Extra-large breakpoint."
+    }
+  }
+}

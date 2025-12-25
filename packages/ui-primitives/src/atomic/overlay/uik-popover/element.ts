@@ -7,6 +7,8 @@ import {createId} from '../../../internal';
 import {createEscapeKeyHandler, createOutsideDismissController} from '../../../internal/overlay/dismiss';
 import {resolvePlacement} from '../../../internal/overlay/positioning';
 
+type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
+
 @customElement('uik-popover')
 export class UikPopover extends LitElement {
   @property({type: Boolean, reflect: true, useDefault: true}) accessor open = false;
@@ -28,8 +30,9 @@ export class UikPopover extends LitElement {
 
   protected readonly panelId = createId('uik-popover');
   private pointerInPanel = false;
+  private pendingCloseReason: OverlayCloseReason | null = null;
   private readonly outsideDismiss = createOutsideDismissController(this, () => {
-    this.open = false;
+    this.requestClose('outside');
   });
 
   static override readonly styles = styles;
@@ -62,6 +65,10 @@ export class UikPopover extends LitElement {
     if (changed.has('open')) {
       this.syncOpenState();
       this.syncDismissListeners();
+      const previous = changed.get('open') as boolean | undefined;
+      if (previous && !this.open) {
+        this.emitCloseReason();
+      }
     }
   }
 
@@ -70,11 +77,32 @@ export class UikPopover extends LitElement {
   }
 
   hide() {
-    this.open = false;
+    this.requestClose('programmatic');
   }
 
   toggle() {
-    this.open = !this.open;
+    if (this.open) {
+      this.requestClose('toggle');
+    } else {
+      this.open = true;
+    }
+  }
+
+  private requestClose(reason: OverlayCloseReason) {
+    this.pendingCloseReason = reason;
+    this.open = false;
+  }
+
+  private emitCloseReason() {
+    const reason = this.pendingCloseReason ?? 'programmatic';
+    this.pendingCloseReason = null;
+    this.dispatchEvent(
+      new CustomEvent('overlay-close', {
+        detail: {reason},
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   private syncOpenState() {
@@ -157,7 +185,7 @@ export class UikPopover extends LitElement {
   };
 
   private readonly onPanelKeyDown = createEscapeKeyHandler(() => {
-    this.open = false;
+    this.requestClose('escape');
   });
 
   private onToggle = (event: Event) => {
@@ -165,6 +193,7 @@ export class UikPopover extends LitElement {
     if (nextState === 'open') {
       this.open = true;
     } else if (nextState === 'closed') {
+      this.pendingCloseReason ??= 'toggle';
       this.open = false;
     }
   };

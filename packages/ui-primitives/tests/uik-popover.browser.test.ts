@@ -33,6 +33,33 @@ describe('uik-popover', () => {
     expect(panel?.hasAttribute('hidden')).toBe(true);
   });
 
+  it('emits overlay-close with the programmatic reason on hide', async () => {
+    const popover = document.createElement('uik-popover') as UikPopover;
+    Object.defineProperty(popover, 'popoverSupported', {
+      get: () => false,
+    });
+    popover.innerHTML = `
+      <button slot="trigger">Open</button>
+      <div>Content</div>
+    `;
+    document.body.append(popover);
+
+    await popover.updateComplete;
+
+    popover.show();
+    await popover.updateComplete;
+
+    let reason = '';
+    popover.addEventListener('overlay-close', event => {
+      reason = (event as CustomEvent<{reason: string}>).detail.reason;
+    });
+
+    popover.hide();
+    await popover.updateComplete;
+
+    expect(reason).toBe('programmatic');
+  });
+
   it('evaluates popover support using the default getter', async () => {
     const popover = document.createElement('uik-popover') as UikPopover;
     popover.innerHTML = `

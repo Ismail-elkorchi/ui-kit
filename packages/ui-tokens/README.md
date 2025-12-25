@@ -100,9 +100,11 @@ Example utilities:
 import {
   THEME_ATTRIBUTE,
   DENSITY_ATTRIBUTE,
+  BREAKPOINT_ATTRIBUTE,
   setTheme,
   setDensity,
-  getCssVarName
+  getCssVarName,
+  createBreakpointObserver
 } from '@ismail-elkorchi/ui-tokens';
 
 const cssVar = getCssVarName('color.accent.1');
@@ -112,6 +114,9 @@ setDensity(document.documentElement, 'compact');
 
 document.documentElement.setAttribute(THEME_ATTRIBUTE, 'dark');
 document.documentElement.setAttribute(DENSITY_ATTRIBUTE, 'compact');
+
+createBreakpointObserver();
+document.documentElement.setAttribute(BREAKPOINT_ATTRIBUTE, 'md');
 ```
 
 ## Guarantees

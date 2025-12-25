@@ -20,8 +20,8 @@ interface DocsContent {
 
 const content = docsContent as DocsContent;
 
-export const docsPages = content.docsPages ?? [];
-export const labPages = content.labPages ?? [];
+export const docsPages = content.docsPages;
+export const labPages = content.labPages;
 
 export const buildPageMap = () => {
   const map = new Map<string, DocPage>();

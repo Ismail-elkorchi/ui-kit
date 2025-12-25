@@ -28,6 +28,34 @@ describe('uik-dialog', () => {
     expect(dialog.open).toBe(false);
   });
 
+  it('reports escape close reason and restores focus to opener', async () => {
+    const opener = document.createElement('button');
+    opener.textContent = 'Open dialog';
+    document.body.append(opener);
+    opener.focus();
+
+    const dialog = document.createElement('uik-dialog') as UikDialog;
+    dialog.modal = false;
+    dialog.open = true;
+    dialog.innerHTML = '<span slot="title">Dialog</span>';
+    document.body.append(dialog);
+
+    await dialog.updateComplete;
+
+    let reason = '';
+    dialog.addEventListener('overlay-close', event => {
+      reason = (event as CustomEvent<{reason: string}>).detail.reason;
+    });
+
+    const internal = dialog.shadowRoot?.querySelector('dialog');
+    internal?.focus();
+    await userEvent.keyboard('{Escape}');
+
+    await dialog.updateComplete;
+    expect(reason).toBe('escape');
+    expect(document.activeElement).toBe(opener);
+  });
+
   it('supports modal and non-modal open APIs', async () => {
     const dialog = document.createElement('uik-dialog') as UikDialog;
     dialog.innerHTML = '<span slot="title">Dialog</span>';

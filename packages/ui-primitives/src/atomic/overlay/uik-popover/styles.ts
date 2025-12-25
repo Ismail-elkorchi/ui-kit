@@ -15,24 +15,24 @@ export const styles: CSSResultGroup = css`
     position: absolute;
     z-index: var(--uik-z-local-overlay);
     min-width: max-content;
-    padding: var(--uik-space-3) var(--uik-space-4);
-    color: oklch(var(--uik-text-default));
-    background-color: oklch(var(--uik-surface-popover));
-    border: var(--uik-border-width-1) solid oklch(var(--uik-border-default));
-    border-radius: var(--uik-radius-3);
-    box-shadow: var(--uik-elevation-popover-shadow);
+    padding: var(--uik-component-popover-padding-y) var(--uik-component-popover-padding-x);
+    color: oklch(var(--uik-component-popover-fg));
+    background-color: oklch(var(--uik-component-popover-bg));
+    border: var(--uik-border-width-1) solid oklch(var(--uik-component-popover-border));
+    border-radius: var(--uik-component-popover-radius);
+    box-shadow: var(--uik-component-popover-shadow);
   }
 
   .panel[data-placement='bottom-start'],
   .panel[data-placement='bottom'],
   .panel[data-placement='bottom-end'] {
-    top: calc(100% + var(--uik-space-2));
+    top: calc(100% + var(--uik-component-popover-offset));
   }
 
   .panel[data-placement='top-start'],
   .panel[data-placement='top'],
   .panel[data-placement='top-end'] {
-    bottom: calc(100% + var(--uik-space-2));
+    bottom: calc(100% + var(--uik-component-popover-offset));
   }
 
   .panel[data-placement='bottom-start'],

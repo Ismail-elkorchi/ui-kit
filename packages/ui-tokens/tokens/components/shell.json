@@ -12,6 +12,35 @@
           "$type": "color",
           "$description": "Component shell activity bar fg."
         },
+        "item": {
+          "size": {
+            "$value": "{size.control.lg}",
+            "$type": "dimension",
+            "$description": "Component shell activity bar item size."
+          },
+          "iconSize": {
+            "$value": "{size.icon.md}",
+            "$type": "dimension",
+            "$description": "Component shell activity bar item icon size."
+          },
+          "indicator": {
+            "bg": {
+              "$value": "{intent.primary.bg.default}",
+              "$type": "color",
+              "$description": "Component shell activity bar active indicator bg."
+            },
+            "radius": {
+              "$value": "{radius.1}",
+              "$type": "dimension",
+              "$description": "Component shell activity bar active indicator radius."
+            },
+            "width": {
+              "$value": "{border.width.2}",
+              "$type": "dimension",
+              "$description": "Component shell activity bar active indicator width."
+            }
+          }
+        },
         "width": {
           "$value": {
             "value": 3.25,

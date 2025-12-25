@@ -21,10 +21,12 @@ export {UikText} from './src/atomic/content/uik-text';
 export {UikTextarea} from './src/atomic/control/uik-textarea';
 export {UikVisuallyHidden} from './src/atomic/content/uik-visually-hidden';
 export {UikNav} from './src/composed/collection/uik-nav';
+export {UikNavRail} from './src/composed/collection/uik-nav-rail';
 export {UikTreeView} from './src/composed/collection/uik-tree-view';
 export {UikRadioGroup} from './src/composed/collection/uik-radio-group';
 export {UikTooltip} from './src/composed/overlay/uik-tooltip';
 export type {UikNavItem, UikNavSelectDetail, UikNavToggleDetail} from './src/composed/collection/uik-nav';
+export type {UikNavRailIcon, UikNavRailItem, UikNavRailSelectDetail} from './src/composed/collection/uik-nav-rail';
 export type {
   UikTreeViewItem,
   UikTreeViewOpenDetail,
