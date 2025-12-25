@@ -16,6 +16,7 @@
   },
   "packageManager": "npm@11.6.2",
   "workspaces": [
+    "packages/docs",
     "packages/ui-tokens",
     "packages/ui-primitives",
     "packages/ui-shell"
