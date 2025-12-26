@@ -60,12 +60,12 @@ export class UikDialog extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (changed.has('open') || changed.has('modal')) {
-      this.syncOpenState();
-    }
-
     if (changed.has('open') && this.open) {
       this.captureFocusOrigin();
+    }
+
+    if (changed.has('open') || changed.has('modal')) {
+      this.syncOpenState();
     }
   }
 

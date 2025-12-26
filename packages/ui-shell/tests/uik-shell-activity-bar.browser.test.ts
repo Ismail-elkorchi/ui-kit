@@ -26,6 +26,16 @@ const getActiveButton = (bar: UikShellActivityBar) => {
   return rail?.shadowRoot?.activeElement ?? null;
 };
 
+const awaitActivityBarReady = async (bar: UikShellActivityBar) => {
+  await bar.updateComplete;
+  const rail = getNavRail(bar) as (HTMLElement & {updateComplete?: Promise<unknown>}) | null;
+  if (!rail) throw new Error('Expected uik-nav-rail.');
+  await rail.updateComplete;
+  const buttons = getButtons(bar) as (NavRailButton & {updateComplete?: Promise<unknown>})[];
+  await Promise.all(buttons.map(button => button.updateComplete ?? Promise.resolve()));
+  return {rail, buttons};
+};
+
 describe('uik-shell-activity-bar', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
@@ -37,7 +47,7 @@ describe('uik-shell-activity-bar', () => {
     bar.activeId = 'explorer';
     document.body.append(bar);
 
-    await bar.updateComplete;
+    const {rail} = await awaitActivityBarReady(bar);
 
     let buttons = getButtons(bar);
     expect(buttons).toHaveLength(items.length);
@@ -46,7 +56,7 @@ describe('uik-shell-activity-bar', () => {
 
     buttons[0]?.focus();
     await userEvent.keyboard('{ArrowDown}');
-    await bar.updateComplete;
+    await (rail as {updateComplete?: Promise<unknown>}).updateComplete;
 
     buttons = getButtons(bar);
     expect(getActiveButton(bar)).toBe(buttons[1]);
@@ -54,12 +64,12 @@ describe('uik-shell-activity-bar', () => {
     expect(buttons[0]?.tabIndexValue).toBe(-1);
 
     await userEvent.keyboard('{End}');
-    await bar.updateComplete;
+    await (rail as {updateComplete?: Promise<unknown>}).updateComplete;
     buttons = getButtons(bar);
     expect(getActiveButton(bar)).toBe(buttons[2]);
 
     await userEvent.keyboard('{Home}');
-    await bar.updateComplete;
+    await (rail as {updateComplete?: Promise<unknown>}).updateComplete;
     buttons = getButtons(bar);
     expect(getActiveButton(bar)).toBe(buttons[0]);
   });
@@ -69,7 +79,7 @@ describe('uik-shell-activity-bar', () => {
     bar.items = [...items];
     document.body.append(bar);
 
-    await bar.updateComplete;
+    await awaitActivityBarReady(bar);
 
     const buttons = getButtons(bar);
     let selected = '';
@@ -88,7 +98,7 @@ describe('uik-shell-activity-bar', () => {
     bar.items = [...items];
     document.body.append(bar);
 
-    await bar.updateComplete;
+    await awaitActivityBarReady(bar);
 
     const buttons = getButtons(bar);
     const target = buttons[0];

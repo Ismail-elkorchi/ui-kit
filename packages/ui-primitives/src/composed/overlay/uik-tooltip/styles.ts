@@ -13,11 +13,12 @@ export const styles: CSSResultGroup = [
       line-height: var(--uik-typography-line-height-3);
       color: oklch(var(--uik-component-tooltip-fg));
       pointer-events: none;
-      background-color: oklch(var(--uik-component-tooltip-bg));
-      border-color: oklch(var(--uik-component-tooltip-bg) / var(--uik-opacity-0));
-      border-radius: var(--uik-component-tooltip-radius);
-      box-shadow: var(--uik-component-tooltip-shadow);
-      --uik-component-popover-offset: var(--uik-component-tooltip-offset);
-    }
-  `,
-];
+	      background-color: oklch(var(--uik-component-tooltip-bg));
+	      border-color: oklch(var(--uik-component-tooltip-bg) / var(--uik-opacity-0));
+	      border-radius: var(--uik-component-tooltip-radius);
+	      box-shadow: var(--uik-component-tooltip-shadow);
+
+	      --uik-component-popover-offset: var(--uik-component-tooltip-offset);
+	    }
+	  `,
+	];

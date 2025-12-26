@@ -6,20 +6,20 @@ export const styles = css`
   }
 
   .nav {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: var(--uik-space-0);
     width: 100%;
-    box-sizing: border-box;
   }
 
   .item {
-    display: flex;
-    align-items: center;
-    gap: var(--uik-component-nav-item-gap);
-    min-height: var(--uik-component-nav-item-height);
-    width: 100%;
     box-sizing: border-box;
+    display: flex;
+    gap: var(--uik-component-nav-item-gap);
+    align-items: center;
+    width: 100%;
+    min-height: var(--uik-component-nav-item-height);
   }
 
   .toggle {
@@ -29,10 +29,10 @@ export const styles = css`
     width: var(--uik-component-nav-item-height);
     height: var(--uik-component-nav-item-height);
     padding: var(--uik-space-0);
-    border: var(--uik-border-width-0) solid transparent;
-    background: none;
     color: oklch(var(--uik-component-nav-toggle-fg));
     cursor: pointer;
+    background: none;
+    border: var(--uik-border-width-0) solid transparent;
   }
 
   .toggle:focus-visible {
@@ -45,16 +45,13 @@ export const styles = css`
 
   .link,
   .label {
-    flex: 1 1 auto;
-    min-width: var(--uik-space-0);
     display: inline-flex;
-    align-items: center;
+    flex: 1 1 auto;
     gap: var(--uik-component-nav-item-gap);
-    padding-inline: var(--uik-component-nav-item-padding-x);
+    align-items: center;
+    min-width: var(--uik-space-0);
     padding-block: var(--uik-component-nav-item-padding-y);
-    border-radius: var(--uik-component-nav-item-radius);
-    border: var(--uik-border-width-0) solid oklch(var(--uik-component-nav-item-bg));
-    background-color: oklch(var(--uik-component-nav-item-bg));
+    padding-inline: var(--uik-component-nav-item-padding-x);
     font-family: var(--uik-typography-font-family-sans);
     font-size: var(--uik-typography-font-size-2);
     font-weight: var(--uik-typography-font-weight-medium);
@@ -62,6 +59,9 @@ export const styles = css`
     color: oklch(var(--uik-component-nav-text-default));
     text-decoration: none;
     cursor: pointer;
+    background-color: oklch(var(--uik-component-nav-item-bg));
+    border: var(--uik-border-width-0) solid oklch(var(--uik-component-nav-item-bg));
+    border-radius: var(--uik-component-nav-item-radius);
   }
 
   .label {
@@ -70,19 +70,19 @@ export const styles = css`
   }
 
   .link:hover {
-    background-color: oklch(var(--uik-component-nav-item-hover-bg));
     color: oklch(var(--uik-component-nav-text-hover));
+    background-color: oklch(var(--uik-component-nav-item-hover-bg));
   }
 
   .link[data-current='true'] {
-    background-color: oklch(var(--uik-component-nav-item-active-bg));
     color: oklch(var(--uik-component-nav-text-active));
+    background-color: oklch(var(--uik-component-nav-item-active-bg));
   }
 
   .link[data-disabled='true']:hover,
   .label[data-disabled='true']:hover {
-    background-color: oklch(var(--uik-component-nav-item-bg));
     color: oklch(var(--uik-component-nav-text-default));
+    background-color: oklch(var(--uik-component-nav-item-bg));
   }
 
   .link[data-disabled='true'],

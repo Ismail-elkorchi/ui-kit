@@ -36,6 +36,7 @@ body {
 
 .docs-shell {
   height: 100%;
+
   --uik-component-shell-activity-bar-width: var(--uik-size-control-xl);
   --uik-component-shell-sidebar-width: var(--uik-layout-panel-width-md);
   --uik-component-shell-secondary-sidebar-width: var(--uik-layout-panel-width-md);
@@ -361,6 +362,7 @@ uik-heading[data-docs-title]::part(base) {
     opacity: var(--uik-opacity-0);
     transform: translateY(var(--uik-space-2));
   }
+
   to {
     opacity: var(--uik-opacity-100);
     transform: translateY(var(--uik-space-0));
@@ -372,6 +374,7 @@ uik-heading[data-docs-title]::part(base) {
     opacity: var(--uik-opacity-0);
     transform: translateY(var(--uik-space-2));
   }
+
   to {
     opacity: var(--uik-opacity-100);
     transform: translateY(var(--uik-space-0));

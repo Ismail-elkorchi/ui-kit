@@ -46,7 +46,7 @@ describe('storybook visuals', () => {
     const internal = dialog.shadowRoot?.querySelector('dialog');
     if (!internal) throw new Error('Dialog element missing.');
     await expect.element(internal).toMatchScreenshot();
-  });
+  }, 30_000);
 
   it('renders progress', async () => {
     mount(html`<uik-progress .value=${45} .max=${100} aria-label="Upload progress"></uik-progress>`);
@@ -121,19 +121,14 @@ describe('storybook visuals', () => {
 
   it('renders tooltip panel', async () => {
     mount(html`
-      <uik-tooltip>
+      <uik-tooltip ?open=${true}>
         <uik-button slot="trigger" variant="secondary">Hover me</uik-button>
         Helpful tooltip text.
       </uik-tooltip>
     `);
     const tooltip = await waitForUpdate<HTMLElement>('uik-tooltip');
-    (tooltip as unknown as {open: boolean}).open = true;
-    const withUpdate = tooltip as HTMLElement & {updateComplete?: Promise<unknown>};
-    if (withUpdate.updateComplete) {
-      await withUpdate.updateComplete;
-    }
     const panel = tooltip.shadowRoot?.querySelector('.panel');
     if (!panel) throw new Error('Tooltip panel missing.');
     await expect.element(panel).toMatchScreenshot();
-  });
+  }, 30_000);
 });

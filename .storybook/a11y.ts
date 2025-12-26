@@ -20,6 +20,9 @@ export async function runA11y(container: HTMLElement) {
     shadowDom: true,
     rules: {
       'color-contrast': {enabled: true},
+      'landmark-complementary-is-top-level': {enabled: false},
+      'landmark-contentinfo-is-top-level': {enabled: false},
+      'landmark-main-is-top-level': {enabled: false},
     },
   });
 

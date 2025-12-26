@@ -34,7 +34,7 @@ export class UikIcon extends LitElement {
     const hasLabel = this.ariaLabelValue.trim().length > 0;
     const hasHidden = this.ariaHiddenValue.trim().length > 0;
     const resolvedHidden = hasHidden ? this.ariaHiddenValue : hasLabel ? undefined : 'true';
-    const resolvedRole = resolvedHidden === 'true' ? undefined : hasLabel ? 'img' : undefined;
+    const resolvedRole = hasLabel ? 'img' : undefined;
     return html`
       <span
         part="base"

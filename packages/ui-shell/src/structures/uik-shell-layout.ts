@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
@@ -62,6 +62,12 @@ export class UikShellLayout extends LitElement {
   }
 
   override render() {
+    const ariaLabelledby = this.getAttribute('aria-labelledby');
+    const ariaLabel = this.getAttribute('aria-label');
+    const hasLabelledby = Boolean(ariaLabelledby);
+    const hasLabel = typeof ariaLabel === 'string' && ariaLabel.trim().length > 0;
+    const resolvedLabel = hasLabel ? ariaLabel : hasLabelledby ? null : 'Shell layout';
+
     const layoutStyles = {
       backgroundColor: 'oklch(var(--uik-surface-bg))',
       color: 'oklch(var(--uik-text-default))',
@@ -115,6 +121,9 @@ export class UikShellLayout extends LitElement {
         part="layout"
         style=${styleMap(layoutStyles)}
         data-layout-layer="shell"
+        role="region"
+        aria-label=${resolvedLabel ?? nothing}
+        aria-labelledby=${ariaLabelledby ?? nothing}
         >
         <div part="row" style=${styleMap(rowStyles)}>
           <div

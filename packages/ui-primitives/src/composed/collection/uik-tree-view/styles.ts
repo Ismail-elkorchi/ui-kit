@@ -6,34 +6,34 @@ export const styles = css`
   }
 
   .tree {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: var(--uik-space-0);
     width: 100%;
-    box-sizing: border-box;
   }
 
   .item {
     display: inline-flex;
-    align-items: center;
     gap: var(--uik-component-tree-view-item-gap);
-    min-height: var(--uik-component-tree-view-item-height);
+    align-items: center;
     width: 100%;
+    min-height: var(--uik-component-tree-view-item-height);
     padding-block: var(--uik-space-0);
-    border: var(--uik-border-width-0) solid oklch(var(--uik-component-tree-view-item-bg));
-    border-radius: var(--uik-component-tree-view-item-radius);
-    background-color: oklch(var(--uik-component-tree-view-item-bg));
     font-family: var(--uik-typography-font-family-sans);
     font-size: var(--uik-typography-font-size-2);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-2);
     color: oklch(var(--uik-component-tree-view-text-leaf));
     cursor: pointer;
+    background-color: oklch(var(--uik-component-tree-view-item-bg));
+    border: var(--uik-border-width-0) solid oklch(var(--uik-component-tree-view-item-bg));
+    border-radius: var(--uik-component-tree-view-item-radius);
   }
 
   .item:hover {
-    background-color: oklch(var(--uik-component-tree-view-item-hover-bg));
     color: oklch(var(--uik-component-tree-view-text-hover));
+    background-color: oklch(var(--uik-component-tree-view-item-hover-bg));
   }
 
   .item:active {
@@ -54,24 +54,24 @@ export const styles = css`
   }
 
   .item[data-disabled='true']:hover {
-    background-color: oklch(var(--uik-component-tree-view-item-bg));
     color: inherit;
+    background-color: oklch(var(--uik-component-tree-view-item-bg));
   }
 
   .item[data-kind='branch'] {
-    color: oklch(var(--uik-component-tree-view-text-branch));
     font-weight: var(--uik-typography-font-weight-semibold);
+    color: oklch(var(--uik-component-tree-view-text-branch));
   }
 
   .toggle {
     display: inline-flex;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
     width: var(--uik-component-tree-view-item-height);
     height: var(--uik-component-tree-view-item-height);
     padding: var(--uik-space-0);
     color: oklch(var(--uik-component-tree-view-toggle-fg));
-    flex: 0 0 auto;
   }
 
   .toggle[data-open='true'] {
@@ -80,15 +80,15 @@ export const styles = css`
 
   .selection {
     display: inline-flex;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
     width: var(--uik-component-checkbox-size);
     height: var(--uik-component-checkbox-size);
-    border-radius: var(--uik-radius-1);
-    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
-    background-color: oklch(var(--uik-surface-bg));
     color: oklch(var(--uik-text-inverse));
-    flex: 0 0 auto;
+    background-color: oklch(var(--uik-surface-bg));
+    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
+    border-radius: var(--uik-radius-1);
   }
 
   .selection[data-state='checked'],
@@ -98,17 +98,17 @@ export const styles = css`
   }
 
   .label {
-    flex: 1 1 auto;
-    min-width: var(--uik-space-0);
     display: inline-flex;
+    flex: 1 1 auto;
     align-items: center;
     justify-content: flex-start;
-    padding-inline: var(--uik-component-tree-view-item-padding-x);
+    min-width: var(--uik-space-0);
     padding-block: var(--uik-space-0);
-    text-align: start;
-    white-space: nowrap;
+    padding-inline: var(--uik-component-tree-view-item-padding-x);
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: start;
+    white-space: nowrap;
   }
 
   @media (forced-colors: active) {

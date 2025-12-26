@@ -53,7 +53,15 @@ export class UikButton extends LitElement {
   }
 
   override focus(options?: FocusOptions) {
-    this.buttonElement?.focus(options);
+    const button = this.buttonElement;
+    if (button) {
+      button.focus(options);
+      return;
+    }
+
+    void this.updateComplete.then(() => {
+      this.buttonElement?.focus(options);
+    });
   }
 
   override render() {
