@@ -32,6 +32,8 @@ export class UikShellSecondarySidebar extends LitElement {
   @property({type: String}) accessor heading = '';
   @property({attribute: 'focus-return-target'}) accessor focusReturnTarget: string | HTMLElement | null = null;
   @state() private accessor hasFooter = false;
+  private pendingFooterState: boolean | null = null;
+  private footerUpdateTask: Promise<void> | null = null;
   private slotController?: LightDomSlotController;
   private previousActiveElement: HTMLElement | null = null;
   private shouldRestoreFocus = false;
@@ -52,7 +54,7 @@ export class UikShellSecondarySidebar extends LitElement {
       root => {
         const footerContainer = root.querySelector('[data-shell-slot="footer"]');
         const nextHasFooter = !!footerContainer?.querySelector('[slot="footer"]');
-        if (nextHasFooter !== this.hasFooter) this.hasFooter = nextHasFooter;
+        this.updateFooterState(nextHasFooter);
       },
     );
     this.slotController.connect();
@@ -121,6 +123,23 @@ export class UikShellSecondarySidebar extends LitElement {
       this.restoreFocus();
       this.shouldRestoreFocus = false;
     }
+  }
+
+  private updateFooterState(nextHasFooter: boolean) {
+    if (nextHasFooter === this.hasFooter) return;
+    if (!this.hasUpdated || !this.isUpdatePending) {
+      this.hasFooter = nextHasFooter;
+      return;
+    }
+    this.pendingFooterState = nextHasFooter;
+    if (this.footerUpdateTask) return;
+    this.footerUpdateTask = this.updateComplete.then(() => {
+      this.footerUpdateTask = null;
+      if (this.pendingFooterState === null) return;
+      const pending = this.pendingFooterState;
+      this.pendingFooterState = null;
+      if (pending !== this.hasFooter) this.hasFooter = pending;
+    });
   }
 
   override render() {

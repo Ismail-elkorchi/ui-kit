@@ -30,6 +30,8 @@ export class UikShellStatusBar extends LitElement {
   @property({type: String}) accessor tone: StatusBarTone = 'info';
   @property({type: String}) accessor meta = '';
   @state() private accessor hasMetaSlot = false;
+  private pendingMetaSlotState: boolean | null = null;
+  private metaSlotUpdateTask: Promise<void> | null = null;
   private slotController?: LightDomSlotController;
 
   override connectedCallback() {
@@ -47,7 +49,7 @@ export class UikShellStatusBar extends LitElement {
       root => {
         const metaContainer = root.querySelector('[data-shell-slot="meta"]');
         const hasMeta = !!metaContainer?.querySelector('[slot="meta"]');
-        if (hasMeta !== this.hasMetaSlot) this.hasMetaSlot = hasMeta;
+        this.updateMetaSlotState(hasMeta);
         if (hasMeta) {
           const fallback = root.querySelector('[data-shell-fallback="meta"]');
           fallback?.remove();
@@ -68,6 +70,23 @@ export class UikShellStatusBar extends LitElement {
 
   override createRenderRoot() {
     return ensureLightDomRoot(this);
+  }
+
+  private updateMetaSlotState(nextHasMeta: boolean) {
+    if (nextHasMeta === this.hasMetaSlot) return;
+    if (!this.hasUpdated || !this.isUpdatePending) {
+      this.hasMetaSlot = nextHasMeta;
+      return;
+    }
+    this.pendingMetaSlotState = nextHasMeta;
+    if (this.metaSlotUpdateTask) return;
+    this.metaSlotUpdateTask = this.updateComplete.then(() => {
+      this.metaSlotUpdateTask = null;
+      if (this.pendingMetaSlotState === null) return;
+      const pending = this.pendingMetaSlotState;
+      this.pendingMetaSlotState = null;
+      if (pending !== this.hasMetaSlot) this.hasMetaSlot = pending;
+    });
   }
 
   private getToneColor() {

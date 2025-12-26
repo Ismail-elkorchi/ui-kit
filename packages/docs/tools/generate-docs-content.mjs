@@ -3,6 +3,9 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {marked} from 'marked';
+import MiniSearch from 'minisearch';
+import Prism from 'prismjs';
+import loadLanguages from 'prismjs/components/index.js';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '../../..');
@@ -10,6 +13,19 @@ const docsRoot = path.join(repoRoot, 'packages/docs');
 const contentRoot = path.join(docsRoot, 'content');
 const manifestPath = path.join(contentRoot, 'manifest.json');
 const outputPath = path.join(docsRoot, 'src/generated/docs-content.json');
+const searchIndexPath = path.join(docsRoot, 'src/generated/docs-search-index.json');
+
+const supportedLanguages = new Map([
+  ['bash', 'bash'],
+  ['css', 'css'],
+  ['html', 'markup'],
+  ['js', 'javascript'],
+  ['json', 'json'],
+  ['sh', 'bash'],
+  ['ts', 'typescript'],
+]);
+
+loadLanguages(['bash', 'css', 'javascript', 'json', 'markup', 'typescript']);
 
 const escapeHtml = value =>
   value
@@ -37,6 +53,23 @@ const stripHeadingMarkup = rawLine => rawLine.replace(/^#{1,6}\s+/, '').trim();
 
 const stripHtml = value => value.replace(/<[^>]+>/g, '').trim();
 
+const normalizeSearchText = value =>
+  stripHtml(String(value ?? ''))
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const normalizeLanguage = value => {
+  const key = String(value ?? '').trim().toLowerCase();
+  return supportedLanguages.get(key) ?? '';
+};
+
+const highlightCodeBlock = (code, language) => {
+  if (!language) return escapeHtml(code);
+  const grammar = Prism.languages[language];
+  if (!grammar) return escapeHtml(code);
+  return Prism.highlight(code, grammar, language);
+};
+
 const createSlugger = () => {
   const counts = new Map();
   return {
@@ -59,8 +92,10 @@ const createRenderer = slugger => {
   };
   renderer.listitem = text => `<li><uik-text as="p" class="docs-paragraph">${text}</uik-text></li>`;
   renderer.code = (code, infostring) => {
-    const language = (infostring ?? '').trim().split(/\s+/)[0] ?? '';
+    const rawLanguage = (infostring ?? '').trim().split(/\s+/)[0] ?? '';
+    const language = normalizeLanguage(rawLanguage);
     const langClass = language ? `language-${escapeHtml(language)}` : '';
+    const highlighted = highlightCodeBlock(code, language);
     return `
       <div class="docs-code-block">
         <div class="docs-code-actions">
@@ -73,7 +108,7 @@ const createRenderer = slugger => {
             Copy
           </uik-button>
         </div>
-        <pre class="docs-code"><code class="${langClass}">${escapeHtml(code)}</code></pre>
+        <pre class="docs-code"><code class="${langClass}">${highlighted}</code></pre>
       </div>
     `.trim();
   };
@@ -351,14 +386,50 @@ const buildPages = async entries => {
   return pages;
 };
 
+const buildSearchDocuments = (pages, kind) =>
+  pages.flatMap(page => {
+    const pageTitle = normalizeSearchText(page.title);
+    const summary = normalizeSearchText(page.summary);
+    return page.sections.map(section => {
+      const sectionTitle = normalizeSearchText(section.title);
+      const body = normalizeSearchText(section.body);
+      return {
+        id: `${kind}/${page.id}#${section.id}`,
+        kind,
+        pageId: page.id,
+        sectionId: section.id,
+        pageTitle,
+        title: sectionTitle,
+        summary,
+        body,
+        url: `/${kind}/${page.id}#${section.id}`,
+      };
+    });
+  });
+
+const buildSearchIndex = (docsPages, labPages) => {
+  const documents = [
+    ...buildSearchDocuments(docsPages, 'docs'),
+    ...buildSearchDocuments(labPages, 'lab'),
+  ];
+  const miniSearch = new MiniSearch({
+    fields: ['title', 'body', 'pageTitle', 'summary'],
+    storeFields: ['id', 'kind', 'pageId', 'sectionId', 'pageTitle', 'title', 'summary', 'body', 'url'],
+  });
+  miniSearch.addAll(documents);
+  return {schemaVersion: 1, index: miniSearch.toJSON()};
+};
+
 const run = async () => {
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
   const docsPages = await buildPages(manifest.docs ?? []);
   const labPages = await buildPages(manifest.lab ?? []);
   const output = {docsPages, labPages};
+  const searchIndex = buildSearchIndex(docsPages, labPages);
 
   await fs.mkdir(path.dirname(outputPath), {recursive: true});
   await fs.writeFile(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+  await fs.writeFile(searchIndexPath, `${JSON.stringify(searchIndex, null, 2)}\n`);
 };
 
 await run();

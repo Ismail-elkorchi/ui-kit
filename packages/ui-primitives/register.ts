@@ -12,6 +12,7 @@ import './src/atomic/overlay/uik-popover';
 import './src/atomic/feedback/uik-progress';
 import './src/atomic/control/uik-radio';
 import './src/atomic/layout/uik-separator';
+import './src/atomic/layout/uik-resizable-panels';
 import './src/atomic/control/uik-select';
 import './src/atomic/feedback/uik-spinner';
 import './src/atomic/layout/uik-stack';

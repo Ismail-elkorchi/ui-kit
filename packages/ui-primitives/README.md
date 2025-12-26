@@ -26,6 +26,7 @@ import '@ismail-elkorchi/ui-primitives/uik-radio';
 import '@ismail-elkorchi/ui-primitives/uik-radio-group';
 import '@ismail-elkorchi/ui-primitives/uik-select';
 import '@ismail-elkorchi/ui-primitives/uik-separator';
+import '@ismail-elkorchi/ui-primitives/uik-resizable-panels';
 import '@ismail-elkorchi/ui-primitives/uik-spinner';
 import '@ismail-elkorchi/ui-primitives/uik-stack';
 import '@ismail-elkorchi/ui-primitives/uik-surface';
@@ -214,6 +215,16 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Attributes/props**: `orientation` (`horizontal | vertical`).
 - **Events**: none; presentational.
 - **Styling hooks**: token-driven color, `part="base"`. Horizontal renders as `<hr>`, vertical as `role="separator"`.
+
+### `<uik-resizable-panels>`
+
+- **Attributes/props**: `orientation` (`horizontal | vertical`), `startSize`, `minStartSize`, `minEndSize`, `step`, `stepLarge` (px).
+- **Slots**: `start`, `end`.
+- **Parts**: `base`, `panel-start`, `panel-end`, `handle`, `handle-grip`.
+- **Events**: `resizable-panels-resize` (`detail: {startSize, endSize, ratio, source, phase}`).
+- **A11y**: handle uses `role="separator"` with keyboard resizing and `aria-valuenow`; label defaults to "Resize panels" unless `aria-label`/`aria-labelledby` is set.
+- **Motion/contrast**: handle transitions use motion tokens; forced-colors uses system colors.
+- **Custom properties**: `--uik-component-resizable-panels-panel-min-size`, `--uik-component-resizable-panels-panel-start-size`, `--uik-component-resizable-panels-handle-hit`, `--uik-component-resizable-panels-handle-size`, `--uik-component-resizable-panels-handle-bg`, `--uik-component-resizable-panels-handle-hover-bg`, `--uik-component-resizable-panels-handle-active-bg`, `--uik-component-resizable-panels-handle-radius`, `--uik-component-resizable-panels-step`, `--uik-component-resizable-panels-step-lg`.
 
 ### `<uik-select>`
 

@@ -34,6 +34,8 @@ export class UikShellSidebar extends LitElement {
   @property({type: Boolean}) accessor isBodyPadded = true;
   @property({type: Boolean}) accessor isBodyScrollable = true;
   @state() private accessor hasFooter = false;
+  private pendingFooterState: boolean | null = null;
+  private footerUpdateTask: Promise<void> | null = null;
   private slotController?: LightDomSlotController;
 
   override connectedCallback() {
@@ -53,7 +55,7 @@ export class UikShellSidebar extends LitElement {
       root => {
         const footerContainer = root.querySelector('[data-shell-slot="footer"]');
         const nextHasFooter = !!footerContainer?.querySelector('[slot="footer"]');
-        if (nextHasFooter !== this.hasFooter) this.hasFooter = nextHasFooter;
+        this.updateFooterState(nextHasFooter);
       },
     );
     this.slotController.connect();
@@ -66,6 +68,23 @@ export class UikShellSidebar extends LitElement {
 
   override createRenderRoot() {
     return ensureLightDomRoot(this);
+  }
+
+  private updateFooterState(nextHasFooter: boolean) {
+    if (nextHasFooter === this.hasFooter) return;
+    if (!this.hasUpdated || !this.isUpdatePending) {
+      this.hasFooter = nextHasFooter;
+      return;
+    }
+    this.pendingFooterState = nextHasFooter;
+    if (this.footerUpdateTask) return;
+    this.footerUpdateTask = this.updateComplete.then(() => {
+      this.footerUpdateTask = null;
+      if (this.pendingFooterState === null) return;
+      const pending = this.pendingFooterState;
+      this.pendingFooterState = null;
+      if (pending !== this.hasFooter) this.hasFooter = pending;
+    });
   }
 
   override render() {

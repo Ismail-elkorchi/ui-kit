@@ -252,6 +252,52 @@ uik-heading[data-docs-title]::part(base) {
   border-radius: var(--uik-radius-0);
 }
 
+.docs-code .token.comment,
+.docs-code .token.prolog,
+.docs-code .token.doctype,
+.docs-code .token.cdata {
+  color: oklch(var(--uik-text-muted));
+}
+
+.docs-code .token.punctuation {
+  color: oklch(var(--uik-text-muted));
+}
+
+.docs-code .token.namespace,
+.docs-code .token.keyword,
+.docs-code .token.boolean,
+.docs-code .token.constant {
+  color: oklch(var(--uik-text-info));
+}
+
+.docs-code .token.selector,
+.docs-code .token.tag,
+.docs-code .token.function,
+.docs-code .token.class-name {
+  color: oklch(var(--uik-text-strong));
+}
+
+.docs-code .token.number,
+.docs-code .token.property,
+.docs-code .token.symbol,
+.docs-code .token.builtin,
+.docs-code .token.operator {
+  color: oklch(var(--uik-text-warning));
+}
+
+.docs-code .token.string,
+.docs-code .token.attr-name,
+.docs-code .token.attr-value,
+.docs-code .token.regex,
+.docs-code .token.char {
+  color: oklch(var(--uik-text-success));
+}
+
+.docs-code .token.important,
+.docs-code .token.deleted {
+  color: oklch(var(--uik-text-danger));
+}
+
 .docs-section-body code {
   padding-inline: var(--uik-space-1);
   font-family: var(--uik-typography-font-family-mono);
@@ -426,7 +472,17 @@ uik-heading[data-docs-title]::part(base) {
 @media (forced-colors: active) {
   .docs-card,
   .docs-lab-panel,
-  .docs-skip-link {
+  .docs-skip-link,
+  .docs-code {
     border-color: CanvasText;
+  }
+
+  .docs-code {
+    color: CanvasText;
+    background-color: Canvas;
+  }
+
+  .docs-code .token {
+    color: CanvasText;
   }
 }

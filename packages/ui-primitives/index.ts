@@ -12,6 +12,7 @@ export {UikPopover} from './src/atomic/overlay/uik-popover';
 export {UikProgress} from './src/atomic/feedback/uik-progress';
 export {UikRadio} from './src/atomic/control/uik-radio';
 export {UikSeparator} from './src/atomic/layout/uik-separator';
+export {UikResizablePanels} from './src/atomic/layout/uik-resizable-panels';
 export {UikSelect} from './src/atomic/control/uik-select';
 export {UikSpinner} from './src/atomic/feedback/uik-spinner';
 export {UikStack} from './src/atomic/layout/uik-stack';
@@ -33,3 +34,8 @@ export type {
   UikTreeViewSelectDetail,
   UikTreeViewToggleDetail,
 } from './src/composed/collection/uik-tree-view';
+export type {
+  UikResizablePanelsResizeDetail,
+  UikResizablePanelsResizePhase,
+  UikResizablePanelsResizeSource,
+} from './src/atomic/layout/uik-resizable-panels';

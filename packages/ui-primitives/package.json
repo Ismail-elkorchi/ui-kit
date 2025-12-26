@@ -125,6 +125,11 @@
       "import": "./dist/src/atomic/layout/uik-separator/index.js",
       "default": "./dist/src/atomic/layout/uik-separator/index.js"
     },
+    "./uik-resizable-panels": {
+      "types": "./dist/src/atomic/layout/uik-resizable-panels/index.d.ts",
+      "import": "./dist/src/atomic/layout/uik-resizable-panels/index.js",
+      "default": "./dist/src/atomic/layout/uik-resizable-panels/index.js"
+    },
     "./uik-select": {
       "types": "./dist/src/atomic/control/uik-select/index.d.ts",
       "import": "./dist/src/atomic/control/uik-select/index.js",

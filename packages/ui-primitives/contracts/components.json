@@ -505,6 +505,48 @@
       ]
     },
     {
+      "id": "resizable-panels",
+      "tagName": "uik-resizable-panels",
+      "summary": "Resizable two-panel layout with a keyboard-accessible separator.",
+      "attributes": [
+        "orientation (horizontal | vertical)",
+        "startSize (number, px)",
+        "minStartSize (number, px)",
+        "minEndSize (number, px)",
+        "step (number, px)",
+        "stepLarge (number, px)"
+      ],
+      "slots": [
+        "start",
+        "end"
+      ],
+      "parts": [
+        "base",
+        "panel-start",
+        "panel-end",
+        "handle",
+        "handle-grip"
+      ],
+      "events": [
+        "resizable-panels-resize (detail: {startSize, endSize, ratio, source, phase})"
+      ],
+      "a11y": [
+        "Handle uses role=\"separator\" with keyboard resizing; defaults aria-label to \"Resize panels\" unless aria-label/aria-labelledby is set."
+      ],
+      "cssVars": [
+        "--uik-component-resizable-panels-panel-min-size",
+        "--uik-component-resizable-panels-panel-start-size",
+        "--uik-component-resizable-panels-handle-hit",
+        "--uik-component-resizable-panels-handle-size",
+        "--uik-component-resizable-panels-handle-bg",
+        "--uik-component-resizable-panels-handle-hover-bg",
+        "--uik-component-resizable-panels-handle-active-bg",
+        "--uik-component-resizable-panels-handle-radius",
+        "--uik-component-resizable-panels-step",
+        "--uik-component-resizable-panels-step-lg"
+      ]
+    },
+    {
       "id": "select",
       "tagName": "uik-select",
       "summary": "Form-associated select with label, hint, and error slots.",
