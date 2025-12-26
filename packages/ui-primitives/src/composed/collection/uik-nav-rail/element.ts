@@ -212,8 +212,8 @@ export class UikNavRail extends LitElement {
   }
 
   override render() {
-    const ariaLabel = this.ariaLabelValue || undefined;
     const ariaLabelledby = this.ariaLabelledbyValue || undefined;
+    const ariaLabel = this.ariaLabelValue || (ariaLabelledby ? undefined : 'Navigation rail');
     const focusId = this.focusedId || this.resolveDefaultFocusId();
 
     return html`

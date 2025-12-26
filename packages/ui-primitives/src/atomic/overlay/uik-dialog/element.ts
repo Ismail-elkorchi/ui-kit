@@ -153,6 +153,7 @@ export class UikDialog extends LitElement {
 
     const ariaLabel = hasTitle ? undefined : this.ariaLabelValue || undefined;
     const ariaLabelledby = hasTitle ? this.titleId : this.ariaLabelledbyValue || undefined;
+    const ariaModal = this.modal ? 'true' : undefined;
 
     return html`
       <dialog
@@ -161,7 +162,8 @@ export class UikDialog extends LitElement {
         @keydown=${this.onKeyDown}
         aria-label=${ifDefined(ariaLabel)}
         aria-labelledby=${ifDefined(ariaLabelledby)}
-        aria-describedby=${ifDefined(describedBy)}>
+        aria-describedby=${ifDefined(describedBy)}
+        aria-modal=${ifDefined(ariaModal)}>
         <div part="panel" class="panel">
           <h2 part="title" class="title" id=${this.titleId} ?hidden=${!hasTitle}>
             <slot name="title"></slot>

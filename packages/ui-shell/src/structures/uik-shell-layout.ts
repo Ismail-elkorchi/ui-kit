@@ -1,4 +1,4 @@
-import {LitElement, html, nothing} from 'lit';
+import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
@@ -110,20 +110,12 @@ export class UikShellLayout extends LitElement {
       width: '100%',
     };
 
-    const ariaLabelledby = this.getAttribute('aria-labelledby');
-    const ariaLabel = this.getAttribute('aria-label');
-    const hasLabelledby = Boolean(ariaLabelledby);
-    const hasLabel = typeof ariaLabel === 'string' && ariaLabel.trim().length > 0;
-    const resolvedLabel = hasLabel ? ariaLabel : hasLabelledby ? null : 'App shell';
-
     return html`
       <div
         part="layout"
         style=${styleMap(layoutStyles)}
         data-layout-layer="shell"
-        role="region"
-        aria-label=${resolvedLabel ?? nothing}
-        aria-labelledby=${ariaLabelledby ?? nothing}>
+        >
         <div part="row" style=${styleMap(rowStyles)}>
           <div
             part="activity-bar"

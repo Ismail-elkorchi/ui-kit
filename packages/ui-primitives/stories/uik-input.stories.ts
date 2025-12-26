@@ -2,7 +2,7 @@ import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html, nothing} from 'lit';
 
-import {runA11y} from '../../../.storybook/a11y';
+import {interactionStory} from '../../../.storybook/a11y';
 
 type InputArgs = {
   type: string;
@@ -64,23 +64,22 @@ export default meta;
 
 type Story = StoryObj<InputArgs>;
 
-const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
 export const Default: Story = {
-  play: playA11y,
+  ...interactionStory,
 };
 
 export const Filled: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {value: 'hello@uik.dev'},
 };
 
 export const Disabled: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {disabled: true, placeholder: 'Disabled'},
 };
 
 export const Invalid: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {invalid: true, error: 'Please enter a valid email.'},
 };

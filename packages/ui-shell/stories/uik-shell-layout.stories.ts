@@ -3,6 +3,8 @@ import {html} from 'lit';
 import '@ismail-elkorchi/ui-shell/register';
 import '@ismail-elkorchi/ui-primitives/register';
 
+import {interactionStory} from '../../../.storybook/a11y';
+
 const activityItems = [
   {
     id: 'explorer',
@@ -22,6 +24,7 @@ const meta: Meta<LayoutArgs> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    uikA11y: {skipMainWrapper: true},
     docs: {
       description: {
         component: [
@@ -177,4 +180,6 @@ export default meta;
 
 type Story = StoryObj<LayoutArgs>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  ...interactionStory,
+};

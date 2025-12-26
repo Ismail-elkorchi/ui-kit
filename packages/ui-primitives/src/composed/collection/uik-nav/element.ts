@@ -194,7 +194,7 @@ export class UikNav extends LitElement {
       <nav
         part="base"
         class="nav"
-        aria-label=${ifDefined(this.ariaLabelValue || undefined)}
+        aria-label=${ifDefined(this.ariaLabelValue || (this.ariaLabelledbyValue ? undefined : 'Navigation'))}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}>
         ${items.map(item => this.renderItem(item))}
       </nav>

@@ -377,7 +377,7 @@ export class UikTreeView extends LitElement {
         class="tree"
         role="tree"
         aria-multiselectable="true"
-        aria-label=${ifDefined(this.ariaLabelValue || undefined)}
+        aria-label=${ifDefined(this.ariaLabelValue || (this.ariaLabelledbyValue ? undefined : 'Tree view'))}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
         >
         ${items.map(item => this.renderItem(item, treeIndex, selectedSet))}

@@ -129,7 +129,12 @@ export class UikShellStatusBar extends LitElement {
     };
 
     return html`
-      <footer part="status-bar" data-region="status-bar" style=${styleMap(statusBarStyles)}>
+      <div
+        part="status-bar"
+        data-region="status-bar"
+        role="status"
+        aria-live="polite"
+        style=${styleMap(statusBarStyles)}>
         <div part="status-main" style=${styleMap(groupStyles)}>
           <span part="message" style=${styleMap(messageStyles)}>${this.message}</span>
           <span part="actions" data-shell-slot="actions"></span>
@@ -137,7 +142,7 @@ export class UikShellStatusBar extends LitElement {
         <div part="meta" style=${styleMap(metaStyles)} data-shell-slot="meta">
           ${showMetaFallback ? html`<span data-shell-fallback="meta">${metaContent}</span>` : nothing}
         </div>
-      </footer>
+      </div>
     `;
   }
 }

@@ -2,7 +2,7 @@ import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html, nothing} from 'lit';
 
-import {runA11y} from '../../../.storybook/a11y';
+import {interactionStory} from '../../../.storybook/a11y';
 
 type TextareaArgs = {
   placeholder: string;
@@ -56,18 +56,17 @@ export default meta;
 
 type Story = StoryObj<TextareaArgs>;
 
-const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
 export const Default: Story = {
-  play: playA11y,
+  ...interactionStory,
 };
 
 export const Filled: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {value: 'This is a longer textarea value.'},
 };
 
 export const Invalid: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {invalid: true, error: 'Please enter at least 10 characters.'},
 };

@@ -2,7 +2,7 @@ import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html, nothing} from 'lit';
 
-import {runA11y} from '../../../.storybook/a11y';
+import {interactionStory} from '../../../.storybook/a11y';
 
 type SwitchArgs = {
   checked: boolean;
@@ -47,13 +47,12 @@ export default meta;
 
 type Story = StoryObj<SwitchArgs>;
 
-const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
 export const Default: Story = {
-  play: playA11y,
+  ...interactionStory,
 };
 
 export const On: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {checked: true},
 };

@@ -2,6 +2,8 @@ import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
 import '@ismail-elkorchi/ui-shell/register';
 
+import {interactionStory} from '../../../.storybook/a11y';
+
 const items = [
   {
     id: 'explorer',
@@ -73,4 +75,6 @@ export default meta;
 
 type Story = StoryObj<ActivityBarArgs>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  ...interactionStory,
+};

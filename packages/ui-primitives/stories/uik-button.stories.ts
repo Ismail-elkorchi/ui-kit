@@ -2,7 +2,7 @@ import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
 
-import {runA11y} from '../../../.storybook/a11y';
+import {interactionStory} from '../../../.storybook/a11y';
 
 type ButtonArgs = {
   label: string;
@@ -73,24 +73,23 @@ export default meta;
 
 type Story = StoryObj<ButtonArgs>;
 
-const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
 export const Solid: Story = {
-  play: playA11y,
+  ...interactionStory,
 };
 
 export const Danger: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {variant: 'danger', label: 'Delete'},
 };
 
 export const GhostMuted: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {variant: 'ghost', label: 'Muted ghost', muted: true},
 };
 
 export const IconButton: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {label: '★', size: 'icon', variant: 'secondary', type: 'button'},
   render: ({label, ...args}) => html`
     <uik-button

@@ -10,7 +10,7 @@ import {styles} from './styles';
  * @attr tone (default | muted | danger | success | warning | info | inverse)
  * @slot default (svg)
  * @part base
- * @a11y Use aria-label for meaningful icons or aria-hidden for decorative icons.
+ * @a11y Use aria-label for meaningful icons; icons are aria-hidden by default when unlabeled.
  * @cssprop --uik-component-icon-size-{xs|sm|md|lg}
  * @cssprop --uik-component-icon-color-{default|muted|danger|success|warning|info|inverse}
  */
@@ -31,13 +31,17 @@ export class UikIcon extends LitElement {
   static override readonly styles = styles;
 
   override render() {
+    const hasLabel = this.ariaLabelValue.trim().length > 0;
+    const hasHidden = this.ariaHiddenValue.trim().length > 0;
+    const resolvedHidden = hasHidden ? this.ariaHiddenValue : hasLabel ? undefined : 'true';
+    const resolvedRole = resolvedHidden === 'true' ? undefined : hasLabel ? 'img' : undefined;
     return html`
       <span
         part="base"
         class="icon"
-        role=${ifDefined(this.ariaLabelValue ? 'img' : undefined)}
-        aria-label=${ifDefined(this.ariaLabelValue || undefined)}
-        aria-hidden=${ifDefined(this.ariaHiddenValue || undefined)}>
+        role=${ifDefined(resolvedRole)}
+        aria-label=${ifDefined(hasLabel ? this.ariaLabelValue : undefined)}
+        aria-hidden=${ifDefined(resolvedHidden)}>
         <slot></slot>
       </span>
     `;

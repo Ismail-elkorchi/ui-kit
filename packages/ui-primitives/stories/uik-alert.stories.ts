@@ -2,7 +2,7 @@ import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
 
-import {runA11y} from '../../../.storybook/a11y';
+import {interactionStory} from '../../../.storybook/a11y';
 
 type AlertArgs = {
   variant: 'neutral' | 'info' | 'success' | 'warning' | 'danger';
@@ -30,13 +30,12 @@ export default meta;
 
 type Story = StoryObj<AlertArgs>;
 
-const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
 export const Default: Story = {
-  play: playA11y,
+  ...interactionStory,
 };
 
 export const Danger: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {variant: 'danger'},
 };

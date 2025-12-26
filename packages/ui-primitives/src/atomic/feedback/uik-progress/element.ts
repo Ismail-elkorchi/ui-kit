@@ -29,12 +29,13 @@ export class UikProgress extends LitElement {
 
   override render() {
     const value = this.indeterminate ? undefined : String(this.value);
+    const ariaLabel = this.ariaLabelValue || (this.ariaLabelledbyValue ? undefined : 'Progress');
     return html`
       <progress
         part="base"
         value=${ifDefined(value)}
         max=${this.max}
-        aria-label=${ifDefined(this.ariaLabelValue || undefined)}
+        aria-label=${ifDefined(ariaLabel)}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}></progress>
     `;
   }

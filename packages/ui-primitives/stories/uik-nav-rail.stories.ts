@@ -2,7 +2,7 @@ import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
 
-import {runA11y} from '../../../.storybook/a11y';
+import {interactionStory} from '../../../.storybook/a11y';
 
 const items = [
   {id: 'explorer', label: 'Explorer', icon: 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z'},
@@ -35,5 +35,5 @@ export const Default: StoryObj<UikNavRailArgs> = {
     activeId: 'explorer',
     orientation: 'vertical',
   },
-  play: async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement),
+  ...interactionStory,
 };

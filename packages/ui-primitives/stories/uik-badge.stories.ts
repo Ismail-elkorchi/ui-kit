@@ -2,7 +2,7 @@ import '@ismail-elkorchi/ui-primitives/register';
 import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
 
-import {runA11y} from '../../../.storybook/a11y';
+import {interactionStory} from '../../../.storybook/a11y';
 
 type BadgeArgs = {
   label: string;
@@ -38,23 +38,22 @@ export default meta;
 
 type Story = StoryObj<BadgeArgs>;
 
-const playA11y = async ({canvasElement}: {canvasElement: HTMLElement}) => runA11y(canvasElement);
 
 export const Default: Story = {
-  play: playA11y,
+  ...interactionStory,
 };
 
 export const Secondary: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {variant: 'secondary', label: 'Secondary'},
 };
 
 export const Danger: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {variant: 'danger', label: 'Alert'},
 };
 
 export const Outline: Story = {
-  play: playA11y,
+  ...interactionStory,
   args: {variant: 'outline', label: 'Outline'},
 };

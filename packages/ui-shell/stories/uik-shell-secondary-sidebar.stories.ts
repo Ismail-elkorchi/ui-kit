@@ -2,6 +2,8 @@ import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
 import '@ismail-elkorchi/ui-shell/register';
 
+import {interactionStory} from '../../../.storybook/a11y';
+
 type SecondarySidebarArgs = {
   isOpen: boolean;
   heading: string;
@@ -71,4 +73,6 @@ export default meta;
 
 type Story = StoryObj<SecondarySidebarArgs>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  ...interactionStory,
+};

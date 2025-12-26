@@ -2,6 +2,8 @@ import type {Meta, StoryObj} from '@storybook/web-components-vite';
 import {html} from 'lit';
 import '@ismail-elkorchi/ui-shell/register';
 
+import {interactionStory} from '../../../.storybook/a11y';
+
 type StatusBarArgs = {
   message: string;
   tone: 'info' | 'success' | 'danger' | 'muted';
@@ -57,4 +59,6 @@ export default meta;
 
 type Story = StoryObj<StatusBarArgs>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  ...interactionStory,
+};

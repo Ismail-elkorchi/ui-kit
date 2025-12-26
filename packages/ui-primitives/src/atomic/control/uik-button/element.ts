@@ -16,7 +16,7 @@ import {styles} from './styles';
  * @slot default (label or icon)
  * @part base
  * @event Native button events bubble from the internal <button>.
- * @a11y Forward aria-label, aria-labelledby, and aria-pressed to the internal button.
+ * @a11y Forward aria-label, aria-labelledby, aria-describedby, and aria-pressed to the internal button.
  * @a11y Icon-only buttons should provide an accessible name.
  * @cssprop --uik-component-button-base-* (gap, font, focus ring, border)
  * @cssprop --uik-component-button-{solid|ghost|outline|secondary|danger|link}-*
@@ -42,6 +42,7 @@ export class UikButton extends LitElement {
   @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
   @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
   @property({attribute: 'aria-pressed'}) accessor ariaPressedValue = '';
+  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
 
   private readonly internals = this.attachInternals();
 
@@ -65,6 +66,7 @@ export class UikButton extends LitElement {
         aria-label=${ifDefined(this.ariaLabelValue || undefined)}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
         aria-pressed=${ifDefined(this.ariaPressedValue || undefined)}
+        aria-describedby=${ifDefined(this.ariaDescribedbyValue || undefined)}
         ?disabled=${this.disabled}
         @click=${this.onClick}>
         <slot></slot>

@@ -3,6 +3,8 @@ import {html} from 'lit';
 import '@ismail-elkorchi/ui-shell/register';
 import '@ismail-elkorchi/ui-primitives/register';
 
+import {interactionStory} from '../../../.storybook/a11y';
+
 type SidebarArgs = {
   heading: string;
   subtitle: string;
@@ -102,4 +104,6 @@ export default meta;
 
 type Story = StoryObj<SidebarArgs>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  ...interactionStory,
+};
