@@ -8,6 +8,13 @@
       "format": "markdown"
     },
     {
+      "id": "baseline-support",
+      "title": "Baseline Support Matrix",
+      "summary": "Baseline classification of platform features used by UIK.",
+      "source": "packages/docs/content/baseline-support.md",
+      "format": "markdown"
+    },
+    {
       "id": "tokens",
       "title": "Tokens Reference",
       "summary": "UIK tokens are the single source of truth for all visual values and component hooks.",

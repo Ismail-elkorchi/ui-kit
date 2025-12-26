@@ -9,6 +9,19 @@ Token-driven shell components (activity bar, sidebars, status bar, and an option
 - Shell components expose only UI surface/state; business logic should live in the host app.
 - **Contract**: Shell components use `ui-primitives` strictly via their public API (attributes/props). Visual styling comes from `--uik-*` custom properties (no framework utility classes).
 
+## Landmarks & labels (Accessibility contract)
+
+- `uik-shell-layout` renders a `role="region"` container; override its label via `aria-label` or `aria-labelledby` on the host.
+- `uik-shell-activity-bar` renders an `<aside>` landmark and forwards `aria-label`/`aria-labelledby` to the internal nav rail; default label is "Activity bar".
+- `uik-shell-sidebar` and `uik-shell-secondary-sidebar` render `<aside>` landmarks; default labels come from the `heading` or fall back to "Sidebar"/"Secondary sidebar".
+- `uik-shell-status-bar` uses `role="status"` with `aria-live="polite"` for status messages.
+- Provide a semantic `<main>` element in the `main-content` slot and label additional landmarks as needed in host markup.
+
+## Focus + roving focus
+
+- Shell navigation surfaces delegate roving focus to primitives (`uik-nav-rail`, `uik-tree-view`) and do not add competing keyboard handlers.
+- Follow the Focus + Roving Focus contract in `@ismail-elkorchi/ui-primitives` when composing activity bars or navigation trees.
+
 ## Using the components
 
 ```ts

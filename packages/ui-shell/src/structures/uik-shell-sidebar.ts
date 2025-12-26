@@ -41,6 +41,7 @@ export class UikShellSidebar extends LitElement {
     if (!this.style.display) this.style.display = 'block';
     if (!this.style.boxSizing) this.style.boxSizing = 'border-box';
     if (!this.style.height) this.style.height = '100%';
+    ensureLightDomRoot(this);
     this.slotController ??= new LightDomSlotController(
       this,
       '[data-shell-root]',
@@ -61,10 +62,6 @@ export class UikShellSidebar extends LitElement {
   override disconnectedCallback() {
     this.slotController?.disconnect();
     super.disconnectedCallback();
-  }
-
-  override firstUpdated() {
-    this.slotController?.sync();
   }
 
   override createRenderRoot() {

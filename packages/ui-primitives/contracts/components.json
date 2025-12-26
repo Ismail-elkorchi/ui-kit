@@ -99,7 +99,7 @@
         "Native button events bubble from the internal <button>."
       ],
       "a11y": [
-        "Forward aria-label, aria-labelledby, and aria-pressed to the internal button.",
+        "Forward aria-label, aria-labelledby, aria-describedby, and aria-pressed to the internal button.",
         "Icon-only buttons should provide an accessible name."
       ],
       "cssVars": [
@@ -231,7 +231,7 @@
       ],
       "events": [],
       "a11y": [
-        "Use aria-label for meaningful icons or aria-hidden for decorative icons."
+        "Use aria-label for meaningful icons; icons are aria-hidden by default when unlabeled."
       ],
       "cssVars": [
         "--uik-component-icon-size-{xs|sm|md|lg}",

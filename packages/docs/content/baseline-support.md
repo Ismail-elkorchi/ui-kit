@@ -1,0 +1,26 @@
+# Baseline Support Matrix
+
+## Overview
+This matrix lists platform features used by UIK and their Baseline classifications.
+Baseline Newly and Not Baseline entries are treated as progressive enhancements.
+
+## Matrix
+| Feature | Category | Baseline | Usage | Gating/Fallback | Evidence |
+| --- | --- | --- | --- | --- | --- |
+| CSS accent-color | CSS | Newly | Radio/checkbox styling for form controls. | — | [Source](https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color) |
+| CSS Cascade Layers (@layer) | CSS | Widely | Token outputs wrap theme layers with @layer for predictable overrides. | — | [Source](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer) |
+| CSS Custom Properties | CSS | Widely | Token-driven theming across primitives, shell, and docs. | — | [Source](https://www.w3.org/TR/css-variables-1/) |
+| :focus-visible | CSS | Widely | Visible focus styling without pointer-only focus rings. | — | [Source](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) |
+| @media (forced-colors) | CSS | Not Baseline | High-contrast/forced-colors adjustments for a11y. | — | [Source](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) |
+| CSS Logical Properties | CSS | Widely | Padding/spacing with logical axes for RTL/writing-mode support. | — | [Source](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) |
+| CSS Color 4 OKLCH | CSS | Widely | Token color outputs and component styling. | — | [Source](https://www.w3.org/TR/css-color-4/) |
+| @media (prefers-reduced-motion) | CSS | Widely | Reduce or remove motion for user preference. | — | [Source](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) |
+| CSS Scrollbar Styling | CSS | Not Baseline | Shell scrollbar theming via scrollbar-color/scrollbar-width. | — | [Source](https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color) |
+| CSS Shadow Parts (::part) | CSS | Widely | Public styling hooks for Shadow DOM components. | — | [Source](https://www.w3.org/TR/css-shadow-parts-1/) |
+| ElementInternals (Form-Associated Custom Elements) | HTML | Widely | Form-associated primitives for form submission and validation. | — | [Source](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face) |
+| Custom Elements | HTML | Widely | Core component model for UI primitives and shell. | — | [Source](https://html.spec.whatwg.org/multipage/custom-elements.html) |
+| HTML <dialog> | HTML | Widely | Native dialog semantics via uik-dialog. | — | [Source](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) |
+| HTML Popover API | HTML | Newly | Optional native popover support for overlay primitives. | Feature-detect popover support and fall back to manual panel. | [Source](https://html.spec.whatwg.org/multipage/popover.html) |
+| Shadow DOM | HTML | Widely | Encapsulation for primitives with slots for composition. | — | [Source](https://dom.spec.whatwg.org/) |
+| HTML Slots | HTML | Widely | Composition API for Shadow DOM components. | — | [Source](https://html.spec.whatwg.org/multipage/dom.html#the-slot-element) |
+

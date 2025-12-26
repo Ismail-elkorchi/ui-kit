@@ -1,5 +1,5 @@
 import '@ismail-elkorchi/ui-primitives/uik-nav-rail';
-import {LitElement, html, nothing, type PropertyValues} from 'lit';
+import {LitElement, html, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
@@ -38,6 +38,7 @@ export class UikShellActivityBar extends LitElement {
     if (!this.style.display) this.style.display = 'block';
     if (!this.style.boxSizing) this.style.boxSizing = 'border-box';
     if (!this.style.height) this.style.height = '100%';
+    ensureLightDomRoot(this);
     this.slotController ??= new LightDomSlotController(
       this,
       '[data-shell-root]',
@@ -49,16 +50,6 @@ export class UikShellActivityBar extends LitElement {
   override disconnectedCallback() {
     this.slotController?.disconnect();
     super.disconnectedCallback();
-  }
-
-  override firstUpdated() {
-    this.slotController?.sync();
-  }
-
-  override updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has('items')) {
-      this.slotController?.sync();
-    }
   }
 
   override createRenderRoot() {

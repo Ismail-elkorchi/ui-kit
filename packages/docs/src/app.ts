@@ -48,33 +48,28 @@ const buildRoutes = (): UikShellRoute[] => {
   const docsSubviewIds = docsPages.map(page => page.id);
   const labSubviewIds = labPages.map(page => page.id);
 
-  return [
-    {
-      id: 'docs',
-      label: 'Docs',
-      subviews: docsSubviewIds,
-      defaultSubview: docsSubviewIds[0],
-    },
-    {
-      id: 'lab',
-      label: 'Lab',
-      subviews: labSubviewIds,
-      defaultSubview: labSubviewIds[0],
-    },
-  ];
+  const createRoute = (id: string, label: string, subviews: string[]): UikShellRoute => {
+    if (subviews.length === 0) return {id, label};
+    return {id, label, subviews, defaultSubview: subviews[0]};
+  };
+
+  return [createRoute('docs', 'Docs', docsSubviewIds), createRoute('lab', 'Lab', labSubviewIds)];
 };
 
 const buildActivityItems = (routes: UikShellRoute[]): UikShellActivityBarItem[] => {
-  const icons: Record<string, string> = {
+  const icons = {
     docs: 'M4 5a2 2 0 012-2h10a2 2 0 012 2v14a1 1 0 01-1 1h-2a2 2 0 00-2 2H6a2 2 0 01-2-2V5z',
     lab: 'M9 2h6l3 7-6 13-6-13 3-7z',
-  };
+  } as const;
 
-  return routes.map(route => ({
-    id: route.id,
-    label: route.label ?? route.id,
-    icon: icons[route.id] ?? icons.docs,
-  }));
+  return routes.map(route => {
+    const icon = route.id === 'lab' ? icons.lab : icons.docs;
+    return {
+      id: route.id,
+      label: route.label ?? route.id,
+      icon,
+    };
+  });
 };
 
 const buildNavItems = (baseUrl: string): UikNavItem[] => {
@@ -293,10 +288,12 @@ export const mountDocsApp = (container: HTMLElement) => {
   const pageMap = buildPageMap();
   const routes = buildRoutes();
   const initialRoute = getRouteFromLocation(baseUrl);
+  const initialView = initialRoute.view ?? 'docs';
+  const initialSubview = initialRoute.subview ?? docsPages[0]?.id;
   const router = createUikShellRouter({
     routes,
-    initialView: initialRoute.view ?? 'docs',
-    initialSubview: initialRoute.subview ?? docsPages[0]?.id,
+    initialView,
+    ...(initialSubview ? {initialSubview} : {}),
   });
 
   const layout = container.querySelector<UikShellLayout>('uik-shell-layout');
@@ -406,13 +403,13 @@ export const mountDocsApp = (container: HTMLElement) => {
     void scrollToHashTarget();
   });
 
-  activityBar.addEventListener('activity-bar-select', event => {
+  activityBar.addEventListener('activity-bar-select', (event: Event) => {
     const detail = (event as CustomEvent<{id: string}>).detail;
     router.navigate(detail.id);
     syncUrl(router.current);
   });
 
-  nav.addEventListener('nav-select', event => {
+  nav.addEventListener('nav-select', (event: Event) => {
     const detail = (event as CustomEvent<{id: string}>).detail;
     const [view, subview] = detail.id.split('/');
     if (!view || !subview) return;

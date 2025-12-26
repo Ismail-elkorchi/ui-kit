@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "features": [
+    {
+      "id": "css-accent-color",
+      "name": "CSS accent-color",
+      "category": "CSS",
+      "baseline": "newly",
+      "usage": "Radio/checkbox styling for form controls.",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color"
+    },
+    {
+      "id": "css-cascade-layers",
+      "name": "CSS Cascade Layers (@layer)",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Token outputs wrap theme layers with @layer for predictable overrides.",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer"
+    },
+    {
+      "id": "css-custom-properties",
+      "name": "CSS Custom Properties",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Token-driven theming across primitives, shell, and docs.",
+      "evidence": "https://www.w3.org/TR/css-variables-1/"
+    },
+    {
+      "id": "css-focus-visible",
+      "name": ":focus-visible",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Visible focus styling without pointer-only focus rings.",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible"
+    },
+    {
+      "id": "css-forced-colors",
+      "name": "@media (forced-colors)",
+      "category": "CSS",
+      "baseline": "not-baseline",
+      "usage": "High-contrast/forced-colors adjustments for a11y.",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+    },
+    {
+      "id": "css-logical-properties",
+      "name": "CSS Logical Properties",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Padding/spacing with logical axes for RTL/writing-mode support.",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values"
+    },
+    {
+      "id": "css-oklch",
+      "name": "CSS Color 4 OKLCH",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Token color outputs and component styling.",
+      "evidence": "https://www.w3.org/TR/css-color-4/"
+    },
+    {
+      "id": "css-prefers-reduced-motion",
+      "name": "@media (prefers-reduced-motion)",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Reduce or remove motion for user preference.",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+    },
+    {
+      "id": "css-scrollbars",
+      "name": "CSS Scrollbar Styling",
+      "category": "CSS",
+      "baseline": "not-baseline",
+      "usage": "Shell scrollbar theming via scrollbar-color/scrollbar-width.",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color"
+    },
+    {
+      "id": "css-shadow-parts",
+      "name": "CSS Shadow Parts (::part)",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Public styling hooks for Shadow DOM components.",
+      "evidence": "https://www.w3.org/TR/css-shadow-parts-1/"
+    },
+    {
+      "id": "element-internals",
+      "name": "ElementInternals (Form-Associated Custom Elements)",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Form-associated primitives for form submission and validation.",
+      "evidence": "https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face"
+    },
+    {
+      "id": "html-custom-elements",
+      "name": "Custom Elements",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Core component model for UI primitives and shell.",
+      "evidence": "https://html.spec.whatwg.org/multipage/custom-elements.html"
+    },
+    {
+      "id": "html-dialog",
+      "name": "HTML <dialog>",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Native dialog semantics via uik-dialog.",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog"
+    },
+    {
+      "id": "html-popover",
+      "name": "HTML Popover API",
+      "category": "HTML",
+      "baseline": "newly",
+      "usage": "Optional native popover support for overlay primitives.",
+      "evidence": "https://html.spec.whatwg.org/multipage/popover.html",
+      "gating": "Feature-detect popover support and fall back to manual panel."
+    },
+    {
+      "id": "html-shadow-dom",
+      "name": "Shadow DOM",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Encapsulation for primitives with slots for composition.",
+      "evidence": "https://dom.spec.whatwg.org/"
+    },
+    {
+      "id": "html-slots",
+      "name": "HTML Slots",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Composition API for Shadow DOM components.",
+      "evidence": "https://html.spec.whatwg.org/multipage/dom.html#the-slot-element"
+    }
+  ]
+}

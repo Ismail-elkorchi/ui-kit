@@ -49,6 +49,13 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - Form-field primitives expose `part="control"` wrappers plus `part="label"`, `part="hint"`, and `part="error"` slots when slotted.
 - Layout and text primitives expose `part="base"` on their container or rendered tag.
 
+## Focus + roving focus contract
+
+- Roving focus is implemented with a single `tabIndexValue=0` target and `tabIndexValue=-1` for the rest of the roving set (usually `uik-button` inside a composite widget).
+- Arrow keys move focus within the roving set; `Home`/`End` jump to the first/last enabled item. `Enter`/`Space` activate the focused item per APG expectations.
+- Focus state is tracked by item id and updated on focus and when the items list changes (falling back to the active or first enabled item).
+- Shell components must delegate roving focus to primitives such as `uik-nav-rail`/`uik-tree-view` instead of re-implementing keyboard logic.
+
 ## Components and contracts
 
 ### `<uik-alert>`
