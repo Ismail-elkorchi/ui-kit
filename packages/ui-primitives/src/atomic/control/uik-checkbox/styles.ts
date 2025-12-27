@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -46,8 +46,10 @@ export const styles = css`
   input:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 var(--uik-focus-ring-offset-default) oklch(var(--uik-focus-ring-offset-bg)),
-      0 0 0 calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
+      0 0 0 var(--uik-focus-ring-offset-default)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
         oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
   }
 

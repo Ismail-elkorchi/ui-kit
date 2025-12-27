@@ -6,5 +6,13 @@
     "tsBuildInfoFile": "./.tsbuildinfo"
   },
   "include": ["./**/*.ts"],
-  "exclude": ["dist", "node_modules", "tests", "tests/**", "**/*.stories.*", "**/*.test.*", "**/*.spec.*"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "tests",
+    "tests/**",
+    "**/*.stories.*",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ]
 }

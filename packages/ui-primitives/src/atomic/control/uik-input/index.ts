@@ -1,1 +1,1 @@
-export {UikInput} from './element';
+export { UikInput } from "./element";

@@ -1,8 +1,8 @@
-import '@ismail-elkorchi/ui-primitives/register';
-import type {Meta, StoryObj} from '@storybook/web-components-vite';
-import {html, nothing} from 'lit';
+import "@ismail-elkorchi/ui-primitives/register";
+import type { Meta, StoryObj } from "@storybook/web-components-vite";
+import { html, nothing } from "lit";
 
-import {interactionStory} from '../../../.storybook/a11y';
+import { interactionStory } from "../../../.storybook/a11y";
 
 type SwitchArgs = {
   checked: boolean;
@@ -15,27 +15,28 @@ type SwitchArgs = {
 };
 
 const meta: Meta<SwitchArgs> = {
-  title: 'Primitives/Switch',
-  component: 'uik-switch',
-  tags: ['autodocs'],
+  title: "Primitives/Switch",
+  component: "uik-switch",
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   args: {
     checked: false,
     disabled: false,
     required: false,
     invalid: false,
-    label: 'Enable notifications',
-    hint: 'We will send you updates.',
-    error: '',
+    label: "Enable notifications",
+    hint: "We will send you updates.",
+    error: "",
   },
-  render: args => html`
+  render: (args) => html`
     <uik-switch
       ?checked=${args.checked}
       ?disabled=${args.disabled}
       ?required=${args.required}
-      ?invalid=${args.invalid}>
+      ?invalid=${args.invalid}
+    >
       ${args.label ? html`<span slot="label">${args.label}</span>` : nothing}
       ${args.hint ? html`<span slot="hint">${args.hint}</span>` : nothing}
       ${args.error ? html`<span slot="error">${args.error}</span>` : nothing}
@@ -47,12 +48,11 @@ export default meta;
 
 type Story = StoryObj<SwitchArgs>;
 
-
 export const Default: Story = {
   ...interactionStory,
 };
 
 export const On: Story = {
   ...interactionStory,
-  args: {checked: true},
+  args: { checked: true },
 };

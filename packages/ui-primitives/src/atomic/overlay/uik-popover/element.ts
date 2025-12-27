@@ -1,13 +1,16 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
-import {styles} from './styles';
-import {createId} from '../../../internal';
-import {createEscapeKeyHandler, createOutsideDismissController} from '../../../internal/overlay/dismiss';
-import {resolvePlacement} from '../../../internal/overlay/positioning';
+import { styles } from "./styles";
+import { createId } from "../../../internal";
+import {
+  createEscapeKeyHandler,
+  createOutsideDismissController,
+} from "../../../internal/overlay/dismiss";
+import { resolvePlacement } from "../../../internal/overlay/positioning";
 
-type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
+type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
 
 /**
  * Popover panel with trigger slot and optional native popover support.
@@ -31,51 +34,51 @@ type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
  * @cssprop --uik-component-popover-offset
  * @cssprop --uik-z-local-overlay
  */
-@customElement('uik-popover')
+@customElement("uik-popover")
 export class UikPopover extends LitElement {
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor open = false;
-  @property({type: String, reflect: true, useDefault: true}) accessor placement:
-    | 'bottom-start'
-    | 'bottom'
-    | 'bottom-end'
-    | 'top-start'
-    | 'top'
-    | 'top-end' = 'bottom-start';
-  @property({type: String, reflect: true, useDefault: true}) override accessor popover:
-    | ''
-    | 'auto'
-    | 'manual'
-    | 'hint' = '';
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
-  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
+  @property({ type: Boolean, reflect: true, useDefault: true }) accessor open =
+    false;
+  @property({ type: String, reflect: true, useDefault: true })
+  accessor placement:
+    | "bottom-start"
+    | "bottom"
+    | "bottom-end"
+    | "top-start"
+    | "top"
+    | "top-end" = "bottom-start";
+  @property({ type: String, reflect: true, useDefault: true })
+  override accessor popover: "" | "auto" | "manual" | "hint" = "";
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
+    "";
 
-  protected readonly panelId = createId('uik-popover');
+  protected readonly panelId = createId("uik-popover");
   private pointerInPanel = false;
   private pendingCloseReason: OverlayCloseReason | null = null;
   private readonly outsideDismiss = createOutsideDismissController(this, () => {
-    this.requestClose('outside');
+    this.requestClose("outside");
   });
 
   static override readonly styles = styles;
 
   protected readonly panelRole?: string;
-  protected readonly openOn: 'click' | 'hover' = 'click';
+  protected readonly openOn: "click" | "hover" = "click";
 
   protected onTriggerSlotChange() {
     // intended for subclasses
   }
 
   private get panelElement(): HTMLElement | null {
-    return this.renderRoot.querySelector('.panel');
+    return this.renderRoot.querySelector(".panel");
   }
 
   private get popoverSupported(): boolean {
-    return Object.hasOwn(HTMLElement.prototype, 'popover');
+    return Object.hasOwn(HTMLElement.prototype, "popover");
   }
 
   private get usesNativePopover(): boolean {
-    return this.popoverSupported && this.popover !== '';
+    return this.popoverSupported && this.popover !== "";
   }
 
   override firstUpdated() {
@@ -84,10 +87,10 @@ export class UikPopover extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (changed.has('open')) {
+    if (changed.has("open")) {
       this.syncOpenState();
       this.syncDismissListeners();
-      const previous = changed.get('open') as boolean | undefined;
+      const previous = changed.get("open") as boolean | undefined;
       if (previous && !this.open) {
         this.emitCloseReason();
       }
@@ -99,12 +102,12 @@ export class UikPopover extends LitElement {
   }
 
   hide() {
-    this.requestClose('programmatic');
+    this.requestClose("programmatic");
   }
 
   toggle() {
     if (this.open) {
-      this.requestClose('toggle');
+      this.requestClose("toggle");
     } else {
       this.open = true;
     }
@@ -116,11 +119,11 @@ export class UikPopover extends LitElement {
   }
 
   private emitCloseReason() {
-    const reason = this.pendingCloseReason ?? 'programmatic';
+    const reason = this.pendingCloseReason ?? "programmatic";
     this.pendingCloseReason = null;
     this.dispatchEvent(
-      new CustomEvent('overlay-close', {
-        detail: {reason},
+      new CustomEvent("overlay-close", {
+        detail: { reason },
         bubbles: true,
         composed: true,
       }),
@@ -143,24 +146,24 @@ export class UikPopover extends LitElement {
         popoverElement.hidePopover();
       }
     } else {
-      panel.toggleAttribute('hidden', !this.open);
+      panel.toggleAttribute("hidden", !this.open);
     }
   }
 
   private onTriggerClick = (event: MouseEvent) => {
-    if (this.openOn !== 'click') return;
+    if (this.openOn !== "click") return;
     if (event.defaultPrevented) return;
     this.toggle();
   };
 
   private onTriggerKeyDown = (event: KeyboardEvent) => {
-    if (this.openOn !== 'click') return;
+    if (this.openOn !== "click") return;
     if (event.defaultPrevented) return;
-    if (event.key !== 'Enter' && event.key !== ' ') return;
+    if (event.key !== "Enter" && event.key !== " ") return;
 
     const path = event.composedPath();
     const hasNativeControl = path.some(
-      node =>
+      (node) =>
         node instanceof HTMLButtonElement ||
         node instanceof HTMLAnchorElement ||
         node instanceof HTMLInputElement ||
@@ -174,23 +177,23 @@ export class UikPopover extends LitElement {
   };
 
   private onTriggerMouseEnter = () => {
-    if (this.openOn !== 'hover') return;
+    if (this.openOn !== "hover") return;
     this.open = true;
   };
 
   private onTriggerMouseLeave = () => {
-    if (this.openOn !== 'hover') return;
+    if (this.openOn !== "hover") return;
     if (this.pointerInPanel) return;
     this.open = false;
   };
 
   private onTriggerFocusIn = () => {
-    if (this.openOn !== 'hover') return;
+    if (this.openOn !== "hover") return;
     this.open = true;
   };
 
   private onTriggerFocusOut = () => {
-    if (this.openOn !== 'hover') return;
+    if (this.openOn !== "hover") return;
     if (this.pointerInPanel) return;
     this.open = false;
   };
@@ -201,21 +204,21 @@ export class UikPopover extends LitElement {
 
   private onPanelMouseLeave = () => {
     this.pointerInPanel = false;
-    if (this.openOn === 'hover') {
+    if (this.openOn === "hover") {
       this.open = false;
     }
   };
 
   private readonly onPanelKeyDown = createEscapeKeyHandler(() => {
-    this.requestClose('escape');
+    this.requestClose("escape");
   });
 
   private onToggle = (event: Event) => {
-    const nextState = (event as Event & {newState?: string}).newState;
-    if (nextState === 'open') {
+    const nextState = (event as Event & { newState?: string }).newState;
+    if (nextState === "open") {
       this.open = true;
-    } else if (nextState === 'closed') {
-      this.pendingCloseReason ??= 'toggle';
+    } else if (nextState === "closed") {
+      this.pendingCloseReason ??= "toggle";
       this.open = false;
     }
   };
@@ -225,7 +228,8 @@ export class UikPopover extends LitElement {
   };
 
   private syncDismissListeners() {
-    const shouldDismissOnOutsideClick = this.open && this.openOn === 'click' && !this.usesNativePopover;
+    const shouldDismissOnOutsideClick =
+      this.open && this.openOn === "click" && !this.usesNativePopover;
     if (shouldDismissOnOutsideClick) {
       this.outsideDismiss.connect();
     } else {
@@ -251,7 +255,8 @@ export class UikPopover extends LitElement {
         @mouseenter=${this.onTriggerMouseEnter}
         @mouseleave=${this.onTriggerMouseLeave}
         @focusin=${this.onTriggerFocusIn}
-        @focusout=${this.onTriggerFocusOut}>
+        @focusout=${this.onTriggerFocusOut}
+      >
         <slot name="trigger" @slotchange=${this.handleTriggerSlotChange}></slot>
       </span>
       <div
@@ -264,11 +269,12 @@ export class UikPopover extends LitElement {
         aria-label=${ifDefined(this.ariaLabelValue || undefined)}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
         aria-describedby=${ifDefined(this.ariaDescribedbyValue || undefined)}
-        aria-hidden=${ifDefined(this.open ? undefined : 'true')}
+        aria-hidden=${ifDefined(this.open ? undefined : "true")}
         @mouseenter=${this.onPanelMouseEnter}
         @mouseleave=${this.onPanelMouseLeave}
         @keydown=${this.onPanelKeyDown}
-        @toggle=${this.onToggle}>
+        @toggle=${this.onToggle}
+      >
         <slot></slot>
       </div>
     `;

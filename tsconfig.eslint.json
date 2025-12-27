@@ -5,12 +5,7 @@
     "types": ["vitest/globals", "node"],
     "lib": ["DOM", "DOM.Iterable", "ES2022", "ESNext.Disposable"]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.mts",
-    "**/*.cts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
   "exclude": [
     "**/dist/**",
     "**/node_modules/**",
@@ -20,7 +15,7 @@
     "**/test-results/**"
   ],
   "references": [
-    {"path": "./packages/ui-primitives/tsconfig.build.json"},
-    {"path": "./packages/ui-shell/tsconfig.build.json"}
+    { "path": "./packages/ui-primitives/tsconfig.build.json" },
+    { "path": "./packages/ui-shell/tsconfig.build.json" }
   ]
 }

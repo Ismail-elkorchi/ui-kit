@@ -1,11 +1,11 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
-import {styles} from './styles';
-import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
+import { styles } from "./styles";
+import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
 
-type SlotName = 'label' | 'hint' | 'error';
+type SlotName = "label" | "hint" | "error";
 
 /**
  * Form-associated checkbox control with label, hint, and error slots.
@@ -30,24 +30,31 @@ type SlotName = 'label' | 'hint' | 'error';
  * @cssprop --uik-component-checkbox-accent
  * @cssprop --uik-component-checkbox-size
  */
-@customElement('uik-checkbox')
+@customElement("uik-checkbox")
 export class UikCheckbox extends LitElement {
   static formAssociated = true;
 
-  @property({type: String}) accessor value = 'on';
-  @property({type: String, reflect: true, useDefault: true}) accessor name = '';
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor checked = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor indeterminate = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor disabled = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor required = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor invalid = false;
-  @property({type: Number}) accessor tabIndexValue = 0;
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
-  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
+  @property({ type: String }) accessor value = "on";
+  @property({ type: String, reflect: true, useDefault: true }) accessor name =
+    "";
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor checked = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor indeterminate = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor disabled = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor required = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor invalid = false;
+  @property({ type: Number }) accessor tabIndexValue = 0;
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
+    "";
 
   private readonly internals = this.attachInternals();
-  private readonly controlId = createId('uik-checkbox');
+  private readonly controlId = createId("uik-checkbox");
   private readonly hintId = `${this.controlId}-hint`;
   private readonly errorId = `${this.controlId}-error`;
   private defaultChecked = false;
@@ -56,7 +63,7 @@ export class UikCheckbox extends LitElement {
   static override readonly styles = styles;
 
   private get inputElement(): HTMLInputElement | null {
-    return this.renderRoot.querySelector('input');
+    return this.renderRoot.querySelector("input");
   }
 
   override connectedCallback() {
@@ -73,11 +80,19 @@ export class UikCheckbox extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (changed.has('checked') || changed.has('disabled') || changed.has('value')) {
+    if (
+      changed.has("checked") ||
+      changed.has("disabled") ||
+      changed.has("value")
+    ) {
       this.syncFormValue();
     }
 
-    if (changed.has('required') || changed.has('invalid') || changed.has('checked')) {
+    if (
+      changed.has("required") ||
+      changed.has("invalid") ||
+      changed.has("checked")
+    ) {
       this.syncValidity();
     }
   }
@@ -97,7 +112,7 @@ export class UikCheckbox extends LitElement {
     if (state === null) {
       this.checked = false;
       this.indeterminate = false;
-    } else if (typeof state === 'string') {
+    } else if (typeof state === "string") {
       this.checked = true;
       this.indeterminate = false;
       this.value = state;
@@ -115,15 +130,19 @@ export class UikCheckbox extends LitElement {
     const input = this.inputElement;
     if (!input) return;
 
-    if (this.invalid || this.hasSlotContent('error')) {
-      this.internals.setValidity({customError: true}, 'Invalid', input);
+    if (this.invalid || this.hasSlotContent("error")) {
+      this.internals.setValidity({ customError: true }, "Invalid", input);
       return;
     }
 
     if (input.checkValidity()) {
       this.internals.setValidity({});
     } else {
-      this.internals.setValidity(input.validity, input.validationMessage, input);
+      this.internals.setValidity(
+        input.validity,
+        input.validationMessage,
+        input,
+      );
     }
   }
 
@@ -133,7 +152,7 @@ export class UikCheckbox extends LitElement {
 
   private onSlotChange = (event: Event) => {
     const slot = event.target as HTMLSlotElement;
-    if (slot.name === 'error') {
+    if (slot.name === "error") {
       this.syncValidity();
     }
     this.requestUpdate();
@@ -148,18 +167,20 @@ export class UikCheckbox extends LitElement {
   };
 
   override render() {
-    const hasLabel = this.hasSlotContent('label');
-    const hasHint = this.hasSlotContent('hint');
-    const hasError = this.hasSlotContent('error');
+    const hasLabel = this.hasSlotContent("label");
+    const hasHint = this.hasSlotContent("hint");
+    const hasError = this.hasSlotContent("error");
     const describedBy = buildDescribedBy(
       this.ariaDescribedbyValue,
       hasHint ? this.hintId : null,
       hasError ? this.errorId : null,
     );
 
-    const ariaInvalid = this.invalid || hasError ? 'true' : undefined;
+    const ariaInvalid = this.invalid || hasError ? "true" : undefined;
     const ariaLabel = hasLabel ? undefined : this.ariaLabelValue || undefined;
-    const ariaLabelledby = hasLabel ? undefined : this.ariaLabelledbyValue || undefined;
+    const ariaLabelledby = hasLabel
+      ? undefined
+      : this.ariaLabelledbyValue || undefined;
 
     return html`
       <div class="field">
@@ -179,7 +200,8 @@ export class UikCheckbox extends LitElement {
             aria-describedby=${ifDefined(describedBy)}
             aria-label=${ifDefined(ariaLabel)}
             aria-labelledby=${ifDefined(ariaLabelledby)}
-            @change=${this.onChange} />
+            @change=${this.onChange}
+          />
           <span part="label" class="control-text" ?hidden=${!hasLabel}>
             <slot name="label" @slotchange=${this.onSlotChange}></slot>
           </span>

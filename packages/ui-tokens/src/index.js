@@ -1,13 +1,13 @@
-const THEME_ATTRIBUTE = 'data-uik-theme';
-const DENSITY_ATTRIBUTE = 'data-uik-density';
-const BREAKPOINT_ATTRIBUTE = 'data-uik-breakpoint';
+const THEME_ATTRIBUTE = "data-uik-theme";
+const DENSITY_ATTRIBUTE = "data-uik-density";
+const BREAKPOINT_ATTRIBUTE = "data-uik-breakpoint";
 
-const DEFAULT_BREAKPOINTS = ['sm', 'md', 'lg', 'xl'];
+const DEFAULT_BREAKPOINTS = ["sm", "md", "lg", "xl"];
 
 function setTheme(element, theme) {
-  if (!element || typeof element.setAttribute !== 'function') return;
-  if (theme == null || theme === '') {
-    if (typeof element.removeAttribute === 'function') {
+  if (!element || typeof element.setAttribute !== "function") return;
+  if (theme == null || theme === "") {
+    if (typeof element.removeAttribute === "function") {
       element.removeAttribute(THEME_ATTRIBUTE);
     }
     return;
@@ -16,9 +16,9 @@ function setTheme(element, theme) {
 }
 
 function setDensity(element, density) {
-  if (!element || typeof element.setAttribute !== 'function') return;
-  if (density == null || density === '') {
-    if (typeof element.removeAttribute === 'function') {
+  if (!element || typeof element.setAttribute !== "function") return;
+  if (density == null || density === "") {
+    if (typeof element.removeAttribute === "function") {
       element.removeAttribute(DENSITY_ATTRIBUTE);
     }
     return;
@@ -28,39 +28,42 @@ function setDensity(element, density) {
 
 function toKebab(segment) {
   return segment
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replace(/_/g, '-')
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .replace(/_/g, "-")
     .toLowerCase();
 }
 
 function getCssVarName(token) {
-  const key = typeof token === 'string' ? token : String(token);
-  return `--uik-${key.split('.').map(toKebab).join('-')}`;
+  const key = typeof token === "string" ? token : String(token);
+  return `--uik-${key.split(".").map(toKebab).join("-")}`;
 }
 
 function resolveBreakpoints(source, names) {
   const styleTarget = source ?? document.documentElement;
-  if (!styleTarget || typeof getComputedStyle !== 'function') return [];
+  if (!styleTarget || typeof getComputedStyle !== "function") return [];
   const styles = getComputedStyle(styleTarget);
   return names
     .map((name) => ({
       name,
-      value: styles.getPropertyValue(`--uik-breakpoint-${name}`).trim()
+      value: styles.getPropertyValue(`--uik-breakpoint-${name}`).trim(),
     }))
     .filter((entry) => entry.value);
 }
 
 function createBreakpointObserver(options = {}) {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
+  if (typeof window === "undefined" || typeof document === "undefined") {
     return { update() {}, disconnect() {} };
   }
 
   const target = options.target ?? document.documentElement;
   const source = options.source ?? target;
-  const names = Array.isArray(options.names) && options.names.length > 0 ? options.names : DEFAULT_BREAKPOINTS;
+  const names =
+    Array.isArray(options.names) && options.names.length > 0
+      ? options.names
+      : DEFAULT_BREAKPOINTS;
   const attribute = options.attribute ?? BREAKPOINT_ATTRIBUTE;
 
-  if (!target || typeof target.setAttribute !== 'function') {
+  if (!target || typeof target.setAttribute !== "function") {
     return { update() {}, disconnect() {} };
   }
 
@@ -72,7 +75,7 @@ function createBreakpointObserver(options = {}) {
   const queries = breakpoints.map((entry) => ({
     ...entry,
     query: `(max-width: ${entry.value})`,
-    mql: window.matchMedia(`(max-width: ${entry.value})`)
+    mql: window.matchMedia(`(max-width: ${entry.value})`),
   }));
 
   const update = () => {
@@ -80,23 +83,23 @@ function createBreakpointObserver(options = {}) {
     const next = match?.name ?? queries[queries.length - 1]?.name;
     if (next) {
       target.setAttribute(attribute, next);
-    } else if (typeof target.removeAttribute === 'function') {
+    } else if (typeof target.removeAttribute === "function") {
       target.removeAttribute(attribute);
     }
   };
 
   const addListener = (mql, handler) => {
-    if (typeof mql.addEventListener === 'function') {
-      mql.addEventListener('change', handler);
-    } else if (typeof mql.addListener === 'function') {
+    if (typeof mql.addEventListener === "function") {
+      mql.addEventListener("change", handler);
+    } else if (typeof mql.addListener === "function") {
       mql.addListener(handler);
     }
   };
 
   const removeListener = (mql, handler) => {
-    if (typeof mql.removeEventListener === 'function') {
-      mql.removeEventListener('change', handler);
-    } else if (typeof mql.removeListener === 'function') {
+    if (typeof mql.removeEventListener === "function") {
+      mql.removeEventListener("change", handler);
+    } else if (typeof mql.removeListener === "function") {
       mql.removeListener(handler);
     }
   };
@@ -108,7 +111,7 @@ function createBreakpointObserver(options = {}) {
     update,
     disconnect() {
       queries.forEach((entry) => removeListener(entry.mql, update));
-    }
+    },
   };
 }
 
@@ -119,5 +122,5 @@ export {
   setTheme,
   setDensity,
   getCssVarName,
-  createBreakpointObserver
+  createBreakpointObserver,
 };

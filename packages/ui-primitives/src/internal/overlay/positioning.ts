@@ -1,21 +1,21 @@
 export type OverlayPlacement =
-  | 'bottom-start'
-  | 'bottom'
-  | 'bottom-end'
-  | 'top-start'
-  | 'top'
-  | 'top-end';
+  | "bottom-start"
+  | "bottom"
+  | "bottom-end"
+  | "top-start"
+  | "top"
+  | "top-end";
 
 const placements = new Set<OverlayPlacement>([
-  'bottom-start',
-  'bottom',
-  'bottom-end',
-  'top-start',
-  'top',
-  'top-end',
+  "bottom-start",
+  "bottom",
+  "bottom-end",
+  "top-start",
+  "top",
+  "top-end",
 ]);
 
-export const defaultPlacement: OverlayPlacement = 'bottom-start';
+export const defaultPlacement: OverlayPlacement = "bottom-start";
 
 export function resolvePlacement(
   value: string | null | undefined,

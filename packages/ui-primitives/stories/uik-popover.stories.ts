@@ -1,24 +1,30 @@
-import '@ismail-elkorchi/ui-primitives/register';
-import type {Meta, StoryObj} from '@storybook/web-components-vite';
-import {html} from 'lit';
+import "@ismail-elkorchi/ui-primitives/register";
+import type { Meta, StoryObj } from "@storybook/web-components-vite";
+import { html } from "lit";
 
-import {interactionStory} from '../../../.storybook/a11y';
+import { interactionStory } from "../../../.storybook/a11y";
 
 type PopoverArgs = {
-  placement: 'bottom-start' | 'bottom' | 'bottom-end' | 'top-start' | 'top' | 'top-end';
+  placement:
+    | "bottom-start"
+    | "bottom"
+    | "bottom-end"
+    | "top-start"
+    | "top"
+    | "top-end";
 };
 
 const meta: Meta<PopoverArgs> = {
-  title: 'Primitives/Popover',
-  component: 'uik-popover',
-  tags: ['autodocs'],
+  title: "Primitives/Popover",
+  component: "uik-popover",
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   args: {
-    placement: 'bottom-start',
+    placement: "bottom-start",
   },
-  render: args => html`
+  render: (args) => html`
     <uik-popover placement=${args.placement}>
       <uik-button slot="trigger">Open popover</uik-button>
       <uik-text size="sm">Popover content anchored to the trigger.</uik-text>
@@ -29,7 +35,6 @@ const meta: Meta<PopoverArgs> = {
 export default meta;
 
 type Story = StoryObj<PopoverArgs>;
-
 
 export const Default: Story = {
   ...interactionStory,

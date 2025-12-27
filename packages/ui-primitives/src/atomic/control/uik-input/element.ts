@@ -1,12 +1,12 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
-import {styles} from './styles';
+import { styles } from "./styles";
 
 let inputId = 0;
 
-type SlotName = 'label' | 'hint' | 'error';
+type SlotName = "label" | "hint" | "error";
 
 /**
  * Form-associated text input with labels, hints, and errors.
@@ -34,24 +34,25 @@ type SlotName = 'label' | 'hint' | 'error';
  * @a11y aria-invalid is set when invalid or error content is present.
  * @cssprop --uik-component-input-base-* (bg, border, fg, padding, radius, shadow, selection)
  */
-@customElement('uik-input')
+@customElement("uik-input")
 export class UikInput extends LitElement {
   static formAssociated = true;
 
-  @property({type: String}) accessor type = 'text';
-  @property({type: String}) accessor placeholder = '';
-  @property({type: String}) accessor value = '';
-  @property({type: String, reflect: true}) accessor name = '';
-  @property({attribute: 'autocomplete'}) accessor autocomplete = '';
-  @property({attribute: 'inputmode'}) override accessor inputMode = '';
-  @property({attribute: 'enterkeyhint'}) override accessor enterKeyHint = '';
-  @property({type: Boolean, reflect: true}) accessor disabled = false;
-  @property({type: Boolean, reflect: true}) accessor required = false;
-  @property({type: Boolean, reflect: true}) accessor readonly = false;
-  @property({type: Boolean, reflect: true}) accessor invalid = false;
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
-  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
+  @property({ type: String }) accessor type = "text";
+  @property({ type: String }) accessor placeholder = "";
+  @property({ type: String }) accessor value = "";
+  @property({ type: String, reflect: true }) accessor name = "";
+  @property({ attribute: "autocomplete" }) accessor autocomplete = "";
+  @property({ attribute: "inputmode" }) override accessor inputMode = "";
+  @property({ attribute: "enterkeyhint" }) override accessor enterKeyHint = "";
+  @property({ type: Boolean, reflect: true }) accessor disabled = false;
+  @property({ type: Boolean, reflect: true }) accessor required = false;
+  @property({ type: Boolean, reflect: true }) accessor readonly = false;
+  @property({ type: Boolean, reflect: true }) accessor invalid = false;
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
+    "";
 
   private readonly internals = this.attachInternals();
   private readonly controlId = `uik-input-${String(++inputId)}`;
@@ -62,7 +63,7 @@ export class UikInput extends LitElement {
   static override readonly styles = styles;
 
   private get inputElement(): HTMLInputElement | null {
-    return this.renderRoot.querySelector('input');
+    return this.renderRoot.querySelector("input");
   }
 
   override firstUpdated() {
@@ -71,11 +72,16 @@ export class UikInput extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (changed.has('value') || changed.has('disabled')) {
+    if (changed.has("value") || changed.has("disabled")) {
       this.syncFormValue();
     }
 
-    if (changed.has('required') || changed.has('type') || changed.has('invalid') || changed.has('value')) {
+    if (
+      changed.has("required") ||
+      changed.has("type") ||
+      changed.has("invalid") ||
+      changed.has("value")
+    ) {
       this.syncValidity();
     }
   }
@@ -85,12 +91,12 @@ export class UikInput extends LitElement {
   }
 
   formResetCallback() {
-    this.value = '';
+    this.value = "";
     this.syncFormValue();
   }
 
   formStateRestoreCallback(state: string | File | FormData | null) {
-    if (typeof state === 'string') {
+    if (typeof state === "string") {
       this.value = state;
       this.syncFormValue();
     }
@@ -103,23 +109,27 @@ export class UikInput extends LitElement {
   private syncValidity() {
     const input = this.inputElement;
     if (!input) return;
-    if (this.invalid || this.hasSlotContent('error')) {
-      this.internals.setValidity({customError: true}, 'Invalid', input);
+    if (this.invalid || this.hasSlotContent("error")) {
+      this.internals.setValidity({ customError: true }, "Invalid", input);
       return;
     }
     if (input.checkValidity()) {
       this.internals.setValidity({});
     } else {
-      this.internals.setValidity(input.validity, input.validationMessage, input);
+      this.internals.setValidity(
+        input.validity,
+        input.validationMessage,
+        input,
+      );
     }
   }
 
   private hasSlotContent(name: SlotName): boolean {
     const elements = Array.from(this.children).filter(
-      element => element.getAttribute('slot') === name,
+      (element) => element.getAttribute("slot") === name,
     );
     if (elements.length === 0) return false;
-    return elements.some(element => {
+    return elements.some((element) => {
       const text = element.textContent;
       return text.trim().length > 0 || element.childElementCount > 0;
     });
@@ -127,7 +137,7 @@ export class UikInput extends LitElement {
 
   private onSlotChange = (event: Event) => {
     const slot = event.target as HTMLSlotElement;
-    if (slot.name === 'error') {
+    if (slot.name === "error") {
       this.syncValidity();
     }
     this.requestUpdate();
@@ -148,24 +158,32 @@ export class UikInput extends LitElement {
   };
 
   override render() {
-    const hasLabel = this.hasSlotContent('label');
-    const hasHint = this.hasSlotContent('hint');
-    const hasError = this.hasSlotContent('error');
+    const hasLabel = this.hasSlotContent("label");
+    const hasHint = this.hasSlotContent("hint");
+    const hasError = this.hasSlotContent("error");
     const describedBy = [
       this.ariaDescribedbyValue,
       hasHint ? this.hintId : null,
       hasError ? this.errorId : null,
     ]
       .filter(Boolean)
-      .join(' ');
+      .join(" ");
 
-    const ariaInvalid = this.invalid || hasError ? 'true' : undefined;
+    const ariaInvalid = this.invalid || hasError ? "true" : undefined;
     const ariaLabel = hasLabel ? undefined : this.ariaLabelValue || undefined;
-    const ariaLabelledby = hasLabel ? undefined : this.ariaLabelledbyValue || undefined;
+    const ariaLabelledby = hasLabel
+      ? undefined
+      : this.ariaLabelledbyValue || undefined;
 
     return html`
       <div class="field">
-        <label part="label" class="label" id=${this.labelId} for=${this.controlId} ?hidden=${!hasLabel}>
+        <label
+          part="label"
+          class="label"
+          id=${this.labelId}
+          for=${this.controlId}
+          ?hidden=${!hasLabel}
+        >
           <slot name="label" @slotchange=${this.onSlotChange}></slot>
         </label>
         <div part="control" class="control">
@@ -187,7 +205,8 @@ export class UikInput extends LitElement {
             aria-label=${ifDefined(ariaLabel)}
             aria-labelledby=${ifDefined(ariaLabelledby)}
             @change=${this.onChange}
-            @input=${this.onInput} />
+            @input=${this.onInput}
+          />
         </div>
         <div part="hint" class="hint" id=${this.hintId} ?hidden=${!hasHint}>
           <slot name="hint" @slotchange=${this.onSlotChange}></slot>

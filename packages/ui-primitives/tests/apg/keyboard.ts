@@ -1,6 +1,6 @@
-import {userEvent} from 'vitest/browser';
+import { userEvent } from "vitest/browser";
 
-const normalizeKey = (key: string) => (key.startsWith('{') ? key : `{${key}}`);
+const normalizeKey = (key: string) => (key.startsWith("{") ? key : `{${key}}`);
 
 export const pressKey = async (key: string) => {
   await userEvent.keyboard(normalizeKey(key));

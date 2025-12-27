@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -39,7 +39,8 @@ export const styles = css`
     display: flex;
     width: 100%;
     height: var(--uik-component-input-base-height);
-    padding: var(--uik-component-input-base-padding-y) var(--uik-component-input-base-padding-x);
+    padding: var(--uik-component-input-base-padding-y)
+      var(--uik-component-input-base-padding-x);
     font-size: var(--uik-component-input-base-font-size);
     font-weight: var(--uik-component-input-base-font-weight);
     line-height: var(--uik-component-input-base-line-height);
@@ -75,9 +76,17 @@ export const styles = css`
     border-color: oklch(var(--uik-component-input-base-border-focus));
     box-shadow:
       var(--uik-component-input-base-shadow),
-      0 0 0 var(--uik-component-input-base-focus-ring-offset) oklch(var(--uik-focus-ring-offset-bg)),
-      0 0 0 calc(var(--uik-component-input-base-focus-ring-offset) + var(--uik-component-input-base-focus-ring-width))
-        oklch(var(--uik-component-input-base-focus-ring) / var(--uik-component-input-base-focus-ring-opacity));
+      0 0 0 var(--uik-component-input-base-focus-ring-offset)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(
+          var(--uik-component-input-base-focus-ring-offset) +
+            var(--uik-component-input-base-focus-ring-width)
+        )
+        oklch(
+          var(--uik-component-input-base-focus-ring) /
+            var(--uik-component-input-base-focus-ring-opacity)
+        );
   }
 
   input:disabled {

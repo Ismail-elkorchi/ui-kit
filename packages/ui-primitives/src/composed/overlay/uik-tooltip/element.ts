@@ -1,13 +1,13 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
-import {styles} from './styles';
-import {createId} from '../../../internal';
-import {createEscapeKeyHandler} from '../../../internal/overlay/dismiss';
-import {resolvePlacement} from '../../../internal/overlay/positioning';
+import { styles } from "./styles";
+import { createId } from "../../../internal";
+import { createEscapeKeyHandler } from "../../../internal/overlay/dismiss";
+import { resolvePlacement } from "../../../internal/overlay/positioning";
 
-type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
+type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
 
 /**
  * Tooltip panel with trigger slot.
@@ -30,44 +30,44 @@ type OverlayCloseReason = 'escape' | 'outside' | 'programmatic' | 'toggle';
  * @cssprop --uik-component-tooltip-offset
  * @cssprop --uik-z-local-tooltip
  */
-@customElement('uik-tooltip')
+@customElement("uik-tooltip")
 export class UikTooltip extends LitElement {
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor open = false;
-  @property({type: String, reflect: true, useDefault: true}) accessor placement:
-    | 'bottom-start'
-    | 'bottom'
-    | 'bottom-end'
-    | 'top-start'
-    | 'top'
-    | 'top-end' = 'bottom-start';
-  @property({type: String, reflect: true, useDefault: true}) override accessor popover:
-    | ''
-    | 'auto'
-    | 'manual'
-    | 'hint' = '';
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
-  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
+  @property({ type: Boolean, reflect: true, useDefault: true }) accessor open =
+    false;
+  @property({ type: String, reflect: true, useDefault: true })
+  accessor placement:
+    | "bottom-start"
+    | "bottom"
+    | "bottom-end"
+    | "top-start"
+    | "top"
+    | "top-end" = "bottom-start";
+  @property({ type: String, reflect: true, useDefault: true })
+  override accessor popover: "" | "auto" | "manual" | "hint" = "";
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
+    "";
 
-  private readonly panelId = createId('uik-tooltip');
+  private readonly panelId = createId("uik-tooltip");
   private pointerInPanel = false;
   private pendingCloseReason: OverlayCloseReason | null = null;
 
   static override readonly styles = styles;
 
-  private readonly panelRole = 'tooltip';
-  private readonly openOn: 'hover' | 'click' = 'hover';
+  private readonly panelRole = "tooltip";
+  private readonly openOn: "hover" | "click" = "hover";
 
   private get panelElement(): HTMLElement | null {
-    return this.renderRoot.querySelector('.panel');
+    return this.renderRoot.querySelector(".panel");
   }
 
   private get popoverSupported(): boolean {
-    return Object.hasOwn(HTMLElement.prototype, 'popover');
+    return Object.hasOwn(HTMLElement.prototype, "popover");
   }
 
   private get usesNativePopover(): boolean {
-    return this.popoverSupported && this.popover !== '';
+    return this.popoverSupported && this.popover !== "";
   }
 
   override firstUpdated() {
@@ -76,9 +76,9 @@ export class UikTooltip extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (changed.has('open')) {
+    if (changed.has("open")) {
       this.syncOpenState();
-      const previous = changed.get('open') as boolean | undefined;
+      const previous = changed.get("open") as boolean | undefined;
       if (previous && !this.open) {
         this.emitCloseReason();
       }
@@ -90,12 +90,12 @@ export class UikTooltip extends LitElement {
   }
 
   hide() {
-    this.requestClose('programmatic');
+    this.requestClose("programmatic");
   }
 
   toggle() {
     if (this.open) {
-      this.requestClose('toggle');
+      this.requestClose("toggle");
     } else {
       this.open = true;
     }
@@ -107,11 +107,11 @@ export class UikTooltip extends LitElement {
   }
 
   private emitCloseReason() {
-    const reason = this.pendingCloseReason ?? 'programmatic';
+    const reason = this.pendingCloseReason ?? "programmatic";
     this.pendingCloseReason = null;
     this.dispatchEvent(
-      new CustomEvent('overlay-close', {
-        detail: {reason},
+      new CustomEvent("overlay-close", {
+        detail: { reason },
         bubbles: true,
         composed: true,
       }),
@@ -134,24 +134,24 @@ export class UikTooltip extends LitElement {
         popoverElement.hidePopover();
       }
     } else {
-      panel.toggleAttribute('hidden', !this.open);
+      panel.toggleAttribute("hidden", !this.open);
     }
   }
 
   private onTriggerClick = (event: MouseEvent) => {
-    if (this.openOn !== 'click') return;
+    if (this.openOn !== "click") return;
     if (event.defaultPrevented) return;
     this.toggle();
   };
 
   private onTriggerKeyDown = (event: KeyboardEvent) => {
-    if (this.openOn !== 'click') return;
+    if (this.openOn !== "click") return;
     if (event.defaultPrevented) return;
-    if (event.key !== 'Enter' && event.key !== ' ') return;
+    if (event.key !== "Enter" && event.key !== " ") return;
 
     const path = event.composedPath();
     const hasNativeControl = path.some(
-      node =>
+      (node) =>
         node instanceof HTMLButtonElement ||
         node instanceof HTMLAnchorElement ||
         node instanceof HTMLInputElement ||
@@ -165,25 +165,25 @@ export class UikTooltip extends LitElement {
   };
 
   private onTriggerMouseEnter = () => {
-    if (this.openOn !== 'hover') return;
+    if (this.openOn !== "hover") return;
     this.open = true;
   };
 
   private onTriggerMouseLeave = () => {
-    if (this.openOn !== 'hover') return;
+    if (this.openOn !== "hover") return;
     if (this.pointerInPanel) return;
-    this.requestClose('outside');
+    this.requestClose("outside");
   };
 
   private onTriggerFocusIn = () => {
-    if (this.openOn !== 'hover') return;
+    if (this.openOn !== "hover") return;
     this.open = true;
   };
 
   private onTriggerFocusOut = () => {
-    if (this.openOn !== 'hover') return;
+    if (this.openOn !== "hover") return;
     if (this.pointerInPanel) return;
-    this.requestClose('outside');
+    this.requestClose("outside");
   };
 
   private onPanelMouseEnter = () => {
@@ -192,21 +192,21 @@ export class UikTooltip extends LitElement {
 
   private onPanelMouseLeave = () => {
     this.pointerInPanel = false;
-    if (this.openOn === 'hover') {
-      this.requestClose('outside');
+    if (this.openOn === "hover") {
+      this.requestClose("outside");
     }
   };
 
   private readonly onPanelKeyDown = createEscapeKeyHandler(() => {
-    this.requestClose('escape');
+    this.requestClose("escape");
   });
 
   private onToggle = (event: Event) => {
-    const nextState = (event as Event & {newState?: string}).newState;
-    if (nextState === 'open') {
+    const nextState = (event as Event & { newState?: string }).newState;
+    if (nextState === "open") {
       this.open = true;
-    } else if (nextState === 'closed') {
-      this.pendingCloseReason ??= 'toggle';
+    } else if (nextState === "closed") {
+      this.pendingCloseReason ??= "toggle";
       this.open = false;
     }
   };
@@ -222,13 +222,13 @@ export class UikTooltip extends LitElement {
   private syncTriggerAria() {
     const slot = this.triggerSlot;
     if (!slot) return;
-    const elements = slot.assignedElements({flatten: true});
-    elements.forEach(element => {
+    const elements = slot.assignedElements({ flatten: true });
+    elements.forEach((element) => {
       if (!(element instanceof HTMLElement)) return;
-      const existing = element.getAttribute('aria-describedby');
-      const ids = new Set((existing ?? '').split(' ').filter(Boolean));
+      const existing = element.getAttribute("aria-describedby");
+      const ids = new Set((existing ?? "").split(" ").filter(Boolean));
       ids.add(this.panelId);
-      element.setAttribute('aria-describedby', Array.from(ids).join(' '));
+      element.setAttribute("aria-describedby", Array.from(ids).join(" "));
     });
   }
 
@@ -245,7 +245,8 @@ export class UikTooltip extends LitElement {
         @mouseenter=${this.onTriggerMouseEnter}
         @mouseleave=${this.onTriggerMouseLeave}
         @focusin=${this.onTriggerFocusIn}
-        @focusout=${this.onTriggerFocusOut}>
+        @focusout=${this.onTriggerFocusOut}
+      >
         <slot name="trigger" @slotchange=${this.handleTriggerSlotChange}></slot>
       </span>
       <div
@@ -258,11 +259,12 @@ export class UikTooltip extends LitElement {
         aria-label=${ifDefined(this.ariaLabelValue || undefined)}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
         aria-describedby=${ifDefined(this.ariaDescribedbyValue || undefined)}
-        aria-hidden=${ifDefined(this.open ? undefined : 'true')}
+        aria-hidden=${ifDefined(this.open ? undefined : "true")}
         @mouseenter=${this.onPanelMouseEnter}
         @mouseleave=${this.onPanelMouseLeave}
         @keydown=${this.onPanelKeyDown}
-        @toggle=${this.onToggle}>
+        @toggle=${this.onToggle}
+      >
         <slot></slot>
       </div>
     `;

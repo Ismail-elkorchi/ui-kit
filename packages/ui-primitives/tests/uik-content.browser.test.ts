@@ -1,69 +1,69 @@
-import {beforeEach, describe, expect, it} from 'vitest';
+import { beforeEach, describe, expect, it } from "vitest";
 
-import type {UikBadge} from '../src/atomic/content/uik-badge';
-import type {UikHeading} from '../src/atomic/content/uik-heading';
-import type {UikIcon} from '../src/atomic/content/uik-icon';
-import type {UikText} from '../src/atomic/content/uik-text';
-import type {UikVisuallyHidden} from '../src/atomic/content/uik-visually-hidden';
-import type {UikAlert} from '../src/atomic/feedback/uik-alert';
-import '../src/atomic/content/uik-badge';
-import '../src/atomic/content/uik-heading';
-import '../src/atomic/content/uik-icon';
-import '../src/atomic/content/uik-text';
-import '../src/atomic/content/uik-visually-hidden';
-import '../src/atomic/feedback/uik-alert';
+import type { UikBadge } from "../src/atomic/content/uik-badge";
+import type { UikHeading } from "../src/atomic/content/uik-heading";
+import type { UikIcon } from "../src/atomic/content/uik-icon";
+import type { UikText } from "../src/atomic/content/uik-text";
+import type { UikVisuallyHidden } from "../src/atomic/content/uik-visually-hidden";
+import type { UikAlert } from "../src/atomic/feedback/uik-alert";
+import "../src/atomic/content/uik-badge";
+import "../src/atomic/content/uik-heading";
+import "../src/atomic/content/uik-icon";
+import "../src/atomic/content/uik-text";
+import "../src/atomic/content/uik-visually-hidden";
+import "../src/atomic/feedback/uik-alert";
 
-describe('uik content primitives', () => {
+describe("uik content primitives", () => {
   beforeEach(() => {
-    document.body.innerHTML = '';
+    document.body.innerHTML = "";
   });
 
-  it('renders alerts with the correct role and optional title', async () => {
-    const alert = document.createElement('uik-alert') as UikAlert;
-    alert.textContent = 'Notice';
+  it("renders alerts with the correct role and optional title", async () => {
+    const alert = document.createElement("uik-alert") as UikAlert;
+    alert.textContent = "Notice";
     document.body.append(alert);
 
     await alert.updateComplete;
 
     const base = alert.shadowRoot?.querySelector('[part="base"]');
     const title = alert.shadowRoot?.querySelector('[part="title"]');
-    expect(base?.getAttribute('role')).toBe('status');
-    expect(title?.hasAttribute('hidden')).toBe(true);
+    expect(base?.getAttribute("role")).toBe("status");
+    expect(title?.hasAttribute("hidden")).toBe(true);
 
-    alert.variant = 'danger';
+    alert.variant = "danger";
     alert.innerHTML = '<span slot="title">Warning</span>Critical';
     await alert.updateComplete;
 
     const updatedBase = alert.shadowRoot?.querySelector('[part="base"]');
     const updatedTitle = alert.shadowRoot?.querySelector('[part="title"]');
-    expect(updatedBase?.getAttribute('role')).toBe('alert');
-    expect(updatedTitle?.hasAttribute('hidden')).toBe(false);
+    expect(updatedBase?.getAttribute("role")).toBe("alert");
+    expect(updatedTitle?.hasAttribute("hidden")).toBe(false);
   });
 
-  it('applies badge variants', async () => {
-    const badge = document.createElement('uik-badge') as UikBadge;
-    badge.variant = 'outline';
-    badge.textContent = 'New';
+  it("applies badge variants", async () => {
+    const badge = document.createElement("uik-badge") as UikBadge;
+    badge.variant = "outline";
+    badge.textContent = "New";
     document.body.append(badge);
 
     await badge.updateComplete;
 
     const base = badge.shadowRoot?.querySelector('[part="base"]');
-    expect(base?.classList.contains('variant-outline')).toBe(true);
+    expect(base?.classList.contains("variant-outline")).toBe(true);
   });
 
-  it('renders heading levels within bounds', async () => {
-    const heading = document.createElement('uik-heading') as UikHeading;
-    heading.textContent = 'Title';
+  it("renders heading levels within bounds", async () => {
+    const heading = document.createElement("uik-heading") as UikHeading;
+    heading.textContent = "Title";
     document.body.append(heading);
 
     const cases: [number, string][] = [
-      [0, 'h1'],
-      [2, 'h2'],
-      [3, 'h3'],
-      [4, 'h4'],
-      [5, 'h5'],
-      [7, 'h6'],
+      [0, "h1"],
+      [2, "h2"],
+      [3, "h3"],
+      [4, "h4"],
+      [5, "h5"],
+      [7, "h6"],
     ];
 
     for (const [level, tag] of cases) {
@@ -73,56 +73,58 @@ describe('uik content primitives', () => {
     }
   });
 
-  it('renders icons with aria attributes when provided', async () => {
-    const icon = document.createElement('uik-icon') as UikIcon;
-    icon.innerHTML = '<svg></svg>';
+  it("renders icons with aria attributes when provided", async () => {
+    const icon = document.createElement("uik-icon") as UikIcon;
+    icon.innerHTML = "<svg></svg>";
     document.body.append(icon);
 
     await icon.updateComplete;
 
     const base = icon.shadowRoot?.querySelector('[part="base"]');
-    expect(base?.getAttribute('role')).toBeNull();
+    expect(base?.getAttribute("role")).toBeNull();
 
-    icon.ariaLabelValue = 'Search';
-    icon.ariaHiddenValue = 'true';
+    icon.ariaLabelValue = "Search";
+    icon.ariaHiddenValue = "true";
     await icon.updateComplete;
 
     const labeled = icon.shadowRoot?.querySelector('[part="base"]');
-    expect(labeled?.getAttribute('role')).toBe('img');
-    expect(labeled?.getAttribute('aria-label')).toBe('Search');
-    expect(labeled?.getAttribute('aria-hidden')).toBe('true');
+    expect(labeled?.getAttribute("role")).toBe("img");
+    expect(labeled?.getAttribute("aria-label")).toBe("Search");
+    expect(labeled?.getAttribute("aria-hidden")).toBe("true");
   });
 
-  it('renders text with different tags', async () => {
-    const text = document.createElement('uik-text') as UikText;
-    text.textContent = 'Copy';
+  it("renders text with different tags", async () => {
+    const text = document.createElement("uik-text") as UikText;
+    text.textContent = "Copy";
     document.body.append(text);
 
     await text.updateComplete;
-    expect(text.shadowRoot?.querySelector('span')).not.toBeNull();
+    expect(text.shadowRoot?.querySelector("span")).not.toBeNull();
 
-    text.as = 'p';
+    text.as = "p";
     await text.updateComplete;
-    expect(text.shadowRoot?.querySelector('p')).not.toBeNull();
+    expect(text.shadowRoot?.querySelector("p")).not.toBeNull();
 
-    text.as = 'div';
+    text.as = "div";
     await text.updateComplete;
-    expect(text.shadowRoot?.querySelector('div')).not.toBeNull();
+    expect(text.shadowRoot?.querySelector("div")).not.toBeNull();
 
-    text.as = 'label';
+    text.as = "label";
     await text.updateComplete;
-    expect(text.shadowRoot?.querySelector('label')).not.toBeNull();
+    expect(text.shadowRoot?.querySelector("label")).not.toBeNull();
   });
 
-  it('renders visually hidden content', async () => {
-    const hidden = document.createElement('uik-visually-hidden') as UikVisuallyHidden;
-    hidden.textContent = 'Hidden label';
+  it("renders visually hidden content", async () => {
+    const hidden = document.createElement(
+      "uik-visually-hidden",
+    ) as UikVisuallyHidden;
+    hidden.textContent = "Hidden label";
     document.body.append(hidden);
 
     await hidden.updateComplete;
 
-    const slot = hidden.shadowRoot?.querySelector('slot');
-    const assigned = slot?.assignedNodes({flatten: true}) ?? [];
-    expect(assigned[0]?.textContent).toContain('Hidden label');
+    const slot = hidden.shadowRoot?.querySelector("slot");
+    const assigned = slot?.assignedNodes({ flatten: true }) ?? [];
+    expect(assigned[0]?.textContent).toContain("Hidden label");
   });
 });

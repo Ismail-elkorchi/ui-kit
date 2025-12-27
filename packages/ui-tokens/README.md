@@ -59,7 +59,7 @@ Explicit control (theme + density):
 Set attributes on a root element to switch variants:
 
 ```html
-<html data-uik-theme="dark" data-uik-density="compact">
+<html data-uik-theme="dark" data-uik-density="compact"></html>
 ```
 
 Defaults are light + comfortable when attributes are not present.
@@ -89,7 +89,9 @@ Compat example:
 Example utilities:
 
 ```html
-<div class="bg-uik-surface-bg text-uik-text-default border-uik-border-default rounded-uik-3 shadow-uik-2 ring-uik-focus-ring-default">
+<div
+  class="bg-uik-surface-bg text-uik-text-default border-uik-border-default rounded-uik-3 shadow-uik-2 ring-uik-focus-ring-default"
+>
   ...
 </div>
 ```
@@ -104,19 +106,19 @@ import {
   setTheme,
   setDensity,
   getCssVarName,
-  createBreakpointObserver
-} from '@ismail-elkorchi/ui-tokens';
+  createBreakpointObserver,
+} from "@ismail-elkorchi/ui-tokens";
 
-const cssVar = getCssVarName('color.accent.1');
+const cssVar = getCssVarName("color.accent.1");
 
-setTheme(document.documentElement, 'dark');
-setDensity(document.documentElement, 'compact');
+setTheme(document.documentElement, "dark");
+setDensity(document.documentElement, "compact");
 
-document.documentElement.setAttribute(THEME_ATTRIBUTE, 'dark');
-document.documentElement.setAttribute(DENSITY_ATTRIBUTE, 'compact');
+document.documentElement.setAttribute(THEME_ATTRIBUTE, "dark");
+document.documentElement.setAttribute(DENSITY_ATTRIBUTE, "compact");
 
 createBreakpointObserver();
-document.documentElement.setAttribute(BREAKPOINT_ATTRIBUTE, 'md');
+document.documentElement.setAttribute(BREAKPOINT_ATTRIBUTE, "md");
 ```
 
 ## Guarantees

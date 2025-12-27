@@ -21,7 +21,10 @@ export function createOutsideDismissController(
       if (controller) return;
       controller = new AbortController();
       const signal = controller.signal;
-      document.addEventListener('pointerdown', onPointerDown, {capture: true, signal});
+      document.addEventListener("pointerdown", onPointerDown, {
+        capture: true,
+        signal,
+      });
     },
     disconnect() {
       controller?.abort();
@@ -32,7 +35,7 @@ export function createOutsideDismissController(
 
 export function createEscapeKeyHandler(onEscape: () => void) {
   return (event: KeyboardEvent) => {
-    if (event.key !== 'Escape') return;
+    if (event.key !== "Escape") return;
     onEscape();
   };
 }

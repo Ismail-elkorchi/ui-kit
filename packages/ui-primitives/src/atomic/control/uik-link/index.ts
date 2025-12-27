@@ -1,1 +1,1 @@
-export {UikLink} from './element';
+export { UikLink } from "./element";

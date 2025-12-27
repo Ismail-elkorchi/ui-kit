@@ -11,7 +11,7 @@ npm install @ismail-elkorchi/ui-tokens @ismail-elkorchi/ui-primitives @ismail-el
 Import token CSS once so every primitive reads the same CSS custom properties.
 
 ```css
-@import '@ismail-elkorchi/ui-tokens/base.css';
+@import "@ismail-elkorchi/ui-tokens/base.css";
 ```
 
 <uik-alert variant="info">
@@ -22,7 +22,7 @@ Import token CSS once so every primitive reads the same CSS custom properties.
 Switch theme or density by setting data attributes on the root element.
 
 ```html
-<html data-uik-theme="dark" data-uik-density="compact">
+<html data-uik-theme="dark" data-uik-density="compact"></html>
 ```
 
 ## Register custom elements
@@ -30,8 +30,8 @@ Switch theme or density by setting data attributes on the root element.
 Register primitives and shell components before rendering any markup.
 
 ```ts
-import '@ismail-elkorchi/ui-primitives/register';
-import '@ismail-elkorchi/ui-shell/register';
+import "@ismail-elkorchi/ui-primitives/register";
+import "@ismail-elkorchi/ui-shell/register";
 ```
 
 ## Compose the shell
@@ -41,9 +41,15 @@ Use `<uik-shell-layout>` to wire regions with named slots.
 ```html
 <uik-shell-layout>
   <uik-shell-activity-bar slot="activity-bar"></uik-shell-activity-bar>
-  <uik-shell-sidebar slot="primary-sidebar" heading="Navigation"></uik-shell-sidebar>
+  <uik-shell-sidebar
+    slot="primary-sidebar"
+    heading="Navigation"
+  ></uik-shell-sidebar>
   <main slot="main-content">Main content</main>
-  <uik-shell-status-bar slot="status-bar" message="Ready"></uik-shell-status-bar>
+  <uik-shell-status-bar
+    slot="status-bar"
+    message="Ready"
+  ></uik-shell-status-bar>
 </uik-shell-layout>
 ```
 

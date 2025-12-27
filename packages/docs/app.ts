@@ -1,1 +1,1 @@
-export {mountDocsApp} from './src/app';
+export { mountDocsApp } from "./src/app";

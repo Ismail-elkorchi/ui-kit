@@ -1,36 +1,37 @@
-import '@ismail-elkorchi/ui-primitives/register';
-import type {Meta, StoryObj} from '@storybook/web-components-vite';
-import {html} from 'lit';
+import "@ismail-elkorchi/ui-primitives/register";
+import type { Meta, StoryObj } from "@storybook/web-components-vite";
+import { html } from "lit";
 
-import {interactionStory} from '../../../.storybook/a11y';
+import { interactionStory } from "../../../.storybook/a11y";
 
 type SeparatorArgs = {
-  orientation: 'horizontal' | 'vertical';
+  orientation: "horizontal" | "vertical";
 };
 
 const meta: Meta<SeparatorArgs> = {
-  title: 'Primitives/Separator',
-  component: 'uik-separator',
-  tags: ['autodocs'],
+  title: "Primitives/Separator",
+  component: "uik-separator",
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A11y: horizontal renders as <hr>; vertical uses role="separator" with aria-orientation.',
+        component:
+          'A11y: horizontal renders as <hr>; vertical uses role="separator" with aria-orientation.',
       },
     },
   },
   args: {
-    orientation: 'horizontal',
+    orientation: "horizontal",
   },
   argTypes: {
     orientation: {
-      options: ['horizontal', 'vertical'],
-      control: {type: 'radio'},
+      options: ["horizontal", "vertical"],
+      control: { type: "radio" },
     },
   },
-  render: args => {
-    if (args.orientation === 'vertical') {
+  render: (args) => {
+    if (args.orientation === "vertical") {
       return html`
         <uik-stack direction="horizontal" gap="4" align="center">
           <span>Left</span>
@@ -53,7 +54,6 @@ const meta: Meta<SeparatorArgs> = {
 export default meta;
 
 type Story = StoryObj<SeparatorArgs>;
-
 
 export const Default: Story = {
   ...interactionStory,

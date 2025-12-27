@@ -4,11 +4,7 @@
       "$value": {
         "color": {
           "colorSpace": "oklch",
-          "components": [
-            0.2,
-            0.014,
-            260
-          ],
+          "components": [0.2, 0.014, 260],
           "alpha": 0
         },
         "offsetX": {
@@ -35,11 +31,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.06
           },
           "offsetX": {
@@ -62,11 +54,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.06
           },
           "offsetX": {
@@ -94,11 +82,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.1
           },
           "offsetX": {
@@ -121,11 +105,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.06
           },
           "offsetX": {
@@ -153,11 +133,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.16
           },
           "offsetX": {
@@ -180,11 +156,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.1
           },
           "offsetX": {
@@ -212,11 +184,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.28
           },
           "offsetX": {
@@ -239,11 +207,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.16
           },
           "offsetX": {
@@ -271,11 +235,7 @@
         "$value": {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0.2,
-              0.014,
-              260
-            ],
+            "components": [0.2, 0.014, 260],
             "alpha": 0.1
           },
           "offsetX": {

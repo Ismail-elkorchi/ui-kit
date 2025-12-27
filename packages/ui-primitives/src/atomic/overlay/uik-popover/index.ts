@@ -1,1 +1,1 @@
-export {UikPopover} from './element';
+export { UikPopover } from "./element";

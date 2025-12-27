@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -38,8 +38,10 @@ export const styles = css`
   .toggle:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 var(--uik-focus-ring-offset-default) oklch(var(--uik-focus-ring-offset-bg)),
-      0 0 0 calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
+      0 0 0 var(--uik-focus-ring-offset-default)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
         oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
   }
 
@@ -60,7 +62,8 @@ export const styles = css`
     text-decoration: none;
     cursor: pointer;
     background-color: oklch(var(--uik-component-nav-item-bg));
-    border: var(--uik-border-width-0) solid oklch(var(--uik-component-nav-item-bg));
+    border: var(--uik-border-width-0) solid
+      oklch(var(--uik-component-nav-item-bg));
     border-radius: var(--uik-component-nav-item-radius);
   }
 
@@ -74,19 +77,19 @@ export const styles = css`
     background-color: oklch(var(--uik-component-nav-item-hover-bg));
   }
 
-  .link[data-current='true'] {
+  .link[data-current="true"] {
     color: oklch(var(--uik-component-nav-text-active));
     background-color: oklch(var(--uik-component-nav-item-active-bg));
   }
 
-  .link[data-disabled='true']:hover,
-  .label[data-disabled='true']:hover {
+  .link[data-disabled="true"]:hover,
+  .label[data-disabled="true"]:hover {
     color: oklch(var(--uik-component-nav-text-default));
     background-color: oklch(var(--uik-component-nav-item-bg));
   }
 
-  .link[data-disabled='true'],
-  .label[data-disabled='true'],
+  .link[data-disabled="true"],
+  .label[data-disabled="true"],
   .toggle:disabled {
     cursor: not-allowed;
     opacity: var(--uik-field-disabled-opacity);
@@ -96,8 +99,10 @@ export const styles = css`
   .label:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 var(--uik-focus-ring-offset-default) oklch(var(--uik-focus-ring-offset-bg)),
-      0 0 0 calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
+      0 0 0 var(--uik-focus-ring-offset-default)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
         oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
   }
 

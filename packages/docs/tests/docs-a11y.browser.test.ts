@@ -1,50 +1,53 @@
-import axe from 'axe-core';
-import type {Result} from 'axe-core';
-import '@ismail-elkorchi/ui-tokens/base.css';
-import {beforeEach, describe, it} from 'vitest';
+import axe from "axe-core";
+import type { Result } from "axe-core";
+import "@ismail-elkorchi/ui-tokens/base.css";
+import { beforeEach, describe, it } from "vitest";
 
-import {mountDocsApp} from '../app';
+import { mountDocsApp } from "../app";
 
 function formatViolations(violations: Result[]) {
   return violations
-    .map(violation => {
+    .map((violation) => {
       const targets = violation.nodes
-        .map(node => {
+        .map((node) => {
           const target = node.target;
-          return Array.isArray(target) ? target.join(' ') : String(target);
+          return Array.isArray(target) ? target.join(" ") : String(target);
         })
-        .join(', ');
+        .join(", ");
       return `${violation.id}: ${violation.description}\n${targets}`;
     })
-    .join('\n\n');
+    .join("\n\n");
 }
 
 async function runA11y(container: HTMLElement) {
   const results = await axe.run(container, {
     rules: {
-      'color-contrast': {enabled: true},
-      'landmark-complementary-is-top-level': {enabled: false},
-      'landmark-contentinfo-is-top-level': {enabled: false},
-      'landmark-main-is-top-level': {enabled: false},
+      "color-contrast": { enabled: true },
+      "landmark-complementary-is-top-level": { enabled: false },
+      "landmark-contentinfo-is-top-level": { enabled: false },
+      "landmark-main-is-top-level": { enabled: false },
     },
   });
 
   if (results.violations.length > 0) {
-    throw new Error(`A11y violations:\n${formatViolations(results.violations)}`);
+    throw new Error(
+      `A11y violations:\n${formatViolations(results.violations)}`,
+    );
   }
 }
 
-const nextFrame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+const nextFrame = () =>
+  new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-describe('docs a11y', () => {
+describe("docs a11y", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
   });
 
-  it('has zero axe violations on a representative route', async () => {
-    window.history.replaceState({}, '', '/docs/getting-started');
-    const root = document.getElementById('app');
-    if (!root) throw new Error('Docs root not found.');
+  it("has zero axe violations on a representative route", async () => {
+    window.history.replaceState({}, "", "/docs/getting-started");
+    const root = document.getElementById("app");
+    if (!root) throw new Error("Docs root not found.");
     mountDocsApp(root);
     await nextFrame();
     await runA11y(document.body);

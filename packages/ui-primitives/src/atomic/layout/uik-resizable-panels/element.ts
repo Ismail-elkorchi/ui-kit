@@ -1,13 +1,13 @@
-import {LitElement, html} from 'lit';
-import {customElement, property, state} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
-import {styleMap} from 'lit/directives/style-map.js';
+import { LitElement, html } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
+import { styleMap } from "lit/directives/style-map.js";
 
-import {styles} from './styles';
-import {createId} from '../../../internal';
+import { styles } from "./styles";
+import { createId } from "../../../internal";
 
-export type UikResizablePanelsResizePhase = 'start' | 'move' | 'end';
-export type UikResizablePanelsResizeSource = 'pointer' | 'keyboard';
+export type UikResizablePanelsResizePhase = "start" | "move" | "end";
+export type UikResizablePanelsResizeSource = "pointer" | "keyboard";
 
 export interface UikResizablePanelsResizeDetail {
   startSize: number;
@@ -67,50 +67,68 @@ interface DragState {
  * @cssprop --uik-component-resizable-panels-step
  * @cssprop --uik-component-resizable-panels-step-lg
  */
-@customElement('uik-resizable-panels')
+@customElement("uik-resizable-panels")
 export class UikResizablePanels extends LitElement {
-  @property({type: String, reflect: true}) accessor orientation: 'horizontal' | 'vertical' = 'horizontal';
-  @property({type: Number, attribute: 'start-size'}) accessor startSize: number | null = null;
-  @property({type: Number, attribute: 'min-start-size'}) accessor minStartSize: number | null = null;
-  @property({type: Number, attribute: 'min-end-size'}) accessor minEndSize: number | null = null;
-  @property({type: Number}) accessor step: number | null = null;
-  @property({type: Number, attribute: 'step-large'}) accessor stepLarge: number | null = null;
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
+  @property({ type: String, reflect: true }) accessor orientation:
+    | "horizontal"
+    | "vertical" = "horizontal";
+  @property({ type: Number, attribute: "start-size" }) accessor startSize:
+    | number
+    | null = null;
+  @property({ type: Number, attribute: "min-start-size" })
+  accessor minStartSize: number | null = null;
+  @property({ type: Number, attribute: "min-end-size" }) accessor minEndSize:
+    | number
+    | null = null;
+  @property({ type: Number }) accessor step: number | null = null;
+  @property({ type: Number, attribute: "step-large" }) accessor stepLarge:
+    | number
+    | null = null;
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
   @state() private accessor isDragging = false;
 
   static override readonly styles = styles;
 
-  private readonly startId = createId('uik-resizable-panels-start');
-  private readonly endId = createId('uik-resizable-panels-end');
+  private readonly startId = createId("uik-resizable-panels-start");
+  private readonly endId = createId("uik-resizable-panels-end");
   private dragState: DragState | null = null;
   private dragController: AbortController | null = null;
 
   private resolveAxisValue(event: PointerEvent) {
-    return this.orientation === 'vertical' ? event.clientY : event.clientX;
+    return this.orientation === "vertical" ? event.clientY : event.clientX;
   }
 
   private parseDimensionValue(value: string) {
     const trimmed = value.trim();
     if (!trimmed) return undefined;
-    if (trimmed === '0') return 0;
+    if (trimmed === "0") return 0;
     const pxMatch = /^(-?\d+(?:\.\d+)?)px$/i.exec(trimmed);
     const pxValue = pxMatch?.[1];
     if (pxValue !== undefined) return Number.parseFloat(pxValue);
     const remMatch = /^(-?\d+(?:\.\d+)?)rem$/i.exec(trimmed);
     const remValue = remMatch?.[1];
     if (remValue !== undefined) {
-      const rootSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize || '16');
+      const rootSize = Number.parseFloat(
+        getComputedStyle(document.documentElement).fontSize || "16",
+      );
       return Number.parseFloat(remValue) * rootSize;
     }
     const numberValue = Number.parseFloat(trimmed);
-    if (!Number.isNaN(numberValue) && Number.isFinite(numberValue)) return numberValue;
+    if (!Number.isNaN(numberValue) && Number.isFinite(numberValue))
+      return numberValue;
     return undefined;
   }
 
-  private resolveVarValue(value: string, style: CSSStyleDeclaration, depth = 0): string | undefined {
+  private resolveVarValue(
+    value: string,
+    style: CSSStyleDeclaration,
+    depth = 0,
+  ): string | undefined {
     if (depth > 4) return undefined;
-    const match = /^var\(\s*(--[a-z0-9-]+)(?:,[^)]+)?\s*\)$/i.exec(value.trim());
+    const match = /^var\(\s*(--[a-z0-9-]+)(?:,[^)]+)?\s*\)$/i.exec(
+      value.trim(),
+    );
     const tokenName = match?.[1];
     if (!tokenName) return value.trim();
     const next = style.getPropertyValue(tokenName).trim();
@@ -128,56 +146,85 @@ export class UikResizablePanels extends LitElement {
   }
 
   private resolveMinStartPx() {
-    if (typeof this.minStartSize === 'number' && Number.isFinite(this.minStartSize)) {
+    if (
+      typeof this.minStartSize === "number" &&
+      Number.isFinite(this.minStartSize)
+    ) {
       return Math.max(this.minStartSize, 0);
     }
-    return this.readTokenDimension('--uik-component-resizable-panels-panel-min-size') ?? 0;
+    return (
+      this.readTokenDimension(
+        "--uik-component-resizable-panels-panel-min-size",
+      ) ?? 0
+    );
   }
 
   private resolveMinEndPx() {
-    if (typeof this.minEndSize === 'number' && Number.isFinite(this.minEndSize)) {
+    if (
+      typeof this.minEndSize === "number" &&
+      Number.isFinite(this.minEndSize)
+    ) {
       return Math.max(this.minEndSize, 0);
     }
-    return this.readTokenDimension('--uik-component-resizable-panels-panel-min-size') ?? 0;
+    return (
+      this.readTokenDimension(
+        "--uik-component-resizable-panels-panel-min-size",
+      ) ?? 0
+    );
   }
 
   private resolveStepPx(isLarge: boolean) {
     const value = isLarge ? this.stepLarge : this.step;
-    if (typeof value === 'number' && Number.isFinite(value)) {
+    if (typeof value === "number" && Number.isFinite(value)) {
       return Math.max(value, 0);
     }
-    const tokenName = isLarge ? '--uik-component-resizable-panels-step-lg' : '--uik-component-resizable-panels-step';
+    const tokenName = isLarge
+      ? "--uik-component-resizable-panels-step-lg"
+      : "--uik-component-resizable-panels-step";
     return this.readTokenDimension(tokenName) ?? 1;
   }
 
   private resolveStartPx() {
-    if (typeof this.startSize === 'number' && Number.isFinite(this.startSize)) {
+    if (typeof this.startSize === "number" && Number.isFinite(this.startSize)) {
       return Math.max(this.startSize, 0);
     }
     return (
-      this.readTokenDimension('--uik-component-resizable-panels-panel-start-size') ??
-      this.readTokenDimension('--uik-component-resizable-panels-panel-min-size') ??
+      this.readTokenDimension(
+        "--uik-component-resizable-panels-panel-start-size",
+      ) ??
+      this.readTokenDimension(
+        "--uik-component-resizable-panels-panel-min-size",
+      ) ??
       0
     );
   }
 
   private resolveBaseSize() {
     const hostRect = this.getBoundingClientRect();
-    const hostSize = this.orientation === 'vertical' ? hostRect.height : hostRect.width;
+    const hostSize =
+      this.orientation === "vertical" ? hostRect.height : hostRect.width;
     if (hostSize > 0) return hostSize;
     const base = this.shadowRoot?.querySelector<HTMLElement>('[part="base"]');
     if (!base) return undefined;
     const rect = base.getBoundingClientRect();
-    const baseSize = this.orientation === 'vertical' ? rect.height : rect.width;
+    const baseSize = this.orientation === "vertical" ? rect.height : rect.width;
     return baseSize > 0 ? baseSize : undefined;
   }
 
   private resolveHandleSize() {
-    const handle = this.shadowRoot?.querySelector<HTMLElement>('[part="handle"]');
+    const handle =
+      this.shadowRoot?.querySelector<HTMLElement>('[part="handle"]');
     const rect = handle?.getBoundingClientRect();
-    const size = rect ? (this.orientation === 'vertical' ? rect.height : rect.width) : 0;
+    const size = rect
+      ? this.orientation === "vertical"
+        ? rect.height
+        : rect.width
+      : 0;
     if (size > 0) return size;
-    return this.readTokenDimension('--uik-component-resizable-panels-handle-hit') ?? 0;
+    return (
+      this.readTokenDimension("--uik-component-resizable-panels-handle-hit") ??
+      0
+    );
   }
 
   private resolveLayout(startOverride?: number): LayoutMetrics {
@@ -185,13 +232,21 @@ export class UikResizablePanels extends LitElement {
     let minEnd = this.resolveMinEndPx();
     const handleSize = this.resolveHandleSize();
     const baseSize = this.resolveBaseSize();
-    const startValue = typeof startOverride === 'number' ? startOverride : this.resolveStartPx();
+    const startValue =
+      typeof startOverride === "number" ? startOverride : this.resolveStartPx();
 
     const availableFromBase =
-      typeof baseSize === 'number' && baseSize > 0 ? Math.max(baseSize - handleSize, 0) : undefined;
-    const availableSize = availableFromBase ?? Math.max(startValue + minEnd, minStart + minEnd);
+      typeof baseSize === "number" && baseSize > 0
+        ? Math.max(baseSize - handleSize, 0)
+        : undefined;
+    const availableSize =
+      availableFromBase ?? Math.max(startValue + minEnd, minStart + minEnd);
     const minTotal = minStart + minEnd;
-    if (availableFromBase !== undefined && availableSize > 0 && minTotal > availableSize) {
+    if (
+      availableFromBase !== undefined &&
+      availableSize > 0 &&
+      minTotal > availableSize
+    ) {
       const scale = availableSize / minTotal;
       minStart *= scale;
       minEnd *= scale;
@@ -202,10 +257,23 @@ export class UikResizablePanels extends LitElement {
     const end = Math.max(availableSize - start, 0);
     const ratio = availableSize > 0 ? start / availableSize : 0;
 
-    return {availableSize, handleSize, minStart, minEnd, maxStart, start, end, ratio};
+    return {
+      availableSize,
+      handleSize,
+      minStart,
+      minEnd,
+      maxStart,
+      start,
+      end,
+      ratio,
+    };
   }
 
-  private emitResize(phase: UikResizablePanelsResizePhase, source: UikResizablePanelsResizeSource, startValue?: number) {
+  private emitResize(
+    phase: UikResizablePanelsResizePhase,
+    source: UikResizablePanelsResizeSource,
+    startValue?: number,
+  ) {
     const layout = this.resolveLayout(startValue);
     const detail: UikResizablePanelsResizeDetail = {
       startSize: layout.start,
@@ -214,32 +282,38 @@ export class UikResizablePanels extends LitElement {
       source,
       phase,
     };
-    this.dispatchEvent(new CustomEvent('resizable-panels-resize', {detail, bubbles: true, composed: true}));
+    this.dispatchEvent(
+      new CustomEvent("resizable-panels-resize", {
+        detail,
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   private onHandleKeyDown = (event: KeyboardEvent) => {
-    const isHorizontal = this.orientation === 'horizontal';
+    const isHorizontal = this.orientation === "horizontal";
     const step = this.resolveStepPx(event.shiftKey);
     const layout = this.resolveLayout();
     let nextSize: number | null = null;
 
     switch (event.key) {
-      case 'ArrowLeft':
+      case "ArrowLeft":
         if (isHorizontal) nextSize = layout.start - step;
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         if (isHorizontal) nextSize = layout.start + step;
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         if (!isHorizontal) nextSize = layout.start - step;
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         if (!isHorizontal) nextSize = layout.start + step;
         break;
-      case 'Home':
+      case "Home":
         nextSize = layout.minStart;
         break;
-      case 'End':
+      case "End":
         nextSize = layout.maxStart;
         break;
       default:
@@ -247,10 +321,13 @@ export class UikResizablePanels extends LitElement {
     }
 
     event.preventDefault();
-    const clamped = Math.min(Math.max(nextSize ?? layout.start, layout.minStart), layout.maxStart);
+    const clamped = Math.min(
+      Math.max(nextSize ?? layout.start, layout.minStart),
+      layout.maxStart,
+    );
     if (clamped === layout.start) return;
     this.startSize = clamped;
-    this.emitResize('move', 'keyboard', clamped);
+    this.emitResize("move", "keyboard", clamped);
   };
 
   private onHandlePointerDown = (event: PointerEvent) => {
@@ -271,10 +348,10 @@ export class UikResizablePanels extends LitElement {
     };
 
     this.isDragging = true;
-    this.emitResize('start', 'pointer', layout.start);
+    this.emitResize("start", "pointer", layout.start);
     this.startPointerTracking();
 
-    if ('setPointerCapture' in handle) {
+    if ("setPointerCapture" in handle) {
       handle.setPointerCapture(event.pointerId);
     }
     event.preventDefault();
@@ -284,10 +361,13 @@ export class UikResizablePanels extends LitElement {
     const state = this.dragState;
     if (!state || event.pointerId !== state.pointerId) return;
     const delta = this.resolveAxisValue(event) - state.startPointer;
-    const next = Math.min(Math.max(state.startSize + delta, state.minStart), state.maxStart);
+    const next = Math.min(
+      Math.max(state.startSize + delta, state.minStart),
+      state.maxStart,
+    );
     if (next !== this.startSize) {
       this.startSize = next;
-      this.emitResize('move', 'pointer', next);
+      this.emitResize("move", "pointer", next);
     }
     event.preventDefault();
   };
@@ -299,7 +379,7 @@ export class UikResizablePanels extends LitElement {
     this.stopPointerTracking();
     this.dragState = null;
     this.isDragging = false;
-    this.emitResize('end', 'pointer');
+    this.emitResize("end", "pointer");
   };
 
   private onWindowPointerMove = (event: PointerEvent) => {
@@ -318,10 +398,10 @@ export class UikResizablePanels extends LitElement {
     this.dragController?.abort();
     const controller = new AbortController();
     this.dragController = controller;
-    const options = {signal: controller.signal};
-    window.addEventListener('pointermove', this.onWindowPointerMove, options);
-    window.addEventListener('pointerup', this.onWindowPointerUp, options);
-    window.addEventListener('pointercancel', this.onWindowPointerUp, options);
+    const options = { signal: controller.signal };
+    window.addEventListener("pointermove", this.onWindowPointerMove, options);
+    window.addEventListener("pointerup", this.onWindowPointerUp, options);
+    window.addEventListener("pointercancel", this.onWindowPointerUp, options);
   }
 
   private stopPointerTracking() {
@@ -338,20 +418,27 @@ export class UikResizablePanels extends LitElement {
     const layout = this.resolveLayout();
     const ariaLabel = this.ariaLabelValue.trim() || undefined;
     const ariaLabelledby = this.ariaLabelledbyValue.trim() || undefined;
-    const resolvedLabel = ariaLabel ?? (ariaLabelledby ? undefined : 'Resize panels');
-    const clampPercent = (value: number) => Math.min(Math.max(Math.round(value), 0), 100);
-    const ariaNow = layout.availableSize > 0 ? clampPercent(layout.ratio * 100) : 0;
+    const resolvedLabel =
+      ariaLabel ?? (ariaLabelledby ? undefined : "Resize panels");
+    const clampPercent = (value: number) =>
+      Math.min(Math.max(Math.round(value), 0), 100);
+    const ariaNow =
+      layout.availableSize > 0 ? clampPercent(layout.ratio * 100) : 0;
     const minPercent =
-      layout.availableSize > 0 ? clampPercent((layout.minStart / layout.availableSize) * 100) : 0;
+      layout.availableSize > 0
+        ? clampPercent((layout.minStart / layout.availableSize) * 100)
+        : 0;
     const maxPercent =
-      layout.availableSize > 0 ? clampPercent((layout.maxStart / layout.availableSize) * 100) : 100;
+      layout.availableSize > 0
+        ? clampPercent((layout.maxStart / layout.availableSize) * 100)
+        : 100;
 
-    const baseClasses = this.isDragging ? 'base dragging' : 'base';
+    const baseClasses = this.isDragging ? "base dragging" : "base";
 
     const baseStyles = {
-      '--uik-resizable-panels-min-start': `${String(layout.minStart)}px`,
-      '--uik-resizable-panels-min-end': `${String(layout.minEnd)}px`,
-      '--uik-resizable-panels-start-size': `${String(layout.start)}px`,
+      "--uik-resizable-panels-min-start": `${String(layout.minStart)}px`,
+      "--uik-resizable-panels-min-end": `${String(layout.minEnd)}px`,
+      "--uik-resizable-panels-start-size": `${String(layout.start)}px`,
     };
 
     return html`
@@ -375,7 +462,8 @@ export class UikResizablePanels extends LitElement {
           @pointerdown=${this.onHandlePointerDown}
           @pointermove=${this.onHandlePointerMove}
           @pointerup=${this.onHandlePointerUp}
-          @pointercancel=${this.onHandlePointerUp}>
+          @pointercancel=${this.onHandlePointerUp}
+        >
           <div part="handle-grip" class="handle-grip"></div>
         </div>
         <div part="panel-end" class="panel panel-end" id=${this.endId}>
@@ -388,6 +476,6 @@ export class UikResizablePanels extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'uik-resizable-panels': UikResizablePanels;
+    "uik-resizable-panels": UikResizablePanels;
   }
 }

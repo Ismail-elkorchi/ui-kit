@@ -1,7 +1,7 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
-import {styles} from './styles';
+import { styles } from "./styles";
 
 /**
  * Tokenized heading typography with semantic levels.
@@ -15,17 +15,18 @@ import {styles} from './styles';
  * @cssprop --uik-component-heading-weight
  * @cssprop --uik-component-heading-color-{default|strong|muted|danger|success|warning|info}
  */
-@customElement('uik-heading')
+@customElement("uik-heading")
 export class UikHeading extends LitElement {
-  @property({type: Number, reflect: true, useDefault: true}) accessor level = 2;
-  @property({type: String, reflect: true, useDefault: true}) accessor tone:
-    | 'default'
-    | 'strong'
-    | 'muted'
-    | 'danger'
-    | 'success'
-    | 'warning'
-    | 'info' = 'strong';
+  @property({ type: Number, reflect: true, useDefault: true }) accessor level =
+    2;
+  @property({ type: String, reflect: true, useDefault: true }) accessor tone:
+    | "default"
+    | "strong"
+    | "muted"
+    | "danger"
+    | "success"
+    | "warning"
+    | "info" = "strong";
 
   static override readonly styles = styles;
 

@@ -1,45 +1,45 @@
-import '@ismail-elkorchi/ui-primitives/register';
-import type {Meta, StoryObj} from '@storybook/web-components-vite';
-import {html} from 'lit';
+import "@ismail-elkorchi/ui-primitives/register";
+import type { Meta, StoryObj } from "@storybook/web-components-vite";
+import { html } from "lit";
 
-import {interactionStory} from '../../../.storybook/a11y';
+import { interactionStory } from "../../../.storybook/a11y";
 
 type ResizablePanelsArgs = {
-  orientation: 'horizontal' | 'vertical';
+  orientation: "horizontal" | "vertical";
 };
 
 const meta: Meta<ResizablePanelsArgs> = {
-  title: 'Primitives/Resizable Panels',
-  component: 'uik-resizable-panels',
-  tags: ['autodocs'],
+  title: "Primitives/Resizable Panels",
+  component: "uik-resizable-panels",
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
         component: [
-          'Slots: start, end.',
-          'Parts: base, panel-start, panel-end, handle, handle-grip.',
-          'Event: resizable-panels-resize (detail: {startSize, endSize, ratio, source, phase}).',
+          "Slots: start, end.",
+          "Parts: base, panel-start, panel-end, handle, handle-grip.",
+          "Event: resizable-panels-resize (detail: {startSize, endSize, ratio, source, phase}).",
           'A11y: handle uses role="separator" and supports Arrow/Home/End + Shift+Arrow.',
-          'Motion/contrast: handle transitions use motion tokens; forced-colors uses system colors.',
-        ].join('\n'),
+          "Motion/contrast: handle transitions use motion tokens; forced-colors uses system colors.",
+        ].join("\n"),
       },
     },
   },
   args: {
-    orientation: 'horizontal',
+    orientation: "horizontal",
   },
   argTypes: {
     orientation: {
-      options: ['horizontal', 'vertical'],
-      control: {type: 'radio'},
+      options: ["horizontal", "vertical"],
+      control: { type: "radio" },
     },
   },
-  render: args => {
-    const isVertical = args.orientation === 'vertical';
+  render: (args) => {
+    const isVertical = args.orientation === "vertical";
     const containerStyles = `
-      width: ${isVertical ? 'var(--uik-layout-panel-width-md)' : 'var(--uik-layout-panel-width-lg)'};
-      height: ${isVertical ? 'var(--uik-layout-panel-width-lg)' : 'var(--uik-layout-panel-width-md)'};
+      width: ${isVertical ? "var(--uik-layout-panel-width-md)" : "var(--uik-layout-panel-width-lg)"};
+      height: ${isVertical ? "var(--uik-layout-panel-width-lg)" : "var(--uik-layout-panel-width-md)"};
       --uik-component-resizable-panels-panel-min-size: var(--uik-space-12);
       --uik-component-resizable-panels-panel-start-size: var(--uik-layout-panel-width-sm);
       border: var(--uik-border-width-1) solid oklch(var(--uik-border-default));
@@ -59,15 +59,24 @@ const meta: Meta<ResizablePanelsArgs> = {
 
     return html`
       <div style=${containerStyles}>
-        <uik-resizable-panels orientation=${args.orientation} aria-label="Editor split">
+        <uik-resizable-panels
+          orientation=${args.orientation}
+          aria-label="Editor split"
+        >
           <div slot="start" style=${panelStyles}>
-            <strong style="font-weight: var(--uik-typography-font-weight-semibold);">Explorer</strong>
+            <strong
+              style="font-weight: var(--uik-typography-font-weight-semibold);"
+              >Explorer</strong
+            >
             <div style="color: oklch(var(--uik-text-muted));">src</div>
             <div style="color: oklch(var(--uik-text-muted));">components</div>
             <div style="color: oklch(var(--uik-text-muted));">tokens</div>
           </div>
           <div slot="end" style=${panelStyles}>
-            <strong style="font-weight: var(--uik-typography-font-weight-semibold);">Editor</strong>
+            <strong
+              style="font-weight: var(--uik-typography-font-weight-semibold);"
+              >Editor</strong
+            >
             <div
               style="
                 padding: var(--uik-space-3);
@@ -75,7 +84,8 @@ const meta: Meta<ResizablePanelsArgs> = {
                 border: var(--uik-border-width-1) solid oklch(var(--uik-border-default));
                 background-color: oklch(var(--uik-surface-card));
                 color: oklch(var(--uik-text-muted));
-              ">
+              "
+            >
               Use the handle to resize.
             </div>
           </div>
@@ -96,6 +106,6 @@ export const Default: Story = {
 export const Vertical: Story = {
   ...interactionStory,
   args: {
-    orientation: 'vertical',
+    orientation: "vertical",
   },
 };

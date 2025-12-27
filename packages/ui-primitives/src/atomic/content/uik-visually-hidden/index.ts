@@ -1,1 +1,1 @@
-export {UikVisuallyHidden} from './element';
+export { UikVisuallyHidden } from "./element";

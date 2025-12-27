@@ -1,1 +1,1 @@
-export {UikSwitch} from './element';
+export { UikSwitch } from "./element";

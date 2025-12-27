@@ -1,8 +1,8 @@
-import '@ismail-elkorchi/ui-primitives/register';
-import type {Meta, StoryObj} from '@storybook/web-components-vite';
-import {html} from 'lit';
+import "@ismail-elkorchi/ui-primitives/register";
+import type { Meta, StoryObj } from "@storybook/web-components-vite";
+import { html } from "lit";
 
-import {interactionStory} from '../../../.storybook/a11y';
+import { interactionStory } from "../../../.storybook/a11y";
 
 type TreeViewArgs = {
   openIds: string[];
@@ -11,37 +11,38 @@ type TreeViewArgs = {
 
 const items = [
   {
-    id: 'apps',
-    label: 'apps',
+    id: "apps",
+    label: "apps",
     children: [
-      {id: 'apps/main.ts', label: 'main.ts'},
-      {id: 'apps/routes.ts', label: 'routes.ts'},
+      { id: "apps/main.ts", label: "main.ts" },
+      { id: "apps/routes.ts", label: "routes.ts" },
     ],
   },
   {
-    id: 'packages',
-    label: 'packages',
+    id: "packages",
+    label: "packages",
     children: [
-      {id: 'packages/ui-primitives', label: 'ui-primitives'},
-      {id: 'packages/ui-shell', label: 'ui-shell'},
+      { id: "packages/ui-primitives", label: "ui-primitives" },
+      { id: "packages/ui-shell", label: "ui-shell" },
     ],
   },
 ];
 
 const meta: Meta<TreeViewArgs> = {
-  title: 'Primitives/Tree View',
-  component: 'uik-tree-view',
-  tags: ['autodocs'],
+  title: "Primitives/Tree View",
+  component: "uik-tree-view",
+  tags: ["autodocs"],
   args: {
-    openIds: ['apps', 'packages'],
-    selectedIds: ['apps/main.ts'],
+    openIds: ["apps", "packages"],
+    selectedIds: ["apps/main.ts"],
   },
-  render: args => html`
+  render: (args) => html`
     <uik-tree-view
       .items=${items}
       .openIds=${args.openIds}
       .selectedIds=${args.selectedIds}
-      aria-label="Project files">
+      aria-label="Project files"
+    >
     </uik-tree-view>
   `,
 };
@@ -49,7 +50,6 @@ const meta: Meta<TreeViewArgs> = {
 export default meta;
 
 type Story = StoryObj<TreeViewArgs>;
-
 
 export const Default: Story = {
   ...interactionStory,

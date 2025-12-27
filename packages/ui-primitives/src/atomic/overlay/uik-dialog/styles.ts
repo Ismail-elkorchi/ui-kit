@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -14,7 +14,8 @@ export const styles = css`
     overflow: hidden auto;
     color: oklch(var(--uik-component-dialog-fg));
     background-color: oklch(var(--uik-component-dialog-bg));
-    border: var(--uik-border-width-1) solid oklch(var(--uik-component-dialog-border));
+    border: var(--uik-border-width-1) solid
+      oklch(var(--uik-component-dialog-border));
     border-radius: var(--uik-component-dialog-radius);
     box-shadow: var(--uik-component-dialog-shadow);
   }

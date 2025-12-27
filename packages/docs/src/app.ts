@@ -8,8 +8,8 @@ import type {
   UikRadioGroup,
   UikSelect,
   UikSwitch,
-} from '@ismail-elkorchi/ui-primitives';
-import '@ismail-elkorchi/ui-primitives/register';
+} from "@ismail-elkorchi/ui-primitives";
+import "@ismail-elkorchi/ui-primitives/register";
 import {
   createUikShellRouter,
   type UikShellActivityBar,
@@ -19,51 +19,72 @@ import {
   type UikShellSecondarySidebar,
   type UikShellStatusBar,
   type UikShellRoute,
-} from '@ismail-elkorchi/ui-shell';
-import '@ismail-elkorchi/ui-shell/register';
+} from "@ismail-elkorchi/ui-shell";
+import "@ismail-elkorchi/ui-shell/register";
 
-import {buildPageMap, docsPages, labPages, renderPageSections, renderToc} from './content';
+import {
+  buildPageMap,
+  docsPages,
+  labPages,
+  renderPageSections,
+  renderToc,
+} from "./content";
 
-const ensureDefaultAttribute = (target: HTMLElement, name: string, fallback: string) => {
+const ensureDefaultAttribute = (
+  target: HTMLElement,
+  name: string,
+  fallback: string,
+) => {
   if (!target.getAttribute(name)) target.setAttribute(name, fallback);
 };
 
 const normalizeBaseUrl = (value: string) => {
-  if (!value) return '/';
-  const withLeading = value.startsWith('/') ? value : `/${value}`;
-  return withLeading.endsWith('/') ? withLeading : `${withLeading}/`;
+  if (!value) return "/";
+  const withLeading = value.startsWith("/") ? value : `/${value}`;
+  return withLeading.endsWith("/") ? withLeading : `${withLeading}/`;
 };
 
 const getRouteFromLocation = (baseUrl: string) => {
   const pathname = window.location.pathname;
   const base = normalizeBaseUrl(baseUrl);
-  const relative = pathname.startsWith(base) ? pathname.slice(base.length) : pathname.replace(/^\/+/, '');
-  const segments = relative.split('/').filter(Boolean);
+  const relative = pathname.startsWith(base)
+    ? pathname.slice(base.length)
+    : pathname.replace(/^\/+/, "");
+  const segments = relative.split("/").filter(Boolean);
   const view = segments[0];
   const subview = segments[1];
-  return {view, subview};
+  return { view, subview };
 };
 
 const buildRoutes = (): UikShellRoute[] => {
-  const docsSubviewIds = docsPages.map(page => page.id);
-  const labSubviewIds = labPages.map(page => page.id);
+  const docsSubviewIds = docsPages.map((page) => page.id);
+  const labSubviewIds = labPages.map((page) => page.id);
 
-  const createRoute = (id: string, label: string, subviews: string[]): UikShellRoute => {
-    if (subviews.length === 0) return {id, label};
-    return {id, label, subviews, defaultSubview: subviews[0]};
+  const createRoute = (
+    id: string,
+    label: string,
+    subviews: string[],
+  ): UikShellRoute => {
+    if (subviews.length === 0) return { id, label };
+    return { id, label, subviews, defaultSubview: subviews[0] };
   };
 
-  return [createRoute('docs', 'Docs', docsSubviewIds), createRoute('lab', 'Lab', labSubviewIds)];
+  return [
+    createRoute("docs", "Docs", docsSubviewIds),
+    createRoute("lab", "Lab", labSubviewIds),
+  ];
 };
 
-const buildActivityItems = (routes: UikShellRoute[]): UikShellActivityBarItem[] => {
+const buildActivityItems = (
+  routes: UikShellRoute[],
+): UikShellActivityBarItem[] => {
   const icons = {
-    docs: 'M4 5a2 2 0 012-2h10a2 2 0 012 2v14a1 1 0 01-1 1h-2a2 2 0 00-2 2H6a2 2 0 01-2-2V5z',
-    lab: 'M9 2h6l3 7-6 13-6-13 3-7z',
+    docs: "M4 5a2 2 0 012-2h10a2 2 0 012 2v14a1 1 0 01-1 1h-2a2 2 0 00-2 2H6a2 2 0 01-2-2V5z",
+    lab: "M9 2h6l3 7-6 13-6-13 3-7z",
   } as const;
 
-  return routes.map(route => {
-    const icon = route.id === 'lab' ? icons.lab : icons.docs;
+  return routes.map((route) => {
+    const icon = route.id === "lab" ? icons.lab : icons.docs;
     return {
       id: route.id,
       label: route.label ?? route.id,
@@ -78,18 +99,18 @@ const buildNavItems = (baseUrl: string): UikNavItem[] => {
 
   return [
     {
-      id: 'docs',
-      label: 'Docs',
-      children: docsPages.map(page => ({
+      id: "docs",
+      label: "Docs",
+      children: docsPages.map((page) => ({
         id: `docs/${page.id}`,
         label: page.title,
         href: toHref(`docs/${page.id}`),
       })),
     },
     {
-      id: 'lab',
-      label: 'Lab',
-      children: labPages.map(page => ({
+      id: "lab",
+      label: "Lab",
+      children: labPages.map((page) => ({
         id: `lab/${page.id}`,
         label: page.title,
         href: toHref(`lab/${page.id}`),
@@ -100,11 +121,11 @@ const buildNavItems = (baseUrl: string): UikNavItem[] => {
 
 const buildMobileNavOptions = () => {
   const docsOptions = docsPages
-    .map(page => `<option value="docs/${page.id}">${page.title}</option>`)
-    .join('');
+    .map((page) => `<option value="docs/${page.id}">${page.title}</option>`)
+    .join("");
   const labOptions = labPages
-    .map(page => `<option value="lab/${page.id}">${page.title}</option>`)
-    .join('');
+    .map((page) => `<option value="lab/${page.id}">${page.title}</option>`)
+    .join("");
 
   return `
     <optgroup label="Docs">${docsOptions}</optgroup>
@@ -115,7 +136,8 @@ const buildMobileNavOptions = () => {
 const locationKey = (location: UikShellLocation) =>
   location.subview ? `${location.view}/${location.subview}` : location.view;
 
-const nextFrame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+const nextFrame = () =>
+  new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
 const setOutlineOpen = (
   layout: UikShellLayout,
@@ -128,15 +150,15 @@ const setOutlineOpen = (
 
 const updateStatusMeta = (statusBar: UikShellStatusBar) => {
   const root = document.documentElement;
-  const theme = root.getAttribute('data-uik-theme') ?? 'light';
-  const density = root.getAttribute('data-uik-density') ?? 'comfortable';
+  const theme = root.getAttribute("data-uik-theme") ?? "light";
+  const density = root.getAttribute("data-uik-density") ?? "comfortable";
   statusBar.meta = `Theme: ${theme} | Density: ${density}`;
 };
 
 const getBaseUrlFromVite = () => {
-  const meta = import.meta as unknown as {env?: {BASE_URL?: unknown}};
+  const meta = import.meta as unknown as { env?: { BASE_URL?: unknown } };
   const baseUrl = meta.env?.BASE_URL;
-  return typeof baseUrl === 'string' ? baseUrl : '/';
+  return typeof baseUrl === "string" ? baseUrl : "/";
 };
 
 const copyToClipboard = async (value: string) => {
@@ -145,11 +167,11 @@ const copyToClipboard = async (value: string) => {
 
 const scrollToHashTarget = async () => {
   const raw = window.location.hash;
-  if (!raw || raw === '#') return;
+  if (!raw || raw === "#") return;
   const id = decodeURIComponent(raw.slice(1));
   if (!id) return;
   await nextFrame();
-  document.getElementById(id)?.scrollIntoView({block: 'start'});
+  document.getElementById(id)?.scrollIntoView({ block: "start" });
 };
 
 const wireLabShellControls = (
@@ -158,50 +180,62 @@ const wireLabShellControls = (
   layout: UikShellLayout,
   secondary: UikShellSecondarySidebar,
 ) => {
-  const messageInput = container.querySelector<UikInput>('[data-docs-control="status-message"]');
+  const messageInput = container.querySelector<UikInput>(
+    '[data-docs-control="status-message"]',
+  );
   if (messageInput) {
     messageInput.value = statusBar.message;
-    messageInput.addEventListener('input', () => {
+    messageInput.addEventListener("input", () => {
       statusBar.message = messageInput.value;
     });
   }
 
-  const toneGroup = container.querySelector<UikRadioGroup>('[data-docs-control="status-tone"]');
+  const toneGroup = container.querySelector<UikRadioGroup>(
+    '[data-docs-control="status-tone"]',
+  );
   if (toneGroup) {
     toneGroup.value = statusBar.tone;
-    toneGroup.addEventListener('change', () => {
-      statusBar.tone = toneGroup.value as UikShellStatusBar['tone'];
+    toneGroup.addEventListener("change", () => {
+      statusBar.tone = toneGroup.value as UikShellStatusBar["tone"];
     });
   }
 
-  const secondaryToggle = container.querySelector<UikSwitch>('[data-docs-control="secondary-toggle"]');
+  const secondaryToggle = container.querySelector<UikSwitch>(
+    '[data-docs-control="secondary-toggle"]',
+  );
   if (secondaryToggle) {
     secondary.focusReturnTarget = secondaryToggle;
     secondaryToggle.checked = secondary.isOpen;
-    secondaryToggle.addEventListener('change', () => {
+    secondaryToggle.addEventListener("change", () => {
       setOutlineOpen(layout, secondary, secondaryToggle.checked);
     });
   }
 };
 
 const wireLabOverlayControls = (container: HTMLElement) => {
-  const dialog = container.querySelector<UikDialog>('[data-docs-dialog]');
-  const dialogOpen = container.querySelector<UikButton>('[data-docs-action="dialog-open"]');
-  const dialogClose = container.querySelector<UikButton>('[data-docs-action="dialog-close"]');
+  const dialog = container.querySelector<UikDialog>("[data-docs-dialog]");
+  const dialogOpen = container.querySelector<UikButton>(
+    '[data-docs-action="dialog-open"]',
+  );
+  const dialogClose = container.querySelector<UikButton>(
+    '[data-docs-action="dialog-close"]',
+  );
 
   if (dialog && dialogOpen) {
-    dialogOpen.addEventListener('click', () => dialog.showModal());
+    dialogOpen.addEventListener("click", () => dialog.showModal());
   }
 
   if (dialog && dialogClose) {
-    dialogClose.addEventListener('click', () => dialog.close());
+    dialogClose.addEventListener("click", () => dialog.close());
   }
 
-  const progress = container.querySelector<UikProgress>('[data-docs-progress]');
-  const progressToggle = container.querySelector<UikButton>('[data-docs-action="progress-toggle"]');
+  const progress = container.querySelector<UikProgress>("[data-docs-progress]");
+  const progressToggle = container.querySelector<UikButton>(
+    '[data-docs-action="progress-toggle"]',
+  );
 
   if (progress && progressToggle) {
-    progressToggle.addEventListener('click', () => {
+    progressToggle.addEventListener("click", () => {
       const next = !progress.indeterminate;
       progress.indeterminate = next;
       if (next) {
@@ -214,8 +248,12 @@ const wireLabOverlayControls = (container: HTMLElement) => {
 };
 
 export const mountDocsApp = (container: HTMLElement) => {
-  ensureDefaultAttribute(document.documentElement, 'data-uik-theme', 'light');
-  ensureDefaultAttribute(document.documentElement, 'data-uik-density', 'comfortable');
+  ensureDefaultAttribute(document.documentElement, "data-uik-theme", "light");
+  ensureDefaultAttribute(
+    document.documentElement,
+    "data-uik-density",
+    "comfortable",
+  );
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
 
   container.innerHTML = `
@@ -288,45 +326,69 @@ export const mountDocsApp = (container: HTMLElement) => {
   const pageMap = buildPageMap();
   const routes = buildRoutes();
   const initialRoute = getRouteFromLocation(baseUrl);
-  const initialView = initialRoute.view ?? 'docs';
+  const initialView = initialRoute.view ?? "docs";
   const initialSubview = initialRoute.subview ?? docsPages[0]?.id;
   const router = createUikShellRouter({
     routes,
     initialView,
-    ...(initialSubview ? {initialSubview} : {}),
+    ...(initialSubview ? { initialSubview } : {}),
   });
 
-  const layout = container.querySelector<UikShellLayout>('uik-shell-layout');
-  const activityBar = container.querySelector<UikShellActivityBar>('uik-shell-activity-bar');
-  const nav = container.querySelector<UikNav>('uik-nav');
-  const statusBar = container.querySelector<UikShellStatusBar>('uik-shell-status-bar');
-  const secondarySidebar = container.querySelector<UikShellSecondarySidebar>('uik-shell-secondary-sidebar');
-  const titleElement = container.querySelector<HTMLElement>('[data-docs-title]');
-  const summaryElement = container.querySelector<HTMLElement>('[data-docs-summary]');
-  const contentElement = container.querySelector<HTMLElement>('[data-docs-content]');
-  const outlineElement = container.querySelector<HTMLElement>('[data-docs-outline]');
-  const outlineToggle = container.querySelector<UikButton>('[data-docs-action="outline-toggle"]');
-  const themeSelect = container.querySelector<UikSelect>('uik-select[data-docs-control="theme"]');
-  const densitySelect = container.querySelector<UikSelect>('uik-select[data-docs-control="density"]');
-  const mobileNavSelect = container.querySelector<UikSelect>('uik-select[data-docs-control="mobile-nav"]');
+  const layout = container.querySelector<UikShellLayout>("uik-shell-layout");
+  const activityBar = container.querySelector<UikShellActivityBar>(
+    "uik-shell-activity-bar",
+  );
+  const nav = container.querySelector<UikNav>("uik-nav");
+  const statusBar = container.querySelector<UikShellStatusBar>(
+    "uik-shell-status-bar",
+  );
+  const secondarySidebar = container.querySelector<UikShellSecondarySidebar>(
+    "uik-shell-secondary-sidebar",
+  );
+  const titleElement =
+    container.querySelector<HTMLElement>("[data-docs-title]");
+  const summaryElement = container.querySelector<HTMLElement>(
+    "[data-docs-summary]",
+  );
+  const contentElement = container.querySelector<HTMLElement>(
+    "[data-docs-content]",
+  );
+  const outlineElement = container.querySelector<HTMLElement>(
+    "[data-docs-outline]",
+  );
+  const outlineToggle = container.querySelector<UikButton>(
+    '[data-docs-action="outline-toggle"]',
+  );
+  const themeSelect = container.querySelector<UikSelect>(
+    'uik-select[data-docs-control="theme"]',
+  );
+  const densitySelect = container.querySelector<UikSelect>(
+    'uik-select[data-docs-control="density"]',
+  );
+  const mobileNavSelect = container.querySelector<UikSelect>(
+    'uik-select[data-docs-control="mobile-nav"]',
+  );
 
   if (!layout || !activityBar || !nav || !statusBar || !secondarySidebar) {
-    throw new Error('Docs layout could not be initialized.');
+    throw new Error("Docs layout could not be initialized.");
   }
 
   activityBar.items = buildActivityItems(routes);
   nav.items = buildNavItems(baseUrl);
-  nav.openIds = ['docs', 'lab'];
+  nav.openIds = ["docs", "lab"];
   setOutlineOpen(layout, secondarySidebar, true);
 
-  const syncUrl = (location: UikShellLocation, mode: 'push' | 'replace' = 'push') => {
+  const syncUrl = (
+    location: UikShellLocation,
+    mode: "push" | "replace" = "push",
+  ) => {
     const key = locationKey(location);
     const nextPath = `${baseUrl}${key}`;
     if (window.location.pathname === nextPath) return;
-    if (mode === 'replace') {
-      window.history.replaceState({}, '', nextPath);
+    if (mode === "replace") {
+      window.history.replaceState({}, "", nextPath);
     } else {
-      window.history.pushState({}, '', nextPath);
+      window.history.pushState({}, "", nextPath);
     }
   };
 
@@ -355,39 +417,48 @@ export const mountDocsApp = (container: HTMLElement) => {
     }
 
     statusBar.message = page.title;
-    if (page.id !== 'shell-patterns') statusBar.tone = 'info';
+    if (page.id !== "shell-patterns") statusBar.tone = "info";
     updateStatusMeta(statusBar);
     document.title = `UIK Docs - ${page.title}`;
     void scrollToHashTarget();
 
     if (contentElement) {
-      if (page.id === 'shell-patterns') {
-        wireLabShellControls(contentElement, statusBar, layout, secondarySidebar);
+      if (page.id === "shell-patterns") {
+        wireLabShellControls(
+          contentElement,
+          statusBar,
+          layout,
+          secondarySidebar,
+        );
       }
-      if (page.id === 'overlays') {
+      if (page.id === "overlays") {
         wireLabOverlayControls(contentElement);
       }
     }
   };
 
   router.subscribe(applyLocation);
-  syncUrl(router.current, 'replace');
+  syncUrl(router.current, "replace");
 
   const onCodeCopyClick = async (event: Event) => {
     const target = event.target as HTMLElement | null;
-    const copyButton = target?.closest<HTMLElement>('[data-docs-action="copy-code"]');
+    const copyButton = target?.closest<HTMLElement>(
+      '[data-docs-action="copy-code"]',
+    );
     if (!copyButton) return;
 
-    const code = copyButton.closest('.docs-code-block')?.querySelector('pre code');
-    const text = code?.textContent ?? '';
+    const code = copyButton
+      .closest(".docs-code-block")
+      ?.querySelector("pre code");
+    const text = code?.textContent ?? "";
     if (!text) return;
 
-    const previous = copyButton.textContent || 'Copy';
+    const previous = copyButton.textContent || "Copy";
     try {
       await copyToClipboard(text);
-      copyButton.textContent = 'Copied';
+      copyButton.textContent = "Copied";
     } catch {
-      copyButton.textContent = 'Failed';
+      copyButton.textContent = "Failed";
     } finally {
       window.setTimeout(() => {
         copyButton.textContent = previous;
@@ -395,69 +466,77 @@ export const mountDocsApp = (container: HTMLElement) => {
     }
   };
 
-  contentElement?.addEventListener('click', event => {
+  contentElement?.addEventListener("click", (event) => {
     void onCodeCopyClick(event);
   });
 
-  window.addEventListener('hashchange', () => {
+  window.addEventListener("hashchange", () => {
     void scrollToHashTarget();
   });
 
-  activityBar.addEventListener('activity-bar-select', (event: Event) => {
-    const detail = (event as CustomEvent<{id: string}>).detail;
+  activityBar.addEventListener("activity-bar-select", (event: Event) => {
+    const detail = (event as CustomEvent<{ id: string }>).detail;
     router.navigate(detail.id);
     syncUrl(router.current);
   });
 
-  nav.addEventListener('nav-select', (event: Event) => {
-    const detail = (event as CustomEvent<{id: string}>).detail;
-    const [view, subview] = detail.id.split('/');
+  nav.addEventListener("nav-select", (event: Event) => {
+    const detail = (event as CustomEvent<{ id: string }>).detail;
+    const [view, subview] = detail.id.split("/");
     if (!view || !subview) return;
     event.preventDefault();
     router.navigate(view, subview);
     syncUrl(router.current);
   });
 
-  outlineToggle?.addEventListener('click', () => {
+  outlineToggle?.addEventListener("click", () => {
     setOutlineOpen(layout, secondarySidebar, !secondarySidebar.isOpen);
   });
 
-  secondarySidebar.addEventListener('secondary-sidebar-close', () => {
+  secondarySidebar.addEventListener("secondary-sidebar-close", () => {
     setOutlineOpen(layout, secondarySidebar, false);
   });
 
-  themeSelect?.addEventListener('change', () => {
-    document.documentElement.setAttribute('data-uik-theme', themeSelect.value);
+  themeSelect?.addEventListener("change", () => {
+    document.documentElement.setAttribute("data-uik-theme", themeSelect.value);
     updateStatusMeta(statusBar);
   });
 
-  densitySelect?.addEventListener('change', () => {
-    document.documentElement.setAttribute('data-uik-density', densitySelect.value);
+  densitySelect?.addEventListener("change", () => {
+    document.documentElement.setAttribute(
+      "data-uik-density",
+      densitySelect.value,
+    );
     updateStatusMeta(statusBar);
   });
 
-  mobileNavSelect?.addEventListener('change', () => {
-    const [view, subview] = mobileNavSelect.value.split('/');
+  mobileNavSelect?.addEventListener("change", () => {
+    const [view, subview] = mobileNavSelect.value.split("/");
     if (!view || !subview) return;
     router.navigate(view, subview);
     syncUrl(router.current);
   });
 
-  window.addEventListener('popstate', () => {
+  window.addEventListener("popstate", () => {
     const next = getRouteFromLocation(baseUrl);
     if (!next.view) return;
     try {
       router.navigate(next.view, next.subview);
     } catch {
-      router.navigate('docs', docsPages[0]?.id);
-      syncUrl(router.current, 'replace');
+      router.navigate("docs", docsPages[0]?.id);
+      syncUrl(router.current, "replace");
     }
   });
 
   const syncSelects = async () => {
     await nextFrame();
-    if (themeSelect) themeSelect.value = document.documentElement.getAttribute('data-uik-theme') ?? 'light';
-    if (densitySelect) densitySelect.value = document.documentElement.getAttribute('data-uik-density') ?? 'comfortable';
+    if (themeSelect)
+      themeSelect.value =
+        document.documentElement.getAttribute("data-uik-theme") ?? "light";
+    if (densitySelect)
+      densitySelect.value =
+        document.documentElement.getAttribute("data-uik-density") ??
+        "comfortable";
     if (mobileNavSelect) mobileNavSelect.value = locationKey(router.current);
   };
 

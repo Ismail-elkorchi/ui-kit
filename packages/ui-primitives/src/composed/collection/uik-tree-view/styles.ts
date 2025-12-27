@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -27,7 +27,8 @@ export const styles = css`
     color: oklch(var(--uik-component-tree-view-text-leaf));
     cursor: pointer;
     background-color: oklch(var(--uik-component-tree-view-item-bg));
-    border: var(--uik-border-width-0) solid oklch(var(--uik-component-tree-view-item-bg));
+    border: var(--uik-border-width-0) solid
+      oklch(var(--uik-component-tree-view-item-bg));
     border-radius: var(--uik-component-tree-view-item-radius);
   }
 
@@ -43,22 +44,24 @@ export const styles = css`
   .item:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 var(--uik-focus-ring-offset-default) oklch(var(--uik-focus-ring-offset-bg)),
-      0 0 0 calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
+      0 0 0 var(--uik-focus-ring-offset-default)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
         oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
   }
 
-  .item[data-disabled='true'] {
+  .item[data-disabled="true"] {
     cursor: not-allowed;
     opacity: var(--uik-field-disabled-opacity);
   }
 
-  .item[data-disabled='true']:hover {
+  .item[data-disabled="true"]:hover {
     color: inherit;
     background-color: oklch(var(--uik-component-tree-view-item-bg));
   }
 
-  .item[data-kind='branch'] {
+  .item[data-kind="branch"] {
     font-weight: var(--uik-typography-font-weight-semibold);
     color: oklch(var(--uik-component-tree-view-text-branch));
   }
@@ -74,7 +77,7 @@ export const styles = css`
     color: oklch(var(--uik-component-tree-view-toggle-fg));
   }
 
-  .toggle[data-open='true'] {
+  .toggle[data-open="true"] {
     color: oklch(var(--uik-component-tree-view-text-hover));
   }
 
@@ -91,8 +94,8 @@ export const styles = css`
     border-radius: var(--uik-radius-1);
   }
 
-  .selection[data-state='checked'],
-  .selection[data-state='mixed'] {
+  .selection[data-state="checked"],
+  .selection[data-state="mixed"] {
     background-color: oklch(var(--uik-component-checkbox-accent));
     border-color: oklch(var(--uik-component-checkbox-accent));
   }

@@ -1,1 +1,1 @@
-export {UikRadio} from './element';
+export { UikRadio } from "./element";

@@ -1,7 +1,7 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
-import {styles} from './styles';
+import { styles } from "./styles";
 
 /**
  * Flex stack for layout spacing and alignment.
@@ -14,20 +14,24 @@ import {styles} from './styles';
  * @a11y Use semantic wrappers for landmark content.
  * @cssprop --uik-component-stack-gap-{1..6}
  */
-@customElement('uik-stack')
+@customElement("uik-stack")
 export class UikStack extends LitElement {
-  @property({type: String, reflect: true, useDefault: true}) accessor direction: 'vertical' | 'horizontal' = 'vertical';
-  @property({type: String, reflect: true, useDefault: true}) accessor gap: '1' | '2' | '3' | '4' | '5' | '6' = '3';
-  @property({type: String, reflect: true, useDefault: true}) accessor align:
-    | 'start'
-    | 'center'
-    | 'end'
-    | 'stretch' = 'stretch';
-  @property({type: String, reflect: true, useDefault: true}) accessor justify:
-    | 'start'
-    | 'center'
-    | 'end'
-    | 'between' = 'start';
+  @property({ type: String, reflect: true, useDefault: true })
+  accessor direction: "vertical" | "horizontal" = "vertical";
+  @property({ type: String, reflect: true, useDefault: true }) accessor gap:
+    | "1"
+    | "2"
+    | "3"
+    | "4"
+    | "5"
+    | "6" = "3";
+  @property({ type: String, reflect: true, useDefault: true }) accessor align:
+    | "start"
+    | "center"
+    | "end"
+    | "stretch" = "stretch";
+  @property({ type: String, reflect: true, useDefault: true })
+  accessor justify: "start" | "center" | "end" | "between" = "start";
 
   static override readonly styles = styles;
 

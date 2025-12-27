@@ -1,1 +1,1 @@
-export {UikProgress} from './element';
+export { UikProgress } from "./element";

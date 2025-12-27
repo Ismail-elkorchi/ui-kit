@@ -1,4 +1,4 @@
-import type {SVGTemplateResult} from 'lit';
+import type { SVGTemplateResult } from "lit";
 
 type UikShellActivityBarIcon = string | SVGTemplateResult;
 
@@ -9,4 +9,4 @@ interface UikShellActivityBarItem {
   tooltip?: string;
 }
 
-export type {UikShellActivityBarIcon, UikShellActivityBarItem};
+export type { UikShellActivityBarIcon, UikShellActivityBarItem };

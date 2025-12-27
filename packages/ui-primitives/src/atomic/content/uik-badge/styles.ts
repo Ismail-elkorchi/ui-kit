@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -13,7 +13,8 @@ export const styles = css`
 
     display: inline-flex;
     align-items: center;
-    padding: var(--uik-component-badge-base-padding-y) var(--uik-component-badge-base-padding-x);
+    padding: var(--uik-component-badge-base-padding-y)
+      var(--uik-component-badge-base-padding-x);
     font-size: var(--uik-component-badge-base-font-size);
     font-weight: var(--uik-component-badge-base-font-weight);
     line-height: var(--uik-component-badge-base-line-height);
@@ -41,7 +42,9 @@ export const styles = css`
   .variant-secondary {
     --_uik-badge-bg: oklch(var(--uik-component-badge-secondary-bg));
     --_uik-badge-fg: oklch(var(--uik-component-badge-secondary-fg));
-    --_uik-badge-border-color: oklch(var(--uik-component-badge-secondary-border));
+    --_uik-badge-border-color: oklch(
+      var(--uik-component-badge-secondary-border)
+    );
     --_uik-badge-shadow: var(--uik-component-badge-secondary-shadow);
   }
 

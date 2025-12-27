@@ -1,11 +1,11 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
-import {styles} from './styles';
-import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
+import { styles } from "./styles";
+import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
 
-type SlotName = 'label' | 'hint' | 'error';
+type SlotName = "label" | "hint" | "error";
 
 /**
  * Form-associated textarea with label, hint, and error slots.
@@ -29,33 +29,39 @@ type SlotName = 'label' | 'hint' | 'error';
  * @a11y Provide a label slot or aria-label; hint/error are wired via aria-describedby.
  * @cssprop --uik-component-textarea-base-* (bg, border, fg, padding, radius, shadow, min-height)
  */
-@customElement('uik-textarea')
+@customElement("uik-textarea")
 export class UikTextarea extends LitElement {
   static formAssociated = true;
 
-  @property({type: String}) accessor placeholder = '';
-  @property({type: String}) accessor value = '';
-  @property({type: String, reflect: true, useDefault: true}) accessor name = '';
-  @property({type: Number}) accessor rows = 3;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor disabled = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor required = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor readonly = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor invalid = false;
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
-  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
+  @property({ type: String }) accessor placeholder = "";
+  @property({ type: String }) accessor value = "";
+  @property({ type: String, reflect: true, useDefault: true }) accessor name =
+    "";
+  @property({ type: Number }) accessor rows = 3;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor disabled = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor required = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor readonly = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor invalid = false;
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
+    "";
 
   private readonly internals = this.attachInternals();
-  private readonly controlId = createId('uik-textarea');
+  private readonly controlId = createId("uik-textarea");
   private readonly labelId = `${this.controlId}-label`;
   private readonly hintId = `${this.controlId}-hint`;
   private readonly errorId = `${this.controlId}-error`;
-  private defaultValue = '';
+  private defaultValue = "";
 
   static override readonly styles = styles;
 
   private get textareaElement(): HTMLTextAreaElement | null {
-    return this.renderRoot.querySelector('textarea');
+    return this.renderRoot.querySelector("textarea");
   }
 
   override connectedCallback() {
@@ -70,11 +76,15 @@ export class UikTextarea extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (changed.has('value') || changed.has('disabled')) {
+    if (changed.has("value") || changed.has("disabled")) {
       this.syncFormValue();
     }
 
-    if (changed.has('required') || changed.has('invalid') || changed.has('value')) {
+    if (
+      changed.has("required") ||
+      changed.has("invalid") ||
+      changed.has("value")
+    ) {
       this.syncValidity();
     }
   }
@@ -90,7 +100,7 @@ export class UikTextarea extends LitElement {
   }
 
   formStateRestoreCallback(state: string | File | FormData | null) {
-    if (typeof state === 'string') {
+    if (typeof state === "string") {
       this.value = state;
       this.syncFormValue();
       this.syncValidity();
@@ -105,15 +115,19 @@ export class UikTextarea extends LitElement {
     const textarea = this.textareaElement;
     if (!textarea) return;
 
-    if (this.invalid || this.hasSlotContent('error')) {
-      this.internals.setValidity({customError: true}, 'Invalid', textarea);
+    if (this.invalid || this.hasSlotContent("error")) {
+      this.internals.setValidity({ customError: true }, "Invalid", textarea);
       return;
     }
 
     if (textarea.checkValidity()) {
       this.internals.setValidity({});
     } else {
-      this.internals.setValidity(textarea.validity, textarea.validationMessage, textarea);
+      this.internals.setValidity(
+        textarea.validity,
+        textarea.validationMessage,
+        textarea,
+      );
     }
   }
 
@@ -123,7 +137,7 @@ export class UikTextarea extends LitElement {
 
   private onSlotChange = (event: Event) => {
     const slot = event.target as HTMLSlotElement;
-    if (slot.name === 'error') {
+    if (slot.name === "error") {
       this.syncValidity();
     }
     this.requestUpdate();
@@ -144,22 +158,30 @@ export class UikTextarea extends LitElement {
   };
 
   override render() {
-    const hasLabel = this.hasSlotContent('label');
-    const hasHint = this.hasSlotContent('hint');
-    const hasError = this.hasSlotContent('error');
+    const hasLabel = this.hasSlotContent("label");
+    const hasHint = this.hasSlotContent("hint");
+    const hasError = this.hasSlotContent("error");
     const describedBy = buildDescribedBy(
       this.ariaDescribedbyValue,
       hasHint ? this.hintId : null,
       hasError ? this.errorId : null,
     );
 
-    const ariaInvalid = this.invalid || hasError ? 'true' : undefined;
+    const ariaInvalid = this.invalid || hasError ? "true" : undefined;
     const ariaLabel = hasLabel ? undefined : this.ariaLabelValue || undefined;
-    const ariaLabelledby = hasLabel ? undefined : this.ariaLabelledbyValue || undefined;
+    const ariaLabelledby = hasLabel
+      ? undefined
+      : this.ariaLabelledbyValue || undefined;
 
     return html`
       <div class="field">
-        <label part="label" class="label" id=${this.labelId} for=${this.controlId} ?hidden=${!hasLabel}>
+        <label
+          part="label"
+          class="label"
+          id=${this.labelId}
+          for=${this.controlId}
+          ?hidden=${!hasLabel}
+        >
           <slot name="label" @slotchange=${this.onSlotChange}></slot>
         </label>
         <div part="control" class="control">
@@ -178,7 +200,8 @@ export class UikTextarea extends LitElement {
             aria-label=${ifDefined(ariaLabel)}
             aria-labelledby=${ifDefined(ariaLabelledby)}
             @change=${this.onChange}
-            @input=${this.onInput}></textarea>
+            @input=${this.onInput}
+          ></textarea>
         </div>
         <div part="hint" class="hint" id=${this.hintId} ?hidden=${!hasHint}>
           <slot name="hint" @slotchange=${this.onSlotChange}></slot>

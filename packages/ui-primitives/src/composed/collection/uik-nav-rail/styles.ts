@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -18,7 +18,7 @@ export const styles = css`
     background-color: oklch(var(--uik-component-nav-rail-bg));
   }
 
-  :host([orientation='horizontal']) .rail {
+  :host([orientation="horizontal"]) .rail {
     flex-direction: row;
     width: auto;
     height: auto;
@@ -40,11 +40,15 @@ export const styles = css`
     inset-inline-start: var(--uik-space-0);
     width: var(--uik-component-nav-rail-item-indicator-width);
     background-color: oklch(var(--uik-component-nav-rail-item-indicator-bg));
-    border-top-right-radius: var(--uik-component-nav-rail-item-indicator-radius);
-    border-bottom-right-radius: var(--uik-component-nav-rail-item-indicator-radius);
+    border-top-right-radius: var(
+      --uik-component-nav-rail-item-indicator-radius
+    );
+    border-bottom-right-radius: var(
+      --uik-component-nav-rail-item-indicator-radius
+    );
   }
 
-  :host([orientation='horizontal']) .indicator {
+  :host([orientation="horizontal"]) .indicator {
     inset-block-end: var(--uik-space-0);
     inset-inline: var(--uik-space-0);
     width: auto;

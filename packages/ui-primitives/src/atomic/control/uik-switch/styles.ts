@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -39,7 +39,8 @@ export const styles = css`
     position: absolute;
     inset: 0;
     background-color: oklch(var(--uik-component-switch-track-bg-default));
-    border: var(--uik-border-width-1) solid oklch(var(--uik-component-switch-track-border-default));
+    border: var(--uik-border-width-1) solid
+      oklch(var(--uik-component-switch-track-border-default));
     border-radius: var(--uik-radius-full);
     transition:
       background-color var(--uik-motion-transition-colors),
@@ -67,16 +68,21 @@ export const styles = css`
   input:checked ~ .thumb {
     transform: translateX(
       calc(
-        var(--uik-component-switch-width) - var(--uik-component-switch-thumb-size) -
-          var(--uik-component-switch-padding) - var(--uik-component-switch-padding)
+        var(--uik-component-switch-width) - var(
+            --uik-component-switch-thumb-size
+          ) - var(--uik-component-switch-padding) - var(
+            --uik-component-switch-padding
+          )
       )
     );
   }
 
   input:focus-visible ~ .track {
     box-shadow:
-      0 0 0 var(--uik-focus-ring-offset-default) oklch(var(--uik-focus-ring-offset-bg)),
-      0 0 0 calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
+      0 0 0 var(--uik-focus-ring-offset-default)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
         oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
   }
 

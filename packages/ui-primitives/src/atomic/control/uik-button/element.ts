@@ -1,8 +1,8 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
-import {styles} from './styles';
+import { styles } from "./styles";
 
 /**
  * Primary action control with variants and sizes.
@@ -22,34 +22,40 @@ import {styles} from './styles';
  * @cssprop --uik-component-button-{solid|ghost|outline|secondary|danger|link}-*
  * @cssprop --uik-component-button-{sm|md|lg}-*
  */
-@customElement('uik-button')
+@customElement("uik-button")
 export class UikButton extends LitElement {
   static formAssociated = true;
 
-  @property({type: String, reflect: true}) accessor variant:
-    | 'solid'
-    | 'danger'
-    | 'outline'
-    | 'secondary'
-    | 'ghost'
-    | 'link' = 'solid';
-  @property({type: String, reflect: true}) accessor size: 'default' | 'sm' | 'lg' | 'icon' = 'default';
-  @property({type: String}) accessor type: 'button' | 'submit' | 'reset' = 'button';
-  @property({type: Number}) accessor tabIndexValue = 0;
-  @property({type: Boolean, reflect: true}) accessor disabled = false;
-  @property({type: Boolean, reflect: true}) accessor active = false;
-  @property({type: Boolean, reflect: true}) accessor muted = false;
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
-  @property({attribute: 'aria-pressed'}) accessor ariaPressedValue = '';
-  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
+  @property({ type: String, reflect: true }) accessor variant:
+    | "solid"
+    | "danger"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link" = "solid";
+  @property({ type: String, reflect: true }) accessor size:
+    | "default"
+    | "sm"
+    | "lg"
+    | "icon" = "default";
+  @property({ type: String }) accessor type: "button" | "submit" | "reset" =
+    "button";
+  @property({ type: Number }) accessor tabIndexValue = 0;
+  @property({ type: Boolean, reflect: true }) accessor disabled = false;
+  @property({ type: Boolean, reflect: true }) accessor active = false;
+  @property({ type: Boolean, reflect: true }) accessor muted = false;
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @property({ attribute: "aria-pressed" }) accessor ariaPressedValue = "";
+  @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
+    "";
 
   private readonly internals = this.attachInternals();
 
   static override readonly styles = styles;
 
   private get buttonElement(): HTMLButtonElement | null {
-    return this.renderRoot.querySelector('button');
+    return this.renderRoot.querySelector("button");
   }
 
   override focus(options?: FocusOptions) {
@@ -76,7 +82,8 @@ export class UikButton extends LitElement {
         aria-pressed=${ifDefined(this.ariaPressedValue || undefined)}
         aria-describedby=${ifDefined(this.ariaDescribedbyValue || undefined)}
         ?disabled=${this.disabled}
-        @click=${this.onClick}>
+        @click=${this.onClick}
+      >
         <slot></slot>
       </button>
     `;
@@ -91,10 +98,10 @@ export class UikButton extends LitElement {
     const form = this.internals.form;
     if (!form) return;
 
-    if (this.type === 'submit') {
+    if (this.type === "submit") {
       event.preventDefault();
       form.requestSubmit();
-    } else if (this.type === 'reset') {
+    } else if (this.type === "reset") {
       event.preventDefault();
       form.reset();
     }

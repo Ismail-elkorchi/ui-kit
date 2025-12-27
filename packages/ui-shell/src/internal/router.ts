@@ -1,4 +1,4 @@
-export const UIK_SHELL_NAVIGATION_EVENT = 'uik-shell:navigation';
+export const UIK_SHELL_NAVIGATION_EVENT = "uik-shell:navigation";
 
 export interface UikShellRoute {
   id: string;
@@ -33,7 +33,8 @@ export class UikShellRouter extends EventTarget {
 
   constructor(config: UikShellRouterConfig) {
     super();
-    if (config.routes.length === 0) throw new Error('UikShellRouter requires at least one route.');
+    if (config.routes.length === 0)
+      throw new Error("UikShellRouter requires at least one route.");
 
     for (const route of config.routes) {
       this.routeRegistry.set(route.id, route);
@@ -41,11 +42,11 @@ export class UikShellRouter extends EventTarget {
 
     const view = this.resolveInitialView(config.initialView);
     const subview = this.resolveSubview(view, config.initialSubview);
-    this.location = {view, subview};
+    this.location = { view, subview };
   }
 
   get current(): UikShellLocation {
-    return {...this.location};
+    return { ...this.location };
   }
 
   get routes(): UikShellRoute[] {
@@ -62,7 +63,10 @@ export class UikShellRouter extends EventTarget {
     listener(this.current);
 
     return () => {
-      this.removeEventListener(UIK_SHELL_NAVIGATION_EVENT, handler as EventListener);
+      this.removeEventListener(
+        UIK_SHELL_NAVIGATION_EVENT,
+        handler as EventListener,
+      );
     };
   }
 
@@ -71,24 +75,28 @@ export class UikShellRouter extends EventTarget {
     if (!route) throw new Error(`Unknown route "${view}".`);
 
     const resolvedSubview = this.resolveSubview(view, subview);
-    const next: UikShellLocation = {view, subview: resolvedSubview};
+    const next: UikShellLocation = { view, subview: resolvedSubview };
 
-    if (next.view === this.location.view && next.subview === this.location.subview) return;
+    if (
+      next.view === this.location.view &&
+      next.subview === this.location.subview
+    )
+      return;
 
     const previous = this.location;
     this.location = next;
 
     this.dispatchEvent(
       new CustomEvent<UikShellNavigationDetail>(UIK_SHELL_NAVIGATION_EVENT, {
-        detail: {from: previous, to: next, route},
+        detail: { from: previous, to: next, route },
       }),
     );
 
-    const globalWindow = (globalThis as unknown as {window?: Window}).window;
+    const globalWindow = (globalThis as unknown as { window?: Window }).window;
     if (globalWindow) {
       globalWindow.dispatchEvent(
         new CustomEvent<UikShellNavigationDetail>(UIK_SHELL_NAVIGATION_EVENT, {
-          detail: {from: previous, to: next, route},
+          detail: { from: previous, to: next, route },
         }),
       );
     }
@@ -97,7 +105,7 @@ export class UikShellRouter extends EventTarget {
   private resolveInitialView(initialView?: string): string {
     if (initialView && this.routeRegistry.has(initialView)) return initialView;
     const first = this.routeRegistry.values().next().value;
-    if (!first) throw new Error('UikShellRouter requires at least one route.');
+    if (!first) throw new Error("UikShellRouter requires at least one route.");
     return first.id;
   }
 
@@ -128,4 +136,5 @@ export class UikShellRouter extends EventTarget {
  * @event uik-shell:navigation (CustomEvent<UikShellNavigationDetail>)
  * @a11y Keep focus management in the host app when views change.
  */
-export const createUikShellRouter = (config: UikShellRouterConfig) => new UikShellRouter(config);
+export const createUikShellRouter = (config: UikShellRouterConfig) =>
+  new UikShellRouter(config);

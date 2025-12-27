@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -9,7 +9,8 @@ export const styles = css`
     margin: calc(var(--uik-border-width-1) * -1);
     overflow: hidden;
     white-space: nowrap;
-    border: var(--uik-border-width-0) solid oklch(var(--uik-border-default) / var(--uik-opacity-0));
+    border: var(--uik-border-width-0) solid
+      oklch(var(--uik-border-default) / var(--uik-opacity-0));
     clip-path: inset(50%);
   }
 

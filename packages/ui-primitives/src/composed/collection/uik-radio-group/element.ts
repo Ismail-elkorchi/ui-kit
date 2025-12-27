@@ -1,12 +1,12 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
-import {styles} from './styles';
-import type {UikRadio} from '../../../atomic/control/uik-radio';
-import {buildDescribedBy, createId, hasSlotContent} from '../../../internal';
+import { styles } from "./styles";
+import type { UikRadio } from "../../../atomic/control/uik-radio";
+import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
 
-type SlotName = 'label' | 'hint' | 'error';
+type SlotName = "label" | "hint" | "error";
 
 /**
  * Radio group wrapper with keyboard arrow navigation.
@@ -29,40 +29,46 @@ type SlotName = 'label' | 'hint' | 'error';
  * @a11y Label slot wires aria-labelledby; hint/error are announced via aria-describedby.
  * @cssprop --uik-component-radio-group-gap
  */
-@customElement('uik-radio-group')
+@customElement("uik-radio-group")
 export class UikRadioGroup extends LitElement {
   static formAssociated = true;
 
-  @property({type: String}) accessor value = '';
-  @property({type: String, reflect: true, useDefault: true}) accessor name = '';
-  @property({type: String, reflect: true, useDefault: true}) accessor orientation: 'vertical' | 'horizontal' = 'vertical';
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor disabled = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor required = false;
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor invalid = false;
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
-  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
+  @property({ type: String }) accessor value = "";
+  @property({ type: String, reflect: true, useDefault: true }) accessor name =
+    "";
+  @property({ type: String, reflect: true, useDefault: true })
+  accessor orientation: "vertical" | "horizontal" = "vertical";
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor disabled = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor required = false;
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor invalid = false;
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
+    "";
 
   private readonly internals = this.attachInternals();
-  private readonly controlId = createId('uik-radio-group');
+  private readonly controlId = createId("uik-radio-group");
   private readonly labelId = `${this.controlId}-label`;
   private readonly hintId = `${this.controlId}-hint`;
   private readonly errorId = `${this.controlId}-error`;
-  private defaultValue = '';
+  private defaultValue = "";
   private hasResolvedInitialValue = false;
 
   static override readonly styles = styles;
 
   private get controlElement(): HTMLElement | null {
-    return this.renderRoot.querySelector('.control');
+    return this.renderRoot.querySelector(".control");
   }
 
   override connectedCallback() {
     super.connectedCallback();
-    if (!this.hasResolvedInitialValue && this.value === '') {
+    if (!this.hasResolvedInitialValue && this.value === "") {
       const radios = this.getRadios();
       if (radios.length > 0) {
-        const checkedRadio = radios.find(radio => radio.checked);
+        const checkedRadio = radios.find((radio) => radio.checked);
         if (checkedRadio) {
           this.value = checkedRadio.value;
         }
@@ -80,12 +86,20 @@ export class UikRadioGroup extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (changed.has('value') || changed.has('name') || changed.has('disabled')) {
+    if (
+      changed.has("value") ||
+      changed.has("name") ||
+      changed.has("disabled")
+    ) {
       this.syncRadios();
       this.syncFormValue();
     }
 
-    if (changed.has('required') || changed.has('invalid') || changed.has('value')) {
+    if (
+      changed.has("required") ||
+      changed.has("invalid") ||
+      changed.has("value")
+    ) {
       this.syncValidity();
     }
   }
@@ -102,7 +116,7 @@ export class UikRadioGroup extends LitElement {
   }
 
   formStateRestoreCallback(state: string | File | FormData | null) {
-    if (typeof state === 'string') {
+    if (typeof state === "string") {
       this.value = state;
       this.syncRadios();
       this.syncFormValue();
@@ -111,7 +125,7 @@ export class UikRadioGroup extends LitElement {
   }
 
   private getRadios(): UikRadio[] {
-    return Array.from(this.querySelectorAll<UikRadio>('uik-radio'));
+    return Array.from(this.querySelectorAll<UikRadio>("uik-radio"));
   }
 
   private syncRadios() {
@@ -120,17 +134,20 @@ export class UikRadioGroup extends LitElement {
 
     const selected = this.value;
 
-    radios.forEach(radio => {
+    radios.forEach((radio) => {
       radio.name = this.name;
       radio.groupDisabled = this.disabled;
-      radio.checked = selected !== '' && radio.value === selected;
+      radio.checked = selected !== "" && radio.value === selected;
     });
 
-    const enabledRadios = radios.filter(radio => !radio.disabled && !radio.groupDisabled);
+    const enabledRadios = radios.filter(
+      (radio) => !radio.disabled && !radio.groupDisabled,
+    );
     if (enabledRadios.length === 0) return;
 
-    const current = enabledRadios.find(radio => radio.checked) ?? enabledRadios[0];
-    enabledRadios.forEach(radio => {
+    const current =
+      enabledRadios.find((radio) => radio.checked) ?? enabledRadios[0];
+    enabledRadios.forEach((radio) => {
       radio.tabIndexValue = radio === current ? 0 : -1;
     });
   }
@@ -144,13 +161,17 @@ export class UikRadioGroup extends LitElement {
     const control = this.controlElement;
     if (!control) return;
 
-    if (this.invalid || this.hasSlotContent('error')) {
-      this.internals.setValidity({customError: true}, 'Invalid', control);
+    if (this.invalid || this.hasSlotContent("error")) {
+      this.internals.setValidity({ customError: true }, "Invalid", control);
       return;
     }
 
     if (this.required && !this.value) {
-      this.internals.setValidity({valueMissing: true}, 'Please select an option.', control);
+      this.internals.setValidity(
+        { valueMissing: true },
+        "Please select an option.",
+        control,
+      );
       return;
     }
 
@@ -163,11 +184,11 @@ export class UikRadioGroup extends LitElement {
 
   private onSlotChange = (event: Event) => {
     const slot = event.target as HTMLSlotElement;
-    if (slot.name === 'error') {
+    if (slot.name === "error") {
       this.syncValidity();
     } else {
-      if (!this.hasResolvedInitialValue && this.value === '') {
-        const checkedRadio = this.getRadios().find(radio => radio.checked);
+      if (!this.hasResolvedInitialValue && this.value === "") {
+        const checkedRadio = this.getRadios().find((radio) => radio.checked);
         if (checkedRadio) {
           this.value = checkedRadio.value;
         }
@@ -180,7 +201,11 @@ export class UikRadioGroup extends LitElement {
 
   private onRadioChange = (event: Event) => {
     const target = event.target;
-    if (!(target instanceof HTMLElement) || target.tagName.toLowerCase() !== 'uik-radio') return;
+    if (
+      !(target instanceof HTMLElement) ||
+      target.tagName.toLowerCase() !== "uik-radio"
+    )
+      return;
     const radio = target as UikRadio;
     if (!radio.checked) return;
 
@@ -191,16 +216,20 @@ export class UikRadioGroup extends LitElement {
   };
 
   private onKeyDown = (event: KeyboardEvent) => {
-    const nextKeys = this.orientation === 'horizontal' ? ['ArrowRight'] : ['ArrowDown'];
-    const prevKeys = this.orientation === 'horizontal' ? ['ArrowLeft'] : ['ArrowUp'];
+    const nextKeys =
+      this.orientation === "horizontal" ? ["ArrowRight"] : ["ArrowDown"];
+    const prevKeys =
+      this.orientation === "horizontal" ? ["ArrowLeft"] : ["ArrowUp"];
     if (![...nextKeys, ...prevKeys].includes(event.key)) return;
 
-    const radios = this.getRadios().filter(radio => !radio.disabled && !radio.groupDisabled);
+    const radios = this.getRadios().filter(
+      (radio) => !radio.disabled && !radio.groupDisabled,
+    );
     if (radios.length === 0) return;
 
     const currentIndex = Math.max(
       0,
-      radios.findIndex(radio => radio.checked || radio.tabIndexValue === 0),
+      radios.findIndex((radio) => radio.checked || radio.tabIndexValue === 0),
     );
     const delta = nextKeys.includes(event.key) ? 1 : -1;
     const nextIndex = (currentIndex + delta + radios.length) % radios.length;
@@ -217,22 +246,29 @@ export class UikRadioGroup extends LitElement {
   };
 
   override render() {
-    const hasLabel = this.hasSlotContent('label');
-    const hasHint = this.hasSlotContent('hint');
-    const hasError = this.hasSlotContent('error');
+    const hasLabel = this.hasSlotContent("label");
+    const hasHint = this.hasSlotContent("hint");
+    const hasError = this.hasSlotContent("error");
     const describedBy = buildDescribedBy(
       this.ariaDescribedbyValue,
       hasHint ? this.hintId : null,
       hasError ? this.errorId : null,
     );
 
-    const ariaInvalid = this.invalid || hasError ? 'true' : undefined;
+    const ariaInvalid = this.invalid || hasError ? "true" : undefined;
     const ariaLabel = hasLabel ? undefined : this.ariaLabelValue || undefined;
-    const ariaLabelledby = hasLabel ? this.labelId : this.ariaLabelledbyValue || undefined;
+    const ariaLabelledby = hasLabel
+      ? this.labelId
+      : this.ariaLabelledbyValue || undefined;
 
     return html`
       <div class="field">
-        <label part="label" class="label" id=${this.labelId} ?hidden=${!hasLabel}>
+        <label
+          part="label"
+          class="label"
+          id=${this.labelId}
+          ?hidden=${!hasLabel}
+        >
           <slot name="label" @slotchange=${this.onSlotChange}></slot>
         </label>
         <div
@@ -244,7 +280,8 @@ export class UikRadioGroup extends LitElement {
           aria-label=${ifDefined(ariaLabel)}
           aria-labelledby=${ifDefined(ariaLabelledby)}
           @change=${this.onRadioChange}
-          @keydown=${this.onKeyDown}>
+          @keydown=${this.onKeyDown}
+        >
           <slot @slotchange=${this.onSlotChange}></slot>
         </div>
         <div part="hint" class="hint" id=${this.hintId} ?hidden=${!hasHint}>

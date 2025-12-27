@@ -5,43 +5,43 @@ Shadow DOM web components backed by the shared token CSS variables from `@ismail
 ## Usage
 
 ```ts
-import '@ismail-elkorchi/ui-primitives/register'; // defines all elements
+import "@ismail-elkorchi/ui-primitives/register"; // defines all elements
 // or import individual components for tree-shaking:
-import '@ismail-elkorchi/ui-primitives/uik-alert';
-import '@ismail-elkorchi/ui-primitives/uik-badge';
-import '@ismail-elkorchi/ui-primitives/uik-box';
-import '@ismail-elkorchi/ui-primitives/uik-button';
-import '@ismail-elkorchi/ui-primitives/uik-checkbox';
-import '@ismail-elkorchi/ui-primitives/uik-dialog';
-import '@ismail-elkorchi/ui-primitives/uik-heading';
-import '@ismail-elkorchi/ui-primitives/uik-icon';
-import '@ismail-elkorchi/ui-primitives/uik-input';
-import '@ismail-elkorchi/ui-primitives/uik-link';
-import '@ismail-elkorchi/ui-primitives/uik-nav';
-import '@ismail-elkorchi/ui-primitives/uik-nav-rail';
-import '@ismail-elkorchi/ui-primitives/uik-tree-view';
-import '@ismail-elkorchi/ui-primitives/uik-popover';
-import '@ismail-elkorchi/ui-primitives/uik-progress';
-import '@ismail-elkorchi/ui-primitives/uik-radio';
-import '@ismail-elkorchi/ui-primitives/uik-radio-group';
-import '@ismail-elkorchi/ui-primitives/uik-select';
-import '@ismail-elkorchi/ui-primitives/uik-separator';
-import '@ismail-elkorchi/ui-primitives/uik-resizable-panels';
-import '@ismail-elkorchi/ui-primitives/uik-spinner';
-import '@ismail-elkorchi/ui-primitives/uik-stack';
-import '@ismail-elkorchi/ui-primitives/uik-surface';
-import '@ismail-elkorchi/ui-primitives/uik-switch';
-import '@ismail-elkorchi/ui-primitives/uik-text';
-import '@ismail-elkorchi/ui-primitives/uik-textarea';
-import '@ismail-elkorchi/ui-primitives/uik-tooltip';
-import '@ismail-elkorchi/ui-primitives/uik-visually-hidden';
+import "@ismail-elkorchi/ui-primitives/uik-alert";
+import "@ismail-elkorchi/ui-primitives/uik-badge";
+import "@ismail-elkorchi/ui-primitives/uik-box";
+import "@ismail-elkorchi/ui-primitives/uik-button";
+import "@ismail-elkorchi/ui-primitives/uik-checkbox";
+import "@ismail-elkorchi/ui-primitives/uik-dialog";
+import "@ismail-elkorchi/ui-primitives/uik-heading";
+import "@ismail-elkorchi/ui-primitives/uik-icon";
+import "@ismail-elkorchi/ui-primitives/uik-input";
+import "@ismail-elkorchi/ui-primitives/uik-link";
+import "@ismail-elkorchi/ui-primitives/uik-nav";
+import "@ismail-elkorchi/ui-primitives/uik-nav-rail";
+import "@ismail-elkorchi/ui-primitives/uik-tree-view";
+import "@ismail-elkorchi/ui-primitives/uik-popover";
+import "@ismail-elkorchi/ui-primitives/uik-progress";
+import "@ismail-elkorchi/ui-primitives/uik-radio";
+import "@ismail-elkorchi/ui-primitives/uik-radio-group";
+import "@ismail-elkorchi/ui-primitives/uik-select";
+import "@ismail-elkorchi/ui-primitives/uik-separator";
+import "@ismail-elkorchi/ui-primitives/uik-resizable-panels";
+import "@ismail-elkorchi/ui-primitives/uik-spinner";
+import "@ismail-elkorchi/ui-primitives/uik-stack";
+import "@ismail-elkorchi/ui-primitives/uik-surface";
+import "@ismail-elkorchi/ui-primitives/uik-switch";
+import "@ismail-elkorchi/ui-primitives/uik-text";
+import "@ismail-elkorchi/ui-primitives/uik-textarea";
+import "@ismail-elkorchi/ui-primitives/uik-tooltip";
+import "@ismail-elkorchi/ui-primitives/uik-visually-hidden";
 ```
 
 Ensure your app imports tokens before Tailwind so the theme variables exist:
 
 ```css
-@import '@ismail-elkorchi/ui-tokens/index.css';
-@import 'tailwindcss';
+@import "@ismail-elkorchi/ui-tokens/index.css";
+@import "tailwindcss";
 ```
 
 ## Parts (consistent strategy)

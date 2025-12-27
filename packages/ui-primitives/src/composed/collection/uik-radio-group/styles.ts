@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -23,7 +23,7 @@ export const styles = css`
     gap: var(--uik-component-radio-group-gap);
   }
 
-  :host([orientation='horizontal']) .control {
+  :host([orientation="horizontal"]) .control {
     flex-flow: row wrap;
     align-items: center;
   }

@@ -1,12 +1,12 @@
-import docsContent from './generated/docs-content.json';
+import docsContent from "./generated/docs-content.json";
 
 const escapeHtml = (value: string) =>
   value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 
 export interface DocTocItem {
   id: string;
@@ -50,20 +50,20 @@ export const buildPageMap = () => {
 };
 
 export const renderToc = (page: DocPage) => {
-  if (page.toc.length === 0) return '';
+  if (page.toc.length === 0) return "";
   return `<nav aria-label="On this page" class="docs-toc"><ul class="docs-toc-list">${page.toc
     .map(
-      item =>
+      (item) =>
         `<li class="docs-toc-item" data-level="${String(item.level)}"><uik-text as="p" class="docs-paragraph"><uik-link href="#${item.id}">${escapeHtml(
           item.title,
         )}</uik-link></uik-text></li>`,
     )
-    .join('')}</ul></nav>`;
+    .join("")}</ul></nav>`;
 };
 
 export const renderPageSections = (page: DocPage) => {
   return page.sections
-    .map(sectionItem => {
+    .map((sectionItem) => {
       return `
         <section class="docs-section" id="${sectionItem.id}">
           <uik-heading level="2" class="docs-heading docs-section-heading" data-heading-level="2">
@@ -76,5 +76,5 @@ export const renderPageSections = (page: DocPage) => {
         </section>
       `;
     })
-    .join('');
+    .join("");
 };

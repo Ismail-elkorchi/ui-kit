@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -38,7 +38,8 @@ export const styles = css`
     box-sizing: border-box;
     width: 100%;
     min-height: var(--uik-component-textarea-base-min-height);
-    padding: var(--uik-component-textarea-base-padding-y) var(--uik-component-textarea-base-padding-x);
+    padding: var(--uik-component-textarea-base-padding-y)
+      var(--uik-component-textarea-base-padding-x);
     font-family: var(--uik-typography-font-family-sans);
     font-size: var(--uik-component-textarea-base-font-size);
     font-weight: var(--uik-typography-font-weight-regular);
@@ -76,8 +77,10 @@ export const styles = css`
     border-color: oklch(var(--uik-component-textarea-base-border-focus));
     box-shadow:
       var(--uik-component-textarea-base-shadow),
-      0 0 0 var(--uik-focus-ring-offset-default) oklch(var(--uik-focus-ring-offset-bg)),
-      0 0 0 calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
+      0 0 0 var(--uik-focus-ring-offset-default)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
         oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
   }
 

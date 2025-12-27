@@ -1,7 +1,7 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
-import {styles} from './styles';
+import { styles } from "./styles";
 
 /**
  * Surface wrapper for background, border, and elevation tokens.
@@ -16,15 +16,12 @@ import {styles} from './styles';
  * @cssprop --uik-component-surface-border-width-{default|bordered}
  * @cssprop --uik-component-surface-radius
  */
-@customElement('uik-surface')
+@customElement("uik-surface")
 export class UikSurface extends LitElement {
-  @property({type: String, reflect: true, useDefault: true}) accessor variant:
-    | 'base'
-    | 'muted'
-    | 'card'
-    | 'elevated'
-    | 'popover' = 'base';
-  @property({type: Boolean, reflect: true, useDefault: true}) accessor bordered = false;
+  @property({ type: String, reflect: true, useDefault: true })
+  accessor variant: "base" | "muted" | "card" | "elevated" | "popover" = "base";
+  @property({ type: Boolean, reflect: true, useDefault: true })
+  accessor bordered = false;
 
   static override readonly styles = styles;
 

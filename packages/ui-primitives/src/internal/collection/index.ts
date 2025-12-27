@@ -5,6 +5,6 @@ export {
   collectDescendantIds,
   collectLeafIds,
   collectTreeIds,
-} from './tree';
+} from "./tree";
 
-export type {TreeIndex, TreeItem, TreeItemBase} from './tree';
+export type { TreeIndex, TreeItem, TreeItemBase } from "./tree";

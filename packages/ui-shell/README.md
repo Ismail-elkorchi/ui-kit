@@ -25,18 +25,22 @@ Token-driven shell components (activity bar, sidebars, status bar, and an option
 ## Using the components
 
 ```ts
-import {html} from 'lit';
-import '@ismail-elkorchi/ui-primitives/register';
-import '@ismail-elkorchi/ui-shell/register';
-import type {UikShellActivityBarItem} from '@ismail-elkorchi/ui-shell/activity-bar';
+import { html } from "lit";
+import "@ismail-elkorchi/ui-primitives/register";
+import "@ismail-elkorchi/ui-shell/register";
+import type { UikShellActivityBarItem } from "@ismail-elkorchi/ui-shell/activity-bar";
 
 const activityItems: UikShellActivityBarItem[] = [
   {
-    id: 'explorer',
-    label: 'Explorer',
-    icon: 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z'
+    id: "explorer",
+    label: "Explorer",
+    icon: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z",
   },
-  {id: 'search', label: 'Search', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'}
+  {
+    id: "search",
+    label: "Search",
+    icon: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
+  },
 ];
 
 html`
@@ -44,8 +48,10 @@ html`
     <uik-shell-activity-bar
       slot="activity-bar"
       .items=${activityItems}
-      .activeId=${'explorer'}
-      @activity-bar-select=${(e: CustomEvent<{id: string}>) => console.log(e.detail.id)}>
+      .activeId=${"explorer"}
+      @activity-bar-select=${(e: CustomEvent<{ id: string }>) =>
+        console.log(e.detail.id)}
+    >
     </uik-shell-activity-bar>
     <uik-shell-sidebar slot="primary-sidebar" heading="Explorer">
       <uik-button slot="actions" variant="ghost" size="icon">…</uik-button>
@@ -53,23 +59,33 @@ html`
         <!-- put your tree view or navigation here -->
       </div>
     </uik-shell-sidebar>
-    <main slot="main-content" style="flex: 1 1 auto; min-height: var(--uik-space-0);">
+    <main
+      slot="main-content"
+      style="flex: 1 1 auto; min-height: var(--uik-space-0);"
+    >
       Your editor or subviews
     </main>
     <uik-shell-secondary-sidebar
       slot="secondary-sidebar"
       .isOpen=${true}
       heading="AI Assistant"
-      @secondary-sidebar-close=${() => console.log('close secondary')}>
+      @secondary-sidebar-close=${() => console.log("close secondary")}
+    >
       <p
         style="
           font-size: var(--uik-typography-font-size-2);
           color: oklch(var(--uik-text-muted));
-        ">
+        "
+      >
         Auxiliary tools live here.
       </p>
     </uik-shell-secondary-sidebar>
-    <uik-shell-status-bar slot="status-bar" message="Ready" tone="info" meta="3 files selected"></uik-shell-status-bar>
+    <uik-shell-status-bar
+      slot="status-bar"
+      message="Ready"
+      tone="info"
+      meta="3 files selected"
+    ></uik-shell-status-bar>
   </uik-shell-layout>
 `;
 ```
@@ -96,7 +112,7 @@ html`
 Load tokens once and set theme/density attributes on a shared container (often `:root`):
 
 ```css
-@import '@ismail-elkorchi/ui-tokens/index.css';
+@import "@ismail-elkorchi/ui-tokens/index.css";
 ```
 
 ```html
@@ -110,33 +126,49 @@ Load tokens once and set theme/density attributes on a shared container (often `
 A tiny EventTarget-based router lives in `@ismail-elkorchi/ui-shell/router`. It is framework-light, keeps state in memory (no history), and is meant for desktop flows that only need named views and optional subviews.
 
 ```ts
-import {createUikShellRouter, UIK_SHELL_NAVIGATION_EVENT, type UikShellNavigationDetail} from '@ismail-elkorchi/ui-shell/router';
+import {
+  createUikShellRouter,
+  UIK_SHELL_NAVIGATION_EVENT,
+  type UikShellNavigationDetail,
+} from "@ismail-elkorchi/ui-shell/router";
 
 const routes = [
-  {id: 'explorer', label: 'Explorer', subviews: ['code', 'prompt', 'apply'], defaultSubview: 'code'},
-  {id: 'search', label: 'Search'},
-  {id: 'settings', label: 'Settings'}
+  {
+    id: "explorer",
+    label: "Explorer",
+    subviews: ["code", "prompt", "apply"],
+    defaultSubview: "code",
+  },
+  { id: "search", label: "Search" },
+  { id: "settings", label: "Settings" },
 ] as const;
 
-export const shellRouter = createUikShellRouter({routes, initialView: 'explorer', initialSubview: 'code'});
+export const shellRouter = createUikShellRouter({
+  routes,
+  initialView: "explorer",
+  initialSubview: "code",
+});
 
 // React to navigation anywhere in the app
-const unsubscribe = shellRouter.subscribe(({view, subview}) => {
-  console.log('Current location', view, subview);
+const unsubscribe = shellRouter.subscribe(({ view, subview }) => {
+  console.log("Current location", view, subview);
 });
 
 // Wire Lit components through events
 html`
   <uik-shell-activity-bar
-    .items=${routes.map(r => ({id: r.id, label: r.label ?? r.id}))}
+    .items=${routes.map((r) => ({ id: r.id, label: r.label ?? r.id }))}
     .activeId=${shellRouter.current.view}
-    @activity-bar-select=${(e: CustomEvent<{id: string}>) => shellRouter.navigate(e.detail.id)}>
+    @activity-bar-select=${(e: CustomEvent<{ id: string }>) =>
+      shellRouter.navigate(e.detail.id)}
+  >
   </uik-shell-activity-bar>
 
   <editor-area
-    .activeSubview=${shellRouter.current.subview ?? 'code'}
-    @subview-change=${(e: CustomEvent<{subview: string}>) =>
-      shellRouter.navigate(shellRouter.current.view, e.detail.subview)}>
+    .activeSubview=${shellRouter.current.subview ?? "code"}
+    @subview-change=${(e: CustomEvent<{ subview: string }>) =>
+      shellRouter.navigate(shellRouter.current.view, e.detail.subview)}
+  >
   </editor-area>
 `;
 

@@ -1,1 +1,1 @@
-export {UikTextarea} from './element';
+export { UikTextarea } from "./element";

@@ -1,11 +1,11 @@
-import {LitElement, html, nothing, svg} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
-import {styleMap} from 'lit/directives/style-map.js';
+import { LitElement, html, nothing, svg } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
+import { styleMap } from "lit/directives/style-map.js";
 
-import {styles} from './styles';
-import {buildTreeItems, collectTreeIds} from '../../../internal';
-import type {TreeItem, TreeItemBase} from '../../../internal';
+import { styles } from "./styles";
+import { buildTreeItems, collectTreeIds } from "../../../internal";
+import type { TreeItem, TreeItemBase } from "../../../internal";
 
 export interface UikNavItem extends TreeItemBase {
   href?: string;
@@ -43,20 +43,20 @@ export interface UikNavToggleDetail {
  * @cssprop --uik-component-nav-text-*
  * @cssprop --uik-component-nav-toggle-fg
  */
-@customElement('uik-nav')
+@customElement("uik-nav")
 export class UikNav extends LitElement {
-  @property({attribute: false}) accessor items: UikNavItem[] = [];
-  @property({attribute: false}) accessor openIds: string[] = [];
-  @property({type: String}) accessor currentId = '';
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
+  @property({ attribute: false }) accessor items: UikNavItem[] = [];
+  @property({ attribute: false }) accessor openIds: string[] = [];
+  @property({ type: String }) accessor currentId = "";
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
 
   static override readonly styles = styles;
 
   private emitSelect(item: UikNavItem) {
-    const detail: UikNavSelectDetail = {id: item.id, item};
+    const detail: UikNavSelectDetail = { id: item.id, item };
     if (item.href) detail.href = item.href;
-    const navEvent = new CustomEvent<UikNavSelectDetail>('nav-select', {
+    const navEvent = new CustomEvent<UikNavSelectDetail>("nav-select", {
       detail,
       bubbles: true,
       composed: true,
@@ -67,8 +67,10 @@ export class UikNav extends LitElement {
   }
 
   private emitToggle(item: UikNavItem, open: boolean) {
-    const detail: UikNavToggleDetail = {id: item.id, open, item};
-    this.dispatchEvent(new CustomEvent('nav-toggle', {detail, bubbles: true, composed: true}));
+    const detail: UikNavToggleDetail = { id: item.id, open, item };
+    this.dispatchEvent(
+      new CustomEvent("nav-toggle", { detail, bubbles: true, composed: true }),
+    );
   }
 
   private getOpenSet(): Set<string> {
@@ -77,7 +79,7 @@ export class UikNav extends LitElement {
 
   private resolveOpenIds(nextOpen: Set<string>) {
     const orderedIds = collectTreeIds(this.items);
-    return orderedIds.filter(id => nextOpen.has(id));
+    return orderedIds.filter((id) => nextOpen.has(id));
   }
 
   private toggleItem(item: UikNavItem) {
@@ -110,15 +112,15 @@ export class UikNav extends LitElement {
   };
 
   private renderToggleIcon(isOpen: boolean) {
-    const path = isOpen ? 'M5 9l7 7 7-7' : 'M9 5l7 7-7 7';
+    const path = isOpen ? "M5 9l7 7 7-7" : "M9 5l7 7-7 7";
     return svg`<svg
       aria-hidden="true"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       style=${styleMap({
-        width: 'var(--uik-size-icon-sm)',
-        height: 'var(--uik-size-icon-sm)',
+        width: "var(--uik-size-icon-sm)",
+        height: "var(--uik-size-icon-sm)",
       })}>
       <path
         stroke-linecap="round"
@@ -135,22 +137,23 @@ export class UikNav extends LitElement {
     const depthValue = String(entry.depth);
     const itemStyles = {
       paddingInlineStart: `calc(var(--uik-component-nav-item-padding-x) + (var(--uik-component-nav-indent) * ${depthValue}))`,
-      paddingInlineEnd: 'var(--uik-component-nav-item-padding-x)',
+      paddingInlineEnd: "var(--uik-component-nav-item-padding-x)",
     };
     const label = dataItem.href
       ? html`
           <a
             part="link"
             class="link"
-            data-current=${isCurrent ? 'true' : 'false'}
-            data-disabled=${dataItem.isDisabled ? 'true' : 'false'}
+            data-current=${isCurrent ? "true" : "false"}
+            data-disabled=${dataItem.isDisabled ? "true" : "false"}
             href=${ifDefined(dataItem.href ?? undefined)}
             target=${ifDefined(dataItem.target ?? undefined)}
             rel=${ifDefined(dataItem.rel ?? undefined)}
-            aria-current=${ifDefined(isCurrent ? 'page' : undefined)}
-            aria-disabled=${ifDefined(dataItem.isDisabled ? 'true' : undefined)}
-            tabindex=${ifDefined(dataItem.isDisabled ? '-1' : undefined)}
-            @click=${(event: MouseEvent) => this.onLinkClick(dataItem, event)}>
+            aria-current=${ifDefined(isCurrent ? "page" : undefined)}
+            aria-disabled=${ifDefined(dataItem.isDisabled ? "true" : undefined)}
+            tabindex=${ifDefined(dataItem.isDisabled ? "-1" : undefined)}
+            @click=${(event: MouseEvent) => this.onLinkClick(dataItem, event)}
+          >
             ${dataItem.label}
           </a>
         `
@@ -159,16 +162,22 @@ export class UikNav extends LitElement {
             part="label"
             class="label"
             type="button"
-            data-disabled=${dataItem.isDisabled ? 'true' : 'false'}
-            aria-disabled=${ifDefined(dataItem.isDisabled ? 'true' : undefined)}
+            data-disabled=${dataItem.isDisabled ? "true" : "false"}
+            aria-disabled=${ifDefined(dataItem.isDisabled ? "true" : undefined)}
             ?disabled=${dataItem.isDisabled ?? false}
-            @click=${() => this.onLabelClick(dataItem)}>
+            @click=${() => this.onLabelClick(dataItem)}
+          >
             ${dataItem.label}
           </button>
         `;
 
     return html`
-      <div part="item" class="item" style=${styleMap(itemStyles)} data-item-id=${dataItem.id}>
+      <div
+        part="item"
+        class="item"
+        style=${styleMap(itemStyles)}
+        data-item-id=${dataItem.id}
+      >
         ${entry.isBranch
           ? html`
               <button
@@ -176,9 +185,12 @@ export class UikNav extends LitElement {
                 class="toggle"
                 type="button"
                 ?disabled=${dataItem.isDisabled ?? false}
-                aria-label=${isOpen ? `Collapse ${dataItem.label}` : `Expand ${dataItem.label}`}
-                aria-expanded=${isOpen ? 'true' : 'false'}
-                @click=${() => this.toggleItem(dataItem)}>
+                aria-label=${isOpen
+                  ? `Collapse ${dataItem.label}`
+                  : `Expand ${dataItem.label}`}
+                aria-expanded=${isOpen ? "true" : "false"}
+                @click=${() => this.toggleItem(dataItem)}
+              >
                 ${this.renderToggleIcon(isOpen)}
               </button>
             `
@@ -194,9 +206,13 @@ export class UikNav extends LitElement {
       <nav
         part="base"
         class="nav"
-        aria-label=${ifDefined(this.ariaLabelValue || (this.ariaLabelledbyValue ? undefined : 'Navigation'))}
-        aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}>
-        ${items.map(item => this.renderItem(item))}
+        aria-label=${ifDefined(
+          this.ariaLabelValue ||
+            (this.ariaLabelledbyValue ? undefined : "Navigation"),
+        )}
+        aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
+      >
+        ${items.map((item) => this.renderItem(item))}
       </nav>
     `;
   }
@@ -204,6 +220,6 @@ export class UikNav extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'uik-nav': UikNav;
+    "uik-nav": UikNav;
   }
 }

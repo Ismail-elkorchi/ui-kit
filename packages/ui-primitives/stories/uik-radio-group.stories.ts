@@ -1,8 +1,8 @@
-import '@ismail-elkorchi/ui-primitives/register';
-import type {Meta, StoryObj} from '@storybook/web-components-vite';
-import {html, nothing} from 'lit';
+import "@ismail-elkorchi/ui-primitives/register";
+import type { Meta, StoryObj } from "@storybook/web-components-vite";
+import { html, nothing } from "lit";
 
-import {interactionStory} from '../../../.storybook/a11y';
+import { interactionStory } from "../../../.storybook/a11y";
 
 type RadioGroupArgs = {
   value: string;
@@ -12,34 +12,35 @@ type RadioGroupArgs = {
   label: string;
   hint: string;
   error: string;
-  orientation: 'vertical' | 'horizontal';
+  orientation: "vertical" | "horizontal";
 };
 
 const meta: Meta<RadioGroupArgs> = {
-  title: 'Primitives/Radio Group',
-  component: 'uik-radio-group',
-  tags: ['autodocs'],
+  title: "Primitives/Radio Group",
+  component: "uik-radio-group",
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   args: {
-    value: 'monthly',
+    value: "monthly",
     disabled: false,
     required: false,
     invalid: false,
-    label: 'Billing',
-    hint: 'Choose a billing cadence.',
-    error: '',
-    orientation: 'vertical',
+    label: "Billing",
+    hint: "Choose a billing cadence.",
+    error: "",
+    orientation: "vertical",
   },
-  render: args => html`
+  render: (args) => html`
     <uik-radio-group
       name="billing"
       .value=${args.value}
       orientation=${args.orientation}
       ?disabled=${args.disabled}
       ?required=${args.required}
-      ?invalid=${args.invalid}>
+      ?invalid=${args.invalid}
+    >
       ${args.label ? html`<span slot="label">${args.label}</span>` : nothing}
       ${args.hint ? html`<span slot="hint">${args.hint}</span>` : nothing}
       ${args.error ? html`<span slot="error">${args.error}</span>` : nothing}
@@ -60,12 +61,11 @@ export default meta;
 
 type Story = StoryObj<RadioGroupArgs>;
 
-
 export const Default: Story = {
   ...interactionStory,
 };
 
 export const Horizontal: Story = {
   ...interactionStory,
-  args: {orientation: 'horizontal'},
+  args: { orientation: "horizontal" },
 };

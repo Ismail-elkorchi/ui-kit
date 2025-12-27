@@ -1,8 +1,8 @@
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
-import {styles} from './styles';
+import { styles } from "./styles";
 
 /**
  * Anchor wrapper with tokenized colors and underline styling.
@@ -18,15 +18,16 @@ import {styles} from './styles';
  * @cssprop --uik-component-link-fg-hover
  * @cssprop --uik-component-link-underline-offset
  */
-@customElement('uik-link')
+@customElement("uik-link")
 export class UikLink extends LitElement {
-  @property({type: String}) accessor href = '';
-  @property({type: String}) accessor target = '';
-  @property({type: String}) accessor rel = '';
-  @property({type: String}) accessor download = '';
-  @property({attribute: 'aria-label'}) accessor ariaLabelValue = '';
-  @property({attribute: 'aria-labelledby'}) accessor ariaLabelledbyValue = '';
-  @property({attribute: 'aria-describedby'}) accessor ariaDescribedbyValue = '';
+  @property({ type: String }) accessor href = "";
+  @property({ type: String }) accessor target = "";
+  @property({ type: String }) accessor rel = "";
+  @property({ type: String }) accessor download = "";
+  @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
+    "";
 
   static override readonly styles = styles;
 
@@ -40,7 +41,8 @@ export class UikLink extends LitElement {
         download=${ifDefined(this.download || undefined)}
         aria-label=${ifDefined(this.ariaLabelValue || undefined)}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
-        aria-describedby=${ifDefined(this.ariaDescribedbyValue || undefined)}>
+        aria-describedby=${ifDefined(this.ariaDescribedbyValue || undefined)}
+      >
         <slot></slot>
       </a>
     `;

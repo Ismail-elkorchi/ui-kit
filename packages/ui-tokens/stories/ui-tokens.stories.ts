@@ -1,39 +1,39 @@
-import type {Meta, StoryObj} from '@storybook/web-components-vite';
-import {html} from 'lit';
+import type { Meta, StoryObj } from "@storybook/web-components-vite";
+import { html } from "lit";
 
-import {interactionStory} from '../../../.storybook/a11y';
+import { interactionStory } from "../../../.storybook/a11y";
 
 const surfaces = [
-  {name: 'surface-bg', token: '--uik-surface-bg'},
-  {name: 'surface-card', token: '--uik-surface-card'},
-  {name: 'surface-muted', token: '--uik-surface-muted'},
-  {name: 'surface-popover', token: '--uik-surface-popover'},
+  { name: "surface-bg", token: "--uik-surface-bg" },
+  { name: "surface-card", token: "--uik-surface-card" },
+  { name: "surface-muted", token: "--uik-surface-muted" },
+  { name: "surface-popover", token: "--uik-surface-popover" },
 ];
 
 const text = [
-  {name: 'text-default', token: '--uik-text-default'},
-  {name: 'text-muted', token: '--uik-text-muted'},
-  {name: 'text-secondary', token: '--uik-text-secondary'},
-  {name: 'text-link', token: '--uik-text-link-default'},
+  { name: "text-default", token: "--uik-text-default" },
+  { name: "text-muted", token: "--uik-text-muted" },
+  { name: "text-secondary", token: "--uik-text-secondary" },
+  { name: "text-link", token: "--uik-text-link-default" },
 ];
 
 const borders = [
-  {name: 'border-default', token: '--uik-border-default'},
-  {name: 'border-muted', token: '--uik-border-muted'},
-  {name: 'border-strong', token: '--uik-border-strong'},
+  { name: "border-default", token: "--uik-border-default" },
+  { name: "border-muted", token: "--uik-border-muted" },
+  { name: "border-strong", token: "--uik-border-strong" },
 ];
 
 const intents = [
-  {name: 'primary-bg', token: '--uik-intent-primary-bg-default'},
-  {name: 'danger-bg', token: '--uik-intent-danger-bg-default'},
-  {name: 'success-bg', token: '--uik-intent-success-bg-default'},
-  {name: 'warning-bg', token: '--uik-intent-warning-bg-default'},
+  { name: "primary-bg", token: "--uik-intent-primary-bg-default" },
+  { name: "danger-bg", token: "--uik-intent-danger-bg-default" },
+  { name: "success-bg", token: "--uik-intent-success-bg-default" },
+  { name: "warning-bg", token: "--uik-intent-warning-bg-default" },
 ];
 
 const meta: Meta = {
-  title: 'Tokens/Overview',
-  tags: ['autodocs'],
-  parameters: {layout: 'padded'},
+  title: "Tokens/Overview",
+  tags: ["autodocs"],
+  parameters: { layout: "padded" },
   render: () => html`
     <style>
       .uik-tokens-stack {
@@ -53,7 +53,10 @@ const meta: Meta = {
       }
       .uik-tokens-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(var(--uik-space-12), 1fr));
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(var(--uik-space-12), 1fr)
+        );
         gap: var(--uik-space-3);
       }
       .uik-tokens-card {
@@ -97,15 +100,18 @@ const meta: Meta = {
         <h2 class="uik-tokens-heading">Surfaces</h2>
         <div class="uik-tokens-grid">
           ${surfaces.map(
-            item => html`
+            (item) => html`
               <div class="uik-tokens-card">
-                <div class="uik-tokens-swatch" style="background: oklch(var(${item.token}));"></div>
+                <div
+                  class="uik-tokens-swatch"
+                  style="background: oklch(var(${item.token}));"
+                ></div>
                 <div class="uik-tokens-details">
                   <span class="uik-tokens-name">${item.name}</span>
                   <span class="uik-tokens-token">${item.token}</span>
                 </div>
               </div>
-            `
+            `,
           )}
         </div>
       </section>
@@ -114,15 +120,20 @@ const meta: Meta = {
         <h2 class="uik-tokens-heading">Text</h2>
         <div class="uik-tokens-grid">
           ${text.map(
-            item => html`
+            (item) => html`
               <div class="uik-tokens-card">
-                <div class="uik-tokens-sample" style="color: oklch(var(${item.token}));">Aa</div>
+                <div
+                  class="uik-tokens-sample"
+                  style="color: oklch(var(${item.token}));"
+                >
+                  Aa
+                </div>
                 <div class="uik-tokens-details">
                   <span class="uik-tokens-name">${item.name}</span>
                   <span class="uik-tokens-token">${item.token}</span>
                 </div>
               </div>
-            `
+            `,
           )}
         </div>
       </section>
@@ -131,17 +142,18 @@ const meta: Meta = {
         <h2 class="uik-tokens-heading">Borders</h2>
         <div class="uik-tokens-grid">
           ${borders.map(
-            item => html`
+            (item) => html`
               <div class="uik-tokens-card">
                 <div
                   class="uik-tokens-swatch"
-                  style="border-color: oklch(var(${item.token})); border-width: var(--uik-border-width-2);"></div>
+                  style="border-color: oklch(var(${item.token})); border-width: var(--uik-border-width-2);"
+                ></div>
                 <div class="uik-tokens-details">
                   <span class="uik-tokens-name">${item.name}</span>
                   <span class="uik-tokens-token">${item.token}</span>
                 </div>
               </div>
-            `
+            `,
           )}
         </div>
       </section>
@@ -150,15 +162,18 @@ const meta: Meta = {
         <h2 class="uik-tokens-heading">Intent</h2>
         <div class="uik-tokens-grid">
           ${intents.map(
-            item => html`
+            (item) => html`
               <div class="uik-tokens-card">
-                <div class="uik-tokens-swatch" style="background: oklch(var(${item.token}));"></div>
+                <div
+                  class="uik-tokens-swatch"
+                  style="background: oklch(var(${item.token}));"
+                ></div>
                 <div class="uik-tokens-details">
                   <span class="uik-tokens-name">${item.name}</span>
                   <span class="uik-tokens-token">${item.token}</span>
                 </div>
               </div>
-            `
+            `,
           )}
         </div>
       </section>

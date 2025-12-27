@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -14,21 +14,21 @@ export const styles = css`
     box-shadow: var(--uik-component-surface-shadow-default);
   }
 
-  :host([variant='muted']) .surface {
+  :host([variant="muted"]) .surface {
     background-color: oklch(var(--uik-component-surface-bg-muted));
   }
 
-  :host([variant='card']) .surface {
+  :host([variant="card"]) .surface {
     background-color: oklch(var(--uik-component-surface-bg-card));
     box-shadow: var(--uik-component-surface-shadow-card);
   }
 
-  :host([variant='elevated']) .surface {
+  :host([variant="elevated"]) .surface {
     background-color: oklch(var(--uik-component-surface-bg-elevated));
     box-shadow: var(--uik-component-surface-shadow-elevated);
   }
 
-  :host([variant='popover']) .surface {
+  :host([variant="popover"]) .surface {
     background-color: oklch(var(--uik-component-surface-bg-popover));
     box-shadow: var(--uik-component-surface-shadow-popover);
   }

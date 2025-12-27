@@ -1,4 +1,4 @@
-import {css} from 'lit';
+import { css } from "lit";
 
 export const styles = css`
   :host {
@@ -6,15 +6,15 @@ export const styles = css`
     height: var(--uik-component-button-md-height);
   }
 
-  :host([size='sm']) {
+  :host([size="sm"]) {
     height: var(--uik-component-button-sm-height);
   }
 
-  :host([size='lg']) {
+  :host([size="lg"]) {
     height: var(--uik-component-button-lg-height);
   }
 
-  :host([size='icon']) {
+  :host([size="icon"]) {
     width: var(--uik-component-button-md-height);
     height: var(--uik-component-button-md-height);
   }
@@ -51,10 +51,12 @@ export const styles = css`
     border-radius: var(--_uik-button-radius);
     box-shadow: var(--_uik-button-shadow);
     transition:
-      color var(--uik-component-button-base-transition-duration) var(--uik-component-button-base-transition-ease),
+      color var(--uik-component-button-base-transition-duration)
+        var(--uik-component-button-base-transition-ease),
       background-color var(--uik-component-button-base-transition-duration)
         var(--uik-component-button-base-transition-ease),
-      border-color var(--uik-component-button-base-transition-duration) var(--uik-component-button-base-transition-ease),
+      border-color var(--uik-component-button-base-transition-duration)
+        var(--uik-component-button-base-transition-ease),
       box-shadow var(--uik-motion-transition-shadow);
   }
 
@@ -71,11 +73,17 @@ export const styles = css`
     outline: none;
     box-shadow:
       var(--_uik-button-shadow),
-      0 0 0 var(--uik-component-button-base-focus-ring-offset) oklch(var(--uik-focus-ring-offset-bg)),
-      0 0 0 calc(
-          var(--uik-component-button-base-focus-ring-offset) + var(--uik-component-button-base-focus-ring-width)
+      0 0 0 var(--uik-component-button-base-focus-ring-offset)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(
+          var(--uik-component-button-base-focus-ring-offset) +
+            var(--uik-component-button-base-focus-ring-width)
         )
-        oklch(var(--uik-component-button-base-focus-ring) / var(--uik-component-button-base-focus-ring-opacity));
+        oklch(
+          var(--uik-component-button-base-focus-ring) /
+            var(--uik-component-button-base-focus-ring-opacity)
+        );
   }
 
   button:disabled {
@@ -119,27 +127,41 @@ export const styles = css`
   .variant-danger {
     --_uik-button-bg: oklch(var(--uik-component-button-danger-bg-default));
     --_uik-button-bg-hover: oklch(var(--uik-component-button-danger-bg-hover));
-    --_uik-button-bg-active: oklch(var(--uik-component-button-danger-bg-active));
+    --_uik-button-bg-active: oklch(
+      var(--uik-component-button-danger-bg-active)
+    );
     --_uik-button-fg: oklch(var(--uik-component-button-danger-fg));
-    --_uik-button-border-color: oklch(var(--uik-component-button-danger-border));
+    --_uik-button-border-color: oklch(
+      var(--uik-component-button-danger-border)
+    );
     --_uik-button-shadow: var(--uik-component-button-danger-shadow);
   }
 
   .variant-outline {
     --_uik-button-bg: oklch(var(--uik-component-button-outline-bg-default));
     --_uik-button-bg-hover: oklch(var(--uik-component-button-outline-bg-hover));
-    --_uik-button-bg-active: oklch(var(--uik-component-button-outline-bg-active));
+    --_uik-button-bg-active: oklch(
+      var(--uik-component-button-outline-bg-active)
+    );
     --_uik-button-fg: oklch(var(--uik-component-button-outline-fg));
-    --_uik-button-border-color: oklch(var(--uik-component-button-outline-border));
+    --_uik-button-border-color: oklch(
+      var(--uik-component-button-outline-border)
+    );
     --_uik-button-shadow: var(--uik-component-button-outline-shadow);
   }
 
   .variant-secondary {
     --_uik-button-bg: oklch(var(--uik-component-button-secondary-bg-default));
-    --_uik-button-bg-hover: oklch(var(--uik-component-button-secondary-bg-hover));
-    --_uik-button-bg-active: oklch(var(--uik-component-button-secondary-bg-active));
+    --_uik-button-bg-hover: oklch(
+      var(--uik-component-button-secondary-bg-hover)
+    );
+    --_uik-button-bg-active: oklch(
+      var(--uik-component-button-secondary-bg-active)
+    );
     --_uik-button-fg: oklch(var(--uik-component-button-secondary-fg));
-    --_uik-button-border-color: oklch(var(--uik-component-button-secondary-border));
+    --_uik-button-border-color: oklch(
+      var(--uik-component-button-secondary-border)
+    );
     --_uik-button-shadow: var(--uik-component-button-secondary-shadow);
   }
 

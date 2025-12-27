@@ -1,8 +1,8 @@
-import '@ismail-elkorchi/ui-primitives/register';
-import type {Meta, StoryObj} from '@storybook/web-components-vite';
-import {html} from 'lit';
+import "@ismail-elkorchi/ui-primitives/register";
+import type { Meta, StoryObj } from "@storybook/web-components-vite";
+import { html } from "lit";
 
-import {interactionStory} from '../../../.storybook/a11y';
+import { interactionStory } from "../../../.storybook/a11y";
 
 type NavArgs = {
   currentId: string;
@@ -11,34 +11,47 @@ type NavArgs = {
 
 const items = [
   {
-    id: 'docs',
-    label: 'Docs',
+    id: "docs",
+    label: "Docs",
     children: [
-      {id: 'docs/getting-started', label: 'Getting started', href: '#docs/getting-started'},
-      {id: 'docs/tokens', label: 'Tokens', href: '#docs/tokens'},
-      {id: 'docs/primitives', label: 'Primitives', href: '#docs/primitives'},
+      {
+        id: "docs/getting-started",
+        label: "Getting started",
+        href: "#docs/getting-started",
+      },
+      { id: "docs/tokens", label: "Tokens", href: "#docs/tokens" },
+      { id: "docs/primitives", label: "Primitives", href: "#docs/primitives" },
     ],
   },
   {
-    id: 'lab',
-    label: 'Lab',
+    id: "lab",
+    label: "Lab",
     children: [
-      {id: 'lab/shell-patterns', label: 'Shell patterns', href: '#lab/shell-patterns'},
-      {id: 'lab/overlays', label: 'Overlays', href: '#lab/overlays'},
+      {
+        id: "lab/shell-patterns",
+        label: "Shell patterns",
+        href: "#lab/shell-patterns",
+      },
+      { id: "lab/overlays", label: "Overlays", href: "#lab/overlays" },
     ],
   },
 ];
 
 const meta: Meta<NavArgs> = {
-  title: 'Primitives/Nav',
-  component: 'uik-nav',
-  tags: ['autodocs'],
+  title: "Primitives/Nav",
+  component: "uik-nav",
+  tags: ["autodocs"],
   args: {
-    currentId: 'docs/getting-started',
-    openIds: ['docs', 'lab'],
+    currentId: "docs/getting-started",
+    openIds: ["docs", "lab"],
   },
-  render: args => html`
-    <uik-nav .items=${items} .openIds=${args.openIds} currentId=${args.currentId} aria-label="Docs navigation">
+  render: (args) => html`
+    <uik-nav
+      .items=${items}
+      .openIds=${args.openIds}
+      currentId=${args.currentId}
+      aria-label="Docs navigation"
+    >
     </uik-nav>
   `,
 };
@@ -46,7 +59,6 @@ const meta: Meta<NavArgs> = {
 export default meta;
 
 type Story = StoryObj<NavArgs>;
-
 
 export const Default: Story = {
   ...interactionStory,

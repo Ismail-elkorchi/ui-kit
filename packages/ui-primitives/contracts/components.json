@@ -6,18 +6,9 @@
       "id": "alert",
       "tagName": "uik-alert",
       "summary": "Inline status messaging for neutral and semantic feedback.",
-      "attributes": [
-        "variant (neutral | info | success | warning | danger)"
-      ],
-      "slots": [
-        "title",
-        "default (message body)"
-      ],
-      "parts": [
-        "base",
-        "title",
-        "body"
-      ],
+      "attributes": ["variant (neutral | info | success | warning | danger)"],
+      "slots": ["title", "default (message body)"],
+      "parts": ["base", "title", "body"],
       "events": [],
       "a11y": [
         "role=\"status\" by default; warning/danger switches to role=\"alert\"."
@@ -30,19 +21,11 @@
       "id": "badge",
       "tagName": "uik-badge",
       "summary": "Compact label for status or counts.",
-      "attributes": [
-        "variant (default | secondary | danger | outline)"
-      ],
-      "slots": [
-        "default (label)"
-      ],
-      "parts": [
-        "base"
-      ],
+      "attributes": ["variant (default | secondary | danger | outline)"],
+      "slots": ["default (label)"],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Inline element; provide meaningful text content."
-      ],
+      "a11y": ["Inline element; provide meaningful text content."],
       "cssVars": [
         "--uik-component-badge-base-* (padding, radius, font, border)",
         "--uik-component-badge-{default|secondary|danger|outline}-{bg|border|fg|shadow}"
@@ -52,20 +35,11 @@
       "id": "box",
       "tagName": "uik-box",
       "summary": "Simple padded container with background and border hooks.",
-      "attributes": [
-        "padding (0-6)",
-        "inline (boolean)"
-      ],
-      "slots": [
-        "default"
-      ],
-      "parts": [
-        "base"
-      ],
+      "attributes": ["padding (0-6)", "inline (boolean)"],
+      "slots": ["default"],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Presentational wrapper; use semantic HTML inside."
-      ],
+      "a11y": ["Presentational wrapper; use semantic HTML inside."],
       "cssVars": [
         "--uik-component-box-padding-{0..6}",
         "--uik-component-box-bg",
@@ -89,15 +63,9 @@
         "muted (boolean)",
         "disabled (boolean)"
       ],
-      "slots": [
-        "default (label or icon)"
-      ],
-      "parts": [
-        "base"
-      ],
-      "events": [
-        "Native button events bubble from the internal <button>."
-      ],
+      "slots": ["default (label or icon)"],
+      "parts": ["base"],
+      "events": ["Native button events bubble from the internal <button>."],
       "a11y": [
         "Forward aria-label, aria-labelledby, aria-describedby, and aria-pressed to the internal button.",
         "Icon-only buttons should provide an accessible name."
@@ -122,21 +90,9 @@
         "invalid",
         "tabIndexValue (number)"
       ],
-      "slots": [
-        "label",
-        "hint",
-        "error"
-      ],
-      "parts": [
-        "base",
-        "control",
-        "label",
-        "hint",
-        "error"
-      ],
-      "events": [
-        "Native change bubbles from the internal <input>."
-      ],
+      "slots": ["label", "hint", "error"],
+      "parts": ["base", "control", "label", "hint", "error"],
+      "events": ["Native change bubbles from the internal <input>."],
       "a11y": [
         "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
       ],
@@ -149,24 +105,9 @@
       "id": "dialog",
       "tagName": "uik-dialog",
       "summary": "Native dialog wrapper with slots for title, description, and actions.",
-      "attributes": [
-        "open",
-        "modal (boolean)"
-      ],
-      "slots": [
-        "title",
-        "description",
-        "default (body)",
-        "actions"
-      ],
-      "parts": [
-        "base",
-        "panel",
-        "title",
-        "description",
-        "body",
-        "actions"
-      ],
+      "attributes": ["open", "modal (boolean)"],
+      "slots": ["title", "description", "default (body)", "actions"],
+      "parts": ["base", "panel", "title", "description", "body", "actions"],
       "events": [
         "Native close and cancel bubble from <dialog>.",
         "overlay-close (detail: {reason})"
@@ -198,16 +139,10 @@
         "level (1-6)",
         "tone (default | strong | muted | danger | success | warning | info)"
       ],
-      "slots": [
-        "default"
-      ],
-      "parts": [
-        "base"
-      ],
+      "slots": ["default"],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Renders the matching native heading element."
-      ],
+      "a11y": ["Renders the matching native heading element."],
       "cssVars": [
         "--uik-component-heading-size-{1..6}",
         "--uik-component-heading-line-height-{1..6}",
@@ -223,12 +158,8 @@
         "size (xs | sm | md | lg)",
         "tone (default | muted | danger | success | warning | info | inverse)"
       ],
-      "slots": [
-        "default (svg)"
-      ],
-      "parts": [
-        "base"
-      ],
+      "slots": ["default (svg)"],
+      "parts": ["base"],
       "events": [],
       "a11y": [
         "Use aria-label for meaningful icons; icons are aria-hidden by default when unlabeled."
@@ -255,21 +186,9 @@
         "inputmode",
         "enterkeyhint"
       ],
-      "slots": [
-        "label",
-        "hint",
-        "error"
-      ],
-      "parts": [
-        "base",
-        "control",
-        "label",
-        "hint",
-        "error"
-      ],
-      "events": [
-        "Native input and change bubble from the internal <input>."
-      ],
+      "slots": ["label", "hint", "error"],
+      "parts": ["base", "control", "label", "hint", "error"],
+      "events": ["Native input and change bubble from the internal <input>."],
       "a11y": [
         "Label slot associates via for; hint and error are wired to aria-describedby.",
         "aria-invalid is set when invalid or error content is present."
@@ -282,24 +201,11 @@
       "id": "link",
       "tagName": "uik-link",
       "summary": "Anchor wrapper with tokenized colors and underline styling.",
-      "attributes": [
-        "href",
-        "target",
-        "rel",
-        "download"
-      ],
-      "slots": [
-        "default (link text)"
-      ],
-      "parts": [
-        "base"
-      ],
-      "events": [
-        "Native anchor events bubble from the internal <a>."
-      ],
-      "a11y": [
-        "Forward aria-* attributes to <a>."
-      ],
+      "attributes": ["href", "target", "rel", "download"],
+      "slots": ["default (link text)"],
+      "parts": ["base"],
+      "events": ["Native anchor events bubble from the internal <a>."],
+      "a11y": ["Forward aria-* attributes to <a>."],
       "cssVars": [
         "--uik-component-link-fg-default",
         "--uik-component-link-fg-hover",
@@ -310,23 +216,10 @@
       "id": "nav",
       "tagName": "uik-nav",
       "summary": "Navigation list with grouped links and current state.",
-      "attributes": [
-        "items (array)",
-        "openIds (string[])",
-        "currentId"
-      ],
+      "attributes": ["items (array)", "openIds (string[])", "currentId"],
       "slots": [],
-      "parts": [
-        "base",
-        "item",
-        "toggle",
-        "link",
-        "label"
-      ],
-      "events": [
-        "nav-select",
-        "nav-toggle"
-      ],
+      "parts": ["base", "item", "toggle", "link", "label"],
+      "events": ["nav-select", "nav-toggle"],
       "a11y": [
         "Renders anchors inside a nav landmark; active links expose aria-current."
       ],
@@ -347,16 +240,8 @@
         "orientation (vertical | horizontal)"
       ],
       "slots": [],
-      "parts": [
-        "base",
-        "item",
-        "item-button",
-        "item-indicator",
-        "item-icon"
-      ],
-      "events": [
-        "nav-rail-select"
-      ],
+      "parts": ["base", "item", "item-button", "item-indicator", "item-icon"],
+      "events": ["nav-rail-select"],
       "a11y": [
         "Toolbar role with roving focus; Arrow/Home/End move focus; Enter/Space activate items."
       ],
@@ -377,26 +262,14 @@
       "id": "popover",
       "tagName": "uik-popover",
       "summary": "Popover panel with trigger slot and optional native popover support.",
-      "attributes": [
-        "open",
-        "placement",
-        "popover (auto | manual | hint)"
-      ],
-      "slots": [
-        "trigger",
-        "default (panel content)"
-      ],
-      "parts": [
-        "control",
-        "base"
-      ],
+      "attributes": ["open", "placement", "popover (auto | manual | hint)"],
+      "slots": ["trigger", "default (panel content)"],
+      "parts": ["control", "base"],
       "events": [
         "Trigger events bubble; panel listens to native popover toggle when supported.",
         "overlay-close (detail: {reason})"
       ],
-      "a11y": [
-        "Forward aria-* attributes to the panel."
-      ],
+      "a11y": ["Forward aria-* attributes to the panel."],
       "cssVars": [
         "--uik-component-popover-bg",
         "--uik-component-popover-fg",
@@ -413,15 +286,9 @@
       "id": "progress",
       "tagName": "uik-progress",
       "summary": "Progress indicator with determinate and indeterminate modes.",
-      "attributes": [
-        "value",
-        "max",
-        "indeterminate (boolean)"
-      ],
+      "attributes": ["value", "max", "indeterminate (boolean)"],
       "slots": [],
-      "parts": [
-        "base"
-      ],
+      "parts": ["base"],
       "events": [],
       "a11y": [
         "Forward aria-label and aria-labelledby to the internal <progress>."
@@ -446,28 +313,13 @@
         "required",
         "invalid"
       ],
-      "slots": [
-        "label",
-        "hint",
-        "error"
-      ],
-      "parts": [
-        "base",
-        "control",
-        "label",
-        "hint",
-        "error"
-      ],
-      "events": [
-        "Native change bubbles from the internal <input>."
-      ],
+      "slots": ["label", "hint", "error"],
+      "parts": ["base", "control", "label", "hint", "error"],
+      "events": ["Native change bubbles from the internal <input>."],
       "a11y": [
         "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
       ],
-      "cssVars": [
-        "--uik-component-radio-accent",
-        "--uik-component-radio-size"
-      ]
+      "cssVars": ["--uik-component-radio-accent", "--uik-component-radio-size"]
     },
     {
       "id": "radio-group",
@@ -481,28 +333,13 @@
         "required",
         "invalid"
       ],
-      "slots": [
-        "label",
-        "hint",
-        "error",
-        "default (<uik-radio> children)"
-      ],
-      "parts": [
-        "base",
-        "control",
-        "label",
-        "hint",
-        "error"
-      ],
-      "events": [
-        "Native change bubbles from child radios."
-      ],
+      "slots": ["label", "hint", "error", "default (<uik-radio> children)"],
+      "parts": ["base", "control", "label", "hint", "error"],
+      "events": ["Native change bubbles from child radios."],
       "a11y": [
         "Label slot wires aria-labelledby; hint/error are announced via aria-describedby."
       ],
-      "cssVars": [
-        "--uik-component-radio-group-gap"
-      ]
+      "cssVars": ["--uik-component-radio-group-gap"]
     },
     {
       "id": "resizable-panels",
@@ -516,17 +353,8 @@
         "step (number, px)",
         "stepLarge (number, px)"
       ],
-      "slots": [
-        "start",
-        "end"
-      ],
-      "parts": [
-        "base",
-        "panel-start",
-        "panel-end",
-        "handle",
-        "handle-grip"
-      ],
+      "slots": ["start", "end"],
+      "parts": ["base", "panel-start", "panel-end", "handle", "handle-grip"],
       "events": [
         "resizable-panels-resize (detail: {startSize, endSize, ratio, source, phase})"
       ],
@@ -550,29 +378,10 @@
       "id": "select",
       "tagName": "uik-select",
       "summary": "Form-associated select with label, hint, and error slots.",
-      "attributes": [
-        "name",
-        "value",
-        "disabled",
-        "required",
-        "invalid"
-      ],
-      "slots": [
-        "label",
-        "hint",
-        "error",
-        "default (<option> elements)"
-      ],
-      "parts": [
-        "base",
-        "control",
-        "label",
-        "hint",
-        "error"
-      ],
-      "events": [
-        "Native change bubbles from the internal <select>."
-      ],
+      "attributes": ["name", "value", "disabled", "required", "invalid"],
+      "slots": ["label", "hint", "error", "default (<option> elements)"],
+      "parts": ["base", "control", "label", "hint", "error"],
+      "events": ["Native change bubbles from the internal <select>."],
       "a11y": [
         "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
       ],
@@ -584,17 +393,11 @@
       "id": "separator",
       "tagName": "uik-separator",
       "summary": "Horizontal or vertical separator line.",
-      "attributes": [
-        "orientation (horizontal | vertical)"
-      ],
+      "attributes": ["orientation (horizontal | vertical)"],
       "slots": [],
-      "parts": [
-        "base"
-      ],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Horizontal renders <hr>; vertical uses role=\"separator\"."
-      ],
+      "a11y": ["Horizontal renders <hr>; vertical uses role=\"separator\"."],
       "cssVars": [
         "--uik-separator-color",
         "--uik-separator-thickness",
@@ -610,13 +413,9 @@
         "tone (default | muted | primary | danger | success | warning | info)"
       ],
       "slots": [],
-      "parts": [
-        "base"
-      ],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Add aria-label if the spinner is meaningful."
-      ],
+      "a11y": ["Add aria-label if the spinner is meaningful."],
       "cssVars": [
         "--uik-component-spinner-size-{sm|md|lg}",
         "--uik-component-spinner-track",
@@ -633,19 +432,11 @@
         "align",
         "justify"
       ],
-      "slots": [
-        "default"
-      ],
-      "parts": [
-        "base"
-      ],
+      "slots": ["default"],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Use semantic wrappers for landmark content."
-      ],
-      "cssVars": [
-        "--uik-component-stack-gap-{1..6}"
-      ]
+      "a11y": ["Use semantic wrappers for landmark content."],
+      "cssVars": ["--uik-component-stack-gap-{1..6}"]
     },
     {
       "id": "surface",
@@ -655,16 +446,10 @@
         "variant (base | muted | card | elevated | popover)",
         "bordered (boolean)"
       ],
-      "slots": [
-        "default"
-      ],
-      "parts": [
-        "base"
-      ],
+      "slots": ["default"],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Use semantic HTML inside; does not add roles."
-      ],
+      "a11y": ["Use semantic HTML inside; does not add roles."],
       "cssVars": [
         "--uik-component-surface-bg-{default|muted|card|elevated|popover}",
         "--uik-component-surface-shadow-{default|card|elevated|popover}",
@@ -685,26 +470,10 @@
         "required",
         "invalid"
       ],
-      "slots": [
-        "label",
-        "hint",
-        "error"
-      ],
-      "parts": [
-        "base",
-        "control",
-        "track",
-        "thumb",
-        "label",
-        "hint",
-        "error"
-      ],
-      "events": [
-        "Native change bubbles from the internal <input>."
-      ],
-      "a11y": [
-        "Uses role=\"switch\" and supports label slot or aria-label."
-      ],
+      "slots": ["label", "hint", "error"],
+      "parts": ["base", "control", "track", "thumb", "label", "hint", "error"],
+      "events": ["Native change bubbles from the internal <input>."],
+      "a11y": ["Uses role=\"switch\" and supports label slot or aria-label."],
       "cssVars": [
         "--uik-component-switch-height",
         "--uik-component-switch-width",
@@ -729,16 +498,10 @@
         "tone",
         "truncate (boolean)"
       ],
-      "slots": [
-        "default"
-      ],
-      "parts": [
-        "base"
-      ],
+      "slots": ["default"],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Use as=label for form labels when needed."
-      ],
+      "a11y": ["Use as=label for form labels when needed."],
       "cssVars": [
         "--uik-component-text-size-{sm|md|lg|xl}",
         "--uik-component-text-line-height-{sm|md|lg|xl}",
@@ -760,18 +523,8 @@
         "readonly",
         "invalid"
       ],
-      "slots": [
-        "label",
-        "hint",
-        "error"
-      ],
-      "parts": [
-        "base",
-        "control",
-        "label",
-        "hint",
-        "error"
-      ],
+      "slots": ["label", "hint", "error"],
+      "parts": ["base", "control", "label", "hint", "error"],
       "events": [
         "Native input and change bubble from the internal <textarea>."
       ],
@@ -786,19 +539,9 @@
       "id": "tooltip",
       "tagName": "uik-tooltip",
       "summary": "Tooltip panel with trigger slot.",
-      "attributes": [
-        "open",
-        "placement",
-        "popover (defaults to hint)"
-      ],
-      "slots": [
-        "trigger",
-        "default (tooltip content)"
-      ],
-      "parts": [
-        "control",
-        "base"
-      ],
+      "attributes": ["open", "placement", "popover (defaults to hint)"],
+      "slots": ["trigger", "default (tooltip content)"],
+      "parts": ["control", "base"],
       "events": [
         "Trigger events bubble from slotted trigger.",
         "overlay-close (detail: {reason})"
@@ -827,18 +570,8 @@
         "openIds (string[])"
       ],
       "slots": [],
-      "parts": [
-        "base",
-        "item",
-        "toggle",
-        "selection",
-        "label"
-      ],
-      "events": [
-        "tree-view-select",
-        "tree-view-open",
-        "tree-view-toggle"
-      ],
+      "parts": ["base", "item", "toggle", "selection", "label"],
+      "events": ["tree-view-select", "tree-view-open", "tree-view-toggle"],
       "a11y": [
         "Treeview role with roving focus; Space toggles selection and Enter opens items."
       ],
@@ -854,16 +587,10 @@
       "tagName": "uik-visually-hidden",
       "summary": "Utility to hide content visually while keeping it accessible.",
       "attributes": [],
-      "slots": [
-        "default"
-      ],
-      "parts": [
-        "base"
-      ],
+      "slots": ["default"],
+      "parts": ["base"],
       "events": [],
-      "a11y": [
-        "Use for screen-reader-only labels or descriptions."
-      ],
+      "a11y": ["Use for screen-reader-only labels or descriptions."],
       "cssVars": []
     }
   ]

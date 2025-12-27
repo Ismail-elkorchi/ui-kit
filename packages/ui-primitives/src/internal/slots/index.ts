@@ -1,1 +1,1 @@
-export {buildDescribedBy, hasSlotContent} from './slots';
+export { buildDescribedBy, hasSlotContent } from "./slots";

@@ -1,1 +1,1 @@
-export {UikTooltip} from './element';
+export { UikTooltip } from "./element";

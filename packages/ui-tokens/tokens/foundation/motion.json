@@ -69,48 +69,23 @@
     },
     "ease": {
       "emphasized": {
-        "$value": [
-          0.2,
-          0,
-          0,
-          1
-        ],
+        "$value": [0.2, 0, 0, 1],
         "$type": "cubicBezier"
       },
       "entrance": {
-        "$value": [
-          0,
-          0,
-          0,
-          1
-        ],
+        "$value": [0, 0, 0, 1],
         "$type": "cubicBezier"
       },
       "exit": {
-        "$value": [
-          0.2,
-          0,
-          1,
-          1
-        ],
+        "$value": [0.2, 0, 1, 1],
         "$type": "cubicBezier"
       },
       "linear": {
-        "$value": [
-          0,
-          0,
-          1,
-          1
-        ],
+        "$value": [0, 0, 1, 1],
         "$type": "cubicBezier"
       },
       "standard": {
-        "$value": [
-          0.2,
-          0,
-          0,
-          1
-        ],
+        "$value": [0.2, 0, 0, 1],
         "$type": "cubicBezier"
       }
     },

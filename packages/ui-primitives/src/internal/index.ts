@@ -1,5 +1,5 @@
-export {createId} from './dom';
-export {buildDescribedBy, hasSlotContent} from './slots';
+export { createId } from "./dom";
+export { buildDescribedBy, hasSlotContent } from "./slots";
 export {
   buildTreeIndex,
   buildTreeItems,
@@ -7,5 +7,5 @@ export {
   collectDescendantIds,
   collectLeafIds,
   collectTreeIds,
-} from './collection';
-export type {TreeIndex, TreeItem, TreeItemBase} from './collection';
+} from "./collection";
+export type { TreeIndex, TreeItem, TreeItemBase } from "./collection";

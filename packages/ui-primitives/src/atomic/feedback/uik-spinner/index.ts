@@ -1,1 +1,1 @@
-export {UikSpinner} from './element';
+export { UikSpinner } from "./element";
