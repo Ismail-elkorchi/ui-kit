@@ -9,5 +9,11 @@ describe("ui-primitives exports", () => {
     expect(primitives.UikResizablePanels).toBeDefined();
     expect(primitives.UikTooltip).toBeDefined();
     expect(primitives.UikRadioGroup).toBeDefined();
+    expect(primitives.UikListbox).toBeDefined();
+    expect(primitives.UikOption).toBeDefined();
+    expect(primitives.UikCombobox).toBeDefined();
+    expect(primitives.UikTabs).toBeDefined();
+    expect(primitives.UikTab).toBeDefined();
+    expect(primitives.UikTabPanel).toBeDefined();
   });
 });

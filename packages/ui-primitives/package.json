@@ -100,6 +100,36 @@
       "import": "./dist/src/composed/collection/uik-nav-rail/index.js",
       "default": "./dist/src/composed/collection/uik-nav-rail/index.js"
     },
+    "./uik-listbox": {
+      "types": "./dist/src/composed/collection/uik-listbox/index.d.ts",
+      "import": "./dist/src/composed/collection/uik-listbox/index.js",
+      "default": "./dist/src/composed/collection/uik-listbox/index.js"
+    },
+    "./uik-option": {
+      "types": "./dist/src/composed/collection/uik-listbox/uik-option.d.ts",
+      "import": "./dist/src/composed/collection/uik-listbox/uik-option.js",
+      "default": "./dist/src/composed/collection/uik-listbox/uik-option.js"
+    },
+    "./uik-combobox": {
+      "types": "./dist/src/composed/collection/uik-listbox/uik-combobox.d.ts",
+      "import": "./dist/src/composed/collection/uik-listbox/uik-combobox.js",
+      "default": "./dist/src/composed/collection/uik-listbox/uik-combobox.js"
+    },
+    "./uik-tabs": {
+      "types": "./dist/src/composed/collection/uik-tabs/index.d.ts",
+      "import": "./dist/src/composed/collection/uik-tabs/index.js",
+      "default": "./dist/src/composed/collection/uik-tabs/index.js"
+    },
+    "./uik-tab": {
+      "types": "./dist/src/composed/collection/uik-tabs/uik-tab.d.ts",
+      "import": "./dist/src/composed/collection/uik-tabs/uik-tab.js",
+      "default": "./dist/src/composed/collection/uik-tabs/uik-tab.js"
+    },
+    "./uik-tab-panel": {
+      "types": "./dist/src/composed/collection/uik-tabs/uik-tab-panel.d.ts",
+      "import": "./dist/src/composed/collection/uik-tabs/uik-tab-panel.js",
+      "default": "./dist/src/composed/collection/uik-tabs/uik-tab-panel.js"
+    },
     "./uik-tree-view": {
       "types": "./dist/src/composed/collection/uik-tree-view/index.d.ts",
       "import": "./dist/src/composed/collection/uik-tree-view/index.js",

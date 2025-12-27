@@ -16,9 +16,12 @@ import "@ismail-elkorchi/ui-primitives/uik-dialog";
 import "@ismail-elkorchi/ui-primitives/uik-heading";
 import "@ismail-elkorchi/ui-primitives/uik-icon";
 import "@ismail-elkorchi/ui-primitives/uik-input";
+import "@ismail-elkorchi/ui-primitives/uik-listbox";
+import "@ismail-elkorchi/ui-primitives/uik-combobox";
 import "@ismail-elkorchi/ui-primitives/uik-link";
 import "@ismail-elkorchi/ui-primitives/uik-nav";
 import "@ismail-elkorchi/ui-primitives/uik-nav-rail";
+import "@ismail-elkorchi/ui-primitives/uik-option";
 import "@ismail-elkorchi/ui-primitives/uik-tree-view";
 import "@ismail-elkorchi/ui-primitives/uik-popover";
 import "@ismail-elkorchi/ui-primitives/uik-progress";
@@ -31,6 +34,9 @@ import "@ismail-elkorchi/ui-primitives/uik-spinner";
 import "@ismail-elkorchi/ui-primitives/uik-stack";
 import "@ismail-elkorchi/ui-primitives/uik-surface";
 import "@ismail-elkorchi/ui-primitives/uik-switch";
+import "@ismail-elkorchi/ui-primitives/uik-tabs";
+import "@ismail-elkorchi/ui-primitives/uik-tab";
+import "@ismail-elkorchi/ui-primitives/uik-tab-panel";
 import "@ismail-elkorchi/ui-primitives/uik-text";
 import "@ismail-elkorchi/ui-primitives/uik-textarea";
 import "@ismail-elkorchi/ui-primitives/uik-tooltip";
@@ -55,7 +61,15 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - Roving focus is implemented with a single `tabIndexValue=0` target and `tabIndexValue=-1` for the rest of the roving set (usually `uik-button` inside a composite widget).
 - Arrow keys move focus within the roving set; `Home`/`End` jump to the first/last enabled item. `Enter`/`Space` activate the focused item per APG expectations.
 - Focus state is tracked by item id and updated on focus and when the items list changes (falling back to the active or first enabled item).
+- `uik-listbox` and `uik-tabs` use `uik-option` and `uik-tab` as the roving focus targets; `uik-listbox` can switch to `focus-mode="activedescendant"` for combobox-style inputs.
 - Shell components must delegate roving focus to primitives such as `uik-nav-rail`/`uik-tree-view` instead of re-implementing keyboard logic.
+
+## Overlay contract
+
+- Overlay primitives emit `overlay-close` with reason `escape | outside | programmatic | toggle`.
+- Focus origin is captured on open for focus-taking overlays; `uik-dialog` restores focus to the opener on close. Hover surfaces (`uik-tooltip`) never move focus.
+- Initial focus relies on native `<dialog>` behavior; popovers/tooltips leave focus on the trigger unless the host moves it.
+- Outside-dismiss policy: click popovers dismiss on outside click when not using the native Popover API; tooltips close on pointer/blur; dialog cancel reports `escape`.
 
 ## Components and contracts
 
@@ -107,7 +121,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Attributes/props**: `open`, `modal` (boolean).
 - **Slots**: `title`, `description`, default slot for body, `actions`.
 - **Parts**: `base`, `panel`, `title`, `description`, `body`, `actions`.
-- **Events**: native `close`/`cancel` from `<dialog>` bubble; `overlay-close` (`detail: {reason}`).
+- **Events**: native `close`/`cancel` from `<dialog>` bubble; `overlay-close` (`detail: {reason}`) with `escape | programmatic | toggle`.
 - **A11y**: uses native dialog semantics and forwards `aria-label`/`aria-labelledby`/`aria-describedby` to `<dialog>`; Escape closes and focus returns to the opener.
 - **Methods**: `showModal()`, `show()`, `close()`.
 - **Custom properties**: `--uik-component-dialog-bg`, `--uik-component-dialog-fg`, `--uik-component-dialog-border`, `--uik-component-dialog-radius`, `--uik-component-dialog-padding`, `--uik-component-dialog-shadow`, `--uik-component-dialog-max-width`, `--uik-component-dialog-title-fg`, `--uik-component-dialog-description-fg`, `--uik-component-dialog-actions-gap`.
@@ -144,6 +158,49 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **A11y**: forwards `aria-label`/`aria-labelledby`/`aria-describedby` to `<a>`.
 - **Custom properties**: `--uik-component-link-fg-default`, `--uik-component-link-fg-hover`, `--uik-component-link-underline-offset`.
 
+### `<uik-listbox>`
+
+- **Attributes/props**: `value`, `selectionMode` (`single | multiple`), `focusMode` (`roving | activedescendant`), `activeId`.
+- **Slots**: default slot for `<uik-option>`.
+- **Parts**: `base`.
+- **Events**: `listbox-select` (`detail: {value, values, option}`), `listbox-active` (`detail: {id, value, option}`).
+- **A11y**: `role="listbox"` with roving focus; `aria-multiselectable` when `selectionMode="multiple"`.
+- **Custom properties**: `--uik-component-listbox-*`, `--uik-component-listbox-item-*`.
+
+### `<uik-option>`
+
+- **Attributes/props**: `value`, `selected`, `disabled`, `active`, `tabIndexValue` (number).
+- **Slots**: default slot for option label.
+- **Parts**: `base`.
+- **A11y**: `role="option"` with `aria-selected` + `aria-disabled`.
+- **Custom properties**: `--uik-component-listbox-item-*`.
+
+### `<uik-combobox>`
+
+- **Attributes/props**: `value`, `open` (boolean), `items` (array), `name`, `placeholder`, `disabled`, `required`, `readonly`, `invalid`.
+- **Items**: `[{id, label, value?, isDisabled?}]` (`value` defaults to `id`).
+- **Slots**: `label`, `hint`, `error`.
+- **Parts**: `base`, `control`, `label`, `hint`, `error`, `panel`.
+- **Events**: `combobox-select` (`detail: {value, item}`).
+- **A11y**: input uses `role="combobox"` with `aria-controls` + `aria-activedescendant`; Arrow keys move active option.
+- **Custom properties**: `--uik-component-combobox-base-*`, `--uik-component-combobox-panel-offset` plus listbox tokens.
+
+### `<uik-tabs>`
+
+- **Attributes/props**: `activeId`, `orientation` (`horizontal | vertical`), `activation` (`auto | manual`).
+- **Slots**: `uik-tab` and `uik-tab-panel` children (slot names are applied automatically).
+- **Pairs**: each `uik-tab` should share the same `value` as its `uik-tab-panel`.
+- **Parts**: `tablist`, `panels`.
+- **Events**: `tabs-select` (`detail: {id}`).
+- **A11y**: roving focus within the tablist; manual activation uses `Enter`/`Space`.
+- **Custom properties**: `--uik-component-tabs-*`.
+
+### `<uik-tab>` / `<uik-tab-panel>`
+
+- **Attributes/props**: `value` on both; `selected`, `disabled`, `tabIndexValue` on `uik-tab`.
+- **Slots**: default slots for tab label and panel content.
+- **Parts**: `base` (tab + panel), `indicator` (tab).
+
 ### `<uik-tree-view>`
 
 - **Attributes/props**: `items` (array), `selectedIds` (string[]), `openIds` (string[]).
@@ -176,7 +233,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Attributes/props**: `open`, `placement` (`bottom-start | bottom | bottom-end | top-start | top | top-end`), `popover` (`auto | manual | hint`).
 - **Slots**: `trigger`, default slot for panel content.
 - **Parts**: `control` (trigger wrapper), `base` (panel).
-- **Events**: native events bubble from slotted trigger; panel listens for `toggle` when supported; `overlay-close` (`detail: {reason}`).
+- **Events**: native events bubble from slotted trigger; panel listens for `toggle` when supported; `overlay-close` (`detail: {reason}`) with `escape | outside | programmatic | toggle`.
 - **A11y**: forwards `aria-label`/`aria-labelledby`/`aria-describedby` to the panel.
 - **Behavior**: uses the Popover API when available; falls back to a positioned panel in Shadow DOM.
 - **Custom properties**: `--uik-component-popover-bg`, `--uik-component-popover-fg`, `--uik-component-popover-border`, `--uik-component-popover-radius`, `--uik-component-popover-padding-x`, `--uik-component-popover-padding-y`, `--uik-component-popover-shadow`, `--uik-component-popover-offset`.
@@ -290,7 +347,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Attributes/props**: `open`, `placement`, `popover` (defaults to `popover="hint"`).
 - **Slots**: `trigger`, default slot for tooltip content.
 - **Parts**: `control` (trigger wrapper), `base` (panel).
-- **Events**: `overlay-close` (`detail: {reason}`).
+- **Events**: `overlay-close` (`detail: {reason}`) with `escape | outside | programmatic | toggle`.
 - **A11y**: panel uses `role="tooltip"` and wires `aria-describedby` onto the trigger.
 - **Custom properties**: `--uik-component-tooltip-bg`, `--uik-component-tooltip-fg`, `--uik-component-tooltip-radius`, `--uik-component-tooltip-padding-x`, `--uik-component-tooltip-padding-y`, `--uik-component-tooltip-shadow`, `--uik-component-tooltip-offset`.
 

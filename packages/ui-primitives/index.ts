@@ -23,6 +23,12 @@ export { UikTextarea } from "./src/atomic/control/uik-textarea";
 export { UikVisuallyHidden } from "./src/atomic/content/uik-visually-hidden";
 export { UikNav } from "./src/composed/collection/uik-nav";
 export { UikNavRail } from "./src/composed/collection/uik-nav-rail";
+export { UikListbox } from "./src/composed/collection/uik-listbox";
+export { UikOption } from "./src/composed/collection/uik-listbox";
+export { UikCombobox } from "./src/composed/collection/uik-listbox";
+export { UikTabs } from "./src/composed/collection/uik-tabs";
+export { UikTab } from "./src/composed/collection/uik-tabs";
+export { UikTabPanel } from "./src/composed/collection/uik-tabs";
 export { UikTreeView } from "./src/composed/collection/uik-tree-view";
 export { UikRadioGroup } from "./src/composed/collection/uik-radio-group";
 export { UikTooltip } from "./src/composed/overlay/uik-tooltip";
@@ -36,6 +42,15 @@ export type {
   UikNavRailItem,
   UikNavRailSelectDetail,
 } from "./src/composed/collection/uik-nav-rail";
+export type {
+  UikListboxActiveDetail,
+  UikListboxSelectDetail,
+} from "./src/composed/collection/uik-listbox";
+export type {
+  UikComboboxItem,
+  UikComboboxSelectDetail,
+} from "./src/composed/collection/uik-listbox";
+export type { UikTabsSelectDetail } from "./src/composed/collection/uik-tabs";
 export type {
   UikTreeViewItem,
   UikTreeViewOpenDetail,

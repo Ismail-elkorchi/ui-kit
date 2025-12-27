@@ -19,7 +19,7 @@ type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
  * @part control
  * @part base
  * @event Trigger events bubble from slotted trigger.
- * @event overlay-close (detail: {reason})
+ * @event overlay-close (detail: {reason}) (escape | outside | programmatic | toggle)
  * @a11y Panel uses role="tooltip" and wires aria-describedby to trigger.
  * @cssprop --uik-component-tooltip-bg
  * @cssprop --uik-component-tooltip-fg

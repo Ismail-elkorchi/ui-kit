@@ -319,6 +319,11 @@ describe("uik-popover", () => {
 
     await popover.updateComplete;
 
+    let reason = "";
+    popover.addEventListener("overlay-close", (event) => {
+      reason = (event as CustomEvent<{ reason: string }>).detail.reason;
+    });
+
     popover.open = true;
     await popover.updateComplete;
 
@@ -332,6 +337,7 @@ describe("uik-popover", () => {
     await popover.updateComplete;
 
     expect(popover.open).toBe(false);
+    expect(reason).toBe("outside");
   });
 
   it("invokes popover methods when Popover API is supported", async () => {

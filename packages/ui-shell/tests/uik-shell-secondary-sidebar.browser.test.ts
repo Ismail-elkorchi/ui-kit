@@ -18,14 +18,17 @@ describe("uik-shell-secondary-sidebar", () => {
     await sidebar.updateComplete;
 
     let closeEvents = 0;
-    sidebar.addEventListener("secondary-sidebar-close", () => {
+    let reason = "";
+    sidebar.addEventListener("secondary-sidebar-close", (event) => {
       closeEvents += 1;
+      reason = (event as CustomEvent<{ reason: string }>).detail.reason;
     });
 
     sidebar.querySelector("button")?.focus();
     await userEvent.keyboard("{Escape}");
 
     expect(closeEvents).toBe(1);
+    expect(reason).toBe("escape");
   });
 
   it("restores focus to configured target or the previously focused element", async () => {

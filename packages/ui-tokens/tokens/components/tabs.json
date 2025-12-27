@@ -1,0 +1,88 @@
+{
+  "component": {
+    "tabs": {
+      "border": {
+        "$value": "{border.muted}",
+        "$type": "color",
+        "$description": "Component tabs border."
+      },
+      "borderWidth": {
+        "$value": "{border.width.1}",
+        "$type": "dimension",
+        "$description": "Component tabs border width."
+      },
+      "gap": {
+        "$value": "{layout.control.gap.1}",
+        "$type": "dimension",
+        "$description": "Component tabs gap."
+      },
+      "panelPadding": {
+        "$value": "{space.4}",
+        "$type": "dimension",
+        "$description": "Component tabs panel padding."
+      },
+      "tab": {
+        "height": {
+          "$value": "{size.control.sm}",
+          "$type": "dimension",
+          "$description": "Component tab height."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.2}",
+          "$type": "dimension",
+          "$description": "Component tab padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.1}",
+          "$type": "dimension",
+          "$description": "Component tab padding Y."
+        },
+        "radius": {
+          "$value": "{radius.2}",
+          "$type": "dimension",
+          "$description": "Component tab radius."
+        },
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component tab background."
+        },
+        "hoverBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component tab hover background."
+        },
+        "activeBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component tab active background."
+        },
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component tab foreground."
+        },
+        "activeFg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component tab active foreground."
+        },
+        "disabledFg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component tab disabled foreground."
+        },
+        "indicatorSize": {
+          "$value": "{border.width.2}",
+          "$type": "dimension",
+          "$description": "Component tab indicator size."
+        },
+        "indicatorBg": {
+          "$value": "{intent.primary.bg.default}",
+          "$type": "color",
+          "$description": "Component tab indicator background."
+        }
+      }
+    }
+  }
+}

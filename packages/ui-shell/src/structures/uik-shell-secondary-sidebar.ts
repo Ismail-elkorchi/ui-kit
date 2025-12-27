@@ -11,6 +11,8 @@ import {
   LightDomSlotController,
 } from "../internal/light-dom-slot-controller";
 
+type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
+
 /**
  * Secondary sidebar panel with header and optional footer.
  * @attr isOpen (boolean)
@@ -24,7 +26,7 @@ import {
  * @part close-button
  * @part body
  * @part footer
- * @event secondary-sidebar-close
+ * @event secondary-sidebar-close (detail: {reason})
  * @a11y Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading.
  * @cssprop --uik-component-shell-secondary-sidebar-bg
  * @cssprop --uik-component-shell-secondary-sidebar-width
@@ -96,12 +98,13 @@ export class UikShellSecondarySidebar extends LitElement {
     return ensureLightDomRoot(this);
   }
 
-  private close = () => {
+  private close = (reason: OverlayCloseReason = "programmatic") => {
     if (!this.isOpen) return;
     this.shouldRestoreFocus = true;
     this.isOpen = false;
     this.dispatchEvent(
       new CustomEvent("secondary-sidebar-close", {
+        detail: { reason },
         bubbles: true,
         composed: true,
       }),
@@ -113,7 +116,7 @@ export class UikShellSecondarySidebar extends LitElement {
     if (event.key !== "Escape") return;
     event.stopPropagation();
     event.preventDefault();
-    this.close();
+    this.close("escape");
   };
 
   private restoreFocus() {
@@ -260,7 +263,7 @@ export class UikShellSecondarySidebar extends LitElement {
             muted
             aria-label="Close secondary sidebar"
             title="Close secondary sidebar"
-            @click=${this.close}
+            @click=${() => this.close("toggle")}
           >
             <svg
               part="close-icon"

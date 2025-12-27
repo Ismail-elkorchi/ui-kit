@@ -23,7 +23,7 @@ type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
  * @part body
  * @part actions
  * @event Native close and cancel bubble from <dialog>.
- * @event overlay-close (detail: {reason})
+ * @event overlay-close (detail: {reason}) (escape | programmatic | toggle)
  * @a11y Uses native dialog semantics; forwards aria-* attributes to <dialog>.
  * @a11y Escape closes and overlay-close reports reason; focus returns to the opener.
  * @cssprop --uik-component-dialog-bg
@@ -124,6 +124,10 @@ export class UikDialog extends LitElement {
     this.restoreFocus();
   };
 
+  private onCancel = () => {
+    this.pendingCloseReason ??= "escape";
+  };
+
   private captureFocusOrigin() {
     const active = document.activeElement;
     if (active instanceof HTMLElement && !this.contains(active)) {
@@ -163,6 +167,7 @@ export class UikDialog extends LitElement {
     return html`
       <dialog
         part="base"
+        @cancel=${this.onCancel}
         @close=${this.onClose}
         @keydown=${this.onKeyDown}
         aria-label=${ifDefined(ariaLabel)}

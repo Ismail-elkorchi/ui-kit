@@ -22,7 +22,7 @@ type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
  * @part control
  * @part base
  * @event Trigger events bubble; panel listens to native popover toggle when supported.
- * @event overlay-close (detail: {reason})
+ * @event overlay-close (detail: {reason}) (escape | outside | programmatic | toggle)
  * @a11y Forward aria-* attributes to the panel.
  * @cssprop --uik-component-popover-bg
  * @cssprop --uik-component-popover-fg

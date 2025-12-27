@@ -43,17 +43,55 @@ describe("uik-dialog", () => {
     await dialog.updateComplete;
 
     let reason = "";
-    dialog.addEventListener("overlay-close", (event) => {
-      reason = (event as CustomEvent<{ reason: string }>).detail.reason;
+    const closePromise = new Promise<void>((resolve) => {
+      dialog.addEventListener(
+        "overlay-close",
+        (event) => {
+          reason = (event as CustomEvent<{ reason: string }>).detail.reason;
+          resolve();
+        },
+        { once: true },
+      );
     });
 
     const internal = dialog.shadowRoot?.querySelector("dialog");
     internal?.focus();
     await userEvent.keyboard("{Escape}");
 
-    await dialog.updateComplete;
+    await closePromise;
     expect(reason).toBe("escape");
     expect(document.activeElement).toBe(opener);
+  });
+
+  it("reports escape close reason on cancel", async () => {
+    const dialog = document.createElement("uik-dialog") as UikDialog;
+    dialog.modal = false;
+    dialog.open = true;
+    dialog.innerHTML = '<span slot="title">Dialog</span>';
+    document.body.append(dialog);
+
+    await dialog.updateComplete;
+
+    let reason = "";
+    const closePromise = new Promise<void>((resolve) => {
+      dialog.addEventListener(
+        "overlay-close",
+        (event) => {
+          reason = (event as CustomEvent<{ reason: string }>).detail.reason;
+          resolve();
+        },
+        { once: true },
+      );
+    });
+
+    const internal = dialog.shadowRoot?.querySelector("dialog");
+    internal?.dispatchEvent(
+      new Event("cancel", { bubbles: true, cancelable: true }),
+    );
+    internal?.close();
+
+    await closePromise;
+    expect(reason).toBe("escape");
   });
 
   it("supports modal and non-modal open APIs", async () => {
