@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "css-accent-color",
+      "name": "CSS accent-color",
+      "category": "CSS",
+      "baseline": "newly",
+      "usage": "Radio/checkbox styling for form controls.",
+      "gating": "",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color",
+      "queue_id": "BL-0133",
+      "status": "queued"
+    },
+    {
+      "id": "css-cascade-layers",
+      "name": "CSS Cascade Layers (@layer)",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Token outputs wrap theme layers with @layer for predictable overrides.",
+      "gating": "",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer",
+      "queue_id": "BL-0134",
+      "status": "queued"
+    },
+    {
+      "id": "css-custom-properties",
+      "name": "CSS Custom Properties",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Token-driven theming across primitives, shell, and docs.",
+      "gating": "",
+      "evidence": "https://www.w3.org/TR/css-variables-1/",
+      "queue_id": "BL-0135",
+      "status": "queued"
+    },
+    {
+      "id": "css-focus-visible",
+      "name": ":focus-visible",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Visible focus styling without pointer-only focus rings.",
+      "gating": "",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible",
+      "queue_id": "BL-0136",
+      "status": "queued"
+    },
+    {
+      "id": "css-forced-colors",
+      "name": "@media (forced-colors)",
+      "category": "CSS",
+      "baseline": "not-baseline",
+      "usage": "High-contrast/forced-colors adjustments for a11y.",
+      "gating": "",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors",
+      "queue_id": "BL-0137",
+      "status": "queued"
+    },
+    {
+      "id": "css-logical-properties",
+      "name": "CSS Logical Properties",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Padding/spacing with logical axes for RTL/writing-mode support.",
+      "gating": "",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values",
+      "queue_id": "BL-0138",
+      "status": "queued"
+    },
+    {
+      "id": "css-oklch",
+      "name": "CSS Color 4 OKLCH",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Token color outputs and component styling.",
+      "gating": "",
+      "evidence": "https://www.w3.org/TR/css-color-4/",
+      "queue_id": "BL-0139",
+      "status": "queued"
+    },
+    {
+      "id": "css-prefers-reduced-motion",
+      "name": "@media (prefers-reduced-motion)",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Reduce or remove motion for user preference.",
+      "gating": "",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion",
+      "queue_id": "BL-0140",
+      "status": "queued"
+    },
+    {
+      "id": "css-scrollbars",
+      "name": "CSS Scrollbar Styling",
+      "category": "CSS",
+      "baseline": "not-baseline",
+      "usage": "Shell scrollbar theming via scrollbar-color/scrollbar-width.",
+      "gating": "",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color",
+      "queue_id": "BL-0141",
+      "status": "queued"
+    },
+    {
+      "id": "css-shadow-parts",
+      "name": "CSS Shadow Parts (::part)",
+      "category": "CSS",
+      "baseline": "widely",
+      "usage": "Public styling hooks for Shadow DOM components.",
+      "gating": "",
+      "evidence": "https://www.w3.org/TR/css-shadow-parts-1/",
+      "queue_id": "BL-0142",
+      "status": "queued"
+    },
+    {
+      "id": "element-internals",
+      "name": "ElementInternals (Form-Associated Custom Elements)",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Form-associated primitives for form submission and validation.",
+      "gating": "",
+      "evidence": "https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face",
+      "queue_id": "BL-0143",
+      "status": "queued"
+    },
+    {
+      "id": "html-custom-elements",
+      "name": "Custom Elements",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Core component model for UI primitives and shell.",
+      "gating": "",
+      "evidence": "https://html.spec.whatwg.org/multipage/custom-elements.html",
+      "queue_id": "BL-0144",
+      "status": "queued"
+    },
+    {
+      "id": "html-dialog",
+      "name": "HTML <dialog>",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Native dialog semantics via uik-dialog.",
+      "gating": "",
+      "evidence": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog",
+      "queue_id": "BL-0145",
+      "status": "queued"
+    },
+    {
+      "id": "html-popover",
+      "name": "HTML Popover API",
+      "category": "HTML",
+      "baseline": "newly",
+      "usage": "Optional native popover support for overlay primitives.",
+      "gating": "Feature-detect popover support and fall back to manual panel.",
+      "evidence": "https://html.spec.whatwg.org/multipage/popover.html",
+      "queue_id": "BL-0146",
+      "status": "queued"
+    },
+    {
+      "id": "html-shadow-dom",
+      "name": "Shadow DOM",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Encapsulation for primitives with slots for composition.",
+      "gating": "",
+      "evidence": "https://dom.spec.whatwg.org/",
+      "queue_id": "BL-0147",
+      "status": "queued"
+    },
+    {
+      "id": "html-slots",
+      "name": "HTML Slots",
+      "category": "HTML",
+      "baseline": "widely",
+      "usage": "Composition API for Shadow DOM components.",
+      "gating": "",
+      "evidence": "https://html.spec.whatwg.org/multipage/dom.html#the-slot-element",
+      "queue_id": "BL-0148",
+      "status": "queued"
+    }
+  ]
+}

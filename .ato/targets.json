@@ -1,0 +1,12 @@
+{
+  "targets": [
+    {
+      "fingerprint": "uik@f3902552afbf0f57d774e4e9cdec7514004017127707cf1d571fff48359cd385",
+      "id": "uik",
+      "notes": "UI kit monorepo root",
+      "root": "..",
+      "storeDir": ".ato"
+    }
+  ],
+  "version": 1
+}

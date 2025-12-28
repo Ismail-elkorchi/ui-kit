@@ -1,0 +1,110 @@
+{
+  "blackboard": {
+    "modes": {
+      "deep": [],
+      "light": []
+    }
+  },
+  "contracts": {
+    "platform": ".ato/contracts/PLATFORM_CONTRACT.md"
+  },
+  "defaultTargetId": "uik",
+  "fingerprint": "uik@f3902552afbf0f57d774e4e9cdec7514004017127707cf1d571fff48359cd385",
+  "fingerprintSeed": "dbd07cf9e6314d469f3008b00d72a68a",
+  "gates": {
+    "fast": [
+      {
+        "cmd": ["npm", "run", "format"],
+        "id": "format"
+      },
+      {
+        "cmd": ["npm", "run", "typecheck"],
+        "id": "typecheck"
+      },
+      {
+        "cmd": ["npm", "run", "lint"],
+        "id": "eslint"
+      },
+      {
+        "cmd": ["npm", "run", "lint:style"],
+        "id": "stylelint"
+      }
+    ],
+    "full": {
+      "tests": {
+        "order": ["ui-tokens", "ui-primitives", "ui-shell", "docs"],
+        "root": [
+          {
+            "cmd": ["npm", "run", "test"],
+            "id": "tests"
+          }
+        ],
+        "scopes": {
+          "docs": [
+            {
+              "cmd": ["npm", "-w", "packages/docs", "run", "test"],
+              "id": "docs-test"
+            }
+          ],
+          "ui-primitives": [
+            {
+              "cmd": ["npm", "-w", "packages/ui-primitives", "run", "test"],
+              "id": "primitives-test"
+            }
+          ],
+          "ui-shell": [
+            {
+              "cmd": ["npm", "-w", "packages/ui-shell", "run", "test"],
+              "id": "shell-test"
+            }
+          ],
+          "ui-tokens": [
+            {
+              "cmd": ["npm", "-w", "packages/ui-tokens", "run", "test"],
+              "id": "tokens-test"
+            }
+          ]
+        }
+      }
+    },
+    "scopeMap": [
+      {
+        "prefix": ".ato/",
+        "scope": "internal"
+      },
+      {
+        "prefix": "packages/ui-tokens/",
+        "scope": "ui-tokens"
+      },
+      {
+        "prefix": "packages/ui-primitives/",
+        "scope": "ui-primitives"
+      },
+      {
+        "prefix": "packages/ui-shell/",
+        "scope": "ui-shell"
+      },
+      {
+        "prefix": "packages/docs/",
+        "scope": "docs"
+      }
+    ]
+  },
+  "lock": {
+    "ttlMs": 7200000
+  },
+  "pack": {
+    "defaultBudget": 2400
+  },
+  "storeDir": ".ato",
+  "targetId": "uik",
+  "terminology": {
+    "aliases": {
+      "cognitive system": ["cognitive-system"],
+      "macro-scope": ["macro scope", "macro_scope"],
+      "router protocol": ["routing protocol"]
+    },
+    "required": ["macro-scope", "router protocol", "cognitive system"]
+  },
+  "version": 1
+}

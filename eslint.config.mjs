@@ -68,10 +68,10 @@ export default defineConfig([
       "**/storybook-static/**",
       "**/playwright-report/**",
       "**/test-results/**",
-      ".internal/.cache/**",
-      ".internal/archive/**",
-      "external/**",
-      "llm-context-studio/**",
+      ".internal/**",
+      ".ato/**",
+      ".ato/cache/**",
+      ".ato/runs/**",
     ],
   },
 
@@ -98,14 +98,13 @@ export default defineConfig([
     },
   },
   {
-    files: [".internal/tools/**/*.{js,mjs,cjs}"],
+    files: ["ato/**/*.{js,mjs,cjs}"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
       globals: { ...globals.node, ...globals.es2021 },
     },
   },
-
   ...strictTypeChecked,
   ...stylisticTypeChecked,
 

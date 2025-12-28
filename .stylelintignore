@@ -1,11 +1,6 @@
 dist/
 node_modules/
 storybook-static/
-external/
-llm-context-studio/
-.internal/archive/
-.internal/views/
-.internal/.cache/
 **/*.d.ts
 package.json
 package-lock.json

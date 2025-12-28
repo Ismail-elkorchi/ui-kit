@@ -1,4 +1,11 @@
-.internal/
+.ato/cache/
+.ato/runs/
+.ato/queue/views/
+.ato/blackboard/events.jsonl
+.ato/lock.json
+# Local ATO session state (do not track)
+.ato/state.json
+.ato/blackboard/state.json
 node_modules/
 dist/
 *.tsbuildinfo
@@ -23,13 +30,6 @@ __screenshots__/
 package-lock.json
 debug-storybook.log
 docs/tokens-primitives-audit.data.json
-
-# Local routers (workspace-only; do not track)
-AGENTS.md
-**/AGENTS.md
-
-# External sandboxes (local-only; not part of the monorepo)
-external/
 
 # Generated docs content (do not track)
 packages/docs/src/generated/

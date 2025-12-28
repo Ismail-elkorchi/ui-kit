@@ -1,0 +1,8 @@
+{
+  "formatVersion": 1,
+  "policy": "patch-bumps-with-rollover",
+  "current": "0.1.1",
+  "next": "0.1.2",
+  "line": "0.1.x",
+  "readiness_threshold": "P2"
+}
