@@ -1,5 +1,7 @@
 export { UikAlert } from "./src/atomic/feedback/uik-alert";
 export { UikBadge } from "./src/atomic/content/uik-badge";
+export { UikCodeBlock } from "./src/atomic/content/uik-code-block";
+export { UikDescriptionList } from "./src/atomic/content/uik-description-list";
 export { UikBox } from "./src/atomic/layout/uik-box";
 export { UikButton } from "./src/atomic/control/uik-button";
 export { UikCheckbox } from "./src/atomic/control/uik-checkbox";
@@ -8,6 +10,7 @@ export { UikHeading } from "./src/atomic/content/uik-heading";
 export { UikIcon } from "./src/atomic/content/uik-icon";
 export { UikInput } from "./src/atomic/control/uik-input";
 export { UikLink } from "./src/atomic/control/uik-link";
+export { UikPagination } from "./src/atomic/control/uik-pagination";
 export { UikPopover } from "./src/atomic/overlay/uik-popover";
 export { UikProgress } from "./src/atomic/feedback/uik-progress";
 export { UikRadio } from "./src/atomic/control/uik-radio";
@@ -32,11 +35,13 @@ export { UikTabPanel } from "./src/composed/collection/uik-tabs";
 export { UikTreeView } from "./src/composed/collection/uik-tree-view";
 export { UikRadioGroup } from "./src/composed/collection/uik-radio-group";
 export { UikTooltip } from "./src/composed/overlay/uik-tooltip";
+export type { UikCodeBlockCopyDetail } from "./src/atomic/content/uik-code-block";
 export type {
   UikNavItem,
   UikNavSelectDetail,
   UikNavToggleDetail,
 } from "./src/composed/collection/uik-nav";
+export type { UikPaginationChangeDetail } from "./src/atomic/control/uik-pagination";
 export type {
   UikNavRailIcon,
   UikNavRailItem,

@@ -9,9 +9,11 @@ import "@ismail-elkorchi/ui-primitives/register"; // defines all elements
 // or import individual components for tree-shaking:
 import "@ismail-elkorchi/ui-primitives/uik-alert";
 import "@ismail-elkorchi/ui-primitives/uik-badge";
+import "@ismail-elkorchi/ui-primitives/uik-code-block";
 import "@ismail-elkorchi/ui-primitives/uik-box";
 import "@ismail-elkorchi/ui-primitives/uik-button";
 import "@ismail-elkorchi/ui-primitives/uik-checkbox";
+import "@ismail-elkorchi/ui-primitives/uik-description-list";
 import "@ismail-elkorchi/ui-primitives/uik-dialog";
 import "@ismail-elkorchi/ui-primitives/uik-heading";
 import "@ismail-elkorchi/ui-primitives/uik-icon";
@@ -24,6 +26,7 @@ import "@ismail-elkorchi/ui-primitives/uik-nav-rail";
 import "@ismail-elkorchi/ui-primitives/uik-option";
 import "@ismail-elkorchi/ui-primitives/uik-tree-view";
 import "@ismail-elkorchi/ui-primitives/uik-popover";
+import "@ismail-elkorchi/ui-primitives/uik-pagination";
 import "@ismail-elkorchi/ui-primitives/uik-progress";
 import "@ismail-elkorchi/ui-primitives/uik-radio";
 import "@ismail-elkorchi/ui-primitives/uik-radio-group";
@@ -124,6 +127,25 @@ validation must be handled by the host.
 - **A11y**: label slot or `aria-label`; hint/error slots are announced via `aria-describedby`.
 - **Forms**: form-associated and participates in `FormData` when checked (see Form association fallback).
 - **Custom properties**: `--uik-component-checkbox-accent`, `--uik-component-checkbox-size`.
+
+### `<uik-code-block>`
+
+- **Attributes/props**: `copy` (boolean), `inline` (boolean), `copy-label`, `aria-label`, `aria-labelledby`.
+- **Slots**: default slot for code content, `copy-label` for the copy button.
+- **Parts**: `base`, `content`, `copy-button`, `inline`.
+- **Events**: `code-block-copy` (`detail: {value, success}`).
+- **Usage**: use `inline` for short values or commands; default mode renders a scrollable block.
+- **A11y**: provide `aria-label`/`aria-labelledby` when the block needs a name; copy button uses `copy-label`.
+- **Custom properties**: `--uik-component-code-block-*`, `--uik-component-code-block-copy-*`.
+
+### `<uik-description-list>`
+
+- **Attributes/props**: `density` (`comfortable | compact`).
+- **Slots**: default slot for `dt`/`dd` pairs.
+- **Parts**: `base`.
+- **Usage**: use one `dt` followed by one `dd` per row; inline values can use `uik-code-block`.
+- **A11y**: use proper `dt`/`dd` pairs so assistive tech announces the term/value relationship.
+- **Custom properties**: `--uik-component-description-list-*`.
 
 ### `<uik-dialog>`
 
@@ -247,6 +269,16 @@ validation must be handled by the host.
 - **A11y**: forwards `aria-label`/`aria-labelledby`/`aria-describedby` to the panel.
 - **Behavior**: uses the Popover API when available; falls back to a positioned panel in Shadow DOM.
 - **Custom properties**: `--uik-component-popover-bg`, `--uik-component-popover-fg`, `--uik-component-popover-border`, `--uik-component-popover-radius`, `--uik-component-popover-padding-x`, `--uik-component-popover-padding-y`, `--uik-component-popover-shadow`, `--uik-component-popover-offset`.
+
+### `<uik-pagination>`
+
+- **Attributes/props**: `page`, `page-count`, `total`, `max-buttons`, `aria-label`, `aria-labelledby`.
+- **Slots**: `summary`.
+- **Parts**: `base`, `list`, `item`, `button`, `summary`, `ellipsis`.
+- **Events**: `pagination-change` (`detail: {page}`).
+- **Usage**: pair with tables or list views and drive `page`, `page-count`, and `total` from your data source; override `summary` for ranges like `1-20 of 240`.
+- **A11y**: `aria-current="page"` marks the active page; label the nav with `aria-label`/`aria-labelledby`.
+- **Custom properties**: `--uik-component-pagination-*`.
 
 ### `<uik-progress>`
 

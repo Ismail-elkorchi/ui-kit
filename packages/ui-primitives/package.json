@@ -55,10 +55,20 @@
       "import": "./dist/src/atomic/content/uik-badge/index.js",
       "default": "./dist/src/atomic/content/uik-badge/index.js"
     },
+    "./uik-code-block": {
+      "types": "./dist/src/atomic/content/uik-code-block/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-code-block/index.js",
+      "default": "./dist/src/atomic/content/uik-code-block/index.js"
+    },
     "./uik-checkbox": {
       "types": "./dist/src/atomic/control/uik-checkbox/index.d.ts",
       "import": "./dist/src/atomic/control/uik-checkbox/index.js",
       "default": "./dist/src/atomic/control/uik-checkbox/index.js"
+    },
+    "./uik-description-list": {
+      "types": "./dist/src/atomic/content/uik-description-list/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-description-list/index.js",
+      "default": "./dist/src/atomic/content/uik-description-list/index.js"
     },
     "./uik-dialog": {
       "types": "./dist/src/atomic/overlay/uik-dialog/index.d.ts",
@@ -84,6 +94,11 @@
       "types": "./dist/src/atomic/control/uik-link/index.d.ts",
       "import": "./dist/src/atomic/control/uik-link/index.js",
       "default": "./dist/src/atomic/control/uik-link/index.js"
+    },
+    "./uik-pagination": {
+      "types": "./dist/src/atomic/control/uik-pagination/index.d.ts",
+      "import": "./dist/src/atomic/control/uik-pagination/index.js",
+      "default": "./dist/src/atomic/control/uik-pagination/index.js"
     },
     "./uik-popover": {
       "types": "./dist/src/atomic/overlay/uik-popover/index.d.ts",

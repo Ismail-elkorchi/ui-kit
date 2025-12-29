@@ -1,12 +1,16 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import type { UikBadge } from "../src/atomic/content/uik-badge";
+import type { UikCodeBlock } from "../src/atomic/content/uik-code-block";
+import type { UikDescriptionList } from "../src/atomic/content/uik-description-list";
 import type { UikHeading } from "../src/atomic/content/uik-heading";
 import type { UikIcon } from "../src/atomic/content/uik-icon";
 import type { UikText } from "../src/atomic/content/uik-text";
 import type { UikVisuallyHidden } from "../src/atomic/content/uik-visually-hidden";
 import type { UikAlert } from "../src/atomic/feedback/uik-alert";
 import "../src/atomic/content/uik-badge";
+import "../src/atomic/content/uik-code-block";
+import "../src/atomic/content/uik-description-list";
 import "../src/atomic/content/uik-heading";
 import "../src/atomic/content/uik-icon";
 import "../src/atomic/content/uik-text";
@@ -126,5 +130,43 @@ describe("uik content primitives", () => {
     const slot = hidden.shadowRoot?.querySelector("slot");
     const assigned = slot?.assignedNodes({ flatten: true }) ?? [];
     expect(assigned[0]?.textContent).toContain("Hidden label");
+  });
+
+  it("renders description list slots and density", async () => {
+    const list = document.createElement(
+      "uik-description-list",
+    ) as UikDescriptionList;
+    list.density = "compact";
+    list.innerHTML = `
+      <dt>Status</dt>
+      <dd>Running</dd>
+      <dt>Target</dt>
+      <dd><code>0.1.2</code></dd>
+    `;
+    document.body.append(list);
+
+    await list.updateComplete;
+
+    const base = list.shadowRoot?.querySelector("dl");
+    const slot = list.shadowRoot?.querySelector("slot");
+    expect(base).not.toBeNull();
+    expect(slot?.assignedElements({ flatten: true }).length).toBe(4);
+    expect(list.getAttribute("density")).toBe("compact");
+  });
+
+  it("renders code block content and inline variant", async () => {
+    const codeBlock = document.createElement("uik-code-block") as UikCodeBlock;
+    codeBlock.textContent = "const status = 'ok';";
+    document.body.append(codeBlock);
+
+    await codeBlock.updateComplete;
+
+    const pre = codeBlock.shadowRoot?.querySelector("pre");
+    expect(pre).not.toBeNull();
+
+    codeBlock.inline = true;
+    await codeBlock.updateComplete;
+    const inline = codeBlock.shadowRoot?.querySelector("code.inline");
+    expect(inline).not.toBeNull();
   });
 });

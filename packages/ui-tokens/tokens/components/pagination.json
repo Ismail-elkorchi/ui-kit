@@ -1,0 +1,144 @@
+{
+  "component": {
+    "pagination": {
+      "gap": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component pagination gap."
+      },
+      "fontFamily": {
+        "$value": "{typography.fontFamily.sans}",
+        "$type": "fontFamily",
+        "$description": "Component pagination font family."
+      },
+      "summary": {
+        "fontSize": {
+          "$value": "{typography.fontSize.2}",
+          "$type": "dimension",
+          "$description": "Component pagination summary font size."
+        },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.medium}",
+          "$type": "fontWeight",
+          "$description": "Component pagination summary font weight."
+        },
+        "color": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component pagination summary color."
+        }
+      },
+      "ellipsis": {
+        "color": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component pagination ellipsis color."
+        }
+      },
+      "button": {
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component pagination button bg."
+        },
+        "bgHover": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component pagination button hover bg."
+        },
+        "bgActive": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component pagination button active bg."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component pagination button fg."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Component pagination button border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Component pagination button border width."
+        },
+        "radius": {
+          "$value": "{radius.2}",
+          "$type": "dimension",
+          "$description": "Component pagination button radius."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.2}",
+          "$type": "dimension",
+          "$description": "Component pagination button padding x."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.1}",
+          "$type": "dimension",
+          "$description": "Component pagination button padding y."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.2}",
+          "$type": "dimension",
+          "$description": "Component pagination button font size."
+        },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.medium}",
+          "$type": "fontWeight",
+          "$description": "Component pagination button font weight."
+        },
+        "lineHeight": {
+          "$value": "{typography.lineHeight.2}",
+          "$type": "number",
+          "$description": "Component pagination button line height."
+        },
+        "minWidth": {
+          "$value": "{size.control.sm}",
+          "$type": "dimension",
+          "$description": "Component pagination button min width."
+        },
+        "height": {
+          "$value": "{size.control.sm}",
+          "$type": "dimension",
+          "$description": "Component pagination button height."
+        },
+        "current": {
+          "bg": {
+            "$value": "{intent.primary.bg.default}",
+            "$type": "color",
+            "$description": "Component pagination current button bg."
+          },
+          "fg": {
+            "$value": "{intent.primary.fg}",
+            "$type": "color",
+            "$description": "Component pagination current button fg."
+          },
+          "border": {
+            "$value": "{intent.primary.border.default}",
+            "$type": "color",
+            "$description": "Component pagination current button border."
+          }
+        },
+        "disabledOpacity": {
+          "$value": "{opacity.60}",
+          "$type": "number",
+          "$description": "Component pagination button disabled opacity."
+        },
+        "focusOffset": {
+          "$value": "{outline.width.1}",
+          "$type": "dimension",
+          "$description": "Component pagination button focus ring offset."
+        },
+        "focusWidth": {
+          "$value": "{outline.width.2}",
+          "$type": "dimension",
+          "$description": "Component pagination button focus ring width."
+        }
+      }
+    }
+  }
+}

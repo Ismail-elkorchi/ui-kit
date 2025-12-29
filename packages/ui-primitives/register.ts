@@ -1,5 +1,7 @@
 import "./src/atomic/feedback/uik-alert";
 import "./src/atomic/content/uik-badge";
+import "./src/atomic/content/uik-code-block";
+import "./src/atomic/content/uik-description-list";
 import "./src/atomic/layout/uik-box";
 import "./src/atomic/control/uik-button";
 import "./src/atomic/control/uik-checkbox";
@@ -8,6 +10,7 @@ import "./src/atomic/content/uik-heading";
 import "./src/atomic/content/uik-icon";
 import "./src/atomic/control/uik-input";
 import "./src/atomic/control/uik-link";
+import "./src/atomic/control/uik-pagination";
 import "./src/atomic/overlay/uik-popover";
 import "./src/atomic/feedback/uik-progress";
 import "./src/atomic/control/uik-radio";

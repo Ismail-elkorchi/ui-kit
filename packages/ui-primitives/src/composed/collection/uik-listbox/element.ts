@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles";
 import type { UikOption } from "./uik-option";
@@ -321,8 +322,10 @@ export class UikListbox extends LitElement {
   };
 
   override render() {
+    const listboxTabIndex =
+      this.focusMode === "activedescendant" ? "0" : undefined;
     return html`
-      <div part="base" class="listbox">
+      <div part="base" class="listbox" tabindex=${ifDefined(listboxTabIndex)}>
         <slot @slotchange=${this.onSlotChange}></slot>
       </div>
     `;

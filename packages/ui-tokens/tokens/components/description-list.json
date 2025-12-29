@@ -1,0 +1,85 @@
+{
+  "component": {
+    "descriptionList": {
+      "termWidth": {
+        "$value": "{space.10}",
+        "$type": "dimension",
+        "$description": "Component description list term width."
+      },
+      "rowGap": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component description list row gap."
+      },
+      "columnGap": {
+        "$value": "{space.4}",
+        "$type": "dimension",
+        "$description": "Component description list column gap."
+      },
+      "rowGapCompact": {
+        "$value": "{space.1}",
+        "$type": "dimension",
+        "$description": "Component description list compact row gap."
+      },
+      "columnGapCompact": {
+        "$value": "{space.3}",
+        "$type": "dimension",
+        "$description": "Component description list compact column gap."
+      },
+      "term": {
+        "fontFamily": {
+          "$value": "{typography.fontFamily.sans}",
+          "$type": "fontFamily",
+          "$description": "Component description list term font family."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.2}",
+          "$type": "dimension",
+          "$description": "Component description list term font size."
+        },
+        "lineHeight": {
+          "$value": "{typography.lineHeight.3}",
+          "$type": "number",
+          "$description": "Component description list term line height."
+        },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.medium}",
+          "$type": "fontWeight",
+          "$description": "Component description list term font weight."
+        },
+        "color": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component description list term color."
+        }
+      },
+      "value": {
+        "fontFamily": {
+          "$value": "{typography.fontFamily.sans}",
+          "$type": "fontFamily",
+          "$description": "Component description list value font family."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.3}",
+          "$type": "dimension",
+          "$description": "Component description list value font size."
+        },
+        "lineHeight": {
+          "$value": "{typography.lineHeight.4}",
+          "$type": "number",
+          "$description": "Component description list value line height."
+        },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.regular}",
+          "$type": "fontWeight",
+          "$description": "Component description list value font weight."
+        },
+        "color": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component description list value color."
+        }
+      }
+    }
+  }
+}
