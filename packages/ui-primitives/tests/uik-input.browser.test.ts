@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 
 import type { UikInput } from "../src/atomic/control/uik-input";
@@ -144,5 +144,39 @@ describe("uik-input", () => {
 
     const data = new FormData(form);
     expect(data.get("email")).toBe("hello@uik.dev");
+  });
+
+  it("falls back to value reflection when ElementInternals are unavailable", async () => {
+    const attachSpy =
+      typeof HTMLElement.prototype.attachInternals === "function"
+        ? vi
+            .spyOn(HTMLElement.prototype, "attachInternals")
+            .mockImplementation(() => {
+              throw new Error("unsupported");
+            })
+        : null;
+
+    const input = document.createElement("uik-input") as UikInput;
+    document.body.append(input);
+
+    await input.updateComplete;
+
+    input.value = "fallback";
+    await input.updateComplete;
+
+    expect(input.getAttribute("value")).toBe("fallback");
+
+    let inputEvents = 0;
+    input.addEventListener("input", () => {
+      inputEvents += 1;
+    });
+
+    const control = input.shadowRoot?.querySelector("input");
+    if (!control) throw new Error("Expected internal input.");
+    await userEvent.type(control, "!");
+
+    expect(inputEvents).toBeGreaterThan(0);
+
+    attachSpy?.mockRestore();
   });
 });

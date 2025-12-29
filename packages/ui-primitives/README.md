@@ -71,6 +71,15 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - Initial focus relies on native `<dialog>` behavior; popovers/tooltips leave focus on the trigger unless the host moves it.
 - Outside-dismiss policy: click popovers dismiss on outside click when not using the native Popover API; tooltips close on pointer/blur; dialog cancel reports `escape`.
 
+## Form association fallback
+
+Form-associated primitives use `ElementInternals` when available. When it is
+unavailable, components fall back to reflecting their current value on the host
+`value` attribute and continue to emit their normal change/input or
+component-specific events. In fallback mode, the controls do not participate in
+native form submission or constraint validation, so value collection and
+validation must be handled by the host.
+
 ## Components and contracts
 
 ### `<uik-alert>`
@@ -104,7 +113,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
   - `active`/`muted` props control stateful colors (especially for ghost variant).
   - `part="base"` allows overrides, but avoid fighting the host sizing.
 - **A11y**: `aria-label`/`aria-labelledby`/`aria-pressed` are forwarded to the internal `<button>` for icon-only buttons and toggle states.
-- **Forms**: `type="submit"` and `type="reset"` invoke `form.requestSubmit()`/`form.reset()` when inside a form.
+- **Forms**: `type="submit"` and `type="reset"` invoke `form.requestSubmit()`/`form.reset()` when inside a form (uses ElementInternals when available, otherwise the closest form).
 
 ### `<uik-checkbox>`
 
@@ -113,7 +122,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Parts**: `base`, `control`, `label`, `hint`, `error`.
 - **Events**: native `change` bubbles from the internal `<input>`.
 - **A11y**: label slot or `aria-label`; hint/error slots are announced via `aria-describedby`.
-- **Forms**: form-associated and participates in `FormData` when checked.
+- **Forms**: form-associated and participates in `FormData` when checked (see Form association fallback).
 - **Custom properties**: `--uik-component-checkbox-accent`, `--uik-component-checkbox-size`.
 
 ### `<uik-dialog>`
@@ -147,7 +156,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Slots**: `label`, `hint`, `error`.
 - **Events**: native `input` and `change` bubble from the internal `<input>` (no re-dispatch).
 - **A11y**: label slot associates via `for`, hint/error slot text is wired to `aria-describedby`, and `aria-invalid` is set when `invalid` or an error slot is present.
-- **Forms**: form-associated via `ElementInternals` and participates in `FormData` when `name` is set.
+- **Forms**: form-associated via `ElementInternals` when available and participates in `FormData` when `name` is set (see Form association fallback).
 
 ### `<uik-link>`
 
@@ -183,6 +192,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Parts**: `base`, `control`, `label`, `hint`, `error`, `panel`.
 - **Events**: `combobox-select` (`detail: {value, item}`).
 - **A11y**: input uses `role="combobox"` with `aria-controls` + `aria-activedescendant`; Arrow keys move active option.
+- **Forms**: form-associated via `ElementInternals` when available (see Form association fallback).
 - **Custom properties**: `--uik-component-combobox-base-*`, `--uik-component-combobox-panel-offset` plus listbox tokens.
 
 ### `<uik-tabs>`
@@ -253,7 +263,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Parts**: `base`, `control`, `label`, `hint`, `error`.
 - **Events**: native `change` bubbles from the internal `<input>`.
 - **A11y**: label slot or `aria-label`; hint/error slots are announced via `aria-describedby`.
-- **Forms**: form-associated; when inside `uik-radio-group`, the group manages the submitted value.
+- **Forms**: form-associated; when inside `uik-radio-group`, the group manages the submitted value (see Form association fallback).
 - **Custom properties**: `--uik-component-radio-accent`, `--uik-component-radio-size`.
 
 ### `<uik-radio-group>`
@@ -264,7 +274,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Events**: native `change` bubbles from child radios.
 - **A11y**: label slot wires to `aria-labelledby`; hint/error are announced via `aria-describedby`.
 - **Keyboard**: arrow keys move selection within the group.
-- **Forms**: form-associated via `ElementInternals`.
+- **Forms**: form-associated via `ElementInternals` when available (see Form association fallback).
 - **Custom properties**: `--uik-component-radio-group-gap`.
 
 ### `<uik-separator>`
@@ -290,7 +300,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Parts**: `base`, `control`, `label`, `hint`, `error`.
 - **Events**: native `change` bubbles from the internal `<select>`.
 - **A11y**: label slot or `aria-label`; hint/error slots are announced via `aria-describedby`.
-- **Forms**: form-associated via `ElementInternals`.
+- **Forms**: form-associated via `ElementInternals` when available (see Form association fallback).
 - **Custom properties**: `--uik-component-select-base-*` (bg, border-default, border-hover, border-focus, fg, padding-x, padding-y, radius, shadow, font-size, line-height).
 
 ### `<uik-spinner>`
@@ -322,7 +332,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Parts**: `base`, `control`, `track`, `thumb`, `label`, `hint`, `error`.
 - **Events**: native `change` bubbles from the internal `<input>`.
 - **A11y**: `role="switch"` plus label slot or `aria-label`.
-- **Forms**: form-associated and participates in `FormData` when checked.
+- **Forms**: form-associated and participates in `FormData` when checked (see Form association fallback).
 - **Custom properties**: `--uik-component-switch-height`, `--uik-component-switch-width`, `--uik-component-switch-padding`, `--uik-component-switch-thumb-size`, `--uik-component-switch-thumb-bg`, `--uik-component-switch-thumb-shadow`, `--uik-component-switch-track-bg-default`, `--uik-component-switch-track-bg-checked`, `--uik-component-switch-track-border-default`, `--uik-component-switch-track-border-checked`.
 
 ### `<uik-text>`
@@ -339,7 +349,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - **Parts**: `base`, `control`, `label`, `hint`, `error`.
 - **Events**: native `input` and `change` bubble from the internal `<textarea>`.
 - **A11y**: label slot or `aria-label`; hint/error slots are announced via `aria-describedby`.
-- **Forms**: form-associated via `ElementInternals`.
+- **Forms**: form-associated via `ElementInternals` when available (see Form association fallback).
 - **Custom properties**: `--uik-component-textarea-base-*` (bg, border-default, border-hover, border-focus, fg, placeholder, padding-x, padding-y, radius, shadow, font-size, line-height, min-height).
 
 ### `<uik-tooltip>`

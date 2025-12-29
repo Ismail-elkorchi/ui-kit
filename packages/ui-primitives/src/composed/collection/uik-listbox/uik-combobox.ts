@@ -5,6 +5,11 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import { comboboxStyles } from "./combobox-styles";
 import type { UikListbox } from "./element";
 import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
+import {
+  dispatchFormFallbackEvent,
+  getElementInternals,
+  reflectFormValue,
+} from "../../../internal/form";
 import { createOutsideDismissController } from "../../../internal/overlay/dismiss";
 import "./element";
 import "./uik-option";
@@ -76,7 +81,7 @@ export class UikCombobox extends LitElement {
 
   @state() private accessor activeId = "";
 
-  private readonly internals = this.attachInternals();
+  private readonly internals = getElementInternals(this);
   private readonly controlId = createId("uik-combobox");
   private readonly labelId = `${this.controlId}-label`;
   private readonly hintId = `${this.controlId}-hint`;
@@ -101,6 +106,11 @@ export class UikCombobox extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     this.defaultValue = this.value;
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.outsideDismiss.disconnect();
   }
 
   override firstUpdated() {
@@ -154,10 +164,16 @@ export class UikCombobox extends LitElement {
   }
 
   private syncFormValue() {
-    this.internals.setFormValue(this.disabled ? null : this.value);
+    const value = this.disabled ? null : this.value;
+    if (this.internals) {
+      this.internals.setFormValue(value);
+    } else {
+      reflectFormValue(this, value);
+    }
   }
 
   private syncValidity() {
+    if (!this.internals) return;
     const input = this.inputElement;
     if (!input) return;
 
@@ -199,11 +215,15 @@ export class UikCombobox extends LitElement {
     if (!this.open && !this.disabled && !this.readonly) {
       this.open = true;
     }
+    this.syncFormValue();
+    dispatchFormFallbackEvent(this, this.internals, "input", event);
   };
 
   private onChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
     this.value = target.value;
+    this.syncFormValue();
+    dispatchFormFallbackEvent(this, this.internals, "change", event);
   };
 
   private onFocus = () => {
@@ -253,6 +273,8 @@ export class UikCombobox extends LitElement {
   private onListboxSelect = (event: Event) => {
     const detail = (event as CustomEvent<{ value: string }>).detail;
     this.value = detail.value;
+    this.syncFormValue();
+    dispatchFormFallbackEvent(this, this.internals, "change");
     this.open = false;
     const item = this.findItem(detail.value);
     const payload: UikComboboxSelectDetail = { value: this.value, item };

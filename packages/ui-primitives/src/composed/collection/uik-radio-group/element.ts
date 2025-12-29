@@ -5,6 +5,11 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import { styles } from "./styles";
 import type { UikRadio } from "../../../atomic/control/uik-radio";
 import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
+import {
+  dispatchFormFallbackEvent,
+  getElementInternals,
+  reflectFormValue,
+} from "../../../internal/form";
 
 type SlotName = "label" | "hint" | "error";
 
@@ -49,7 +54,7 @@ export class UikRadioGroup extends LitElement {
   @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
     "";
 
-  private readonly internals = this.attachInternals();
+  private readonly internals = getElementInternals(this);
   private readonly controlId = createId("uik-radio-group");
   private readonly labelId = `${this.controlId}-label`;
   private readonly hintId = `${this.controlId}-hint`;
@@ -154,10 +159,15 @@ export class UikRadioGroup extends LitElement {
 
   private syncFormValue() {
     const value = this.disabled || !this.value ? null : this.value;
-    this.internals.setFormValue(value);
+    if (this.internals) {
+      this.internals.setFormValue(value);
+    } else {
+      reflectFormValue(this, value);
+    }
   }
 
   private syncValidity() {
+    if (!this.internals) return;
     const control = this.controlElement;
     if (!control) return;
 
@@ -213,6 +223,7 @@ export class UikRadioGroup extends LitElement {
     this.syncRadios();
     this.syncFormValue();
     this.syncValidity();
+    dispatchFormFallbackEvent(this, this.internals, "change", event);
   };
 
   private onKeyDown = (event: KeyboardEvent) => {
@@ -243,6 +254,7 @@ export class UikRadioGroup extends LitElement {
     this.syncFormValue();
     this.syncValidity();
     nextRadio.focus();
+    dispatchFormFallbackEvent(this, this.internals, "change");
   };
 
   override render() {

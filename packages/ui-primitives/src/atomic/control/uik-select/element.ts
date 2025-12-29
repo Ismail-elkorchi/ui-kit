@@ -4,6 +4,11 @@ import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles";
 import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
+import {
+  dispatchFormFallbackEvent,
+  getElementInternals,
+  reflectFormValue,
+} from "../../../internal/form";
 
 type SlotName = "label" | "hint" | "error";
 
@@ -45,7 +50,7 @@ export class UikSelect extends LitElement {
   @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
     "";
 
-  private readonly internals = this.attachInternals();
+  private readonly internals = getElementInternals(this);
   private readonly controlId = createId("uik-select");
   private readonly labelId = `${this.controlId}-label`;
   private readonly hintId = `${this.controlId}-hint`;
@@ -142,10 +147,16 @@ export class UikSelect extends LitElement {
   }
 
   private syncFormValue() {
-    this.internals.setFormValue(this.disabled ? null : this.value);
+    const value = this.disabled ? null : this.value;
+    if (this.internals) {
+      this.internals.setFormValue(value);
+    } else {
+      reflectFormValue(this, value);
+    }
   }
 
   private syncValidity() {
+    if (!this.internals) return;
     const select = this.selectElement;
     if (!select) return;
 
@@ -186,6 +197,7 @@ export class UikSelect extends LitElement {
     this.value = select.value;
     this.syncFormValue();
     this.syncValidity();
+    dispatchFormFallbackEvent(this, this.internals, "change", event);
   };
 
   override render() {

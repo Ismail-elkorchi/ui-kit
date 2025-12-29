@@ -3,6 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles";
+import { getElementInternals } from "../../../internal/form";
 
 /**
  * Primary action control with variants and sizes.
@@ -50,7 +51,7 @@ export class UikButton extends LitElement {
   @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
     "";
 
-  private readonly internals = this.attachInternals();
+  private readonly internals = getElementInternals(this);
 
   static override readonly styles = styles;
 
@@ -95,8 +96,8 @@ export class UikButton extends LitElement {
 
   private onClick = (event: MouseEvent) => {
     if (this.disabled) return;
-    const form = this.internals.form;
-    if (!form) return;
+    const form = this.internals?.form ?? this.closest("form");
+    if (!(form instanceof HTMLFormElement)) return;
 
     if (this.type === "submit") {
       event.preventDefault();

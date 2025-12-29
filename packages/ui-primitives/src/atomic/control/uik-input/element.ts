@@ -3,6 +3,11 @@ import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles";
+import {
+  dispatchFormFallbackEvent,
+  getElementInternals,
+  reflectFormValue,
+} from "../../../internal/form";
 
 let inputId = 0;
 
@@ -54,7 +59,7 @@ export class UikInput extends LitElement {
   @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
     "";
 
-  private readonly internals = this.attachInternals();
+  private readonly internals = getElementInternals(this);
   private readonly controlId = `uik-input-${String(++inputId)}`;
   private readonly labelId = `${this.controlId}-label`;
   private readonly hintId = `${this.controlId}-hint`;
@@ -103,10 +108,16 @@ export class UikInput extends LitElement {
   }
 
   private syncFormValue() {
-    this.internals.setFormValue(this.disabled ? null : this.value);
+    const value = this.disabled ? null : this.value;
+    if (this.internals) {
+      this.internals.setFormValue(value);
+    } else {
+      reflectFormValue(this, value);
+    }
   }
 
   private syncValidity() {
+    if (!this.internals) return;
     const input = this.inputElement;
     if (!input) return;
     if (this.invalid || this.hasSlotContent("error")) {
@@ -148,6 +159,7 @@ export class UikInput extends LitElement {
     this.value = input.value;
     this.syncFormValue();
     this.syncValidity();
+    dispatchFormFallbackEvent(this, this.internals, "change", event);
   };
 
   private onInput = (event: Event) => {
@@ -155,6 +167,7 @@ export class UikInput extends LitElement {
     this.value = input.value;
     this.syncFormValue();
     this.syncValidity();
+    dispatchFormFallbackEvent(this, this.internals, "input", event);
   };
 
   override render() {

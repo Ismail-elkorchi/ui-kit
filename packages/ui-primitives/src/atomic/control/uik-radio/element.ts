@@ -4,6 +4,11 @@ import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles";
 import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
+import {
+  dispatchFormFallbackEvent,
+  getElementInternals,
+  reflectFormValue,
+} from "../../../internal/form";
 
 type SlotName = "label" | "hint" | "error";
 
@@ -50,7 +55,7 @@ export class UikRadio extends LitElement {
   @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
     "";
 
-  private readonly internals = this.attachInternals();
+  private readonly internals = getElementInternals(this);
   private readonly controlId = createId("uik-radio");
   private readonly hintId = `${this.controlId}-hint`;
   private readonly errorId = `${this.controlId}-error`;
@@ -121,10 +126,15 @@ export class UikRadio extends LitElement {
       this.disabled || this.groupDisabled || !this.checked || this.isGrouped
         ? null
         : this.value;
-    this.internals.setFormValue(value);
+    if (this.internals) {
+      this.internals.setFormValue(value);
+    } else {
+      reflectFormValue(this, value);
+    }
   }
 
   private syncValidity() {
+    if (!this.internals) return;
     const input = this.inputElement;
     if (!input) return;
 
@@ -167,6 +177,7 @@ export class UikRadio extends LitElement {
     this.syncFormValue();
     this.syncValidity();
     this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+    dispatchFormFallbackEvent(this, this.internals, "change", event);
   };
 
   override focus(options?: FocusOptions) {
