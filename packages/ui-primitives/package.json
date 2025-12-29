@@ -1,6 +1,6 @@
 {
   "name": "@ismail-elkorchi/ui-primitives",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Shadow DOM UI primitives built with Lit and driven by shared tokens.",
   "author": "Ismail El Korchi",
   "license": "Apache-2.0",
@@ -248,7 +248,7 @@
   },
   "homepage": "https://github.com/Ismail-elkorchi/ui-kit",
   "dependencies": {
-    "@ismail-elkorchi/ui-tokens": "^0.1.1",
+    "@ismail-elkorchi/ui-tokens": "^0.1.2",
     "lit": "^3.1.0"
   },
   "publishConfig": {

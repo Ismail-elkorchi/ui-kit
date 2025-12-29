@@ -1,6 +1,6 @@
 {
   "name": "@ismail-elkorchi/ui-docs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "description": "UIK documentation site and dogfooding lab.",
@@ -22,9 +22,9 @@
     "pretest": "npm run deps:build && npm run generate:baseline && npm run generate:content"
   },
   "dependencies": {
-    "@ismail-elkorchi/ui-primitives": "0.1.1",
-    "@ismail-elkorchi/ui-shell": "0.1.1",
-    "@ismail-elkorchi/ui-tokens": "0.1.1",
+    "@ismail-elkorchi/ui-primitives": "0.1.2",
+    "@ismail-elkorchi/ui-shell": "0.1.2",
+    "@ismail-elkorchi/ui-tokens": "0.1.2",
     "minisearch": "^7.1.0"
   },
   "devDependencies": {
