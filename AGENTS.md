@@ -71,9 +71,14 @@ Risk triggers (bump mode): touching `package.json`, exports, tokens sources, com
 - `.ato/*` is the cognitive system; do not unignore it.
 - Reads are allowed anytime; write updates only at checkpoints (change-set, verification, scope change).
 
-## Power Commands (Optional)
+## ATO Fast Discovery (Use This Instead of Searching)
 
-- Queue: `ato q next|start|done|update|upgrade`
-- Context pack: `ato pack --task "..." --budget 2400 --format md` (budget is tokens)
-- Quality gates: `ato gate run --mode fast|full`
-- Repo index: `ato route index`
+- **Discovery**: `ato capability list`, `ato capability explain <id>`, `ato --help`, `ato <command> --help`
+- **Protocol/target**: `ato protocol check`, `ato target resolve|list`, `ato lock status|clear`, `ato diagnose`
+- **Queue**: `ato q list|view|next|start|block|done|update|upgrade|validate`
+- **Gates/loop**: `ato gate explain|run --mode fast|full`, `ato loop check|run`
+- **Contracts/docs**: `ato contract index|extract|compliance`, `ato docs delta`
+- **Impact/deps/tests**: `ato impact build|query`, `ato deps build|query|lint`, `ato test select`
+- **Dev/dashboard**: `ato dev run`, `ato dashboard build|serve`, `ato trace run`
+- **Memory/learning**: `ato memory snapshot|show|query|build|record|run|link|commit|list|resolve`, `ato lesson add`, `ato pattern add|apply`, `ato plan add`, `ato goal add`
+- **Context packs/routes**: `ato pack --task "..." --budget 2400 --format md`, `ato route index|pack`
