@@ -15,6 +15,9 @@ describe("ui-primitives exports", () => {
     expect(primitives.UikTabs).toBeDefined();
     expect(primitives.UikTab).toBeDefined();
     expect(primitives.UikTabPanel).toBeDefined();
+    expect(primitives.UikMenu).toBeDefined();
+    expect(primitives.UikMenuItem).toBeDefined();
+    expect(primitives.UikMenubar).toBeDefined();
     expect(primitives.UikDescriptionList).toBeDefined();
     expect(primitives.UikPagination).toBeDefined();
     expect(primitives.UikCodeBlock).toBeDefined();

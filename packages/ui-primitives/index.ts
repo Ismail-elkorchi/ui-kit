@@ -29,6 +29,9 @@ export { UikNavRail } from "./src/composed/collection/uik-nav-rail";
 export { UikListbox } from "./src/composed/collection/uik-listbox";
 export { UikOption } from "./src/composed/collection/uik-listbox";
 export { UikCombobox } from "./src/composed/collection/uik-listbox";
+export { UikMenu } from "./src/composed/collection/uik-menu";
+export { UikMenuItem } from "./src/composed/collection/uik-menu";
+export { UikMenubar } from "./src/composed/collection/uik-menubar";
 export { UikTabs } from "./src/composed/collection/uik-tabs";
 export { UikTab } from "./src/composed/collection/uik-tabs";
 export { UikTabPanel } from "./src/composed/collection/uik-tabs";
@@ -55,6 +58,10 @@ export type {
   UikComboboxItem,
   UikComboboxSelectDetail,
 } from "./src/composed/collection/uik-listbox";
+export type {
+  UikMenuActiveDetail,
+  UikMenuSelectDetail,
+} from "./src/composed/collection/uik-menu";
 export type { UikTabsSelectDetail } from "./src/composed/collection/uik-tabs";
 export type {
   UikTreeViewItem,

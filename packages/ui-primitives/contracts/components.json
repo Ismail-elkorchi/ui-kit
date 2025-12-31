@@ -67,7 +67,7 @@
       "parts": ["base"],
       "events": ["Native button events bubble from the internal <button>."],
       "a11y": [
-        "Forward aria-label, aria-labelledby, aria-describedby, and aria-pressed to the internal button.",
+        "Forward aria-label, aria-labelledby, aria-describedby, aria-pressed, aria-haspopup, aria-expanded, aria-controls, and role to the internal button.",
         "Icon-only buttons should provide an accessible name."
       ],
       "cssVars": [
@@ -257,6 +257,60 @@
         "--uik-component-nav-rail-item-indicator-width",
         "--uik-component-nav-rail-icon-size"
       ]
+    },
+    {
+      "id": "menu",
+      "tagName": "uik-menu",
+      "summary": "Menu panel with trigger slot and roving focus items.",
+      "attributes": [
+        "open",
+        "placement",
+        "popover (auto | manual | hint)",
+        "value",
+        "activeId"
+      ],
+      "slots": ["trigger", "default (uik-menu-item children)"],
+      "parts": ["control", "base"],
+      "events": [
+        "menu-active (detail: {id, value, item})",
+        "menu-select (detail: {id, value, item})",
+        "menu-open",
+        "menu-close",
+        "overlay-close (detail: {reason})"
+      ],
+      "a11y": [
+        "Roving focus with Arrow/Home/End; Enter/Space selects; Escape closes and returns focus."
+      ],
+      "cssVars": ["--uik-component-menu-*", "--uik-component-menu-item-*"]
+    },
+    {
+      "id": "menu-item",
+      "tagName": "uik-menu-item",
+      "summary": "Menu item for use inside uik-menu.",
+      "attributes": [
+        "value",
+        "disabled (boolean)",
+        "active (boolean)",
+        "tabIndexValue (number)"
+      ],
+      "slots": ["default (label)"],
+      "parts": ["base"],
+      "events": [],
+      "a11y": ["role=\"menuitem\" with aria-disabled when disabled."],
+      "cssVars": ["--uik-component-menu-item-*"]
+    },
+    {
+      "id": "menubar",
+      "tagName": "uik-menubar",
+      "summary": "Menubar wrapper for uik-menu triggers.",
+      "attributes": [],
+      "slots": ["default (uik-menu children)"],
+      "parts": ["base"],
+      "events": [],
+      "a11y": [
+        "Roving focus across triggers with ArrowLeft/Right and Home/End; ArrowDown opens the active menu."
+      ],
+      "cssVars": ["--uik-component-menubar-*"]
     },
     {
       "id": "popover",

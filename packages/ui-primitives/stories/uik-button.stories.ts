@@ -88,6 +88,28 @@ export const GhostMuted: Story = {
   args: { variant: "ghost", label: "Muted ghost", muted: true },
 };
 
+export const MenuTrigger: Story = {
+  ...interactionStory,
+  args: { variant: "ghost", label: "Menu" },
+  render: ({ label, ...args }) => html`
+    <uik-button
+      variant=${args.variant}
+      size=${args.size}
+      type=${args.type}
+      .tabIndexValue=${args.tabIndexValue}
+      role="menuitem"
+      aria-haspopup="menu"
+      aria-expanded="false"
+      aria-controls="menu-panel"
+      ?disabled=${args.disabled}
+      ?active=${args.active}
+      ?muted=${args.muted}
+    >
+      ${label}
+    </uik-button>
+  `,
+};
+
 export const IconButton: Story = {
   ...interactionStory,
   args: { label: "★", size: "icon", variant: "secondary", type: "button" },

@@ -176,6 +176,23 @@ describe("uik-button", () => {
     expect(internal?.getAttribute("aria-pressed")).toBe("true");
   });
 
+  it("forwards aria-haspopup, aria-expanded, aria-controls, and role", async () => {
+    const button = document.createElement("uik-button") as UikButton;
+    button.setAttribute("role", "menuitem");
+    button.setAttribute("aria-haspopup", "menu");
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-controls", "menu-panel");
+    document.body.append(button);
+
+    await button.updateComplete;
+
+    const internal = button.shadowRoot?.querySelector("button");
+    expect(internal?.getAttribute("role")).toBe("menuitem");
+    expect(internal?.getAttribute("aria-haspopup")).toBe("menu");
+    expect(internal?.getAttribute("aria-expanded")).toBe("false");
+    expect(internal?.getAttribute("aria-controls")).toBe("menu-panel");
+  });
+
   it("forwards tabIndexValue to the internal button", async () => {
     const button = document.createElement("uik-button") as UikButton;
     button.tabIndexValue = -1;

@@ -120,6 +120,21 @@
       "import": "./dist/src/composed/collection/uik-listbox/index.js",
       "default": "./dist/src/composed/collection/uik-listbox/index.js"
     },
+    "./uik-menu": {
+      "types": "./dist/src/composed/collection/uik-menu/index.d.ts",
+      "import": "./dist/src/composed/collection/uik-menu/index.js",
+      "default": "./dist/src/composed/collection/uik-menu/index.js"
+    },
+    "./uik-menu-item": {
+      "types": "./dist/src/composed/collection/uik-menu/uik-menu-item.d.ts",
+      "import": "./dist/src/composed/collection/uik-menu/uik-menu-item.js",
+      "default": "./dist/src/composed/collection/uik-menu/uik-menu-item.js"
+    },
+    "./uik-menubar": {
+      "types": "./dist/src/composed/collection/uik-menubar/index.d.ts",
+      "import": "./dist/src/composed/collection/uik-menubar/index.js",
+      "default": "./dist/src/composed/collection/uik-menubar/index.js"
+    },
     "./uik-option": {
       "types": "./dist/src/composed/collection/uik-listbox/uik-option.d.ts",
       "import": "./dist/src/composed/collection/uik-listbox/uik-option.js",

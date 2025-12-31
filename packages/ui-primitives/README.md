@@ -20,6 +20,9 @@ import "@ismail-elkorchi/ui-primitives/uik-icon";
 import "@ismail-elkorchi/ui-primitives/uik-input";
 import "@ismail-elkorchi/ui-primitives/uik-listbox";
 import "@ismail-elkorchi/ui-primitives/uik-combobox";
+import "@ismail-elkorchi/ui-primitives/uik-menu";
+import "@ismail-elkorchi/ui-primitives/uik-menu-item";
+import "@ismail-elkorchi/ui-primitives/uik-menubar";
 import "@ismail-elkorchi/ui-primitives/uik-link";
 import "@ismail-elkorchi/ui-primitives/uik-nav";
 import "@ismail-elkorchi/ui-primitives/uik-nav-rail";
@@ -65,6 +68,7 @@ Ensure your app imports tokens before Tailwind so the theme variables exist:
 - Arrow keys move focus within the roving set; `Home`/`End` jump to the first/last enabled item. `Enter`/`Space` activate the focused item per APG expectations.
 - Focus state is tracked by item id and updated on focus and when the items list changes (falling back to the active or first enabled item).
 - `uik-listbox` and `uik-tabs` use `uik-option` and `uik-tab` as the roving focus targets; `uik-listbox` can switch to `focus-mode="activedescendant"` for combobox-style inputs.
+- `uik-menu` uses `uik-menu-item` for roving focus and returns focus to the trigger on close.
 - Shell components must delegate roving focus to primitives such as `uik-nav-rail`/`uik-tree-view` instead of re-implementing keyboard logic.
 
 ## Overlay contract
@@ -115,7 +119,7 @@ validation must be handled by the host.
   - Sizing is enforced on the `:host`. The internal button fills the host (100% width/height).
   - `active`/`muted` props control stateful colors (especially for ghost variant).
   - `part="base"` allows overrides, but avoid fighting the host sizing.
-- **A11y**: `aria-label`/`aria-labelledby`/`aria-pressed` are forwarded to the internal `<button>` for icon-only buttons and toggle states.
+- **A11y**: `aria-label`/`aria-labelledby`/`aria-describedby`/`aria-pressed`/`aria-haspopup`/`aria-expanded`/`aria-controls`/`role` are forwarded to the internal `<button>` for icon-only buttons and toggle states.
 - **Forms**: `type="submit"` and `type="reset"` invoke `form.requestSubmit()`/`form.reset()` when inside a form (uses ElementInternals when available, otherwise the closest form).
 
 ### `<uik-checkbox>`
@@ -216,6 +220,30 @@ validation must be handled by the host.
 - **A11y**: input uses `role="combobox"` with `aria-controls` + `aria-activedescendant`; Arrow keys move active option.
 - **Forms**: form-associated via `ElementInternals` when available (see Form association fallback).
 - **Custom properties**: `--uik-component-combobox-base-*`, `--uik-component-combobox-panel-offset` plus listbox tokens.
+
+### `<uik-menu>`
+
+- **Attributes/props**: `open`, `placement`, `popover`, `value`, `activeId`.
+- **Slots**: `trigger`, default slot for `<uik-menu-item>`.
+- **Parts**: `control`, `base`.
+- **Events**: `menu-active` (`detail: {id, value, item}`), `menu-select` (`detail: {id, value, item}`), `menu-open`, `menu-close`.
+- **A11y**: `role="menu"` with roving focus; `Escape` closes and returns focus to the trigger.
+- **Custom properties**: `--uik-component-menu-*`, `--uik-component-menu-item-*`.
+
+### `<uik-menu-item>`
+
+- **Attributes/props**: `value`, `disabled`, `active`, `tabIndexValue` (number).
+- **Slots**: default slot for item label.
+- **Parts**: `base`.
+- **A11y**: `role="menuitem"` with `aria-disabled` when disabled.
+- **Custom properties**: `--uik-component-menu-item-*`.
+
+### `<uik-menubar>`
+
+- **Slots**: default slot for `<uik-menu>` children.
+- **Parts**: `base`.
+- **A11y**: `role="menubar"` with roving focus across triggers; ArrowLeft/ArrowRight + Home/End move; ArrowDown opens.
+- **Custom properties**: `--uik-component-menubar-*`.
 
 ### `<uik-tabs>`
 

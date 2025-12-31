@@ -14,10 +14,14 @@ import { getElementInternals } from "../../../internal/form";
  * @attr active (boolean)
  * @attr muted (boolean)
  * @attr disabled (boolean)
+ * @attr role
+ * @attr aria-haspopup
+ * @attr aria-expanded
+ * @attr aria-controls
  * @slot default (label or icon)
  * @part base
  * @event Native button events bubble from the internal <button>.
- * @a11y Forward aria-label, aria-labelledby, aria-describedby, and aria-pressed to the internal button.
+ * @a11y Forward aria-label, aria-labelledby, aria-describedby, aria-pressed, aria-haspopup, aria-expanded, aria-controls, and role to the internal button.
  * @a11y Icon-only buttons should provide an accessible name.
  * @cssprop --uik-component-button-base-* (gap, font, focus ring, border)
  * @cssprop --uik-component-button-{solid|ghost|outline|secondary|danger|link}-*
@@ -45,11 +49,15 @@ export class UikButton extends LitElement {
   @property({ type: Boolean, reflect: true }) accessor disabled = false;
   @property({ type: Boolean, reflect: true }) accessor active = false;
   @property({ type: Boolean, reflect: true }) accessor muted = false;
+  @property({ attribute: "role" }) accessor roleValue = "";
   @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
   @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
   @property({ attribute: "aria-pressed" }) accessor ariaPressedValue = "";
   @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
     "";
+  @property({ attribute: "aria-haspopup" }) accessor ariaHaspopupValue = "";
+  @property({ attribute: "aria-expanded" }) accessor ariaExpandedValue = "";
+  @property({ attribute: "aria-controls" }) accessor ariaControlsValue = "";
 
   private readonly internals = getElementInternals(this);
 
@@ -78,10 +86,14 @@ export class UikButton extends LitElement {
         class="variant-${this.variant} size-${this.size}"
         type=${this.type}
         tabindex=${this.tabIndexValue}
+        role=${ifDefined(this.roleValue || undefined)}
         aria-label=${ifDefined(this.ariaLabelValue || undefined)}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
         aria-pressed=${ifDefined(this.ariaPressedValue || undefined)}
         aria-describedby=${ifDefined(this.ariaDescribedbyValue || undefined)}
+        aria-haspopup=${ifDefined(this.ariaHaspopupValue || undefined)}
+        aria-expanded=${ifDefined(this.ariaExpandedValue || undefined)}
+        aria-controls=${ifDefined(this.ariaControlsValue || undefined)}
         ?disabled=${this.disabled}
         @click=${this.onClick}
       >

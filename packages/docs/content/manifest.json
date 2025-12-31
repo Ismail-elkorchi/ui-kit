@@ -58,6 +58,13 @@
       "summary": "Exercise dialogs, popovers, tooltips, and progress indicators.",
       "source": "packages/docs/content/lab/overlays.md",
       "format": "markdown"
+    },
+    {
+      "id": "menus",
+      "title": "Lab: Menus and Menubars",
+      "summary": "Explore menu and menubar keyboard patterns.",
+      "source": "packages/docs/content/lab/menus.md",
+      "format": "markdown"
     }
   ]
 }
