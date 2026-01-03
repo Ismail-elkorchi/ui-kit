@@ -8,6 +8,13 @@ export {
   UIK_SHELL_NAVIGATION_EVENT,
   UikShellRouter,
 } from "./src/internal/router";
+export { createUikCommandCenter } from "./src/internal/command-center";
+export type {
+  UikCommandCenterCommand,
+  UikCommandCenterConfig,
+  UikCommandCenterHandle,
+  UikCommandCenterProvider,
+} from "./src/internal/command-center";
 export type {
   UikShellActivityBarIcon,
   UikShellActivityBarItem,

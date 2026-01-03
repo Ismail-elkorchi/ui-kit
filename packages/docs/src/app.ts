@@ -1,5 +1,6 @@
 import type {
   UikButton,
+  UikCommandPalette,
   UikDialog,
   UikInput,
   UikNav,
@@ -11,7 +12,9 @@ import type {
 } from "@ismail-elkorchi/ui-primitives";
 import "@ismail-elkorchi/ui-primitives/register";
 import {
+  createUikCommandCenter,
   createUikShellRouter,
+  type UikCommandCenterCommand,
   type UikShellActivityBar,
   type UikShellActivityBarItem,
   type UikShellLayout,
@@ -133,6 +136,29 @@ const buildMobileNavOptions = () => {
   `;
 };
 
+type CommandPaletteCommand = UikCommandCenterCommand & { value: string };
+
+const buildCommandPaletteCommands = (): CommandPaletteCommand[] => {
+  const items: CommandPaletteCommand[] = [];
+  const addItems = (group: string, view: string, pages: typeof docsPages) => {
+    pages.forEach((page) => {
+      const keywords = `${group} ${page.title} ${page.summary}`.trim();
+      items.push({
+        id: `${view}-${page.id}`,
+        label: page.title,
+        description: page.summary,
+        value: `${view}/${page.id}`,
+        group,
+        keywords,
+      });
+    });
+  };
+
+  addItems("Docs", "docs", docsPages);
+  addItems("Lab", "lab", labPages);
+  return items;
+};
+
 const locationKey = (location: UikShellLocation) =>
   location.subview ? `${location.view}/${location.subview}` : location.view;
 
@@ -247,6 +273,14 @@ const wireLabOverlayControls = (container: HTMLElement) => {
   }
 };
 
+const wireLabCommandPaletteControls = (container: HTMLElement) => {
+  return (
+    container.querySelector<UikButton>(
+      '[data-docs-action="command-palette-open"]',
+    ) ?? null
+  );
+};
+
 export const mountDocsApp = (container: HTMLElement) => {
   ensureDefaultAttribute(document.documentElement, "data-uik-theme", "light");
   ensureDefaultAttribute(
@@ -321,6 +355,18 @@ export const mountDocsApp = (container: HTMLElement) => {
       </uik-shell-secondary-sidebar>
       <uik-shell-status-bar slot="status-bar" class="docs-status"></uik-shell-status-bar>
     </uik-shell-layout>
+    <uik-command-palette
+      class="docs-command-palette"
+      data-docs-command-palette
+      placeholder="Search docs and lab pages"
+    >
+      <span slot="title">Command palette</span>
+      <span slot="description">Type to search docs and lab pages.</span>
+      <uik-visually-hidden slot="label">Search commands</uik-visually-hidden>
+      <uik-text slot="footer" as="p" size="sm" tone="muted">
+        Use Up/Down to navigate, Enter to select, Esc to close.
+      </uik-text>
+    </uik-command-palette>
   `;
 
   const pageMap = buildPageMap();
@@ -368,16 +414,6 @@ export const mountDocsApp = (container: HTMLElement) => {
   const mobileNavSelect = container.querySelector<UikSelect>(
     'uik-select[data-docs-control="mobile-nav"]',
   );
-
-  if (!layout || !activityBar || !nav || !statusBar || !secondarySidebar) {
-    throw new Error("Docs layout could not be initialized.");
-  }
-
-  activityBar.items = buildActivityItems(routes);
-  nav.items = buildNavItems(baseUrl);
-  nav.openIds = ["docs", "lab"];
-  setOutlineOpen(layout, secondarySidebar, true);
-
   const syncUrl = (
     location: UikShellLocation,
     mode: "push" | "replace" = "push",
@@ -391,6 +427,31 @@ export const mountDocsApp = (container: HTMLElement) => {
       window.history.pushState({}, "", nextPath);
     }
   };
+  const commandPalette = container.querySelector<UikCommandPalette>(
+    "[data-docs-command-palette]",
+  );
+  const commandCenter = commandPalette
+    ? createUikCommandCenter({
+        palette: commandPalette,
+        commands: buildCommandPaletteCommands(),
+        onSelect: (command) => {
+          if (!command.value) return;
+          const [view, subview] = command.value.split("/");
+          router.navigate(view, subview);
+          syncUrl(router.current);
+        },
+      })
+    : null;
+
+  if (!layout || !activityBar || !nav || !statusBar || !secondarySidebar) {
+    throw new Error("Docs layout could not be initialized.");
+  }
+
+  activityBar.items = buildActivityItems(routes);
+  nav.items = buildNavItems(baseUrl);
+  nav.openIds = ["docs", "lab"];
+  setOutlineOpen(layout, secondarySidebar, true);
+  let commandPaletteOpenButton: UikButton | null = null;
 
   const applyLocation = (location: UikShellLocation) => {
     const key = locationKey(location);
@@ -434,6 +495,12 @@ export const mountDocsApp = (container: HTMLElement) => {
       if (page.id === "overlays") {
         wireLabOverlayControls(contentElement);
       }
+      commandPaletteOpenButton = null;
+      if (page.id === "command-palette") {
+        commandPaletteOpenButton =
+          wireLabCommandPaletteControls(contentElement);
+      }
+      commandCenter?.setOpenButton(commandPaletteOpenButton);
     }
   };
 

@@ -38,6 +38,7 @@ export { UikTabPanel } from "./src/composed/collection/uik-tabs";
 export { UikTreeView } from "./src/composed/collection/uik-tree-view";
 export { UikRadioGroup } from "./src/composed/collection/uik-radio-group";
 export { UikTooltip } from "./src/composed/overlay/uik-tooltip";
+export { UikCommandPalette } from "./src/composed/overlay/uik-command-palette";
 export type { UikCodeBlockCopyDetail } from "./src/atomic/content/uik-code-block";
 export type {
   UikNavItem,
@@ -63,6 +64,14 @@ export type {
   UikMenuSelectDetail,
 } from "./src/composed/collection/uik-menu";
 export type { UikTabsSelectDetail } from "./src/composed/collection/uik-tabs";
+export type {
+  UikCommandPaletteCloseReason,
+  UikCommandPaletteFilter,
+  UikCommandPaletteItem,
+  UikCommandPaletteOpenChangeDetail,
+  UikCommandPaletteQueryChangeDetail,
+  UikCommandPaletteSelectDetail,
+} from "./src/composed/overlay/uik-command-palette";
 export type {
   UikTreeViewItem,
   UikTreeViewOpenDetail,

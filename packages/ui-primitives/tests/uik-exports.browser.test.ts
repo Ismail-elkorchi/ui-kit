@@ -19,6 +19,7 @@ describe("ui-primitives exports", () => {
     expect(primitives.UikMenuItem).toBeDefined();
     expect(primitives.UikMenubar).toBeDefined();
     expect(primitives.UikDescriptionList).toBeDefined();
+    expect(primitives.UikCommandPalette).toBeDefined();
     expect(primitives.UikPagination).toBeDefined();
     expect(primitives.UikCodeBlock).toBeDefined();
   });

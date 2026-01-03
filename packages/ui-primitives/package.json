@@ -75,6 +75,11 @@
       "import": "./dist/src/atomic/overlay/uik-dialog/index.js",
       "default": "./dist/src/atomic/overlay/uik-dialog/index.js"
     },
+    "./uik-command-palette": {
+      "types": "./dist/src/composed/overlay/uik-command-palette/index.d.ts",
+      "import": "./dist/src/composed/overlay/uik-command-palette/index.js",
+      "default": "./dist/src/composed/overlay/uik-command-palette/index.js"
+    },
     "./uik-heading": {
       "types": "./dist/src/atomic/content/uik-heading/index.d.ts",
       "import": "./dist/src/atomic/content/uik-heading/index.js",

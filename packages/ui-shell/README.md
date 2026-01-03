@@ -126,6 +126,43 @@ Load tokens once and set theme/density attributes on a shared container (often `
 </html>
 ```
 
+## Command center
+
+Wire a global command palette to app commands with `createUikCommandCenter`. It handles Ctrl/Cmd+K by default, manages open/close state, and keeps trigger ARIA attributes in sync.
+
+```ts
+import type { UikCommandPalette } from "@ismail-elkorchi/ui-primitives";
+import {
+  createUikCommandCenter,
+  type UikCommandCenterCommand,
+} from "@ismail-elkorchi/ui-shell";
+
+const palette = document.querySelector(
+  "uik-command-palette",
+) as UikCommandPalette;
+
+const commands: UikCommandCenterCommand[] = [
+  {
+    id: "docs-tokens",
+    label: "Tokens reference",
+    description: "Jump to the tokens docs.",
+    value: "docs/tokens",
+  },
+];
+
+const commandCenter = createUikCommandCenter({
+  palette,
+  commands,
+  onSelect: (command) => {
+    if (!command.value) return;
+    const [view, subview] = command.value.split("/");
+    console.log("Navigate", view, subview);
+  },
+});
+
+commandCenter.setOpenButton(document.querySelector("[data-command-trigger]"));
+```
+
 ## Routing store
 
 A tiny EventTarget-based router lives in `@ismail-elkorchi/ui-shell/router`. It is framework-light, keeps state in memory (no history), and is meant for desktop flows that only need named views and optional subviews.

@@ -1,0 +1,311 @@
+{
+  "component": {
+    "commandPalette": {
+      "bg": {
+        "$value": "{surface.card}",
+        "$type": "color",
+        "$description": "Command palette background."
+      },
+      "fg": {
+        "$value": "{text.default}",
+        "$type": "color",
+        "$description": "Command palette foreground."
+      },
+      "border": {
+        "$value": "{border.default}",
+        "$type": "color",
+        "$description": "Command palette border."
+      },
+      "radius": {
+        "$value": "{radius.4}",
+        "$type": "dimension",
+        "$description": "Command palette corner radius."
+      },
+      "padding": {
+        "$value": "{space.4}",
+        "$type": "dimension",
+        "$description": "Command palette padding."
+      },
+      "shadow": {
+        "$value": "{elevation.modal.shadow}",
+        "$type": "shadow",
+        "$description": "Command palette shadow."
+      },
+      "width": {
+        "$value": "{layout.panel.width.md}",
+        "$type": "dimension",
+        "$description": "Command palette max width."
+      },
+      "header": {
+        "gap": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Command palette header gap."
+        }
+      },
+      "input": {
+        "bg": {
+          "$value": "{component.input.base.bg}",
+          "$type": "color",
+          "$description": "Command palette input background."
+        },
+        "border": {
+          "default": {
+            "$value": "{component.input.base.border.default}",
+            "$type": "color",
+            "$description": "Command palette input border."
+          },
+          "focus": {
+            "$value": "{component.input.base.border.focus}",
+            "$type": "color",
+            "$description": "Command palette input focus border."
+          },
+          "hover": {
+            "$value": "{component.input.base.border.hover}",
+            "$type": "color",
+            "$description": "Command palette input hover border."
+          }
+        },
+        "borderWidth": {
+          "$value": "{component.input.base.borderWidth}",
+          "$type": "dimension",
+          "$description": "Command palette input border width."
+        },
+        "fg": {
+          "$value": "{component.input.base.fg}",
+          "$type": "color",
+          "$description": "Command palette input text color."
+        },
+        "placeholder": {
+          "$value": "{component.input.base.placeholder}",
+          "$type": "color",
+          "$description": "Command palette input placeholder color."
+        },
+        "height": {
+          "$value": "{component.input.base.height}",
+          "$type": "dimension",
+          "$description": "Command palette input height."
+        },
+        "fontSize": {
+          "$value": "{component.input.base.fontSize}",
+          "$type": "dimension",
+          "$description": "Command palette input font size."
+        },
+        "fontWeight": {
+          "$value": "{component.input.base.fontWeight}",
+          "$type": "fontWeight",
+          "$description": "Command palette input font weight."
+        },
+        "lineHeight": {
+          "$value": "{component.input.base.lineHeight}",
+          "$type": "number",
+          "$description": "Command palette input line height."
+        },
+        "paddingX": {
+          "$value": "{component.input.base.paddingX}",
+          "$type": "dimension",
+          "$description": "Command palette input padding x."
+        },
+        "paddingY": {
+          "$value": "{component.input.base.paddingY}",
+          "$type": "dimension",
+          "$description": "Command palette input padding y."
+        },
+        "radius": {
+          "$value": "{component.input.base.radius}",
+          "$type": "dimension",
+          "$description": "Command palette input radius."
+        },
+        "shadow": {
+          "$value": "{component.input.base.shadow}",
+          "$type": "shadow",
+          "$description": "Command palette input shadow."
+        },
+        "selection": {
+          "bg": {
+            "$value": "{component.input.base.selection.bg}",
+            "$type": "color",
+            "$description": "Command palette input selection background."
+          },
+          "fg": {
+            "$value": "{component.input.base.selection.fg}",
+            "$type": "color",
+            "$description": "Command palette input selection foreground."
+          }
+        },
+        "disabledOpacity": {
+          "$value": "{component.input.base.disabledOpacity}",
+          "$type": "number",
+          "$description": "Command palette input disabled opacity."
+        },
+        "focusRing": {
+          "$value": "{component.input.base.focusRing}",
+          "$type": "color",
+          "$description": "Command palette input focus ring color."
+        },
+        "focusRingOpacity": {
+          "$value": "{component.input.base.focusRingOpacity}",
+          "$type": "number",
+          "$description": "Command palette input focus ring opacity."
+        },
+        "focusRingWidth": {
+          "$value": "{component.input.base.focusRingWidth}",
+          "$type": "dimension",
+          "$description": "Command palette input focus ring width."
+        },
+        "focusRingOffset": {
+          "$value": "{component.input.base.focusRingOffset}",
+          "$type": "dimension",
+          "$description": "Command palette input focus ring offset."
+        }
+      },
+      "list": {
+        "bg": {
+          "$value": "{component.listbox.bg}",
+          "$type": "color",
+          "$description": "Command palette list background."
+        },
+        "fg": {
+          "$value": "{component.listbox.fg}",
+          "$type": "color",
+          "$description": "Command palette list foreground."
+        },
+        "border": {
+          "$value": "{component.listbox.border}",
+          "$type": "color",
+          "$description": "Command palette list border."
+        },
+        "borderWidth": {
+          "$value": "{component.listbox.borderWidth}",
+          "$type": "dimension",
+          "$description": "Command palette list border width."
+        },
+        "radius": {
+          "$value": "{component.listbox.radius}",
+          "$type": "dimension",
+          "$description": "Command palette list radius."
+        },
+        "padding": {
+          "$value": "{component.listbox.padding}",
+          "$type": "dimension",
+          "$description": "Command palette list padding."
+        },
+        "gap": {
+          "$value": "{component.listbox.gap}",
+          "$type": "dimension",
+          "$description": "Command palette list gap."
+        },
+        "maxHeight": {
+          "$value": "{component.listbox.maxHeight}",
+          "$type": "dimension",
+          "$description": "Command palette list max height."
+        },
+        "shadow": {
+          "$value": "{component.listbox.shadow}",
+          "$type": "shadow",
+          "$description": "Command palette list shadow."
+        }
+      },
+      "item": {
+        "height": {
+          "$value": "{component.listbox.item.height}",
+          "$type": "dimension",
+          "$description": "Command palette item height."
+        },
+        "paddingX": {
+          "$value": "{component.listbox.item.paddingX}",
+          "$type": "dimension",
+          "$description": "Command palette item padding x."
+        },
+        "paddingY": {
+          "$value": "{component.listbox.item.paddingY}",
+          "$type": "dimension",
+          "$description": "Command palette item padding y."
+        },
+        "radius": {
+          "$value": "{component.listbox.item.radius}",
+          "$type": "dimension",
+          "$description": "Command palette item radius."
+        },
+        "bg": {
+          "$value": "{component.listbox.item.bg}",
+          "$type": "color",
+          "$description": "Command palette item background."
+        },
+        "fg": {
+          "$value": "{component.listbox.item.fg}",
+          "$type": "color",
+          "$description": "Command palette item foreground."
+        },
+        "hoverBg": {
+          "$value": "{component.listbox.item.hoverBg}",
+          "$type": "color",
+          "$description": "Command palette item hover background."
+        },
+        "activeBg": {
+          "$value": "{component.listbox.item.activeBg}",
+          "$type": "color",
+          "$description": "Command palette item active background."
+        },
+        "selectedBg": {
+          "$value": "{component.listbox.item.selectedBg}",
+          "$type": "color",
+          "$description": "Command palette item selected background."
+        },
+        "selectedFg": {
+          "$value": "{component.listbox.item.selectedFg}",
+          "$type": "color",
+          "$description": "Command palette item selected foreground."
+        },
+        "disabledFg": {
+          "$value": "{component.listbox.item.disabledFg}",
+          "$type": "color",
+          "$description": "Command palette item disabled foreground."
+        }
+      },
+      "group": {
+        "label": {
+          "fg": {
+            "$value": "{text.muted}",
+            "$type": "color",
+            "$description": "Command palette group label color."
+          },
+          "fontSize": {
+            "$value": "{typography.fontSize.1}",
+            "$type": "dimension",
+            "$description": "Command palette group label size."
+          },
+          "fontWeight": {
+            "$value": "{typography.fontWeight.semibold}",
+            "$type": "fontWeight",
+            "$description": "Command palette group label weight."
+          },
+          "letterSpacing": {
+            "$value": "{typography.letterSpacing.wide}",
+            "$type": "dimension",
+            "$description": "Command palette group label letter spacing."
+          }
+        }
+      },
+      "meta": {
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Command palette meta text color."
+        }
+      },
+      "highlight": {
+        "bg": {
+          "$value": "{selection.bg}",
+          "$type": "color",
+          "$description": "Command palette highlight background."
+        },
+        "fg": {
+          "$value": "{selection.fg}",
+          "$type": "color",
+          "$description": "Command palette highlight foreground."
+        }
+      }
+    }
+  }
+}

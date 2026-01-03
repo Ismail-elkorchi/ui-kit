@@ -15,6 +15,7 @@ import "@ismail-elkorchi/ui-primitives/uik-button";
 import "@ismail-elkorchi/ui-primitives/uik-checkbox";
 import "@ismail-elkorchi/ui-primitives/uik-description-list";
 import "@ismail-elkorchi/ui-primitives/uik-dialog";
+import "@ismail-elkorchi/ui-primitives/uik-command-palette";
 import "@ismail-elkorchi/ui-primitives/uik-heading";
 import "@ismail-elkorchi/ui-primitives/uik-icon";
 import "@ismail-elkorchi/ui-primitives/uik-input";
@@ -160,6 +161,16 @@ validation must be handled by the host.
 - **A11y**: uses native dialog semantics and forwards `aria-label`/`aria-labelledby`/`aria-describedby` to `<dialog>`; Escape closes and focus returns to the opener.
 - **Methods**: `showModal()`, `show()`, `close()`.
 - **Custom properties**: `--uik-component-dialog-bg`, `--uik-component-dialog-fg`, `--uik-component-dialog-border`, `--uik-component-dialog-radius`, `--uik-component-dialog-padding`, `--uik-component-dialog-shadow`, `--uik-component-dialog-max-width`, `--uik-component-dialog-title-fg`, `--uik-component-dialog-description-fg`, `--uik-component-dialog-actions-gap`.
+
+### `<uik-command-palette>`
+
+- **Attributes/props**: `open`, `query`, `placeholder`, `loading`, `disabled`, `disableFilter`, `disableAutoClose`, `highlightMatches`, `inputLabel`, `virtualize`, `itemHeight`, `viewportHeight`, `overscan`.
+- **Slots**: `title`, `description`, `label`, `empty`, `loading`, `footer`.
+- **Parts**: `dialog`, `panel`, `header`, `title`, `description`, `label`, `input`, `list`, `group`, `group-label`, `item`, `item-label`, `item-description`, `item-shortcut`, `highlight`, `empty`, `loading`, `footer`.
+- **Events**: `command-palette-open-change`, `command-palette-query-change`, `command-palette-select`.
+- **A11y**: combobox + listbox with `aria-activedescendant`; input receives focus on open; Escape closes and focus returns to the opener.
+- **Items**: set `.items` to `{ id, label, description?, value?, keywords?, shortcut?, group?, isDisabled? }[]`.
+- **Custom properties**: `--uik-component-command-palette-*`.
 
 ### `<uik-heading>`
 

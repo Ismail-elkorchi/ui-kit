@@ -37,4 +37,5 @@ import "./src/composed/collection/uik-tabs/uik-tab";
 import "./src/composed/collection/uik-tabs/uik-tab-panel";
 import "./src/composed/collection/uik-radio-group";
 import "./src/composed/overlay/uik-tooltip";
+import "./src/composed/overlay/uik-command-palette";
 import "./src/composed/collection/uik-tree-view";

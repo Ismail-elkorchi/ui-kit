@@ -53,6 +53,13 @@
       "format": "markdown"
     },
     {
+      "id": "command-palette",
+      "title": "Lab: Command Palette",
+      "summary": "Use a command palette pattern to search and navigate the docs.",
+      "source": "packages/docs/content/lab/command-palette.md",
+      "format": "markdown"
+    },
+    {
       "id": "overlays",
       "title": "Lab: Overlays and Feedback",
       "summary": "Exercise dialogs, popovers, tooltips, and progress indicators.",
