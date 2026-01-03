@@ -3,9 +3,11 @@
 .ato/queue/views/
 .ato/blackboard/events.jsonl
 .ato/lock.json
+.ato/closeout/
 # Local ATO session state (do not track)
 .ato/state.json
 .ato/blackboard/state.json
+gate-full.txt
 node_modules/
 dist/
 *.tsbuildinfo

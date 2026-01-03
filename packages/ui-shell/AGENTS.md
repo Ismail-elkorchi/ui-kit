@@ -10,6 +10,7 @@ Scope: `packages/ui-shell/**`
 ## Mode Guidance
 
 - Follow root `AGENTS.md` modes and risk triggers.
+- For cross-repo reporting/session closeout, follow root `AGENTS.md`.
 - Standard/Deep: use the queue (`ato q ...`) and run the required gates (`ato gate run --mode ...`).
 - Fast Path: queue/gates optional; note skips in the final summary.
 

@@ -71,11 +71,67 @@ Risk triggers (bump mode): touching `package.json`, exports, tokens sources, com
 - `.ato/*` is the cognitive system; do not unignore it.
 - Reads are allowed anytime; write updates only at checkpoints (change-set, verification, scope change).
 
+## ATO Basics (ui-kit)
+
+- Resolve target + protocol once per session:
+  - `ato target resolve --json`
+  - `ato protocol check --json`
+- Queue flow: `ato q list` -> `ato q next` -> `ato q start` -> `ato q update` -> `ato q done`
+- Evidence: attach file/log/artifact paths (and `cmd:` references) over prose; prefer `ato q evidence add`.
+
+## Gate Workflow (ui-kit)
+
+- Full gate usage: `ato gate run --mode full --json`
+- Gate artifacts include stdout/stderr tail; inspect `.ato/runs/artifacts/**` before reruns.
+- Touched files report (non-JSON): `ato gate run --mode full --report-touched`
+- Retry only failed step: `ato gate retry --step <step_name>`
+- Sandbox listen preflight: gate output warns about EPERM for browser/listen steps; follow the suggested workaround/escalation.
+
+## Cross-repo reporting to the ATO hub
+
+Hub path: `/home/ismail-el-korchi/Documents/Projects/ato`
+
+- Always resolve the current session target before cross-repo writes:
+  - `ato target resolve --json`
+- You may set the hub as a default target or pass `--target` each time:
+  - `export ATO_TARGET=/home/ismail-el-korchi/Documents/Projects/ato`
+  - `ato q intake --from /abs/path/to/source-repo --file /abs/path/to/packet.json`
+  - `ato q intake --from /abs/path/to/source-repo --file /abs/path/to/packet.json --target /home/ismail-el-korchi/Documents/Projects/ato`
+- Transfer single item:
+  - `ato q transfer BL-XXXX --target /home/ismail-el-korchi/Documents/Projects/ato`
+- Transfer many items:
+  - `ato q transfer --all --status queued --target /home/ismail-el-korchi/Documents/Projects/ato`
+- Provenance + investigation:
+  - `ato q trace BL-XXXX --json`
+- Receipt retention:
+  - Hub stores receipts at `.ato/intake/receipts/<sha256>.json`.
+  - Items reference the receipt path deterministically (notes/spec.inputs).
+
+## Session closeout (default end-of-session ritual)
+
+- Plan + apply (apply is atomic):
+  - `ato session closeout plan --target /home/ismail-el-korchi/Documents/Projects/ato --json`
+  - `ato session closeout apply --target /home/ismail-el-korchi/Documents/Projects/ato --json`
+- Strict eligibility:
+  - Plan outputs `eligible_items` and `ineligible_items` with reasons.
+  - Apply transfers only eligible items by default.
+  - `--force` transfers ineligible items as blocked with reasons (use sparingly).
+
+## Known blockers policy (do not ignore)
+
+- If `ato gate run --mode full` fails (example: Storybook a11y violations):
+  - Create a queue item in ui-kit with evidence (artifact log path, failing rule summary, repro command).
+  - Prefer session closeout to transfer to the hub; `ato q transfer` is a fallback.
+- Blockers must be tracked as queue items; do not silently proceed.
+
 ## ATO Fast Discovery (Use This Instead of Searching)
 
 - **Discovery**: `ato capability list`, `ato capability explain <id>`, `ato --help`, `ato <command> --help`
 - **Protocol/target**: `ato protocol check`, `ato target resolve|list`, `ato lock status|clear`, `ato diagnose`
-- **Queue**: `ato q list|view|next|start|block|done|update|upgrade|validate`
+- **Queue**: `ato q list|view|next|start|block|done|update|upgrade|validate|evidence|intake|transfer|trace`
+- Queue updates require `--input`: `ato q update <id> --input <json|path>`.
+- Queue completion may require evidence citations in `spec.inputs`/notes (file paths or `cmd:` references).
+- Queue add requires `--queue-target`, `--contract-refs`, and spec fields (`--problem`, `--outcome`, `--acceptance`, `--inputs`, `--deliverables`).
 - **Gates/loop**: `ato gate explain|run --mode fast|full`, `ato loop check|run`
 - **Contracts/docs**: `ato contract index|extract|compliance`, `ato docs delta`
 - **Impact/deps/tests**: `ato impact build|query`, `ato deps build|query|lint`, `ato test select`
