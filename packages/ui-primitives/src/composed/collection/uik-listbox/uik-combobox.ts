@@ -312,6 +312,7 @@ export class UikCombobox extends LitElement {
       : this.ariaLabelledbyValue || undefined;
     const ariaActive = this.open && this.activeId ? this.activeId : undefined;
     const hasItems = this.items.length > 0;
+    const listboxControlId = `${this.listboxId}-panel`;
 
     return html`
       <div class="field">
@@ -343,7 +344,7 @@ export class UikCombobox extends LitElement {
             aria-describedby=${ifDefined(describedBy ?? undefined)}
             aria-label=${ifDefined(ariaLabel)}
             aria-labelledby=${ifDefined(ariaLabelledby)}
-            aria-controls=${this.listboxId}
+            aria-controls=${listboxControlId}
             aria-activedescendant=${ifDefined(ariaActive)}
             aria-expanded=${this.open && hasItems ? "true" : "false"}
             aria-autocomplete="list"
@@ -365,17 +366,20 @@ export class UikCombobox extends LitElement {
             @listbox-active=${this.onListboxActive}
             @listbox-select=${this.onListboxSelect}
           >
-            ${this.items.map(
-              (item) => html`
+            ${this.items.map((item) => {
+              const optionValue = item.value ?? item.id;
+              return html`
                 <uik-option
-                  value=${item.value ?? item.id}
+                  value=${optionValue}
                   ?disabled=${item.isDisabled ?? false}
                   id=${item.id}
+                  role="option"
+                  aria-selected=${optionValue === this.value ? "true" : "false"}
                 >
                   ${item.label}
                 </uik-option>
-              `,
-            )}
+              `;
+            })}
           </uik-listbox>
         </div>
         <div part="hint" class="hint" id=${this.hintId} ?hidden=${!hasHint}>

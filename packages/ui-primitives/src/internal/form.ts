@@ -28,7 +28,7 @@ export function dispatchFormFallbackEvent(
   type: "input" | "change",
   event?: Event,
 ) {
-  if (internals) return;
+  void internals;
   if (event?.composed) return;
   host.dispatchEvent(new Event(type, { bubbles: true, composed: true }));
 }

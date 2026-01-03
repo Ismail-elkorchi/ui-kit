@@ -62,7 +62,7 @@ Set attributes on a root element to switch variants:
 <html data-uik-theme="dark" data-uik-density="compact"></html>
 ```
 
-Defaults are light + comfortable when attributes are not present.
+Defaults follow prefers-color-scheme for theme and comfortable density when attributes are not present.
 
 ## Tailwind v4 usage
 

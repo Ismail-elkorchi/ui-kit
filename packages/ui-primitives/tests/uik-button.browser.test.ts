@@ -176,7 +176,7 @@ describe("uik-button", () => {
     expect(internal?.getAttribute("aria-pressed")).toBe("true");
   });
 
-  it("forwards aria-haspopup, aria-expanded, aria-controls, and role", async () => {
+  it("forwards aria-haspopup, aria-expanded, and aria-controls to the internal button", async () => {
     const button = document.createElement("uik-button") as UikButton;
     button.setAttribute("role", "menuitem");
     button.setAttribute("aria-haspopup", "menu");
@@ -187,7 +187,8 @@ describe("uik-button", () => {
     await button.updateComplete;
 
     const internal = button.shadowRoot?.querySelector("button");
-    expect(internal?.getAttribute("role")).toBe("menuitem");
+    expect(button.getAttribute("role")).toBe("menuitem");
+    expect(internal?.getAttribute("role")).toBeNull();
     expect(internal?.getAttribute("aria-haspopup")).toBe("menu");
     expect(internal?.getAttribute("aria-expanded")).toBe("false");
     expect(internal?.getAttribute("aria-controls")).toBe("menu-panel");

@@ -112,6 +112,7 @@ export class UikCodeBlock extends LitElement {
         <pre
           part="content"
           class="content"
+          tabindex="0"
           aria-label=${ifDefined(ariaLabel)}
           aria-labelledby=${ifDefined(ariaLabelledby)}
         >

@@ -86,6 +86,23 @@ export const styles = css`
         );
   }
 
+  :host(:focus-visible) button {
+    outline: none;
+    box-shadow:
+      var(--_uik-button-shadow),
+      0 0 0 var(--uik-component-button-base-focus-ring-offset)
+        oklch(var(--uik-focus-ring-offset-bg)),
+      0 0 0
+        calc(
+          var(--uik-component-button-base-focus-ring-offset) +
+            var(--uik-component-button-base-focus-ring-width)
+        )
+        oklch(
+          var(--uik-component-button-base-focus-ring) /
+            var(--uik-component-button-base-focus-ring-opacity)
+        );
+  }
+
   button:disabled {
     pointer-events: none;
     opacity: var(--uik-component-button-base-disabled-opacity);

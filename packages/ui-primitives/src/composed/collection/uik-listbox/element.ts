@@ -49,6 +49,14 @@ export class UikListbox extends LitElement {
 
   static override readonly styles = styles;
 
+  private get listboxPanelId() {
+    return `${this.id}-panel`;
+  }
+
+  private get listboxElement(): HTMLDivElement | null {
+    return this.renderRoot.querySelector(".listbox");
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     if (!this.id) this.id = this.listboxId;
@@ -67,6 +75,7 @@ export class UikListbox extends LitElement {
 
   override firstUpdated() {
     this.syncOptions();
+    this.syncAria();
   }
 
   override updated(changed: Map<string, unknown>) {
@@ -202,7 +211,6 @@ export class UikListbox extends LitElement {
     const options = this.getOptions();
     this.isEmpty = options.length === 0;
     this.toggleAttribute("data-empty", this.isEmpty);
-
     const selectedValues = new Set(this.getSelectedValues());
 
     options.forEach((option) => {
@@ -242,24 +250,25 @@ export class UikListbox extends LitElement {
   }
 
   private syncAria() {
-    this.setAttribute("role", "listbox");
+    const listbox = this.listboxElement;
+    if (!listbox) return;
     if (this.selectionMode === "multiple") {
-      this.setAttribute("aria-multiselectable", "true");
+      listbox.setAttribute("aria-multiselectable", "true");
     } else {
-      this.removeAttribute("aria-multiselectable");
+      listbox.removeAttribute("aria-multiselectable");
     }
     if (this.ariaLabelledbyValue) {
-      this.setAttribute("aria-labelledby", this.ariaLabelledbyValue);
-      this.removeAttribute("aria-label");
+      listbox.setAttribute("aria-labelledby", this.ariaLabelledbyValue);
+      listbox.removeAttribute("aria-label");
       return;
     }
     if (this.ariaLabelValue) {
-      this.setAttribute("aria-label", this.ariaLabelValue);
-      this.removeAttribute("aria-labelledby");
+      listbox.setAttribute("aria-label", this.ariaLabelValue);
+      listbox.removeAttribute("aria-labelledby");
       return;
     }
-    this.removeAttribute("aria-label");
-    this.removeAttribute("aria-labelledby");
+    listbox.removeAttribute("aria-label");
+    listbox.removeAttribute("aria-labelledby");
   }
 
   private resolveOptionFromEvent(event: Event): UikOption | null {
@@ -324,8 +333,20 @@ export class UikListbox extends LitElement {
   override render() {
     const listboxTabIndex =
       this.focusMode === "activedescendant" ? "0" : undefined;
+    const ariaLabel = this.ariaLabelledbyValue
+      ? undefined
+      : this.ariaLabelValue || undefined;
+    const ariaLabelledby = this.ariaLabelledbyValue || undefined;
     return html`
-      <div part="base" class="listbox" tabindex=${ifDefined(listboxTabIndex)}>
+      <div
+        part="base"
+        class="listbox"
+        id=${this.listboxPanelId}
+        role="listbox"
+        tabindex=${ifDefined(listboxTabIndex)}
+        aria-label=${ifDefined(ariaLabel)}
+        aria-labelledby=${ifDefined(ariaLabelledby)}
+      >
         <slot @slotchange=${this.onSlotChange}></slot>
       </div>
     `;

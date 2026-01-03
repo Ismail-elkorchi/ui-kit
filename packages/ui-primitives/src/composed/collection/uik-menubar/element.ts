@@ -3,6 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles";
+import { createId } from "../../../internal";
 import type { UikMenu } from "../uik-menu";
 import "../uik-menu";
 
@@ -25,8 +26,13 @@ export class UikMenubar extends LitElement {
 
   static override readonly styles = styles;
 
+  private get menubarElement(): HTMLDivElement | null {
+    return this.renderRoot.querySelector(".menubar");
+  }
+
   override connectedCallback() {
     super.connectedCallback();
+    this.syncAria();
     this.addEventListener("keydown", this.onKeyDown);
     this.addEventListener("focusin", this.onFocusIn);
     this.addEventListener("menu-open", this.onMenuOpen as EventListener);
@@ -46,6 +52,9 @@ export class UikMenubar extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
+    if (changed.has("ariaLabelValue") || changed.has("ariaLabelledbyValue")) {
+      this.syncAria();
+    }
     if (changed.has("focusedIndex")) {
       this.syncTriggers();
     }
@@ -140,10 +149,40 @@ export class UikMenubar extends LitElement {
 
   private syncTriggers() {
     const menus = this.getMenus();
+    const ownedIds: string[] = [];
+    let nextFocused = this.focusedIndex;
+
+    menus.forEach((menu) => {
+      if (!menu.hasAttribute("role")) {
+        menu.setAttribute("role", "menuitem");
+      }
+      const trigger = menu.getTriggerElement();
+      if (!trigger) return;
+      if (!trigger.id) {
+        trigger.id = createId("uik-menubar-item");
+      }
+      ownedIds.push(trigger.id);
+      menu.setAttribute("aria-haspopup", "menu");
+      menu.setAttribute("aria-expanded", menu.open ? "true" : "false");
+      const controls = trigger.getAttribute("aria-controls");
+      if (controls) {
+        menu.setAttribute("aria-controls", controls);
+      } else {
+        menu.removeAttribute("aria-controls");
+      }
+      if (
+        !menu.hasAttribute("aria-label") &&
+        !menu.hasAttribute("aria-labelledby")
+      ) {
+        const label = trigger.textContent.trim();
+        if (label) {
+          menu.setAttribute("aria-label", label);
+        }
+      }
+    });
+
     const enabledIndices = this.getEnabledIndices(menus);
     if (enabledIndices.length === 0) return;
-
-    let nextFocused = this.focusedIndex;
     if (!enabledIndices.includes(nextFocused)) {
       nextFocused = enabledIndices[0] ?? 0;
     }
@@ -153,10 +192,13 @@ export class UikMenubar extends LitElement {
       if (!trigger) return;
       const isFocused = index === nextFocused;
       menu.setTriggerTabIndex(isFocused ? 0 : -1);
-      if (!trigger.hasAttribute("role")) {
-        trigger.setAttribute("role", "menuitem");
-      }
     });
+
+    if (ownedIds.length > 0) {
+      this.setAttribute("aria-owns", ownedIds.join(" "));
+    } else {
+      this.removeAttribute("aria-owns");
+    }
 
     if (nextFocused !== this.focusedIndex) {
       this.focusedIndex = nextFocused;
@@ -257,10 +299,26 @@ export class UikMenubar extends LitElement {
     this.syncTriggers();
   };
 
+  private syncAria() {
+    const menubar = this.menubarElement;
+    if (!menubar) return;
+    if (this.ariaLabelledbyValue) {
+      menubar.setAttribute("aria-labelledby", this.ariaLabelledbyValue);
+      menubar.removeAttribute("aria-label");
+      return;
+    }
+    if (this.ariaLabelValue) {
+      menubar.setAttribute("aria-label", this.ariaLabelValue);
+      menubar.removeAttribute("aria-labelledby");
+      return;
+    }
+    menubar.removeAttribute("aria-label");
+    menubar.removeAttribute("aria-labelledby");
+  }
+
   override render() {
     const ariaLabel = this.ariaLabelValue || undefined;
     const ariaLabelledby = this.ariaLabelledbyValue || undefined;
-
     return html`
       <div
         part="base"

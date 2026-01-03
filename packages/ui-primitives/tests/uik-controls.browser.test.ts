@@ -303,6 +303,34 @@ describe("uik control primitives", () => {
     select.formStateRestoreCallback(new FormData());
   });
 
+  it("dispatches composed change events from the select host", async () => {
+    const select = document.createElement("uik-select") as UikSelect;
+    select.innerHTML = `
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    `;
+    document.body.append(select);
+
+    await select.updateComplete;
+
+    let changeCount = 0;
+    let composed = false;
+    select.addEventListener("change", (event) => {
+      changeCount += 1;
+      composed = event.composed;
+    });
+
+    const control = select.shadowRoot?.querySelector("select");
+    if (!control) throw new Error("Missing select control");
+
+    control.value = "dark";
+    control.dispatchEvent(new Event("change", { bubbles: true }));
+    await select.updateComplete;
+
+    expect(changeCount).toBe(1);
+    expect(composed).toBe(true);
+  });
+
   it("initializes select defaults and responds to options slot changes", async () => {
     const select = document.createElement("uik-select") as UikSelect;
     select.name = "size";

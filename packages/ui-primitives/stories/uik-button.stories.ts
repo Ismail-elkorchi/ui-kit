@@ -92,21 +92,23 @@ export const MenuTrigger: Story = {
   ...interactionStory,
   args: { variant: "ghost", label: "Menu" },
   render: ({ label, ...args }) => html`
-    <uik-button
-      variant=${args.variant}
-      size=${args.size}
-      type=${args.type}
-      .tabIndexValue=${args.tabIndexValue}
-      role="menuitem"
-      aria-haspopup="menu"
-      aria-expanded="false"
-      aria-controls="menu-panel"
-      ?disabled=${args.disabled}
-      ?active=${args.active}
-      ?muted=${args.muted}
-    >
-      ${label}
-    </uik-button>
+    <div role="menu" aria-label="Menu">
+      <uik-button
+        variant=${args.variant}
+        size=${args.size}
+        type=${args.type}
+        .tabIndexValue=${args.tabIndexValue}
+        role="menuitem"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls="menu-panel"
+        ?disabled=${args.disabled}
+        ?active=${args.active}
+        ?muted=${args.muted}
+      >
+        ${label}
+      </uik-button>
+    </div>
   `,
 };
 

@@ -174,9 +174,22 @@ const setOutlineOpen = (
   layout.isSecondarySidebarVisible = isOpen;
 };
 
+const getSystemTheme = () => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function")
+    return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+};
+
+const resolveTheme = () => {
+  const theme = document.documentElement.getAttribute("data-uik-theme");
+  return theme && theme.length > 0 ? theme : getSystemTheme();
+};
+
 const updateStatusMeta = (statusBar: UikShellStatusBar) => {
   const root = document.documentElement;
-  const theme = root.getAttribute("data-uik-theme") ?? "light";
+  const theme = resolveTheme();
   const density = root.getAttribute("data-uik-density") ?? "comfortable";
   statusBar.meta = `Theme: ${theme} | Density: ${density}`;
 };
@@ -282,7 +295,6 @@ const wireLabCommandPaletteControls = (container: HTMLElement) => {
 };
 
 export const mountDocsApp = (container: HTMLElement) => {
-  ensureDefaultAttribute(document.documentElement, "data-uik-theme", "light");
   ensureDefaultAttribute(
     document.documentElement,
     "data-uik-density",
@@ -597,9 +609,7 @@ export const mountDocsApp = (container: HTMLElement) => {
 
   const syncSelects = async () => {
     await nextFrame();
-    if (themeSelect)
-      themeSelect.value =
-        document.documentElement.getAttribute("data-uik-theme") ?? "light";
+    if (themeSelect) themeSelect.value = resolveTheme();
     if (densitySelect)
       densitySelect.value =
         document.documentElement.getAttribute("data-uik-density") ??

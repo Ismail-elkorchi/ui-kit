@@ -128,6 +128,11 @@ function buildLayerBlock(selector, varMap, { colorScheme } = {}) {
   return ["@layer base {", `  ${selector} {`, ...lines, "  }", "}"].join("\n");
 }
 
+function wrapMedia(query, block) {
+  if (!block) return "";
+  return [`@media ${query} {`, block, "}"].join("\n");
+}
+
 function parseVarMap(cssText) {
   const map = new Map();
   const regex = /(--uik-[a-z0-9-]+)\s*:\s*([^;]+);/gi;
@@ -665,6 +670,12 @@ async function buildCssOutputs() {
     darkDiffMap,
     { colorScheme: "dark" },
   );
+  const systemDarkBlock = wrapMedia(
+    "(prefers-color-scheme: dark)",
+    buildLayerBlock(":where(:root:not([data-uik-theme]))", darkDiffMap, {
+      colorScheme: "dark",
+    }),
+  );
   const compactBlock = buildLayerBlock(
     ":where([data-uik-density='compact'])",
     compactDiffMap,
@@ -704,6 +715,7 @@ async function buildCssOutputs() {
     themeBaseBlock,
     lightBlock,
     darkBlock,
+    systemDarkBlock,
   ]
     .filter(Boolean)
     .join("\n\n");
