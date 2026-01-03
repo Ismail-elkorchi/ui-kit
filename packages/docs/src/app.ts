@@ -14,20 +14,34 @@ import type {
   UikTreeView,
   UikTreeViewItem,
 } from "@ismail-elkorchi/ui-primitives";
-import "@ismail-elkorchi/ui-primitives/register";
-import {
-  createUikCommandCenter,
-  createUikShellRouter,
-  type UikCommandCenterCommand,
-  type UikShellActivityBar,
-  type UikShellActivityBarItem,
-  type UikShellLayout,
-  type UikShellLocation,
-  type UikShellSecondarySidebar,
-  type UikShellStatusBar,
-  type UikShellRoute,
+import "@ismail-elkorchi/ui-primitives/uik-badge";
+import "@ismail-elkorchi/ui-primitives/uik-box";
+import "@ismail-elkorchi/ui-primitives/uik-button";
+import "@ismail-elkorchi/ui-primitives/uik-command-palette";
+import "@ismail-elkorchi/ui-primitives/uik-heading";
+import "@ismail-elkorchi/ui-primitives/uik-link";
+import "@ismail-elkorchi/ui-primitives/uik-nav";
+import "@ismail-elkorchi/ui-primitives/uik-select";
+import "@ismail-elkorchi/ui-primitives/uik-surface";
+import "@ismail-elkorchi/ui-primitives/uik-text";
+import "@ismail-elkorchi/ui-primitives/uik-visually-hidden";
+import type {
+  UikCommandCenterCommand,
+  UikCommandCenterHandle,
+  UikShellActivityBar,
+  UikShellActivityBarItem,
+  UikShellLayout,
+  UikShellLocation,
+  UikShellSecondarySidebar,
+  UikShellStatusBar,
+  UikShellRoute,
 } from "@ismail-elkorchi/ui-shell";
-import "@ismail-elkorchi/ui-shell/register";
+import { createUikShellRouter } from "@ismail-elkorchi/ui-shell/router";
+import "@ismail-elkorchi/ui-shell/activity-bar";
+import "@ismail-elkorchi/ui-shell/layout";
+import "@ismail-elkorchi/ui-shell/secondary-sidebar";
+import "@ismail-elkorchi/ui-shell/sidebar";
+import "@ismail-elkorchi/ui-shell/status-bar";
 
 import {
   buildPageMap,
@@ -106,6 +120,100 @@ const componentSectionShortcuts: Record<string, string[]> = {
   primitives: ["Portfolio", "Usage", "Contracts"],
   shell: ["Portfolio", "Layout layer", "Contracts"],
 };
+
+const componentTagPattern = /<\s*(uik-[a-z0-9-]+)/g;
+const componentLoaders = new Map<string, () => Promise<unknown>>([
+  ["uik-alert", () => import("@ismail-elkorchi/ui-primitives/uik-alert")],
+  ["uik-badge", () => import("@ismail-elkorchi/ui-primitives/uik-badge")],
+  ["uik-box", () => import("@ismail-elkorchi/ui-primitives/uik-box")],
+  ["uik-button", () => import("@ismail-elkorchi/ui-primitives/uik-button")],
+  ["uik-checkbox", () => import("@ismail-elkorchi/ui-primitives/uik-checkbox")],
+  [
+    "uik-command-palette",
+    () => import("@ismail-elkorchi/ui-primitives/uik-command-palette"),
+  ],
+  [
+    "uik-description-list",
+    () => import("@ismail-elkorchi/ui-primitives/uik-description-list"),
+  ],
+  ["uik-dialog", () => import("@ismail-elkorchi/ui-primitives/uik-dialog")],
+  ["uik-heading", () => import("@ismail-elkorchi/ui-primitives/uik-heading")],
+  ["uik-icon", () => import("@ismail-elkorchi/ui-primitives/uik-icon")],
+  ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
+  ["uik-link", () => import("@ismail-elkorchi/ui-primitives/uik-link")],
+  ["uik-menu", () => import("@ismail-elkorchi/ui-primitives/uik-menu")],
+  [
+    "uik-menu-item",
+    () => import("@ismail-elkorchi/ui-primitives/uik-menu-item"),
+  ],
+  ["uik-menubar", () => import("@ismail-elkorchi/ui-primitives/uik-menubar")],
+  ["uik-nav", () => import("@ismail-elkorchi/ui-primitives/uik-nav")],
+  ["uik-nav-rail", () => import("@ismail-elkorchi/ui-primitives/uik-nav-rail")],
+  ["uik-popover", () => import("@ismail-elkorchi/ui-primitives/uik-popover")],
+  ["uik-progress", () => import("@ismail-elkorchi/ui-primitives/uik-progress")],
+  ["uik-radio", () => import("@ismail-elkorchi/ui-primitives/uik-radio")],
+  [
+    "uik-radio-group",
+    () => import("@ismail-elkorchi/ui-primitives/uik-radio-group"),
+  ],
+  [
+    "uik-resizable-panels",
+    () => import("@ismail-elkorchi/ui-primitives/uik-resizable-panels"),
+  ],
+  ["uik-select", () => import("@ismail-elkorchi/ui-primitives/uik-select")],
+  [
+    "uik-separator",
+    () => import("@ismail-elkorchi/ui-primitives/uik-separator"),
+  ],
+  ["uik-spinner", () => import("@ismail-elkorchi/ui-primitives/uik-spinner")],
+  ["uik-stack", () => import("@ismail-elkorchi/ui-primitives/uik-stack")],
+  ["uik-surface", () => import("@ismail-elkorchi/ui-primitives/uik-surface")],
+  ["uik-switch", () => import("@ismail-elkorchi/ui-primitives/uik-switch")],
+  ["uik-text", () => import("@ismail-elkorchi/ui-primitives/uik-text")],
+  ["uik-textarea", () => import("@ismail-elkorchi/ui-primitives/uik-textarea")],
+  ["uik-tooltip", () => import("@ismail-elkorchi/ui-primitives/uik-tooltip")],
+  [
+    "uik-tree-view",
+    () => import("@ismail-elkorchi/ui-primitives/uik-tree-view"),
+  ],
+  [
+    "uik-visually-hidden",
+    () => import("@ismail-elkorchi/ui-primitives/uik-visually-hidden"),
+  ],
+  [
+    "uik-shell-activity-bar",
+    () => import("@ismail-elkorchi/ui-shell/activity-bar"),
+  ],
+  ["uik-shell-layout", () => import("@ismail-elkorchi/ui-shell/layout")],
+  [
+    "uik-shell-secondary-sidebar",
+    () => import("@ismail-elkorchi/ui-shell/secondary-sidebar"),
+  ],
+  ["uik-shell-sidebar", () => import("@ismail-elkorchi/ui-shell/sidebar")],
+  [
+    "uik-shell-status-bar",
+    () => import("@ismail-elkorchi/ui-shell/status-bar"),
+  ],
+]);
+const preloadedComponents = new Set([
+  "uik-badge",
+  "uik-box",
+  "uik-button",
+  "uik-command-palette",
+  "uik-heading",
+  "uik-link",
+  "uik-nav",
+  "uik-select",
+  "uik-surface",
+  "uik-text",
+  "uik-visually-hidden",
+  "uik-shell-activity-bar",
+  "uik-shell-layout",
+  "uik-shell-secondary-sidebar",
+  "uik-shell-sidebar",
+  "uik-shell-status-bar",
+]);
+const loadedComponents = new Set(preloadedComponents);
 
 const normalizeNavId = (value: string) =>
   value
@@ -312,7 +420,32 @@ const resolveNavCurrentId = (location: UikShellLocation) => {
 
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-const nextTask = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+
+const collectPageComponentTags = (page: DocPage) => {
+  const tags = new Set<string>();
+  for (const section of page.sections) {
+    componentTagPattern.lastIndex = 0;
+    let match = componentTagPattern.exec(section.body);
+    while (match) {
+      tags.add(match[1]);
+      match = componentTagPattern.exec(section.body);
+    }
+  }
+  return tags;
+};
+
+const loadPageComponents = async (page: DocPage) => {
+  const tags = collectPageComponentTags(page);
+  const imports: Promise<unknown>[] = [];
+  tags.forEach((tag) => {
+    if (loadedComponents.has(tag)) return;
+    const loader = componentLoaders.get(tag);
+    if (!loader) return;
+    loadedComponents.add(tag);
+    imports.push(loader());
+  });
+  await Promise.all(imports);
+};
 
 const setOutlineOpen = (
   layout: UikShellLayout,
@@ -733,7 +866,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   const commandPalette = container.querySelector<UikCommandPalette>(
     "[data-docs-command-palette]",
   );
-  let commandCenter: ReturnType<typeof createUikCommandCenter> | null = null;
+  let commandCenter: UikCommandCenterHandle | null = null;
   let contentRenderToken = 0;
 
   if (!layout || !activityBar || !nav || !statusBar || !secondarySidebar) {
@@ -764,24 +897,36 @@ export const mountDocsApp = (container: HTMLElement) => {
     nav.currentId = resolveNavCurrentId(location);
   };
 
+  const syncCommandCenterOpenButton = () => {
+    if (!commandCenter) return;
+    commandCenter.setOpenButton(commandPaletteOpenButton);
+  };
+
   if (commandPalette) {
-    commandCenter = createUikCommandCenter({
-      palette: commandPalette,
-      commands: buildCommandPaletteCommands(),
-      onSelect: (command) => {
-        if (!command.value) return;
-        const [view, subview] = command.value.split("/");
-        router.navigate(view, subview);
-        syncUrl(router.current);
-        updateNavCurrent(router.current);
+    void import("@ismail-elkorchi/ui-shell").then(
+      ({ createUikCommandCenter }) => {
+        commandCenter = createUikCommandCenter({
+          palette: commandPalette,
+          commands: buildCommandPaletteCommands(),
+          onSelect: (command) => {
+            if (!command.value) return;
+            const [view, subview] = command.value.split("/");
+            router.navigate(view, subview);
+            syncUrl(router.current);
+            updateNavCurrent(router.current);
+          },
+        });
+        syncCommandCenterOpenButton();
       },
-    });
+    );
   }
 
-  const renderPageContent = async (page: DocPage, deferContent: boolean) => {
+  const renderPageContent = async (page: DocPage) => {
     const token = (contentRenderToken += 1);
-    if (deferContent) {
-      await nextTask();
+    const shouldAwaitComponents = page.id !== "command-palette";
+    const loadPromise = loadPageComponents(page);
+    if (shouldAwaitComponents) {
+      await loadPromise;
     }
     if (token !== contentRenderToken) return;
 
@@ -810,8 +955,13 @@ export const mountDocsApp = (container: HTMLElement) => {
         commandPaletteOpenButton =
           wireLabCommandPaletteControls(contentElement);
       }
-      commandCenter?.setOpenButton(commandPaletteOpenButton);
+      syncCommandCenterOpenButton();
     }
+
+    if (!shouldAwaitComponents) {
+      await loadPromise;
+    }
+    if (token !== contentRenderToken) return;
 
     void scrollToHashTarget();
   };
@@ -843,8 +993,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (page.id !== "shell-patterns") statusBar.tone = "info";
     updateStatusMeta(statusBar);
     document.title = `UIK Docs - ${page.title}`;
-    const shouldDeferContent = location.view === "docs";
-    void renderPageContent(page, shouldDeferContent);
+    void renderPageContent(page);
   };
 
   router.subscribe(applyLocation);
