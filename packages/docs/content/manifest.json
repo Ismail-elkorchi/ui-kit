@@ -4,44 +4,63 @@
       "id": "getting-started",
       "title": "Getting Started",
       "summary": "Install UIK packages, load tokens, and compose primitives and shell components.",
+      "navLabel": "Getting Started",
+      "group": "Guides",
+      "kind": "Guide",
       "source": "packages/docs/content/getting-started.md",
-      "format": "markdown"
-    },
-    {
-      "id": "baseline-support",
-      "title": "Baseline Support Matrix",
-      "summary": "Baseline classification of platform features used by UIK.",
-      "source": "packages/docs/content/baseline-support.md",
       "format": "markdown"
     },
     {
       "id": "tokens",
       "title": "Tokens Reference",
       "summary": "UIK tokens are the single source of truth for all visual values and component hooks.",
+      "navLabel": "Tokens",
+      "group": "Foundations",
+      "kind": "Reference",
+      "package": "ui-tokens",
       "source": "packages/ui-tokens/README.md",
+      "format": "markdown"
+    },
+    {
+      "id": "baseline-support",
+      "title": "Baseline Support Matrix",
+      "summary": "Baseline classification of platform features used by UIK.",
+      "navLabel": "Baseline Support",
+      "group": "Foundations",
+      "kind": "Governance",
+      "source": "packages/docs/content/baseline-support.md",
       "format": "markdown"
     },
     {
       "id": "primitives",
       "title": "Primitives Reference",
       "summary": "Shadow DOM building blocks that read tokens and expose explicit contracts.",
+      "navLabel": "Primitives",
+      "group": "Components",
+      "kind": "Components",
       "type": "components",
       "package": "ui-primitives",
       "readme": "packages/ui-primitives/README.md",
       "contracts": "packages/ui-primitives/contracts/components.json",
       "cem": "packages/ui-primitives/dist/custom-elements.json",
-      "componentsTitle": "Components and contracts"
+      "componentsTitle": "Contracts",
+      "componentsSourceTitle": "Components and contracts",
+      "portfolioTitle": "Portfolio"
     },
     {
       "id": "shell",
       "title": "Shell Patterns",
       "summary": "Light DOM layout primitives that compose the UI into a consistent application shell.",
+      "navLabel": "Shell",
+      "group": "Components",
+      "kind": "Components",
       "type": "components",
       "package": "ui-shell",
       "readme": "packages/ui-shell/README.md",
       "contracts": "packages/ui-shell/contracts/entries.json",
       "cem": "packages/ui-shell/dist/custom-elements.json",
-      "componentsTitle": "Shell component contracts"
+      "componentsTitle": "Contracts",
+      "portfolioTitle": "Portfolio"
     }
   ],
   "lab": [
@@ -49,6 +68,9 @@
       "id": "shell-patterns",
       "title": "Lab: Shell Patterns",
       "summary": "Dogfood shell patterns with live controls that update the layout and status bar.",
+      "navLabel": "Shell Patterns",
+      "group": "Lab",
+      "kind": "Lab",
       "source": "packages/docs/content/lab/shell-patterns.md",
       "format": "markdown"
     },
@@ -56,6 +78,9 @@
       "id": "command-palette",
       "title": "Lab: Command Palette",
       "summary": "Use a command palette pattern to search and navigate the docs.",
+      "navLabel": "Command Palette",
+      "group": "Lab",
+      "kind": "Lab",
       "source": "packages/docs/content/lab/command-palette.md",
       "format": "markdown"
     },
@@ -63,6 +88,9 @@
       "id": "overlays",
       "title": "Lab: Overlays and Feedback",
       "summary": "Exercise dialogs, popovers, tooltips, and progress indicators.",
+      "navLabel": "Overlays and Feedback",
+      "group": "Lab",
+      "kind": "Lab",
       "source": "packages/docs/content/lab/overlays.md",
       "format": "markdown"
     },
@@ -70,6 +98,9 @@
       "id": "menus",
       "title": "Lab: Menus and Menubars",
       "summary": "Explore menu and menubar keyboard patterns.",
+      "navLabel": "Menus and Menubars",
+      "group": "Lab",
+      "kind": "Lab",
       "source": "packages/docs/content/lab/menus.md",
       "format": "markdown"
     }

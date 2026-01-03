@@ -24,6 +24,11 @@ export interface DocPage {
   id: string;
   title: string;
   summary: string;
+  navLabel?: string;
+  group?: string;
+  kind?: string;
+  package?: string;
+  type?: string;
   sections: DocSection[];
   toc: DocTocItem[];
 }
@@ -66,13 +71,19 @@ export const renderPageSections = (page: DocPage) => {
     .map((sectionItem) => {
       return `
         <section class="docs-section" id="${sectionItem.id}">
-          <uik-heading level="2" class="docs-heading docs-section-heading" data-heading-level="2">
-            <a class="docs-heading-anchor" href="#${sectionItem.id}" aria-label="Link to ${escapeHtml(
-              sectionItem.title,
-            )}">#</a>
-            <span class="docs-heading-text">${escapeHtml(sectionItem.title)}</span>
-          </uik-heading>
-          <div class="docs-section-body">${sectionItem.body}</div>
+          <uik-surface variant="card" bordered class="docs-section-surface">
+            <uik-box padding="4" class="docs-section-inner">
+              <uik-heading level="2" class="docs-heading docs-section-heading" data-heading-level="2">
+                <a class="docs-heading-anchor" href="#${sectionItem.id}" aria-label="Link to ${escapeHtml(
+                  sectionItem.title,
+                )}">#</a>
+                <span class="docs-heading-text">${escapeHtml(
+                  sectionItem.title,
+                )}</span>
+              </uik-heading>
+              <div class="docs-section-body">${sectionItem.body}</div>
+            </uik-box>
+          </uik-surface>
         </section>
       `;
     })

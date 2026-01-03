@@ -5,10 +5,14 @@ import type {
   UikInput,
   UikNav,
   UikNavItem,
+  UikNavRail,
+  UikNavRailItem,
   UikProgress,
   UikRadioGroup,
   UikSelect,
   UikSwitch,
+  UikTreeView,
+  UikTreeViewItem,
 } from "@ismail-elkorchi/ui-primitives";
 import "@ismail-elkorchi/ui-primitives/register";
 import {
@@ -31,6 +35,7 @@ import {
   labPages,
   renderPageSections,
   renderToc,
+  type DocPage,
 } from "./content";
 
 const ensureDefaultAttribute = (
@@ -96,6 +101,85 @@ const buildActivityItems = (
   });
 };
 
+const docsGroupOrder = ["Guides", "Foundations", "Components"];
+const componentSectionShortcuts: Record<string, string[]> = {
+  primitives: ["Portfolio", "Usage", "Contracts"],
+  shell: ["Portfolio", "Layout layer", "Contracts"],
+};
+
+const normalizeNavId = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+const getPageLabel = (page: DocPage) => page.navLabel ?? page.title;
+const getPageGroup = (page: DocPage) => {
+  const group = page.group?.trim();
+  return group && group.length > 0 ? group : "Docs";
+};
+
+const buildSectionNavItems = (page: DocPage, baseUrl: string): UikNavItem[] => {
+  const sectionTitles = componentSectionShortcuts[page.id];
+  if (!sectionTitles?.length) return [];
+  const base = normalizeBaseUrl(baseUrl);
+  const toHref = (key: string) => `${base}${key}`;
+  const pageKey = `docs/${page.id}`;
+  return sectionTitles
+    .map((title) => {
+      const tocItem = page.toc.find(
+        (item) =>
+          item.level === 2 && item.title.toLowerCase() === title.toLowerCase(),
+      );
+      if (!tocItem) return null;
+      return {
+        id: `${pageKey}#${tocItem.id}`,
+        label: title,
+        href: toHref(`${pageKey}#${tocItem.id}`),
+      } satisfies UikNavItem;
+    })
+    .filter(Boolean) as UikNavItem[];
+};
+
+const buildDocsGroupItems = (baseUrl: string) => {
+  const grouped = new Map<string, DocPage[]>();
+  docsPages.forEach((page) => {
+    const group = getPageGroup(page);
+    if (!grouped.has(group)) grouped.set(group, []);
+    grouped.get(group)?.push(page);
+  });
+
+  const base = normalizeBaseUrl(baseUrl);
+  const toHref = (key: string) => `${base}${key}`;
+  const groups: UikNavItem[] = [];
+  const remaining = new Set(grouped.keys());
+
+  const addGroup = (group: string) => {
+    const pages = grouped.get(group);
+    if (!pages?.length) return;
+    remaining.delete(group);
+    groups.push({
+      id: `docs-group-${normalizeNavId(group)}`,
+      label: group,
+      children: pages.map((page) => {
+        const pageId = `docs/${page.id}`;
+        const sectionChildren = buildSectionNavItems(page, baseUrl);
+        const item: UikNavItem = {
+          id: pageId,
+          label: getPageLabel(page),
+          href: toHref(pageId),
+        };
+        if (sectionChildren.length) item.children = sectionChildren;
+        return item;
+      }),
+    });
+  };
+
+  docsGroupOrder.forEach(addGroup);
+  [...remaining].sort().forEach(addGroup);
+  return groups;
+};
+
 const buildNavItems = (baseUrl: string): UikNavItem[] => {
   const base = normalizeBaseUrl(baseUrl);
   const toHref = (key: string) => `${base}${key}`;
@@ -104,18 +188,14 @@ const buildNavItems = (baseUrl: string): UikNavItem[] => {
     {
       id: "docs",
       label: "Docs",
-      children: docsPages.map((page) => ({
-        id: `docs/${page.id}`,
-        label: page.title,
-        href: toHref(`docs/${page.id}`),
-      })),
+      children: buildDocsGroupItems(baseUrl),
     },
     {
       id: "lab",
       label: "Lab",
       children: labPages.map((page) => ({
         id: `lab/${page.id}`,
-        label: page.title,
+        label: getPageLabel(page),
         href: toHref(`lab/${page.id}`),
       })),
     },
@@ -123,15 +203,39 @@ const buildNavItems = (baseUrl: string): UikNavItem[] => {
 };
 
 const buildMobileNavOptions = () => {
-  const docsOptions = docsPages
-    .map((page) => `<option value="docs/${page.id}">${page.title}</option>`)
+  const grouped = new Map<string, DocPage[]>();
+  docsPages.forEach((page) => {
+    const group = getPageGroup(page);
+    if (!grouped.has(group)) grouped.set(group, []);
+    grouped.get(group)?.push(page);
+  });
+  const remaining = new Set(grouped.keys());
+  const renderGroup = (group: string) => {
+    const pages = grouped.get(group) ?? [];
+    if (!pages.length) return "";
+    remaining.delete(group);
+    const options = pages
+      .map(
+        (page) =>
+          `<option value="docs/${page.id}">${getPageLabel(page)}</option>`,
+      )
+      .join("");
+    return `<optgroup label="${group}">${options}</optgroup>`;
+  };
+  const docsOptions = [
+    ...docsGroupOrder.map(renderGroup),
+    ...[...remaining].sort().map(renderGroup),
+  ]
+    .filter(Boolean)
     .join("");
   const labOptions = labPages
-    .map((page) => `<option value="lab/${page.id}">${page.title}</option>`)
+    .map(
+      (page) => `<option value="lab/${page.id}">${getPageLabel(page)}</option>`,
+    )
     .join("");
 
   return `
-    <optgroup label="Docs">${docsOptions}</optgroup>
+    ${docsOptions}
     <optgroup label="Lab">${labOptions}</optgroup>
   `;
 };
@@ -140,12 +244,17 @@ type CommandPaletteCommand = UikCommandCenterCommand & { value: string };
 
 const buildCommandPaletteCommands = (): CommandPaletteCommand[] => {
   const items: CommandPaletteCommand[] = [];
-  const addItems = (group: string, view: string, pages: typeof docsPages) => {
+  const addItems = (
+    view: string,
+    pages: typeof docsPages,
+    fallback: string,
+  ) => {
     pages.forEach((page) => {
+      const group = page.group ?? fallback;
       const keywords = `${group} ${page.title} ${page.summary}`.trim();
       items.push({
         id: `${view}-${page.id}`,
-        label: page.title,
+        label: getPageLabel(page),
         description: page.summary,
         value: `${view}/${page.id}`,
         group,
@@ -154,13 +263,52 @@ const buildCommandPaletteCommands = (): CommandPaletteCommand[] => {
     });
   };
 
-  addItems("Docs", "docs", docsPages);
-  addItems("Lab", "lab", labPages);
+  addItems("docs", docsPages, "Docs");
+  addItems("lab", labPages, "Lab");
   return items;
+};
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const renderHeroLinks = (page: DocPage) => {
+  const links = page.toc.filter((item) => item.level === 2).slice(0, 6);
+  if (!links.length) return "";
+  return links
+    .map(
+      (item) =>
+        `<a class="docs-hero-link" href="#${item.id}">${escapeHtml(
+          item.title,
+        )}</a>`,
+    )
+    .join("");
+};
+
+const collectOpenIds = (items: UikNavItem[]) => {
+  const ids: string[] = [];
+  const walk = (item: UikNavItem) => {
+    if (item.children?.length) {
+      ids.push(item.id);
+      item.children.forEach(walk);
+    }
+  };
+  items.forEach(walk);
+  return ids;
 };
 
 const locationKey = (location: UikShellLocation) =>
   location.subview ? `${location.view}/${location.subview}` : location.view;
+
+const resolveNavCurrentId = (location: UikShellLocation) => {
+  const key = locationKey(location);
+  const hash = window.location.hash;
+  return hash ? `${key}${hash}` : key;
+};
 
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
@@ -294,6 +442,129 @@ const wireLabCommandPaletteControls = (container: HTMLElement) => {
   );
 };
 
+const wirePortfolioPreviews = (container: HTMLElement) => {
+  const navItems: UikNavItem[] = [
+    { id: "overview", label: "Overview", href: "#" },
+    {
+      id: "foundations",
+      label: "Foundations",
+      children: [
+        { id: "tokens", label: "Tokens", href: "#" },
+        { id: "components", label: "Components", href: "#" },
+      ],
+    },
+    { id: "release", label: "Release notes", href: "#" },
+  ];
+  const navRailItems: UikNavRailItem[] = [
+    {
+      id: "overview",
+      label: "Overview",
+      icon: "M5 6h14M5 12h10M5 18h14",
+    },
+    {
+      id: "tokens",
+      label: "Tokens",
+      icon: "M6 5h12v6H6zM6 13h12v6H6z",
+    },
+    {
+      id: "components",
+      label: "Components",
+      icon: "M6 6h5v5H6zM13 6h5v5h-5zM6 13h5v5H6zM13 13h5v5h-5z",
+    },
+  ];
+  const treeItems: UikTreeViewItem[] = [
+    {
+      id: "design",
+      label: "Design",
+      children: [
+        { id: "tokens", label: "Tokens" },
+        { id: "themes", label: "Themes" },
+      ],
+    },
+    {
+      id: "components",
+      label: "Components",
+      children: [
+        { id: "inputs", label: "Inputs" },
+        { id: "overlays", label: "Overlays" },
+      ],
+    },
+  ];
+  const activityItems: UikShellActivityBarItem[] = [
+    {
+      id: "workspace",
+      label: "Workspace",
+      icon: "M4 5h16v14H4z",
+    },
+    {
+      id: "tokens",
+      label: "Tokens",
+      icon: "M12 4l8 4-8 4-8-4 8-4z",
+    },
+    {
+      id: "console",
+      label: "Console",
+      icon: "M5 7h14M7 12h10M9 17h6",
+    },
+  ];
+
+  container
+    .querySelectorAll<UikNav>('[data-docs-portfolio="nav"]')
+    .forEach((nav) => {
+      nav.items = navItems;
+      nav.openIds = ["foundations"];
+      nav.currentId = "tokens";
+    });
+
+  container
+    .querySelectorAll<UikNavRail>('[data-docs-portfolio="nav-rail"]')
+    .forEach((navRail) => {
+      navRail.items = navRailItems;
+      navRail.activeId = "tokens";
+    });
+
+  container
+    .querySelectorAll<UikTreeView>('[data-docs-portfolio="tree-view"]')
+    .forEach((treeView) => {
+      treeView.items = treeItems;
+      treeView.openIds = ["design", "components"];
+      treeView.selectedIds = ["tokens"];
+    });
+
+  container
+    .querySelectorAll<UikShellActivityBar>(
+      '[data-docs-portfolio="shell-activity-bar"]',
+    )
+    .forEach((activityBar) => {
+      activityBar.items = activityItems;
+      activityBar.activeId = "workspace";
+    });
+
+  container
+    .querySelectorAll<HTMLElement>("[data-docs-dialog-trigger]")
+    .forEach((trigger) => {
+      const dialogId = trigger.getAttribute("data-docs-dialog-trigger");
+      if (!dialogId) return;
+      const dialog = container.querySelector<UikDialog>(`#${dialogId}`);
+      if (!dialog) return;
+      trigger.addEventListener("click", () => {
+        if (!dialog.open) dialog.showModal();
+      });
+    });
+
+  container
+    .querySelectorAll<HTMLElement>("[data-docs-dialog-close]")
+    .forEach((trigger) => {
+      const dialogId = trigger.getAttribute("data-docs-dialog-close");
+      if (!dialogId) return;
+      const dialog = container.querySelector<UikDialog>(`#${dialogId}`);
+      if (!dialog) return;
+      trigger.addEventListener("click", () => {
+        dialog.close();
+      });
+    });
+};
+
 export const mountDocsApp = (container: HTMLElement) => {
   ensureDefaultAttribute(
     document.documentElement,
@@ -326,31 +597,42 @@ export const mountDocsApp = (container: HTMLElement) => {
         <div class="docs-page" data-docs-page>
           <uik-surface variant="card" bordered class="docs-hero">
             <uik-box padding="5">
-              <div class="docs-hero-inner">
-                <div class="docs-hero-top">
-                  <uik-badge variant="secondary">UIK Docs</uik-badge>
-                  <uik-badge variant="outline">Tokens + Primitives + Shell</uik-badge>
-                </div>
-                <uik-heading level="1" data-docs-title></uik-heading>
-                <uik-text as="p" data-docs-summary class="docs-summary"></uik-text>
-                <div class="docs-hero-actions">
-                  <div class="docs-hero-controls">
-                    <uik-select data-docs-control="theme">
-                      <span slot="label">Theme</span>
-                      <option value="light">Light</option>
-                      <option value="dark">Dark</option>
-                    </uik-select>
-                    <uik-select data-docs-control="density">
-                      <span slot="label">Density</span>
-                      <option value="comfortable">Comfortable</option>
-                      <option value="compact">Compact</option>
-                    </uik-select>
-                    <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
-                      <span slot="label">Page</span>
-                      ${buildMobileNavOptions()}
-                    </uik-select>
+              <div class="docs-hero-grid">
+                <div class="docs-hero-content">
+                  <div class="docs-hero-top">
+                    <uik-badge variant="secondary">UIK Docs</uik-badge>
+                    <uik-badge variant="outline" data-docs-group></uik-badge>
+                    <uik-badge variant="outline" data-docs-kind></uik-badge>
+                    <uik-badge variant="outline" data-docs-package></uik-badge>
                   </div>
-                  <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
+                  <uik-heading level="1" data-docs-title></uik-heading>
+                  <uik-text as="p" data-docs-summary class="docs-summary"></uik-text>
+                  <nav class="docs-hero-links" data-docs-hero-links aria-label="Jump to sections"></nav>
+                </div>
+                <div class="docs-hero-panel">
+                  <uik-surface variant="elevated" bordered class="docs-hero-panel-surface">
+                    <uik-box padding="4">
+                      <div class="docs-hero-control-grid">
+                        <uik-select data-docs-control="theme">
+                          <span slot="label">Theme</span>
+                          <option value="light">Light</option>
+                          <option value="dark">Dark</option>
+                        </uik-select>
+                        <uik-select data-docs-control="density">
+                          <span slot="label">Density</span>
+                          <option value="comfortable">Comfortable</option>
+                          <option value="compact">Compact</option>
+                        </uik-select>
+                        <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
+                          <span slot="label">Page</span>
+                          ${buildMobileNavOptions()}
+                        </uik-select>
+                      </div>
+                      <div class="docs-hero-panel-actions">
+                        <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
+                      </div>
+                    </uik-box>
+                  </uik-surface>
                 </div>
               </div>
             </uik-box>
@@ -408,6 +690,14 @@ export const mountDocsApp = (container: HTMLElement) => {
   const summaryElement = container.querySelector<HTMLElement>(
     "[data-docs-summary]",
   );
+  const groupBadge = container.querySelector<HTMLElement>("[data-docs-group]");
+  const kindBadge = container.querySelector<HTMLElement>("[data-docs-kind]");
+  const packageBadge = container.querySelector<HTMLElement>(
+    "[data-docs-package]",
+  );
+  const heroLinksElement = container.querySelector<HTMLElement>(
+    "[data-docs-hero-links]",
+  );
   const contentElement = container.querySelector<HTMLElement>(
     "[data-docs-content]",
   );
@@ -442,18 +732,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   const commandPalette = container.querySelector<UikCommandPalette>(
     "[data-docs-command-palette]",
   );
-  const commandCenter = commandPalette
-    ? createUikCommandCenter({
-        palette: commandPalette,
-        commands: buildCommandPaletteCommands(),
-        onSelect: (command) => {
-          if (!command.value) return;
-          const [view, subview] = command.value.split("/");
-          router.navigate(view, subview);
-          syncUrl(router.current);
-        },
-      })
-    : null;
+  let commandCenter: ReturnType<typeof createUikCommandCenter> | null = null;
 
   if (!layout || !activityBar || !nav || !statusBar || !secondarySidebar) {
     throw new Error("Docs layout could not be initialized.");
@@ -461,9 +740,41 @@ export const mountDocsApp = (container: HTMLElement) => {
 
   activityBar.items = buildActivityItems(routes);
   nav.items = buildNavItems(baseUrl);
-  nav.openIds = ["docs", "lab"];
+  nav.openIds = collectOpenIds(nav.items);
   setOutlineOpen(layout, secondarySidebar, true);
   let commandPaletteOpenButton: UikButton | null = null;
+
+  const setBadgeContent = (element: HTMLElement | null, value?: string) => {
+    if (!element) return;
+    const nextValue = value?.trim() ?? "";
+    element.textContent = nextValue;
+    element.toggleAttribute("hidden", nextValue.length === 0);
+  };
+
+  const updateHeroLinks = (page: DocPage) => {
+    if (!heroLinksElement) return;
+    const links = renderHeroLinks(page);
+    heroLinksElement.innerHTML = links;
+    heroLinksElement.toggleAttribute("hidden", links.length === 0);
+  };
+
+  const updateNavCurrent = (location: UikShellLocation) => {
+    nav.currentId = resolveNavCurrentId(location);
+  };
+
+  if (commandPalette) {
+    commandCenter = createUikCommandCenter({
+      palette: commandPalette,
+      commands: buildCommandPaletteCommands(),
+      onSelect: (command) => {
+        if (!command.value) return;
+        const [view, subview] = command.value.split("/");
+        router.navigate(view, subview);
+        syncUrl(router.current);
+        updateNavCurrent(router.current);
+      },
+    });
+  }
 
   const applyLocation = (location: UikShellLocation) => {
     const key = locationKey(location);
@@ -471,16 +782,20 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (!page) return;
 
     activityBar.activeId = location.view;
-
-    const nextOpen = new Set(nav.openIds);
-    nextOpen.add(location.view);
-    nav.openIds = [...nextOpen];
-    nav.currentId = key;
+    updateNavCurrent(location);
 
     if (titleElement) titleElement.textContent = page.title;
     if (summaryElement) summaryElement.textContent = page.summary;
+    setBadgeContent(groupBadge, page.group);
+    setBadgeContent(kindBadge, page.kind);
+    setBadgeContent(
+      packageBadge,
+      page.package ? `@ismail-elkorchi/${page.package}` : "",
+    );
+    updateHeroLinks(page);
     if (contentElement) {
       contentElement.innerHTML = renderPageSections(page);
+      wirePortfolioPreviews(contentElement);
     }
     if (outlineElement) {
       outlineElement.innerHTML = renderToc(page);
@@ -550,6 +865,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   });
 
   window.addEventListener("hashchange", () => {
+    updateNavCurrent(router.current);
     void scrollToHashTarget();
   });
 
@@ -557,15 +873,24 @@ export const mountDocsApp = (container: HTMLElement) => {
     const detail = (event as CustomEvent<{ id: string }>).detail;
     router.navigate(detail.id);
     syncUrl(router.current);
+    updateNavCurrent(router.current);
   });
 
   nav.addEventListener("nav-select", (event: Event) => {
     const detail = (event as CustomEvent<{ id: string }>).detail;
-    const [view, subview] = detail.id.split("/");
-    if (!view || !subview) return;
+    const [view, subviewWithHash] = detail.id.split("/");
+    if (!view || !subviewWithHash) return;
+    const [subview, hash] = subviewWithHash.split("#");
+    if (!subview) return;
     event.preventDefault();
     router.navigate(view, subview);
-    syncUrl(router.current);
+    const nextKey = `${view}/${subview}`;
+    const nextPath = hash
+      ? `${baseUrl}${nextKey}#${hash}`
+      : `${baseUrl}${nextKey}`;
+    window.history.pushState({}, "", nextPath);
+    updateNavCurrent(router.current);
+    void scrollToHashTarget();
   });
 
   outlineToggle?.addEventListener("click", () => {
@@ -594,6 +919,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (!view || !subview) return;
     router.navigate(view, subview);
     syncUrl(router.current);
+    updateNavCurrent(router.current);
   });
 
   window.addEventListener("popstate", () => {
