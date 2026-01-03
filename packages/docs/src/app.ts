@@ -312,6 +312,7 @@ const resolveNavCurrentId = (location: UikShellLocation) => {
 
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+const nextTask = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
 const setOutlineOpen = (
   layout: UikShellLayout,
@@ -733,6 +734,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     "[data-docs-command-palette]",
   );
   let commandCenter: ReturnType<typeof createUikCommandCenter> | null = null;
+  let contentRenderToken = 0;
 
   if (!layout || !activityBar || !nav || !statusBar || !secondarySidebar) {
     throw new Error("Docs layout could not be initialized.");
@@ -776,23 +778,13 @@ export const mountDocsApp = (container: HTMLElement) => {
     });
   }
 
-  const applyLocation = (location: UikShellLocation) => {
-    const key = locationKey(location);
-    const page = pageMap.get(key);
-    if (!page) return;
+  const renderPageContent = async (page: DocPage, deferContent: boolean) => {
+    const token = (contentRenderToken += 1);
+    if (deferContent) {
+      await nextTask();
+    }
+    if (token !== contentRenderToken) return;
 
-    activityBar.activeId = location.view;
-    updateNavCurrent(location);
-
-    if (titleElement) titleElement.textContent = page.title;
-    if (summaryElement) summaryElement.textContent = page.summary;
-    setBadgeContent(groupBadge, page.group);
-    setBadgeContent(kindBadge, page.kind);
-    setBadgeContent(
-      packageBadge,
-      page.package ? `@ismail-elkorchi/${page.package}` : "",
-    );
-    updateHeroLinks(page);
     if (contentElement) {
       contentElement.innerHTML = renderPageSections(page);
       wirePortfolioPreviews(contentElement);
@@ -800,15 +792,6 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (outlineElement) {
       outlineElement.innerHTML = renderToc(page);
     }
-    if (mobileNavSelect) {
-      mobileNavSelect.value = key;
-    }
-
-    statusBar.message = page.title;
-    if (page.id !== "shell-patterns") statusBar.tone = "info";
-    updateStatusMeta(statusBar);
-    document.title = `UIK Docs - ${page.title}`;
-    void scrollToHashTarget();
 
     if (contentElement) {
       if (page.id === "shell-patterns") {
@@ -829,6 +812,39 @@ export const mountDocsApp = (container: HTMLElement) => {
       }
       commandCenter?.setOpenButton(commandPaletteOpenButton);
     }
+
+    void scrollToHashTarget();
+  };
+
+  const applyLocation = (location: UikShellLocation) => {
+    const key = locationKey(location);
+    const page = pageMap.get(key);
+    if (!page) return;
+
+    activityBar.activeId = location.view;
+    updateNavCurrent(location);
+
+    if (titleElement) titleElement.textContent = page.title;
+    if (summaryElement) summaryElement.textContent = page.summary;
+    setBadgeContent(groupBadge, page.group);
+    setBadgeContent(kindBadge, page.kind);
+    setBadgeContent(
+      packageBadge,
+      page.package ? `@ismail-elkorchi/${page.package}` : "",
+    );
+    updateHeroLinks(page);
+    if (contentElement) contentElement.innerHTML = "";
+    if (outlineElement) outlineElement.innerHTML = "";
+    if (mobileNavSelect) {
+      mobileNavSelect.value = key;
+    }
+
+    statusBar.message = page.title;
+    if (page.id !== "shell-patterns") statusBar.tone = "info";
+    updateStatusMeta(statusBar);
+    document.title = `UIK Docs - ${page.title}`;
+    const shouldDeferContent = location.view === "docs";
+    void renderPageContent(page, shouldDeferContent);
   };
 
   router.subscribe(applyLocation);
