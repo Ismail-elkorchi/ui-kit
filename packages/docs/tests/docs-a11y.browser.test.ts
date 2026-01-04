@@ -39,6 +39,15 @@ async function runA11y(container: HTMLElement) {
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
+const waitForContent = async (attempts = 10) => {
+  for (let i = 0; i < attempts; i += 1) {
+    const content = document.querySelector<HTMLElement>("[data-docs-content]");
+    if (content?.innerHTML.trim()) return;
+    await nextFrame();
+  }
+  throw new Error("Docs content did not render.");
+};
+
 describe("docs a11y", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
@@ -49,7 +58,7 @@ describe("docs a11y", () => {
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
     mountDocsApp(root);
-    await nextFrame();
+    await waitForContent();
     await runA11y(document.body);
   });
 });

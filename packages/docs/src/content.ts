@@ -1,4 +1,5 @@
-import docsContent from "./generated/docs-content.json";
+/// <reference types="vite/client" />
+import docsManifest from "./generated/docs-manifest.json";
 
 const escapeHtml = (value: string) =>
   value
@@ -29,16 +30,23 @@ export interface DocPage {
   kind?: string;
   package?: string;
   type?: string;
-  sections: DocSection[];
   toc: DocTocItem[];
 }
 
-interface DocsContent {
+export interface DocPageContent {
+  sections: DocSection[];
+}
+
+interface DocsManifest {
   docsPages: DocPage[];
   labPages: DocPage[];
 }
 
-const content = docsContent as DocsContent;
+const content = docsManifest as DocsManifest;
+
+const pageModules = import.meta.glob<{ default: DocPageContent }>(
+  "./generated/pages/**/*.json",
+);
 
 export const docsPages = content.docsPages;
 export const labPages = content.labPages;
@@ -54,6 +62,19 @@ export const buildPageMap = () => {
   return map;
 };
 
+export const loadPageContent = async (
+  view: "docs" | "lab",
+  id: string,
+): Promise<DocPageContent> => {
+  const key = `./generated/pages/${view}/${id}.json`;
+  const loader = pageModules[key];
+  if (!loader) {
+    throw new Error(`Docs content not found for ${view}/${id}.`);
+  }
+  const module = (await loader()) as { default?: DocPageContent };
+  return module.default ?? { sections: [] };
+};
+
 export const renderToc = (page: DocPage) => {
   if (page.toc.length === 0) return "";
   return `<nav aria-label="On this page" class="docs-toc"><ul class="docs-toc-list">${page.toc
@@ -66,7 +87,7 @@ export const renderToc = (page: DocPage) => {
     .join("")}</ul></nav>`;
 };
 
-export const renderPageSections = (page: DocPage) => {
+export const renderPageSections = (page: DocPageContent) => {
   return page.sections
     .map((sectionItem) => {
       return `

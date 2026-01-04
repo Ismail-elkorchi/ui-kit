@@ -8,6 +8,15 @@ import { mountDocsApp } from "../app";
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
+const waitForContent = async (attempts = 10) => {
+  for (let i = 0; i < attempts; i += 1) {
+    const content = document.querySelector<HTMLElement>("[data-docs-content]");
+    if (content?.innerHTML.trim()) return;
+    await nextFrame();
+  }
+  throw new Error("Docs content did not render.");
+};
+
 describe("docs navigation", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
@@ -20,6 +29,7 @@ describe("docs navigation", () => {
     await customElements.whenDefined("uik-nav");
     const nav = document.querySelector<UikNav>("uik-nav");
     await nav?.updateComplete;
+    await waitForContent();
 
     const link = nav?.shadowRoot?.querySelector<HTMLAnchorElement>(
       'a[href="/docs/tokens"]',
@@ -29,6 +39,7 @@ describe("docs navigation", () => {
     link?.focus();
     await userEvent.keyboard("{Enter}");
     await nextFrame();
+    await waitForContent();
 
     const title = document.querySelector("[data-docs-title]");
     expect(title?.textContent).toContain("Tokens");

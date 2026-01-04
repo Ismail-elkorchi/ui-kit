@@ -1,0 +1,1 @@
+{"id":"LS-0001","tool":"gate","rule":"npm -w packages/docs run test:1","pattern":"Repeated gate failure: npm -w packages/docs run test","prevention":"Review the failing gate output and add a prevention step or test.","frequency":9,"last_seen":"2026-01-03T23:12:43.698Z","queue_refs":["BL-0046"]}

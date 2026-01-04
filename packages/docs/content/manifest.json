@@ -103,6 +103,26 @@
       "kind": "Lab",
       "source": "packages/docs/content/lab/menus.md",
       "format": "markdown"
+    },
+    {
+      "id": "perf-shell",
+      "title": "Perf Fixture: Shell Layout",
+      "summary": "Stable shell layout snapshot for Lighthouse audits.",
+      "navLabel": "Perf: Shell",
+      "group": "Lab",
+      "kind": "Lab",
+      "source": "packages/docs/content/lab/perf-shell.md",
+      "format": "markdown"
+    },
+    {
+      "id": "perf-primitives",
+      "title": "Perf Fixture: Primitives",
+      "summary": "Representative primitive composition for Lighthouse audits.",
+      "navLabel": "Perf: Primitives",
+      "group": "Lab",
+      "kind": "Lab",
+      "source": "packages/docs/content/lab/perf-primitives.md",
+      "format": "markdown"
     }
   ]
 }

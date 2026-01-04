@@ -13,6 +13,15 @@ import { mountDocsApp } from "../app";
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
+const waitForContent = async (attempts = 10) => {
+  for (let i = 0; i < attempts; i += 1) {
+    const content = document.querySelector<HTMLElement>("[data-docs-content]");
+    if (content?.innerHTML.trim()) return;
+    await nextFrame();
+  }
+  throw new Error("Docs content did not render.");
+};
+
 const waitForOptions = async (
   palette: UikCommandPalette | null,
   attempts = 5,
@@ -68,7 +77,7 @@ describe("command palette pattern", () => {
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
     mountDocsApp(root);
-    await nextFrame();
+    await waitForContent();
 
     const openButton = document.querySelector<UikButton>(
       '[data-docs-action="command-palette-open"]',

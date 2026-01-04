@@ -12,7 +12,11 @@ const repoRoot = path.resolve(scriptDir, "../../..");
 const docsRoot = path.join(repoRoot, "packages/docs");
 const contentRoot = path.join(docsRoot, "content");
 const manifestPath = path.join(contentRoot, "manifest.json");
-const outputPath = path.join(docsRoot, "src/generated/docs-content.json");
+const manifestOutputPath = path.join(
+  docsRoot,
+  "src/generated/docs-manifest.json",
+);
+const pagesOutputDir = path.join(docsRoot, "src/generated/pages");
 const searchIndexPath = path.join(
   docsRoot,
   "src/generated/docs-search-index.json",
@@ -925,6 +929,28 @@ const buildPages = async (entries) => {
   return pages;
 };
 
+const toPageMeta = (page) => ({
+  id: page.id,
+  title: page.title,
+  summary: page.summary,
+  navLabel: page.navLabel ?? page.title,
+  group: page.group ?? undefined,
+  kind: page.kind ?? undefined,
+  package: page.package ?? undefined,
+  type: page.type ?? undefined,
+  toc: page.toc ?? [],
+});
+
+const writePageContent = async (kind, page) => {
+  const output = { sections: page.sections ?? [] };
+  const outputDir = path.join(pagesOutputDir, kind);
+  await fs.mkdir(outputDir, { recursive: true });
+  await fs.writeFile(
+    path.join(outputDir, `${page.id}.json`),
+    `${JSON.stringify(output, null, 2)}\n`,
+  );
+};
+
 const buildSearchDocuments = (pages, kind) =>
   pages.flatMap((page) => {
     const pageTitle = normalizeSearchText(page.title);
@@ -973,11 +999,21 @@ const run = async () => {
   const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
   const docsPages = await buildPages(manifest.docs ?? []);
   const labPages = await buildPages(manifest.lab ?? []);
-  const output = { docsPages, labPages };
+  const output = {
+    docsPages: docsPages.map(toPageMeta),
+    labPages: labPages.map(toPageMeta),
+  };
   const searchIndex = buildSearchIndex(docsPages, labPages);
 
-  await fs.mkdir(path.dirname(outputPath), { recursive: true });
-  await fs.writeFile(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+  await fs.mkdir(path.dirname(manifestOutputPath), { recursive: true });
+  await fs.writeFile(
+    manifestOutputPath,
+    `${JSON.stringify(output, null, 2)}\n`,
+  );
+  await Promise.all([
+    ...docsPages.map((page) => writePageContent("docs", page)),
+    ...labPages.map((page) => writePageContent("lab", page)),
+  ]);
   await fs.writeFile(
     searchIndexPath,
     `${JSON.stringify(searchIndex, null, 2)}\n`,

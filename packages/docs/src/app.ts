@@ -47,8 +47,10 @@ import {
   buildPageMap,
   docsPages,
   labPages,
+  loadPageContent,
   renderPageSections,
   renderToc,
+  type DocPageContent,
   type DocPage,
 } from "./content";
 
@@ -421,7 +423,7 @@ const resolveNavCurrentId = (location: UikShellLocation) => {
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-const collectPageComponentTags = (page: DocPage) => {
+const collectPageComponentTags = (page: DocPageContent) => {
   const tags = new Set<string>();
   for (const section of page.sections) {
     componentTagPattern.lastIndex = 0;
@@ -434,7 +436,7 @@ const collectPageComponentTags = (page: DocPage) => {
   return tags;
 };
 
-const loadPageComponents = async (page: DocPage) => {
+const loadPageComponents = async (page: DocPageContent) => {
   const tags = collectPageComponentTags(page);
   const imports: Promise<unknown>[] = [];
   tags.forEach((tag) => {
@@ -921,21 +923,26 @@ export const mountDocsApp = (container: HTMLElement) => {
     );
   }
 
-  const renderPageContent = async (page: DocPage) => {
+  const renderPageContent = async (view: "docs" | "lab", page: DocPage) => {
     const token = (contentRenderToken += 1);
+    if (contentElement) {
+      contentElement.setAttribute("aria-busy", "true");
+      contentElement.innerHTML = "";
+    }
+    const pageContent = await loadPageContent(view, page.id);
+    if (token !== contentRenderToken) return;
+
     const shouldAwaitComponents = page.id !== "command-palette";
-    const loadPromise = loadPageComponents(page);
+    const loadPromise = loadPageComponents(pageContent);
     if (shouldAwaitComponents) {
       await loadPromise;
     }
     if (token !== contentRenderToken) return;
 
     if (contentElement) {
-      contentElement.innerHTML = renderPageSections(page);
+      contentElement.innerHTML = renderPageSections(pageContent);
+      contentElement.setAttribute("aria-busy", "false");
       wirePortfolioPreviews(contentElement);
-    }
-    if (outlineElement) {
-      outlineElement.innerHTML = renderToc(page);
     }
 
     if (contentElement) {
@@ -983,8 +990,11 @@ export const mountDocsApp = (container: HTMLElement) => {
       page.package ? `@ismail-elkorchi/${page.package}` : "",
     );
     updateHeroLinks(page);
-    if (contentElement) contentElement.innerHTML = "";
-    if (outlineElement) outlineElement.innerHTML = "";
+    if (contentElement) {
+      contentElement.innerHTML = "";
+      contentElement.setAttribute("aria-busy", "true");
+    }
+    if (outlineElement) outlineElement.innerHTML = renderToc(page);
     if (mobileNavSelect) {
       mobileNavSelect.value = key;
     }
@@ -993,7 +1003,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (page.id !== "shell-patterns") statusBar.tone = "info";
     updateStatusMeta(statusBar);
     document.title = `UIK Docs - ${page.title}`;
-    void renderPageContent(page);
+    void renderPageContent(location.view as "docs" | "lab", page);
   };
 
   router.subscribe(applyLocation);
