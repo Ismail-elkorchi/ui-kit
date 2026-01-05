@@ -162,7 +162,7 @@ export class UikDialog extends LitElement {
     const ariaLabelledby = hasTitle
       ? this.titleId
       : this.ariaLabelledbyValue || undefined;
-    const ariaModal = this.modal ? "true" : undefined;
+    const ariaModal = this.open && this.modal ? "true" : undefined;
 
     return html`
       <dialog

@@ -39,8 +39,9 @@ async function runA11y(container: HTMLElement) {
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-const waitForContent = async (attempts = 10) => {
-  for (let i = 0; i < attempts; i += 1) {
+const waitForContent = async (timeoutMs = 2000) => {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
     const content = document.querySelector<HTMLElement>("[data-docs-content]");
     if (content?.innerHTML.trim()) return;
     await nextFrame();

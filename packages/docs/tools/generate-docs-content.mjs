@@ -446,7 +446,7 @@ const renderComponentPortfolio = (components) => {
         size: "md",
         html: `<div class="docs-portfolio-dialog">
 <uik-button variant="outline" size="sm" data-docs-dialog-trigger="${dialogId}">Preview dialog</uik-button>
-<uik-dialog id="${dialogId}" aria-label="Dialog preview" style="--uik-component-dialog-max-width: var(--uik-layout-panel-width-sm);">
+<uik-dialog id="${dialogId}" style="--uik-component-dialog-max-width: var(--uik-layout-panel-width-sm);">
 <span slot="title">Release notes</span>
 <uik-text as="p">Updates are ready to install.</uik-text>
 <div slot="actions" class="docs-portfolio-dialog-actions">
@@ -490,7 +490,9 @@ const renderComponentPortfolio = (components) => {
     "uik-menu-item": () => ({
       layout: "start",
       size: "sm",
-      html: `<uik-menu-item active>Active item</uik-menu-item>`,
+      html: `<div role="menu" aria-label="Menu item preview">
+<uik-menu-item active>Active item</uik-menu-item>
+</div>`,
     }),
     "uik-menubar": () => ({
       layout: "start",

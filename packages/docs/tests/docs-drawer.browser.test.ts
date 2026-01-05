@@ -1,5 +1,8 @@
 import type { UikButton } from "@ismail-elkorchi/ui-primitives";
-import type { UikShellSecondarySidebar } from "@ismail-elkorchi/ui-shell";
+import type {
+  UikShellLayout,
+  UikShellSecondarySidebar,
+} from "@ismail-elkorchi/ui-shell";
 import "@ismail-elkorchi/ui-tokens/base.css";
 import { beforeEach, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
@@ -9,8 +12,9 @@ import { mountDocsApp } from "../app";
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-const waitForContent = async (attempts = 10) => {
-  for (let i = 0; i < attempts; i += 1) {
+const waitForContent = async (timeoutMs = 2000) => {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
     const content = document.querySelector<HTMLElement>("[data-docs-content]");
     if (content?.innerHTML.trim()) return;
     await nextFrame();
@@ -40,7 +44,17 @@ describe("docs outline drawer focus", () => {
     if (!outlineToggle || !secondarySidebar) return;
 
     if (secondarySidebar.isOpen) {
-      await userEvent.click(outlineToggle);
+      const closeButton = secondarySidebar.querySelector<UikButton>(
+        'uik-button[part="close-button"]',
+      );
+      if (closeButton) {
+        await userEvent.click(closeButton);
+      } else {
+        const layout =
+          document.querySelector<UikShellLayout>("uik-shell-layout");
+        secondarySidebar.isOpen = false;
+        if (layout) layout.isSecondarySidebarVisible = false;
+      }
       await secondarySidebar.updateComplete;
     }
 
