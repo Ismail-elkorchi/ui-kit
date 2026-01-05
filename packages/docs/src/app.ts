@@ -24,6 +24,7 @@ import "@ismail-elkorchi/ui-primitives/uik-nav";
 import "@ismail-elkorchi/ui-primitives/uik-select";
 import "@ismail-elkorchi/ui-primitives/uik-surface";
 import "@ismail-elkorchi/ui-primitives/uik-text";
+import "@ismail-elkorchi/ui-primitives/uik-tree-view";
 import "@ismail-elkorchi/ui-primitives/uik-visually-hidden";
 import type {
   UikCommandCenterCommand,
@@ -172,6 +173,7 @@ const preloadedComponents = new Set([
   "uik-select",
   "uik-surface",
   "uik-text",
+  "uik-tree-view",
   "uik-visually-hidden",
   "uik-shell-activity-bar",
   "uik-shell-layout",
@@ -628,7 +630,7 @@ const wirePortfolioPreviews = (container: HTMLElement) => {
     .forEach((treeView) => {
       treeView.items = treeItems;
       treeView.openIds = ["design", "components"];
-      treeView.selectedIds = ["tokens"];
+      treeView.currentId = "tokens";
     });
 
   container
@@ -688,7 +690,10 @@ export const mountDocsApp = (container: HTMLElement) => {
         heading="Navigation"
         subtitle="UIK"
         aria-label="Docs navigation">
-        <uik-nav class="docs-nav" aria-label="Docs navigation"></uik-nav>
+        <uik-tree-view
+          class="docs-tree-nav"
+          data-docs-nav-tree
+          aria-label="Docs navigation"></uik-tree-view>
         <div slot="footer" class="docs-sidebar-footer">
           <uik-text as="p" size="sm" tone="muted">Tokens-first, standards-based UI.</uik-text>
         </div>
@@ -778,7 +783,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   const activityBar = container.querySelector<UikShellActivityBar>(
     "uik-shell-activity-bar",
   );
-  const nav = container.querySelector<UikNav>("uik-nav");
+  const navTree = container.querySelector<UikTreeView>("[data-docs-nav-tree]");
   const statusBar = container.querySelector<UikShellStatusBar>(
     "uik-shell-status-bar",
   );
@@ -835,13 +840,19 @@ export const mountDocsApp = (container: HTMLElement) => {
   let commandCenter: UikCommandCenterHandle | null = null;
   let contentRenderToken = 0;
 
-  if (!layout || !activityBar || !nav || !statusBar || !secondarySidebar) {
+  if (
+    !layout ||
+    !activityBar ||
+    !navTree ||
+    !statusBar ||
+    !secondarySidebar
+  ) {
     throw new Error("Docs layout could not be initialized.");
   }
 
   activityBar.items = buildActivityItems(routes);
-  nav.items = buildNavItems(baseUrl);
-  nav.openIds = collectOpenIds(nav.items);
+  navTree.items = buildNavItems(baseUrl);
+  navTree.openIds = collectOpenIds(navTree.items);
   setOutlineOpen(layout, secondarySidebar, true);
   let commandPaletteOpenButton: UikButton | null = null;
 
@@ -860,7 +871,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   };
 
   const updateNavCurrent = (location: UikShellLocation) => {
-    nav.currentId = resolveNavCurrentId(location);
+    navTree.currentId = resolveNavCurrentId(location);
   };
 
   const syncCommandCenterOpenButton = () => {
@@ -1015,13 +1026,12 @@ export const mountDocsApp = (container: HTMLElement) => {
     updateNavCurrent(router.current);
   });
 
-  nav.addEventListener("nav-select", (event: Event) => {
+  navTree.addEventListener("tree-view-activate", (event: Event) => {
     const detail = (event as CustomEvent<{ id: string }>).detail;
     const [view, subviewWithHash] = detail.id.split("/");
     if (!view || !subviewWithHash) return;
     const [subview, hash] = subviewWithHash.split("#");
     if (!subview) return;
-    event.preventDefault();
     router.navigate(view, subview);
     const nextKey = `${view}/${subview}`;
     const nextPath = hash

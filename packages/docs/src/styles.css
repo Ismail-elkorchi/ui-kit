@@ -44,17 +44,9 @@ body {
   );
 }
 
-.docs-nav {
-  --uik-component-nav-indent: var(--uik-space-4);
-  --uik-component-nav-item-radius: var(--uik-radius-3);
-}
-
-.docs-nav::part(label) {
-  font-size: var(--uik-typography-font-size-1);
-  font-weight: var(--uik-typography-font-weight-bold);
-  color: oklch(var(--uik-text-muted));
-  text-transform: uppercase;
-  letter-spacing: var(--uik-typography-letter-spacing-wide);
+.docs-tree-nav {
+  --uik-component-tree-view-indent: var(--uik-space-4);
+  --uik-component-tree-view-item-radius: var(--uik-radius-3);
 }
 
 .docs-skip-link {

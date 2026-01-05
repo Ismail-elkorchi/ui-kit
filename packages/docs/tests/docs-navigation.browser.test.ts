@@ -1,4 +1,4 @@
-import type { UikNav } from "@ismail-elkorchi/ui-primitives";
+import type { UikTreeView } from "@ismail-elkorchi/ui-primitives";
 import "@ismail-elkorchi/ui-tokens/base.css";
 import { beforeEach, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
@@ -26,17 +26,20 @@ describe("docs navigation", () => {
   });
 
   it("navigates to the tokens page via keyboard", async () => {
-    await customElements.whenDefined("uik-nav");
-    const nav = document.querySelector<UikNav>("uik-nav");
-    await nav?.updateComplete;
+    await customElements.whenDefined("uik-tree-view");
+    const navTree = document.querySelector<UikTreeView>("[data-docs-nav-tree]");
+    await navTree?.updateComplete;
     await waitForContent();
 
-    const link = nav?.shadowRoot?.querySelector<HTMLAnchorElement>(
-      'a[href="/docs/tokens"]',
-    );
-    expect(link).toBeTruthy();
+    const firstItem =
+      navTree?.shadowRoot?.querySelector<HTMLElement>('[role="treeitem"]');
+    expect(firstItem).toBeTruthy();
+    firstItem?.focus();
+    await userEvent.keyboard("t");
 
-    link?.focus();
+    const active = navTree?.shadowRoot?.activeElement as HTMLElement | null;
+    expect(active?.getAttribute("data-item-id")).toBe("docs/tokens");
+
     await userEvent.keyboard("{Enter}");
     await nextFrame();
     await waitForContent();
