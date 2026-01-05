@@ -307,6 +307,7 @@ export class UikTreeView extends LitElement {
         aria-posinset=${String(entry.index + 1)}
         aria-setsize=${String(entry.setSize)}
         aria-current=${ifDefined(isCurrent ? "page" : undefined)}
+        aria-selected=${isCurrent ? "true" : "false"}
         aria-expanded=${ifDefined(
           isBranch ? (isOpen ? "true" : "false") : undefined,
         )}
