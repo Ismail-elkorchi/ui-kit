@@ -110,7 +110,8 @@ describe("uik-tree-view", () => {
     expect(tree.openIds.includes("apps")).toBe(false);
 
     await userEvent.keyboard("p");
-    const typeaheadTarget = tree.shadowRoot?.activeElement as HTMLElement | null;
+    const typeaheadTarget = tree.shadowRoot
+      ?.activeElement as HTMLElement | null;
     expect(typeaheadTarget?.getAttribute("data-item-id")).toBe("packages");
 
     await userEvent.keyboard("{ArrowRight}{ArrowDown}{Enter}");
