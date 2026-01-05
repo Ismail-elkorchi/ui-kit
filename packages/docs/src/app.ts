@@ -848,13 +848,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   let commandCenter: UikCommandCenterHandle | null = null;
   let contentRenderToken = 0;
 
-  if (
-    !layout ||
-    !activityBar ||
-    !navTree ||
-    !statusBar ||
-    !secondarySidebar
-  ) {
+  if (!layout || !activityBar || !navTree || !statusBar || !secondarySidebar) {
     throw new Error("Docs layout could not be initialized.");
   }
 
