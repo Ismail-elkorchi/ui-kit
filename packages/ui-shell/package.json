@@ -64,6 +64,11 @@
       "types": "./dist/src/internal/router.d.ts",
       "import": "./dist/src/internal/router.js",
       "default": "./dist/src/internal/router.js"
+    },
+    "./command-center": {
+      "types": "./dist/src/internal/command-center.d.ts",
+      "import": "./dist/src/internal/command-center.js",
+      "default": "./dist/src/internal/command-center.js"
     }
   },
   "sideEffects": [

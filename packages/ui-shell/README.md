@@ -135,7 +135,7 @@ import type { UikCommandPalette } from "@ismail-elkorchi/ui-primitives";
 import {
   createUikCommandCenter,
   type UikCommandCenterCommand,
-} from "@ismail-elkorchi/ui-shell";
+} from "@ismail-elkorchi/ui-shell/command-center";
 
 const palette = document.querySelector(
   "uik-command-palette",

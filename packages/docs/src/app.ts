@@ -126,31 +126,20 @@ const componentSectionShortcuts: Record<string, string[]> = {
 const componentTagPattern = /<\s*(uik-[a-z0-9-]+)/g;
 const componentLoaders = new Map<string, () => Promise<unknown>>([
   ["uik-alert", () => import("@ismail-elkorchi/ui-primitives/uik-alert")],
-  ["uik-badge", () => import("@ismail-elkorchi/ui-primitives/uik-badge")],
-  ["uik-box", () => import("@ismail-elkorchi/ui-primitives/uik-box")],
-  ["uik-button", () => import("@ismail-elkorchi/ui-primitives/uik-button")],
   ["uik-checkbox", () => import("@ismail-elkorchi/ui-primitives/uik-checkbox")],
-  [
-    "uik-command-palette",
-    () => import("@ismail-elkorchi/ui-primitives/uik-command-palette"),
-  ],
   [
     "uik-description-list",
     () => import("@ismail-elkorchi/ui-primitives/uik-description-list"),
   ],
   ["uik-dialog", () => import("@ismail-elkorchi/ui-primitives/uik-dialog")],
-  ["uik-heading", () => import("@ismail-elkorchi/ui-primitives/uik-heading")],
   ["uik-icon", () => import("@ismail-elkorchi/ui-primitives/uik-icon")],
   ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
-  ["uik-link", () => import("@ismail-elkorchi/ui-primitives/uik-link")],
   ["uik-menu", () => import("@ismail-elkorchi/ui-primitives/uik-menu")],
   [
     "uik-menu-item",
     () => import("@ismail-elkorchi/ui-primitives/uik-menu-item"),
   ],
   ["uik-menubar", () => import("@ismail-elkorchi/ui-primitives/uik-menubar")],
-  ["uik-nav", () => import("@ismail-elkorchi/ui-primitives/uik-nav")],
-  ["uik-nav-rail", () => import("@ismail-elkorchi/ui-primitives/uik-nav-rail")],
   ["uik-popover", () => import("@ismail-elkorchi/ui-primitives/uik-popover")],
   ["uik-progress", () => import("@ismail-elkorchi/ui-primitives/uik-progress")],
   ["uik-radio", () => import("@ismail-elkorchi/ui-primitives/uik-radio")],
@@ -162,39 +151,14 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     "uik-resizable-panels",
     () => import("@ismail-elkorchi/ui-primitives/uik-resizable-panels"),
   ],
-  ["uik-select", () => import("@ismail-elkorchi/ui-primitives/uik-select")],
-  [
-    "uik-separator",
-    () => import("@ismail-elkorchi/ui-primitives/uik-separator"),
-  ],
   ["uik-spinner", () => import("@ismail-elkorchi/ui-primitives/uik-spinner")],
   ["uik-stack", () => import("@ismail-elkorchi/ui-primitives/uik-stack")],
-  ["uik-surface", () => import("@ismail-elkorchi/ui-primitives/uik-surface")],
   ["uik-switch", () => import("@ismail-elkorchi/ui-primitives/uik-switch")],
-  ["uik-text", () => import("@ismail-elkorchi/ui-primitives/uik-text")],
   ["uik-textarea", () => import("@ismail-elkorchi/ui-primitives/uik-textarea")],
   ["uik-tooltip", () => import("@ismail-elkorchi/ui-primitives/uik-tooltip")],
   [
     "uik-tree-view",
     () => import("@ismail-elkorchi/ui-primitives/uik-tree-view"),
-  ],
-  [
-    "uik-visually-hidden",
-    () => import("@ismail-elkorchi/ui-primitives/uik-visually-hidden"),
-  ],
-  [
-    "uik-shell-activity-bar",
-    () => import("@ismail-elkorchi/ui-shell/activity-bar"),
-  ],
-  ["uik-shell-layout", () => import("@ismail-elkorchi/ui-shell/layout")],
-  [
-    "uik-shell-secondary-sidebar",
-    () => import("@ismail-elkorchi/ui-shell/secondary-sidebar"),
-  ],
-  ["uik-shell-sidebar", () => import("@ismail-elkorchi/ui-shell/sidebar")],
-  [
-    "uik-shell-status-bar",
-    () => import("@ismail-elkorchi/ui-shell/status-bar"),
   ],
 ]);
 const preloadedComponents = new Set([
@@ -905,7 +869,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   };
 
   if (commandPalette) {
-    void import("@ismail-elkorchi/ui-shell").then(
+    void import("@ismail-elkorchi/ui-shell/command-center").then(
       ({ createUikCommandCenter }) => {
         commandCenter = createUikCommandCenter({
           palette: commandPalette,
