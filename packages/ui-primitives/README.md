@@ -279,6 +279,7 @@ validation must be handled by the host.
 - **Parts**: `base`, `item`, `toggle`, `label`.
 - **Events**: `tree-view-activate`, `tree-view-toggle`.
 - **A11y**: `role="tree"` with roving focus; Arrow/Home/End + typeahead navigation; Enter/Space activates; `aria-current="page"` marks the current item.
+- **Notes**: typeahead matches labels; selection patterns are app-owned; async loading listens for toggle/activate and updates `items`/`openIds`.
 - **Custom properties**: `--uik-component-tree-view-item-*`, `--uik-component-tree-view-indent`, `--uik-component-tree-view-text-*`, `--uik-component-tree-view-toggle-fg`.
 
 ### `<uik-nav>`

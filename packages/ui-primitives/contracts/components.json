@@ -1286,6 +1286,11 @@
         "--uik-component-tree-view-indent",
         "--uik-component-tree-view-text-*",
         "--uik-component-tree-view-toggle-fg"
+      ],
+      "notes": [
+        "Typeahead: typing letters moves focus to the next matching label.",
+        "Multi-select patterns are app-owned; compose selection controls alongside items.",
+        "Async loading: listen to tree-view-toggle or tree-view-activate and update items/openIds when children load."
       ]
     },
     {

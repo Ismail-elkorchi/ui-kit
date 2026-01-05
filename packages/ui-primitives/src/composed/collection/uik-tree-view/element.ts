@@ -32,6 +32,9 @@ export interface UikTreeViewToggleDetail {
  * @event tree-view-activate
  * @event tree-view-toggle
  * @a11y Treeview role with roving focus; Arrow keys move, typeahead jumps, Enter/Space activates.
+ * @note Typeahead: typing letters moves focus to the next matching label.
+ * @note Multi-select patterns are app-owned; compose selection controls alongside items.
+ * @note Async loading: listen to tree-view-toggle or tree-view-activate and update items/openIds when children load.
  * @cssprop --uik-component-tree-view-item-*
  * @cssprop --uik-component-tree-view-indent
  * @cssprop --uik-component-tree-view-text-*
