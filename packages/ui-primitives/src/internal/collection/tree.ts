@@ -85,52 +85,6 @@ export const buildTreeItems = <T extends TreeItemBase>(
   return treeItems;
 };
 
-export const collectAncestorIds = <T extends TreeItemBase>(
-  index: TreeIndex<T>,
-  id: string,
-): string[] => {
-  const ancestors: string[] = [];
-  let current = index.parentById.get(id) ?? null;
-  while (current) {
-    ancestors.push(current);
-    current = index.parentById.get(current) ?? null;
-  }
-  return ancestors;
-};
-
-export const collectDescendantIds = <T extends TreeItemBase>(
-  index: TreeIndex<T>,
-  id: string,
-): string[] => {
-  const descendants: string[] = [];
-  const walk = (currentId: string) => {
-    const children = index.childrenById.get(currentId) ?? [];
-    children.forEach((childId) => {
-      descendants.push(childId);
-      walk(childId);
-    });
-  };
-  walk(id);
-  return descendants;
-};
-
-export const collectLeafIds = <T extends TreeItemBase>(
-  index: TreeIndex<T>,
-  id: string,
-): string[] => {
-  const leaves: string[] = [];
-  const walk = (currentId: string) => {
-    const children = index.childrenById.get(currentId) ?? [];
-    if (children.length === 0) {
-      leaves.push(currentId);
-      return;
-    }
-    children.forEach((childId) => walk(childId));
-  };
-  walk(id);
-  return leaves;
-};
-
 export const collectTreeIds = (items: TreeItemBase[]): string[] => {
   const ids: string[] = [];
   const walk = (entries: TreeItemBase[]) => {

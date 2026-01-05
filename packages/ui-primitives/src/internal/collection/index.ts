@@ -1,9 +1,6 @@
 export {
   buildTreeIndex,
   buildTreeItems,
-  collectAncestorIds,
-  collectDescendantIds,
-  collectLeafIds,
   collectTreeIds,
 } from "./tree";
 

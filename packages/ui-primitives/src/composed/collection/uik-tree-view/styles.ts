@@ -41,6 +41,11 @@ export const styles = css`
     background-color: oklch(var(--uik-component-tree-view-item-active-bg));
   }
 
+  .item[data-current="true"] {
+    color: oklch(var(--uik-component-tree-view-text-hover));
+    background-color: oklch(var(--uik-component-tree-view-item-active-bg));
+  }
+
   .item:focus-visible {
     outline: none;
     box-shadow:
@@ -79,25 +84,6 @@ export const styles = css`
 
   .toggle[data-open="true"] {
     color: oklch(var(--uik-component-tree-view-text-hover));
-  }
-
-  .selection {
-    display: inline-flex;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    width: var(--uik-component-checkbox-size);
-    height: var(--uik-component-checkbox-size);
-    color: oklch(var(--uik-text-inverse));
-    background-color: oklch(var(--uik-surface-bg));
-    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
-    border-radius: var(--uik-radius-1);
-  }
-
-  .selection[data-state="checked"],
-  .selection[data-state="mixed"] {
-    background-color: oklch(var(--uik-component-checkbox-accent));
-    border-color: oklch(var(--uik-component-checkbox-accent));
   }
 
   .label {

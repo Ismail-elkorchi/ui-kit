@@ -74,8 +74,7 @@ export type {
 } from "./src/composed/overlay/uik-command-palette";
 export type {
   UikTreeViewItem,
-  UikTreeViewOpenDetail,
-  UikTreeViewSelectDetail,
+  UikTreeViewActivateDetail,
   UikTreeViewToggleDetail,
 } from "./src/composed/collection/uik-tree-view";
 export type {

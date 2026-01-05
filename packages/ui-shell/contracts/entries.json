@@ -6,10 +6,21 @@
       "id": "shell-activity-bar",
       "tagName": "uik-shell-activity-bar",
       "summary": "Vertical activity bar composed with uik-nav-rail.",
-      "attributes": ["items (array)", "activeId (string)"],
-      "slots": ["footer"],
-      "parts": ["activity-bar", "spacer", "footer"],
-      "events": ["activity-bar-select (detail: {id})"],
+      "attributes": [
+        "items (array)",
+        "activeId (string)"
+      ],
+      "slots": [
+        "footer"
+      ],
+      "parts": [
+        "activity-bar",
+        "spacer",
+        "footer"
+      ],
+      "events": [
+        "activity-bar-select (detail: {id})"
+      ],
       "a11y": [
         "Delegates roving focus behavior to uik-nav-rail; set aria-label if needed."
       ],
@@ -29,7 +40,9 @@
       "id": "shell-layout",
       "tagName": "uik-shell-layout",
       "summary": "Shell region layout container with named slots.",
-      "attributes": ["isSecondarySidebarVisible (boolean)"],
+      "attributes": [
+        "isSecondarySidebarVisible (boolean)"
+      ],
       "slots": [
         "activity-bar",
         "primary-sidebar",
@@ -47,7 +60,9 @@
         "status-bar"
       ],
       "events": [],
-      "a11y": ["Use semantic elements inside slots for landmarks."],
+      "a11y": [
+        "Use semantic elements inside slots for landmarks."
+      ],
       "cssVars": [
         "--uik-component-shell-divider-color",
         "--uik-component-shell-scrollbar-*"
@@ -63,7 +78,10 @@
         "heading",
         "focusReturnTarget (selector | element)"
       ],
-      "slots": ["default", "footer"],
+      "slots": [
+        "default",
+        "footer"
+      ],
       "parts": [
         "secondary-sidebar",
         "header",
@@ -72,7 +90,9 @@
         "body",
         "footer"
       ],
-      "events": ["secondary-sidebar-close"],
+      "events": [
+        "secondary-sidebar-close (detail: {reason})"
+      ],
       "a11y": [
         "Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading."
       ],
@@ -86,8 +106,17 @@
       "id": "shell-sidebar",
       "tagName": "uik-shell-sidebar",
       "summary": "Primary sidebar with heading, actions, body, and footer slots.",
-      "attributes": ["heading", "subtitle", "isBodyPadded", "isBodyScrollable"],
-      "slots": ["actions", "default", "footer"],
+      "attributes": [
+        "heading",
+        "subtitle",
+        "isBodyPadded",
+        "isBodyScrollable"
+      ],
+      "slots": [
+        "actions",
+        "default",
+        "footer"
+      ],
       "parts": [
         "sidebar",
         "header",
@@ -98,7 +127,9 @@
         "footer"
       ],
       "events": [],
-      "a11y": ["Sidebar is an <aside>; ensure internal landmarks and labels."],
+      "a11y": [
+        "Sidebar is an <aside>; ensure internal landmarks and labels."
+      ],
       "cssVars": [
         "--uik-component-shell-sidebar-bg",
         "--uik-component-shell-sidebar-fg",
@@ -115,10 +146,20 @@
         "tone (info | success | danger | muted)",
         "meta"
       ],
-      "slots": ["actions", "meta"],
-      "parts": ["status-bar", "message", "actions", "meta"],
+      "slots": [
+        "actions",
+        "meta"
+      ],
+      "parts": [
+        "status-bar",
+        "message",
+        "actions",
+        "meta"
+      ],
       "events": [],
-      "a11y": ["Use short status text; provide accessible names for actions."],
+      "a11y": [
+        "Use short status text; provide accessible names for actions."
+      ],
       "cssVars": [
         "--uik-component-shell-status-bar-bg",
         "--uik-component-shell-status-bar-fg",
@@ -131,13 +172,19 @@
       "id": "shell-router",
       "name": "createUikShellRouter()",
       "summary": "Tiny EventTarget-based router for view + subview state.",
-      "attributes": ["routes (array)", "initialView", "initialSubview"],
+      "attributes": [
+        "routes (array)",
+        "initialView",
+        "initialSubview"
+      ],
       "slots": [],
       "parts": [],
       "events": [
         "uik-shell:navigation (CustomEvent<UikShellNavigationDetail>)"
       ],
-      "a11y": ["Keep focus management in the host app when views change."],
+      "a11y": [
+        "Keep focus management in the host app when views change."
+      ],
       "cssVars": []
     }
   ]

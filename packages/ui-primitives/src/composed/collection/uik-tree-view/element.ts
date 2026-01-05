@@ -1,28 +1,15 @@
-import { LitElement, html, nothing, svg } from "lit";
+import { LitElement, html, svg } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 import { styles } from "./styles";
-import {
-  buildTreeIndex,
-  buildTreeItems,
-  collectLeafIds,
-  collectTreeIds,
-} from "../../../internal";
-import type { TreeIndex, TreeItem, TreeItemBase } from "../../../internal";
+import { buildTreeItems, collectTreeIds } from "../../../internal";
+import type { TreeItem, TreeItemBase } from "../../../internal";
 
 export type UikTreeViewItem = TreeItemBase;
 
-export interface UikTreeViewSelectDetail {
-  id: string;
-  checked: boolean;
-  selectionState: "checked" | "mixed" | "unchecked";
-  selectedIds: string[];
-  item: UikTreeViewItem;
-}
-
-export interface UikTreeViewOpenDetail {
+export interface UikTreeViewActivateDetail {
   id: string;
   item: UikTreeViewItem;
 }
@@ -33,22 +20,18 @@ export interface UikTreeViewToggleDetail {
   item: UikTreeViewItem;
 }
 
-type SelectionState = "checked" | "mixed" | "unchecked";
-
 /**
- * Tree view list with tri-state selection and open state.
+ * Tree view navigation list with expandable branches.
  * @attr items (array)
- * @attr selectedIds (string[])
  * @attr openIds (string[])
+ * @attr currentId
  * @part base
  * @part item
  * @part toggle
- * @part selection
  * @part label
- * @event tree-view-select
- * @event tree-view-open
+ * @event tree-view-activate
  * @event tree-view-toggle
- * @a11y Treeview role with roving focus; Space toggles selection and Enter opens items.
+ * @a11y Treeview role with roving focus; Arrow keys move, typeahead jumps, Enter/Space activates.
  * @cssprop --uik-component-tree-view-item-*
  * @cssprop --uik-component-tree-view-indent
  * @cssprop --uik-component-tree-view-text-*
@@ -57,12 +40,14 @@ type SelectionState = "checked" | "mixed" | "unchecked";
 @customElement("uik-tree-view")
 export class UikTreeView extends LitElement {
   @property({ attribute: false }) accessor items: UikTreeViewItem[] = [];
-  @property({ attribute: false }) accessor selectedIds: string[] = [];
   @property({ attribute: false }) accessor openIds: string[] = [];
+  @property({ type: String }) accessor currentId = "";
   @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
   @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
 
   @state() private accessor focusId = "";
+  private typeaheadQuery = "";
+  private typeaheadTimestamp = 0;
 
   static override readonly styles = styles;
 
@@ -83,61 +68,15 @@ export class UikTreeView extends LitElement {
     return buildTreeItems(this.items, this.getOpenSet());
   }
 
-  private getTreeIndex(): TreeIndex<UikTreeViewItem> {
-    return buildTreeIndex(this.items);
-  }
-
   private resolveOpenIds(nextOpen: Set<string>) {
     const orderedIds = collectTreeIds(this.items);
     return orderedIds.filter((id) => nextOpen.has(id));
   }
 
-  private resolveSelectionState(
-    treeIndex: TreeIndex<UikTreeViewItem>,
-    selectedSet: Set<string>,
-    id: string,
-  ): SelectionState {
-    const leafIds = collectLeafIds(treeIndex, id);
-    if (leafIds.length === 0)
-      return selectedSet.has(id) ? "checked" : "unchecked";
-    const selectedCount = leafIds.filter((leafId) =>
-      selectedSet.has(leafId),
-    ).length;
-    if (selectedCount === 0) return "unchecked";
-    if (selectedCount === leafIds.length) return "checked";
-    return "mixed";
-  }
-
-  private resolveSelectedIds(selectedSet: Set<string>) {
-    const orderedIds = collectTreeIds(this.items);
-    return orderedIds.filter((id) => selectedSet.has(id));
-  }
-
-  private emitSelect(
-    item: UikTreeViewItem,
-    checked: boolean,
-    selectionState: SelectionState,
-  ) {
-    const detail: UikTreeViewSelectDetail = {
-      id: item.id,
-      checked,
-      selectionState,
-      selectedIds: this.selectedIds,
-      item,
-    };
+  private emitActivate(item: UikTreeViewItem) {
+    const detail: UikTreeViewActivateDetail = { id: item.id, item };
     this.dispatchEvent(
-      new CustomEvent("tree-view-select", {
-        detail,
-        bubbles: true,
-        composed: true,
-      }),
-    );
-  }
-
-  private emitOpen(item: UikTreeViewItem) {
-    const detail: UikTreeViewOpenDetail = { id: item.id, item };
-    this.dispatchEvent(
-      new CustomEvent("tree-view-open", {
+      new CustomEvent("tree-view-activate", {
         detail,
         bubbles: true,
         composed: true,
@@ -169,30 +108,6 @@ export class UikTreeView extends LitElement {
     this.emitToggle(item, nextOpen);
   }
 
-  private toggleSelection(item: UikTreeViewItem) {
-    if (item.isDisabled) return;
-    const treeIndex = this.getTreeIndex();
-    const selectedSet = new Set(this.selectedIds);
-    const state = this.resolveSelectionState(treeIndex, selectedSet, item.id);
-    const leafIds = collectLeafIds(treeIndex, item.id);
-    const targets = leafIds.length > 0 ? leafIds : [item.id];
-    const shouldSelect = state !== "checked";
-    targets.forEach((id) => {
-      if (shouldSelect) {
-        selectedSet.add(id);
-      } else {
-        selectedSet.delete(id);
-      }
-    });
-    this.selectedIds = this.resolveSelectedIds(selectedSet);
-    const nextState = this.resolveSelectionState(
-      treeIndex,
-      selectedSet,
-      item.id,
-    );
-    this.emitSelect(item, shouldSelect, nextState);
-  }
-
   private focusItem(id: string) {
     this.focusId = id;
     void this.updateComplete.then(() => {
@@ -203,13 +118,13 @@ export class UikTreeView extends LitElement {
     });
   }
 
-  private onItemClick(item: UikTreeViewItem) {
-    if (item.isDisabled) return;
-    if (Array.isArray(item.children)) {
-      this.toggleOpen(item);
-      return;
+  private activateItem(entry: TreeItem<UikTreeViewItem>) {
+    if (entry.item.isDisabled) return;
+    if (entry.isBranch) {
+      this.toggleOpen(entry.item);
+    } else {
+      this.emitActivate(entry.item);
     }
-    this.emitOpen(item);
   }
 
   private onItemFocus = (event: FocusEvent) => {
@@ -278,18 +193,77 @@ export class UikTreeView extends LitElement {
       }
       case " ": {
         event.preventDefault();
-        this.toggleSelection(current.item);
+        this.activateItem(current);
         break;
       }
       case "Enter": {
         event.preventDefault();
-        this.onItemClick(current.item);
+        this.activateItem(current);
         break;
       }
       default:
+        if (
+          event.key.length === 1 &&
+          !event.altKey &&
+          !event.ctrlKey &&
+          !event.metaKey
+        ) {
+          event.preventDefault();
+          this.applyTypeahead(event.key, items, currentIndex);
+        }
         break;
     }
   };
+
+  private applyTypeahead(
+    key: string,
+    items: TreeItem<UikTreeViewItem>[],
+    currentIndex: number,
+  ) {
+    const now = Date.now();
+    const withinWindow = now - this.typeaheadTimestamp < 750;
+    this.typeaheadTimestamp = now;
+    this.typeaheadQuery = withinWindow
+      ? `${this.typeaheadQuery}${key}`
+      : key;
+    const query = this.typeaheadQuery.toLowerCase();
+    const nextIndex = this.findTypeaheadMatch(items, query, currentIndex);
+    if (nextIndex >= 0) {
+      const match = items[nextIndex];
+      if (match) {
+        this.focusItem(match.id);
+      }
+      return;
+    }
+    if (query.length > 1) {
+      this.typeaheadQuery = key;
+      const fallbackIndex = this.findTypeaheadMatch(
+        items,
+        key.toLowerCase(),
+        currentIndex,
+      );
+      if (fallbackIndex >= 0) {
+        const match = items[fallbackIndex];
+        if (match) {
+          this.focusItem(match.id);
+        }
+      }
+    }
+  }
+
+  private findTypeaheadMatch(
+    items: TreeItem<UikTreeViewItem>[],
+    query: string,
+    startIndex: number,
+  ) {
+    const total = items.length;
+    for (let offset = 1; offset <= total; offset += 1) {
+      const index = (startIndex + offset) % total;
+      const label = items[index]?.item.label ?? "";
+      if (label.toLowerCase().startsWith(query)) return index;
+    }
+    return -1;
+  }
 
   private renderToggleIcon(isOpen: boolean) {
     const path = isOpen ? "M5 9l7 7 7-7" : "M9 5l7 7-7 7";
@@ -310,39 +284,13 @@ export class UikTreeView extends LitElement {
     </svg>`;
   }
 
-  private renderCheckIcon(state: SelectionState) {
-    if (state === "unchecked") return nothing;
-    const path = state === "mixed" ? "M7 12h10" : "M5 13l4 4L19 7";
-    return svg`<svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      style=${styleMap({
-        width: "var(--uik-size-icon-sm)",
-        height: "var(--uik-size-icon-sm)",
-      })}>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="var(--uik-border-width-1)"
-        d=${path}></path>
-    </svg>`;
-  }
-
   private renderItem(
     entry: TreeItem<UikTreeViewItem>,
-    treeIndex: TreeIndex<UikTreeViewItem>,
-    selectedSet: Set<string>,
   ) {
     const dataItem = entry.item;
-    const state = this.resolveSelectionState(
-      treeIndex,
-      selectedSet,
-      dataItem.id,
-    );
     const isBranch = entry.isBranch;
     const isOpen = entry.isExpanded;
+    const isCurrent = dataItem.id === this.currentId;
     const depthValue = String(entry.depth);
     const itemStyles = {
       paddingInlineStart: `calc(var(--uik-component-tree-view-item-padding-x) + (var(--uik-component-tree-view-indent) * ${depthValue}))`,
@@ -359,21 +307,17 @@ export class UikTreeView extends LitElement {
         aria-level=${String(entry.depth + 1)}
         aria-posinset=${String(entry.index + 1)}
         aria-setsize=${String(entry.setSize)}
+        aria-current=${ifDefined(isCurrent ? "page" : undefined)}
         aria-expanded=${ifDefined(
           isBranch ? (isOpen ? "true" : "false") : undefined,
         )}
-        aria-checked=${state === "mixed"
-          ? "mixed"
-          : state === "checked"
-            ? "true"
-            : "false"}
-        aria-selected=${state === "checked" ? "true" : "false"}
         aria-disabled=${ifDefined(dataItem.isDisabled ? "true" : undefined)}
         data-kind=${isBranch ? "branch" : "leaf"}
+        data-current=${isCurrent ? "true" : "false"}
         data-item-id=${dataItem.id}
         data-disabled=${dataItem.isDisabled ? "true" : "false"}
         style=${styleMap(itemStyles)}
-        @click=${() => this.onItemClick(dataItem)}
+        @click=${() => this.activateItem(entry)}
         @keydown=${this.onKeyDown}
         @focus=${this.onItemFocus}
       >
@@ -393,41 +337,26 @@ export class UikTreeView extends LitElement {
               </span>
             `
           : html`<span part="toggle" class="toggle" aria-hidden="true"></span>`}
-        <span
-          part="selection"
-          class="selection"
-          data-state=${state}
-          aria-hidden="true"
-          @click=${(event: Event) => {
-            event.stopPropagation();
-            this.toggleSelection(dataItem);
-          }}
-        >
-          ${this.renderCheckIcon(state)}
-        </span>
         <span part="label" class="label">${dataItem.label}</span>
       </div>
     `;
   }
 
   override render() {
-    const treeIndex = this.getTreeIndex();
     const items = this.getVisibleItems();
-    const selectedSet = new Set(this.selectedIds);
 
     return html`
       <div
         part="base"
         class="tree"
         role="tree"
-        aria-multiselectable="true"
         aria-label=${ifDefined(
           this.ariaLabelValue ||
             (this.ariaLabelledbyValue ? undefined : "Tree view"),
         )}
         aria-labelledby=${ifDefined(this.ariaLabelledbyValue || undefined)}
       >
-        ${items.map((item) => this.renderItem(item, treeIndex, selectedSet))}
+        ${items.map((item) => this.renderItem(item))}
       </div>
     `;
   }

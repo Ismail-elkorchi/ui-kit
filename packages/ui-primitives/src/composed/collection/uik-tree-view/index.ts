@@ -1,7 +1,6 @@
 export { UikTreeView } from "./element";
 export type {
   UikTreeViewItem,
-  UikTreeViewOpenDetail,
-  UikTreeViewSelectDetail,
+  UikTreeViewActivateDetail,
   UikTreeViewToggleDetail,
 } from "./element";

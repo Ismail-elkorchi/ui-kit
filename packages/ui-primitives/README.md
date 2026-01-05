@@ -274,11 +274,11 @@ validation must be handled by the host.
 
 ### `<uik-tree-view>`
 
-- **Attributes/props**: `items` (array), `selectedIds` (string[]), `openIds` (string[]).
+- **Attributes/props**: `items` (array), `openIds` (string[]), `currentId`.
 - **Slots**: none.
-- **Parts**: `base`, `item`, `toggle`, `selection`, `label`.
-- **Events**: `tree-view-select`, `tree-view-open`, `tree-view-toggle`.
-- **A11y**: `role="tree"` with roving focus; Space toggles selection, Enter opens/toggles; `aria-checked` reflects tri-state.
+- **Parts**: `base`, `item`, `toggle`, `label`.
+- **Events**: `tree-view-activate`, `tree-view-toggle`.
+- **A11y**: `role="tree"` with roving focus; Arrow/Home/End + typeahead navigation; Enter/Space activates; `aria-current="page"` marks the current item.
 - **Custom properties**: `--uik-component-tree-view-item-*`, `--uik-component-tree-view-indent`, `--uik-component-tree-view-text-*`, `--uik-component-tree-view-toggle-fg`.
 
 ### `<uik-nav>`

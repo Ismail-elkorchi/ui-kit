@@ -33,6 +33,14 @@ const treeItems = [
       { id: "apps/routes.ts", label: "routes.ts" },
     ],
   },
+  {
+    id: "packages",
+    label: "packages",
+    children: [
+      { id: "packages/ui-primitives", label: "ui-primitives" },
+      { id: "packages/ui-shell", label: "ui-shell" },
+    ],
+  },
 ];
 
 describe("uik-nav", () => {
@@ -74,34 +82,41 @@ describe("uik-tree-view", () => {
     document.body.innerHTML = "";
   });
 
-  it("tracks mixed selection and keyboard navigation", async () => {
+  it("supports navigation tree keyboard behavior and activation", async () => {
     const tree = document.createElement("uik-tree-view") as UikTreeView;
     tree.items = treeItems;
     tree.openIds = ["apps"];
-    tree.selectedIds = ["apps/main.ts"];
+    tree.currentId = "apps/main.ts";
     document.body.append(tree);
 
     await tree.updateComplete;
 
+    const currentRow = tree.shadowRoot?.querySelector<HTMLElement>(
+      '[data-item-id="apps/main.ts"]',
+    );
+    expect(currentRow?.getAttribute("aria-current")).toBe("page");
+
+    let activatedId = "";
+    tree.addEventListener("tree-view-activate", (event) => {
+      const detail = (event as CustomEvent<{ id: string }>).detail;
+      activatedId = detail.id;
+    });
+
     const parentRow = tree.shadowRoot?.querySelector<HTMLElement>(
       '[data-item-id="apps"]',
     );
-    expect(parentRow?.getAttribute("aria-checked")).toBe("mixed");
-
     parentRow?.focus();
-    await userEvent.keyboard("{ArrowDown}");
-
-    const active = tree.shadowRoot?.activeElement as HTMLElement | null;
-    expect(active?.getAttribute("data-item-id")).toBe("apps/main.ts");
-
-    await userEvent.keyboard(" ");
-    expect(tree.selectedIds.includes("apps/main.ts")).toBe(false);
-
-    await userEvent.keyboard("{ArrowLeft}");
-    const parentFocus = tree.shadowRoot?.activeElement as HTMLElement | null;
-    expect(parentFocus?.getAttribute("data-item-id")).toBe("apps");
-
     await userEvent.keyboard("{ArrowLeft}");
     expect(tree.openIds.includes("apps")).toBe(false);
+
+    await userEvent.keyboard("p");
+    const typeaheadTarget = tree.shadowRoot?.activeElement as HTMLElement | null;
+    expect(typeaheadTarget?.getAttribute("data-item-id")).toBe("packages");
+
+    await userEvent.keyboard("{ArrowRight}{ArrowDown}{Enter}");
+    expect(activatedId).toBe("packages/ui-primitives");
+
+    const active = tree.shadowRoot?.activeElement as HTMLElement | null;
+    expect(active?.getAttribute("data-item-id")).toBe("packages/ui-primitives");
   });
 });

@@ -6,9 +6,18 @@
       "id": "alert",
       "tagName": "uik-alert",
       "summary": "Inline status messaging for neutral and semantic feedback.",
-      "attributes": ["variant (neutral | info | success | warning | danger)"],
-      "slots": ["title", "default (message body)"],
-      "parts": ["base", "title", "body"],
+      "attributes": [
+        "variant (neutral | info | success | warning | danger)"
+      ],
+      "slots": [
+        "title",
+        "default (message body)"
+      ],
+      "parts": [
+        "base",
+        "title",
+        "body"
+      ],
       "events": [],
       "a11y": [
         "role=\"status\" by default; warning/danger switches to role=\"alert\"."
@@ -21,11 +30,19 @@
       "id": "badge",
       "tagName": "uik-badge",
       "summary": "Compact label for status or counts.",
-      "attributes": ["variant (default | secondary | danger | outline)"],
-      "slots": ["default (label)"],
-      "parts": ["base"],
+      "attributes": [
+        "variant (default | secondary | danger | outline)"
+      ],
+      "slots": [
+        "default (label)"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Inline element; provide meaningful text content."],
+      "a11y": [
+        "Inline element; provide meaningful text content."
+      ],
       "cssVars": [
         "--uik-component-badge-base-* (padding, radius, font, border)",
         "--uik-component-badge-{default|secondary|danger|outline}-{bg|border|fg|shadow}"
@@ -35,11 +52,20 @@
       "id": "box",
       "tagName": "uik-box",
       "summary": "Simple padded container with background and border hooks.",
-      "attributes": ["padding (0-6)", "inline (boolean)"],
-      "slots": ["default"],
-      "parts": ["base"],
+      "attributes": [
+        "padding (0-6)",
+        "inline (boolean)"
+      ],
+      "slots": [
+        "default"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Presentational wrapper; use semantic HTML inside."],
+      "a11y": [
+        "Presentational wrapper; use semantic HTML inside."
+      ],
       "cssVars": [
         "--uik-component-box-padding-{0..6}",
         "--uik-component-box-bg",
@@ -61,13 +87,24 @@
         "tabIndexValue (number)",
         "active (boolean)",
         "muted (boolean)",
-        "disabled (boolean)"
+        "disabled (boolean)",
+        "role",
+        "aria-haspopup",
+        "aria-expanded",
+        "aria-controls"
       ],
-      "slots": ["default (label or icon)"],
-      "parts": ["base"],
-      "events": ["Native button events bubble from the internal <button>."],
+      "slots": [
+        "default (label or icon)"
+      ],
+      "parts": [
+        "base"
+      ],
+      "events": [
+        "Native button events bubble from the internal <button>."
+      ],
       "a11y": [
-        "Forward aria-label, aria-labelledby, aria-describedby, aria-pressed, aria-haspopup, aria-expanded, aria-controls, and role to the internal button.",
+        "Forward aria-label, aria-labelledby, aria-describedby, aria-pressed, aria-haspopup, aria-expanded, and aria-controls to the internal button.",
+        "Roles remain on the host for Shadow DOM parentage-sensitive patterns (menus/menubars).",
         "Icon-only buttons should provide an accessible name."
       ],
       "cssVars": [
@@ -90,9 +127,21 @@
         "invalid",
         "tabIndexValue (number)"
       ],
-      "slots": ["label", "hint", "error"],
-      "parts": ["base", "control", "label", "hint", "error"],
-      "events": ["Native change bubbles from the internal <input>."],
+      "slots": [
+        "label",
+        "hint",
+        "error"
+      ],
+      "parts": [
+        "base",
+        "control",
+        "label",
+        "hint",
+        "error"
+      ],
+      "events": [
+        "Native change bubbles from the internal <input>."
+      ],
       "a11y": [
         "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
       ],
@@ -102,15 +151,214 @@
       ]
     },
     {
+      "id": "code-block",
+      "tagName": "uik-code-block",
+      "summary": "Read-only code block with optional copy action.",
+      "attributes": [
+        "copy (boolean)",
+        "inline (boolean)",
+        "copy-label"
+      ],
+      "slots": [
+        "default",
+        "copy-label"
+      ],
+      "parts": [
+        "base",
+        "content",
+        "copy-button",
+        "inline"
+      ],
+      "events": [
+        "code-block-copy (detail: {value, success})"
+      ],
+      "a11y": [],
+      "cssVars": [
+        "--uik-component-code-block-bg",
+        "--uik-component-code-block-fg",
+        "--uik-component-code-block-border",
+        "--uik-component-code-block-border-width",
+        "--uik-component-code-block-radius",
+        "--uik-component-code-block-padding-x",
+        "--uik-component-code-block-padding-y",
+        "--uik-component-code-block-font-family",
+        "--uik-component-code-block-font-size",
+        "--uik-component-code-block-font-weight",
+        "--uik-component-code-block-line-height",
+        "--uik-component-code-block-max-height",
+        "--uik-component-code-block-copy-offset",
+        "--uik-component-code-block-copy-bg",
+        "--uik-component-code-block-copy-fg",
+        "--uik-component-code-block-copy-border",
+        "--uik-component-code-block-copy-border-width",
+        "--uik-component-code-block-copy-radius",
+        "--uik-component-code-block-copy-padding-x",
+        "--uik-component-code-block-copy-padding-y",
+        "--uik-component-code-block-copy-font-size",
+        "--uik-component-code-block-copy-font-weight",
+        "--uik-component-code-block-copy-line-height",
+        "--uik-component-code-block-copy-focus-offset",
+        "--uik-component-code-block-copy-focus-width",
+        "--uik-component-code-block-copy-disabled-opacity"
+      ]
+    },
+    {
+      "id": "combobox",
+      "tagName": "uik-combobox",
+      "summary": "Combobox with input + listbox popup.",
+      "attributes": [
+        "value",
+        "open (boolean)",
+        "name",
+        "placeholder",
+        "disabled",
+        "required",
+        "readonly",
+        "invalid"
+      ],
+      "slots": [
+        "label",
+        "hint",
+        "error"
+      ],
+      "parts": [
+        "base",
+        "control",
+        "label",
+        "hint",
+        "error",
+        "panel"
+      ],
+      "events": [
+        "combobox-select (detail: {value, item})"
+      ],
+      "a11y": [
+        "Input uses role=\"combobox\" with aria-controls + aria-activedescendant."
+      ],
+      "cssVars": [
+        "--uik-component-combobox-base-* (bg, border, fg, padding, radius, shadow)",
+        "--uik-component-combobox-panel-offset"
+      ]
+    },
+    {
+      "id": "command-palette",
+      "tagName": "uik-command-palette",
+      "summary": "Command palette overlay with filtering, keyboard navigation, and selection.",
+      "attributes": [
+        "open (boolean)",
+        "query",
+        "placeholder",
+        "loading (boolean)",
+        "disabled (boolean)",
+        "disable-filter (boolean)",
+        "disable-auto-close (boolean)",
+        "highlight-matches (boolean)",
+        "input-label",
+        "virtualize (boolean)",
+        "item-height (number)",
+        "viewport-height (number)",
+        "overscan (number)"
+      ],
+      "slots": [
+        "title",
+        "description",
+        "label",
+        "empty",
+        "loading",
+        "footer"
+      ],
+      "parts": [
+        "dialog",
+        "panel",
+        "header",
+        "title",
+        "description",
+        "label",
+        "input",
+        "list",
+        "group",
+        "group-label",
+        "item",
+        "item-label",
+        "item-description",
+        "item-shortcut",
+        "highlight",
+        "empty",
+        "loading",
+        "footer"
+      ],
+      "events": [
+        "command-palette-open-change (detail: {open, reason})",
+        "command-palette-query-change (detail: {query})",
+        "command-palette-select (detail: {item, query})"
+      ],
+      "a11y": [
+        "Uses combobox + listbox with aria-activedescendant for keyboard navigation."
+      ],
+      "cssVars": [
+        "--uik-component-command-palette-* (panel, input, list, item, highlight)"
+      ]
+    },
+    {
+      "id": "description-list",
+      "tagName": "uik-description-list",
+      "summary": "Definition list wrapper for label/value metadata.",
+      "attributes": [
+        "density (comfortable | compact)"
+      ],
+      "slots": [
+        "default (dt + dd pairs)"
+      ],
+      "parts": [
+        "base"
+      ],
+      "events": [],
+      "a11y": [
+        "Use dt/dd pairs for correct definition list semantics."
+      ],
+      "cssVars": [
+        "--uik-component-description-list-term-width",
+        "--uik-component-description-list-row-gap",
+        "--uik-component-description-list-column-gap",
+        "--uik-component-description-list-row-gap-compact",
+        "--uik-component-description-list-column-gap-compact",
+        "--uik-component-description-list-term-font-family",
+        "--uik-component-description-list-term-font-size",
+        "--uik-component-description-list-term-line-height",
+        "--uik-component-description-list-term-font-weight",
+        "--uik-component-description-list-term-color",
+        "--uik-component-description-list-value-font-family",
+        "--uik-component-description-list-value-font-size",
+        "--uik-component-description-list-value-line-height",
+        "--uik-component-description-list-value-font-weight",
+        "--uik-component-description-list-value-color"
+      ]
+    },
+    {
       "id": "dialog",
       "tagName": "uik-dialog",
       "summary": "Native dialog wrapper with slots for title, description, and actions.",
-      "attributes": ["open", "modal (boolean)"],
-      "slots": ["title", "description", "default (body)", "actions"],
-      "parts": ["base", "panel", "title", "description", "body", "actions"],
+      "attributes": [
+        "open",
+        "modal (boolean)"
+      ],
+      "slots": [
+        "title",
+        "description",
+        "default (body)",
+        "actions"
+      ],
+      "parts": [
+        "base",
+        "panel",
+        "title",
+        "description",
+        "body",
+        "actions"
+      ],
       "events": [
         "Native close and cancel bubble from <dialog>.",
-        "overlay-close (detail: {reason})"
+        "overlay-close (detail: {reason}) (escape | programmatic | toggle)"
       ],
       "a11y": [
         "Uses native dialog semantics; forwards aria-* attributes to <dialog>.",
@@ -139,10 +387,16 @@
         "level (1-6)",
         "tone (default | strong | muted | danger | success | warning | info)"
       ],
-      "slots": ["default"],
-      "parts": ["base"],
+      "slots": [
+        "default"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Renders the matching native heading element."],
+      "a11y": [
+        "Renders the matching native heading element."
+      ],
       "cssVars": [
         "--uik-component-heading-size-{1..6}",
         "--uik-component-heading-line-height-{1..6}",
@@ -158,8 +412,12 @@
         "size (xs | sm | md | lg)",
         "tone (default | muted | danger | success | warning | info | inverse)"
       ],
-      "slots": ["default (svg)"],
-      "parts": ["base"],
+      "slots": [
+        "default (svg)"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
       "a11y": [
         "Use aria-label for meaningful icons; icons are aria-hidden by default when unlabeled."
@@ -186,9 +444,21 @@
         "inputmode",
         "enterkeyhint"
       ],
-      "slots": ["label", "hint", "error"],
-      "parts": ["base", "control", "label", "hint", "error"],
-      "events": ["Native input and change bubble from the internal <input>."],
+      "slots": [
+        "label",
+        "hint",
+        "error"
+      ],
+      "parts": [
+        "base",
+        "control",
+        "label",
+        "hint",
+        "error"
+      ],
+      "events": [
+        "Native input and change bubble from the internal <input>."
+      ],
       "a11y": [
         "Label slot associates via for; hint and error are wired to aria-describedby.",
         "aria-invalid is set when invalid or error content is present."
@@ -201,11 +471,24 @@
       "id": "link",
       "tagName": "uik-link",
       "summary": "Anchor wrapper with tokenized colors and underline styling.",
-      "attributes": ["href", "target", "rel", "download"],
-      "slots": ["default (link text)"],
-      "parts": ["base"],
-      "events": ["Native anchor events bubble from the internal <a>."],
-      "a11y": ["Forward aria-* attributes to <a>."],
+      "attributes": [
+        "href",
+        "target",
+        "rel",
+        "download"
+      ],
+      "slots": [
+        "default (link text)"
+      ],
+      "parts": [
+        "base"
+      ],
+      "events": [
+        "Native anchor events bubble from the internal <a>."
+      ],
+      "a11y": [
+        "Forward aria-* attributes to <a>."
+      ],
       "cssVars": [
         "--uik-component-link-fg-default",
         "--uik-component-link-fg-hover",
@@ -213,13 +496,130 @@
       ]
     },
     {
+      "id": "listbox",
+      "tagName": "uik-listbox",
+      "summary": "Listbox selection container with roving focus support.",
+      "attributes": [
+        "value",
+        "selection-mode (single | multiple)",
+        "focus-mode (roving | activedescendant)"
+      ],
+      "slots": [
+        "default (uik-option children)"
+      ],
+      "parts": [
+        "base"
+      ],
+      "events": [
+        "listbox-active (detail: {id, value, option})",
+        "listbox-select (detail: {value, values, option})"
+      ],
+      "a11y": [
+        "Roving focus with Arrow/Home/End; Enter/Space selects the focused option."
+      ],
+      "cssVars": [
+        "--uik-component-listbox-* (bg, fg, border, radius, padding, shadow)"
+      ]
+    },
+    {
+      "id": "menu",
+      "tagName": "uik-menu",
+      "summary": "Menu panel with trigger slot and roving focus items.",
+      "attributes": [
+        "open",
+        "placement",
+        "popover (auto | manual | hint)",
+        "value",
+        "activeId"
+      ],
+      "slots": [
+        "trigger",
+        "default (uik-menu-item children)"
+      ],
+      "parts": [
+        "control",
+        "base"
+      ],
+      "events": [
+        "menu-active (detail: {id, value, item})",
+        "menu-select (detail: {id, value, item})",
+        "menu-open",
+        "menu-close",
+        "overlay-close (detail: {reason})"
+      ],
+      "a11y": [
+        "Roving focus with Arrow/Home/End; Enter/Space selects; Escape closes and returns focus."
+      ],
+      "cssVars": [
+        "--uik-component-menu-* (bg, fg, border, radius, padding, shadow, offset, gap)",
+        "--uik-component-menu-item-* (bg, fg, padding, radius, height, state colors)"
+      ]
+    },
+    {
+      "id": "menu-item",
+      "tagName": "uik-menu-item",
+      "summary": "Menu item for use inside uik-menu.",
+      "attributes": [
+        "value",
+        "disabled (boolean)",
+        "active (boolean)",
+        "tabIndexValue (number)"
+      ],
+      "slots": [
+        "default (label)"
+      ],
+      "parts": [
+        "base"
+      ],
+      "events": [],
+      "a11y": [],
+      "cssVars": [
+        "--uik-component-menu-item-* (bg, fg, padding, radius, height, state colors)"
+      ]
+    },
+    {
+      "id": "menubar",
+      "tagName": "uik-menubar",
+      "summary": "Menubar wrapper for uik-menu triggers.",
+      "attributes": [
+        "aria-label",
+        "aria-labelledby"
+      ],
+      "slots": [
+        "default (uik-menu children)"
+      ],
+      "parts": [
+        "base"
+      ],
+      "events": [],
+      "a11y": [
+        "Roving focus across triggers with ArrowLeft/Right, Home/End; ArrowDown opens."
+      ],
+      "cssVars": [
+        "--uik-component-menubar-* (bg, fg, border, radius, padding, gap)"
+      ]
+    },
+    {
       "id": "nav",
       "tagName": "uik-nav",
       "summary": "Navigation list with grouped links and current state.",
-      "attributes": ["items (array)", "openIds (string[])", "currentId"],
+      "attributes": [
+        "items (array)",
+        "openIds (string[])",
+        "currentId"
+      ],
       "slots": [],
-      "parts": ["base", "item", "toggle", "link", "label"],
-      "events": ["nav-select", "nav-toggle"],
+      "parts": [
+        "base",
+        "item",
+        "toggle",
+        "link",
+        "label"
+      ],
+      "events": [
+        "nav-select",
+        "nav-toggle"
+      ],
       "a11y": [
         "Renders anchors inside a nav landmark; active links expose aria-current."
       ],
@@ -240,8 +640,16 @@
         "orientation (vertical | horizontal)"
       ],
       "slots": [],
-      "parts": ["base", "item", "item-button", "item-indicator", "item-icon"],
-      "events": ["nav-rail-select"],
+      "parts": [
+        "base",
+        "item",
+        "item-button",
+        "item-indicator",
+        "item-icon"
+      ],
+      "events": [
+        "nav-rail-select"
+      ],
       "a11y": [
         "Toolbar role with roving focus; Arrow/Home/End move focus; Enter/Space activate items."
       ],
@@ -259,71 +667,108 @@
       ]
     },
     {
-      "id": "menu",
-      "tagName": "uik-menu",
-      "summary": "Menu panel with trigger slot and roving focus items.",
-      "attributes": [
-        "open",
-        "placement",
-        "popover (auto | manual | hint)",
-        "value",
-        "activeId"
-      ],
-      "slots": ["trigger", "default (uik-menu-item children)"],
-      "parts": ["control", "base"],
-      "events": [
-        "menu-active (detail: {id, value, item})",
-        "menu-select (detail: {id, value, item})",
-        "menu-open",
-        "menu-close",
-        "overlay-close (detail: {reason})"
-      ],
-      "a11y": [
-        "Roving focus with Arrow/Home/End; Enter/Space selects; Escape closes and returns focus."
-      ],
-      "cssVars": ["--uik-component-menu-*", "--uik-component-menu-item-*"]
-    },
-    {
-      "id": "menu-item",
-      "tagName": "uik-menu-item",
-      "summary": "Menu item for use inside uik-menu.",
+      "id": "option",
+      "tagName": "uik-option",
+      "summary": "Listbox option for use inside uik-listbox.",
       "attributes": [
         "value",
+        "selected (boolean)",
         "disabled (boolean)",
         "active (boolean)",
         "tabIndexValue (number)"
       ],
-      "slots": ["default (label)"],
-      "parts": ["base"],
+      "slots": [
+        "default (label)"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["role=\"menuitem\" with aria-disabled when disabled."],
-      "cssVars": ["--uik-component-menu-item-*"]
+      "a11y": [],
+      "cssVars": [
+        "--uik-component-listbox-item-* (bg, fg, padding, radius, height, state colors)"
+      ]
     },
     {
-      "id": "menubar",
-      "tagName": "uik-menubar",
-      "summary": "Menubar wrapper for uik-menu triggers.",
-      "attributes": [],
-      "slots": ["default (uik-menu children)"],
-      "parts": ["base"],
-      "events": [],
-      "a11y": [
-        "Roving focus across triggers with ArrowLeft/Right and Home/End; ArrowDown opens the active menu."
+      "id": "pagination",
+      "tagName": "uik-pagination",
+      "summary": "Pagination control with previous/next and page buttons.",
+      "attributes": [
+        "page",
+        "page-count",
+        "total",
+        "max-buttons"
       ],
-      "cssVars": ["--uik-component-menubar-*"]
+      "slots": [
+        "summary"
+      ],
+      "parts": [
+        "base",
+        "list",
+        "item",
+        "button",
+        "summary",
+        "ellipsis"
+      ],
+      "events": [
+        "pagination-change (detail: {page})"
+      ],
+      "a11y": [
+        "Buttons are native and expose aria-current on the active page."
+      ],
+      "cssVars": [
+        "--uik-component-pagination-gap",
+        "--uik-component-pagination-font-family",
+        "--uik-component-pagination-summary-font-size",
+        "--uik-component-pagination-summary-font-weight",
+        "--uik-component-pagination-summary-color",
+        "--uik-component-pagination-ellipsis-color",
+        "--uik-component-pagination-button-bg",
+        "--uik-component-pagination-button-bg-hover",
+        "--uik-component-pagination-button-bg-active",
+        "--uik-component-pagination-button-fg",
+        "--uik-component-pagination-button-border",
+        "--uik-component-pagination-button-border-width",
+        "--uik-component-pagination-button-radius",
+        "--uik-component-pagination-button-padding-x",
+        "--uik-component-pagination-button-padding-y",
+        "--uik-component-pagination-button-font-size",
+        "--uik-component-pagination-button-font-weight",
+        "--uik-component-pagination-button-line-height",
+        "--uik-component-pagination-button-min-width",
+        "--uik-component-pagination-button-height",
+        "--uik-component-pagination-button-current-bg",
+        "--uik-component-pagination-button-current-fg",
+        "--uik-component-pagination-button-current-border",
+        "--uik-component-pagination-button-disabled-opacity",
+        "--uik-component-pagination-button-focus-offset",
+        "--uik-component-pagination-button-focus-width"
+      ]
     },
     {
       "id": "popover",
       "tagName": "uik-popover",
       "summary": "Popover panel with trigger slot and optional native popover support.",
-      "attributes": ["open", "placement", "popover (auto | manual | hint)"],
-      "slots": ["trigger", "default (panel content)"],
-      "parts": ["control", "base"],
+      "attributes": [
+        "open",
+        "placement",
+        "popover (auto | manual | hint)"
+      ],
+      "slots": [
+        "trigger",
+        "default (panel content)"
+      ],
+      "parts": [
+        "control",
+        "base"
+      ],
       "events": [
         "Trigger events bubble; panel listens to native popover toggle when supported.",
-        "overlay-close (detail: {reason})"
+        "overlay-close (detail: {reason}) (escape | outside | programmatic | toggle)"
       ],
-      "a11y": ["Forward aria-* attributes to the panel."],
+      "a11y": [
+        "Forward aria-* attributes to the panel."
+      ],
       "cssVars": [
         "--uik-component-popover-bg",
         "--uik-component-popover-fg",
@@ -340,9 +785,15 @@
       "id": "progress",
       "tagName": "uik-progress",
       "summary": "Progress indicator with determinate and indeterminate modes.",
-      "attributes": ["value", "max", "indeterminate (boolean)"],
+      "attributes": [
+        "value",
+        "max",
+        "indeterminate (boolean)"
+      ],
       "slots": [],
-      "parts": ["base"],
+      "parts": [
+        "base"
+      ],
       "events": [],
       "a11y": [
         "Forward aria-label and aria-labelledby to the internal <progress>."
@@ -367,13 +818,28 @@
         "required",
         "invalid"
       ],
-      "slots": ["label", "hint", "error"],
-      "parts": ["base", "control", "label", "hint", "error"],
-      "events": ["Native change bubbles from the internal <input>."],
+      "slots": [
+        "label",
+        "hint",
+        "error"
+      ],
+      "parts": [
+        "base",
+        "control",
+        "label",
+        "hint",
+        "error"
+      ],
+      "events": [
+        "Native change bubbles from the internal <input>."
+      ],
       "a11y": [
         "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
       ],
-      "cssVars": ["--uik-component-radio-accent", "--uik-component-radio-size"]
+      "cssVars": [
+        "--uik-component-radio-accent",
+        "--uik-component-radio-size"
+      ]
     },
     {
       "id": "radio-group",
@@ -387,13 +853,28 @@
         "required",
         "invalid"
       ],
-      "slots": ["label", "hint", "error", "default (<uik-radio> children)"],
-      "parts": ["base", "control", "label", "hint", "error"],
-      "events": ["Native change bubbles from child radios."],
+      "slots": [
+        "label",
+        "hint",
+        "error",
+        "default (<uik-radio> children)"
+      ],
+      "parts": [
+        "base",
+        "control",
+        "label",
+        "hint",
+        "error"
+      ],
+      "events": [
+        "Native change bubbles from child radios."
+      ],
       "a11y": [
         "Label slot wires aria-labelledby; hint/error are announced via aria-describedby."
       ],
-      "cssVars": ["--uik-component-radio-group-gap"]
+      "cssVars": [
+        "--uik-component-radio-group-gap"
+      ]
     },
     {
       "id": "resizable-panels",
@@ -407,8 +888,17 @@
         "step (number, px)",
         "stepLarge (number, px)"
       ],
-      "slots": ["start", "end"],
-      "parts": ["base", "panel-start", "panel-end", "handle", "handle-grip"],
+      "slots": [
+        "start",
+        "end"
+      ],
+      "parts": [
+        "base",
+        "panel-start",
+        "panel-end",
+        "handle",
+        "handle-grip"
+      ],
       "events": [
         "resizable-panels-resize (detail: {startSize, endSize, ratio, source, phase})"
       ],
@@ -432,10 +922,29 @@
       "id": "select",
       "tagName": "uik-select",
       "summary": "Form-associated select with label, hint, and error slots.",
-      "attributes": ["name", "value", "disabled", "required", "invalid"],
-      "slots": ["label", "hint", "error", "default (<option> elements)"],
-      "parts": ["base", "control", "label", "hint", "error"],
-      "events": ["Native change bubbles from the internal <select>."],
+      "attributes": [
+        "name",
+        "value",
+        "disabled",
+        "required",
+        "invalid"
+      ],
+      "slots": [
+        "label",
+        "hint",
+        "error",
+        "default (<option> elements)"
+      ],
+      "parts": [
+        "base",
+        "control",
+        "label",
+        "hint",
+        "error"
+      ],
+      "events": [
+        "Native change bubbles from the internal <select>."
+      ],
       "a11y": [
         "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
       ],
@@ -447,11 +956,17 @@
       "id": "separator",
       "tagName": "uik-separator",
       "summary": "Horizontal or vertical separator line.",
-      "attributes": ["orientation (horizontal | vertical)"],
+      "attributes": [
+        "orientation (horizontal | vertical)"
+      ],
       "slots": [],
-      "parts": ["base"],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Horizontal renders <hr>; vertical uses role=\"separator\"."],
+      "a11y": [
+        "Horizontal renders <hr>; vertical uses role=\"separator\"."
+      ],
       "cssVars": [
         "--uik-separator-color",
         "--uik-separator-thickness",
@@ -467,9 +982,13 @@
         "tone (default | muted | primary | danger | success | warning | info)"
       ],
       "slots": [],
-      "parts": ["base"],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Add aria-label if the spinner is meaningful."],
+      "a11y": [
+        "Add aria-label if the spinner is meaningful."
+      ],
       "cssVars": [
         "--uik-component-spinner-size-{sm|md|lg}",
         "--uik-component-spinner-track",
@@ -486,11 +1005,19 @@
         "align",
         "justify"
       ],
-      "slots": ["default"],
-      "parts": ["base"],
+      "slots": [
+        "default"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Use semantic wrappers for landmark content."],
-      "cssVars": ["--uik-component-stack-gap-{1..6}"]
+      "a11y": [
+        "Use semantic wrappers for landmark content."
+      ],
+      "cssVars": [
+        "--uik-component-stack-gap-{1..6}"
+      ]
     },
     {
       "id": "surface",
@@ -500,10 +1027,16 @@
         "variant (base | muted | card | elevated | popover)",
         "bordered (boolean)"
       ],
-      "slots": ["default"],
-      "parts": ["base"],
+      "slots": [
+        "default"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Use semantic HTML inside; does not add roles."],
+      "a11y": [
+        "Use semantic HTML inside; does not add roles."
+      ],
       "cssVars": [
         "--uik-component-surface-bg-{default|muted|card|elevated|popover}",
         "--uik-component-surface-shadow-{default|card|elevated|popover}",
@@ -524,10 +1057,26 @@
         "required",
         "invalid"
       ],
-      "slots": ["label", "hint", "error"],
-      "parts": ["base", "control", "track", "thumb", "label", "hint", "error"],
-      "events": ["Native change bubbles from the internal <input>."],
-      "a11y": ["Uses role=\"switch\" and supports label slot or aria-label."],
+      "slots": [
+        "label",
+        "hint",
+        "error"
+      ],
+      "parts": [
+        "base",
+        "control",
+        "track",
+        "thumb",
+        "label",
+        "hint",
+        "error"
+      ],
+      "events": [
+        "Native change bubbles from the internal <input>."
+      ],
+      "a11y": [
+        "Uses role=\"switch\" and supports label slot or aria-label."
+      ],
       "cssVars": [
         "--uik-component-switch-height",
         "--uik-component-switch-width",
@@ -542,6 +1091,75 @@
       ]
     },
     {
+      "id": "tab",
+      "tagName": "uik-tab",
+      "summary": "Tab element for use inside uik-tabs.",
+      "attributes": [
+        "value",
+        "selected (boolean)",
+        "disabled (boolean)",
+        "tabIndexValue (number)"
+      ],
+      "slots": [
+        "default (label)"
+      ],
+      "parts": [
+        "base",
+        "indicator"
+      ],
+      "events": [],
+      "a11y": [],
+      "cssVars": [
+        "--uik-component-tabs-tab-* (bg, fg, padding, radius, indicator)"
+      ]
+    },
+    {
+      "id": "tab-panel",
+      "tagName": "uik-tab-panel",
+      "summary": "Tab panel for use inside uik-tabs.",
+      "attributes": [
+        "value"
+      ],
+      "slots": [
+        "default (panel content)"
+      ],
+      "parts": [
+        "base"
+      ],
+      "events": [],
+      "a11y": [],
+      "cssVars": [
+        "--uik-component-tabs-panel-padding"
+      ]
+    },
+    {
+      "id": "tabs",
+      "tagName": "uik-tabs",
+      "summary": "Tabs container with roving focus and panels.",
+      "attributes": [
+        "activeId",
+        "orientation (horizontal | vertical)",
+        "activation (auto | manual)"
+      ],
+      "slots": [
+        "tab (uik-tab children)",
+        "panel (uik-tab-panel children)"
+      ],
+      "parts": [
+        "tablist",
+        "panels"
+      ],
+      "events": [
+        "tabs-select (detail: {id})"
+      ],
+      "a11y": [
+        "Arrow keys move focus; Enter/Space activate when activation=manual."
+      ],
+      "cssVars": [
+        "--uik-component-tabs-* (border, gap, tab, panel)"
+      ]
+    },
+    {
       "id": "text",
       "tagName": "uik-text",
       "summary": "Tokenized text wrapper for size, weight, tone, and truncation.",
@@ -552,10 +1170,16 @@
         "tone",
         "truncate (boolean)"
       ],
-      "slots": ["default"],
-      "parts": ["base"],
+      "slots": [
+        "default"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Use as=label for form labels when needed."],
+      "a11y": [
+        "Use as=label for form labels when needed."
+      ],
       "cssVars": [
         "--uik-component-text-size-{sm|md|lg|xl}",
         "--uik-component-text-line-height-{sm|md|lg|xl}",
@@ -577,8 +1201,18 @@
         "readonly",
         "invalid"
       ],
-      "slots": ["label", "hint", "error"],
-      "parts": ["base", "control", "label", "hint", "error"],
+      "slots": [
+        "label",
+        "hint",
+        "error"
+      ],
+      "parts": [
+        "base",
+        "control",
+        "label",
+        "hint",
+        "error"
+      ],
       "events": [
         "Native input and change bubble from the internal <textarea>."
       ],
@@ -593,12 +1227,22 @@
       "id": "tooltip",
       "tagName": "uik-tooltip",
       "summary": "Tooltip panel with trigger slot.",
-      "attributes": ["open", "placement", "popover (defaults to hint)"],
-      "slots": ["trigger", "default (tooltip content)"],
-      "parts": ["control", "base"],
+      "attributes": [
+        "open",
+        "placement",
+        "popover (defaults to hint)"
+      ],
+      "slots": [
+        "trigger",
+        "default (tooltip content)"
+      ],
+      "parts": [
+        "control",
+        "base"
+      ],
       "events": [
         "Trigger events bubble from slotted trigger.",
-        "overlay-close (detail: {reason})"
+        "overlay-close (detail: {reason}) (escape | outside | programmatic | toggle)"
       ],
       "a11y": [
         "Panel uses role=\"tooltip\" and wires aria-describedby to trigger."
@@ -617,17 +1261,25 @@
     {
       "id": "tree-view",
       "tagName": "uik-tree-view",
-      "summary": "Tree view list with tri-state selection and open state.",
+      "summary": "Tree view navigation list with expandable branches.",
       "attributes": [
         "items (array)",
-        "selectedIds (string[])",
-        "openIds (string[])"
+        "openIds (string[])",
+        "currentId"
       ],
       "slots": [],
-      "parts": ["base", "item", "toggle", "selection", "label"],
-      "events": ["tree-view-select", "tree-view-open", "tree-view-toggle"],
+      "parts": [
+        "base",
+        "item",
+        "toggle",
+        "label"
+      ],
+      "events": [
+        "tree-view-activate",
+        "tree-view-toggle"
+      ],
       "a11y": [
-        "Treeview role with roving focus; Space toggles selection and Enter opens items."
+        "Treeview role with roving focus; Arrow keys move, typeahead jumps, Enter/Space activates."
       ],
       "cssVars": [
         "--uik-component-tree-view-item-*",
@@ -641,10 +1293,16 @@
       "tagName": "uik-visually-hidden",
       "summary": "Utility to hide content visually while keeping it accessible.",
       "attributes": [],
-      "slots": ["default"],
-      "parts": ["base"],
+      "slots": [
+        "default"
+      ],
+      "parts": [
+        "base"
+      ],
       "events": [],
-      "a11y": ["Use for screen-reader-only labels or descriptions."],
+      "a11y": [
+        "Use for screen-reader-only labels or descriptions."
+      ],
       "cssVars": []
     }
   ]

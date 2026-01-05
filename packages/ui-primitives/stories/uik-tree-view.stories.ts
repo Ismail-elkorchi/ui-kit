@@ -6,7 +6,7 @@ import { interactionStory } from "../../../.storybook/a11y";
 
 type TreeViewArgs = {
   openIds: string[];
-  selectedIds: string[];
+  currentId: string;
 };
 
 const items = [
@@ -34,13 +34,13 @@ const meta: Meta<TreeViewArgs> = {
   tags: ["autodocs"],
   args: {
     openIds: ["apps", "packages"],
-    selectedIds: ["apps/main.ts"],
+    currentId: "apps/main.ts",
   },
   render: (args) => html`
     <uik-tree-view
       .items=${items}
       .openIds=${args.openIds}
-      .selectedIds=${args.selectedIds}
+      .currentId=${args.currentId}
       aria-label="Project files"
     >
     </uik-tree-view>
