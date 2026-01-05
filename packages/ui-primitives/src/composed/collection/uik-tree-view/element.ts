@@ -226,9 +226,7 @@ export class UikTreeView extends LitElement {
     const now = Date.now();
     const withinWindow = now - this.typeaheadTimestamp < 750;
     this.typeaheadTimestamp = now;
-    this.typeaheadQuery = withinWindow
-      ? `${this.typeaheadQuery}${key}`
-      : key;
+    this.typeaheadQuery = withinWindow ? `${this.typeaheadQuery}${key}` : key;
     const query = this.typeaheadQuery.toLowerCase();
     const nextIndex = this.findTypeaheadMatch(items, query, currentIndex);
     if (nextIndex >= 0) {
@@ -287,9 +285,7 @@ export class UikTreeView extends LitElement {
     </svg>`;
   }
 
-  private renderItem(
-    entry: TreeItem<UikTreeViewItem>,
-  ) {
+  private renderItem(entry: TreeItem<UikTreeViewItem>) {
     const dataItem = entry.item;
     const isBranch = entry.isBranch;
     const isOpen = entry.isExpanded;
