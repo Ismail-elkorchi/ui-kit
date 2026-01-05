@@ -53,12 +53,20 @@ describe("docs a11y", () => {
     document.body.innerHTML = '<div id="app"></div>';
   });
 
-  it("has zero axe violations on a representative route", async () => {
-    window.history.replaceState({}, "", "/docs/getting-started");
-    const root = document.getElementById("app");
-    if (!root) throw new Error("Docs root not found.");
-    mountDocsApp(root);
-    await waitForContent();
-    await runA11y(document.body);
+  const routes = [
+    { label: "home", path: "/docs/getting-started" },
+    { label: "components", path: "/docs/primitives" },
+    { label: "markdown", path: "/docs/baseline-support" },
+  ];
+
+  routes.forEach(({ label, path }) => {
+    it(`has zero axe violations on ${label}`, async () => {
+      window.history.replaceState({}, "", path);
+      const root = document.getElementById("app");
+      if (!root) throw new Error("Docs root not found.");
+      mountDocsApp(root);
+      await waitForContent();
+      await runA11y(document.body);
+    });
   });
 });

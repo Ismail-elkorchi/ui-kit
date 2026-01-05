@@ -422,6 +422,14 @@ const setOutlineOpen = (
 ) => {
   secondary.isOpen = isOpen;
   layout.isSecondarySidebarVisible = isOpen;
+  if (isOpen) {
+    void secondary.updateComplete.then(() => {
+      const closeButton = secondary.querySelector<UikButton>(
+        'uik-button[part="close-button"]',
+      );
+      closeButton?.focus();
+    });
+  }
 };
 
 const getSystemTheme = () => {
@@ -848,6 +856,10 @@ export const mountDocsApp = (container: HTMLElement) => {
     !secondarySidebar
   ) {
     throw new Error("Docs layout could not be initialized.");
+  }
+
+  if (outlineToggle) {
+    secondarySidebar.focusReturnTarget = outlineToggle;
   }
 
   activityBar.items = buildActivityItems(routes);
