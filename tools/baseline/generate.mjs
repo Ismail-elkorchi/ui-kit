@@ -32,6 +32,17 @@ const formatBaseline = (value) => {
   }
 };
 
+const formatMarkdownTable = (header, rows) => {
+  const tableRows = [header, ...rows];
+  const widths = header.map((_, index) =>
+    Math.max(...tableRows.map((row) => row[index].length)),
+  );
+  const formatRow = (row) =>
+    `| ${row.map((cell, index) => cell.padEnd(widths[index])).join(" | ")} |`;
+  const separator = `| ${widths.map((width) => "-".repeat(width)).join(" | ")} |`;
+  return [formatRow(header), separator, ...rows.map(formatRow)].join("\n");
+};
+
 const normalizeFeatures = (features) => {
   if (!Array.isArray(features)) {
     throw new Error("support-matrix.json must include a features array.");
@@ -76,23 +87,36 @@ const renderMarkdown = (features) => {
   const rows = features.map((feature) => {
     const evidence = feature.evidence ? `[Source](${feature.evidence})` : "—";
     const gating = feature.gating ? feature.gating : "—";
-    return `| ${escapeTableCell(feature.name)} | ${escapeTableCell(feature.category)} | ${formatBaseline(
-      feature.baseline,
-    )} | ${escapeTableCell(feature.usage)} | ${escapeTableCell(gating)} | ${escapeTableCell(evidence)} |`;
+    return [
+      escapeTableCell(feature.name),
+      escapeTableCell(feature.category),
+      formatBaseline(feature.baseline),
+      escapeTableCell(feature.usage),
+      escapeTableCell(gating),
+      escapeTableCell(evidence),
+    ];
   });
+  const header = [
+    "Feature",
+    "Category",
+    "Baseline",
+    "Usage",
+    "Gating/Fallback",
+    "Evidence",
+  ];
+  const table = formatMarkdownTable(header, rows);
 
   return [
     "# Baseline Support Matrix",
     "",
     "## Overview",
+    "",
     "This matrix lists platform features used by UIK and their Baseline classifications.",
     "Baseline Newly and Not Baseline entries are treated as progressive enhancements.",
     "",
     "## Matrix",
-    "| Feature | Category | Baseline | Usage | Gating/Fallback | Evidence |",
-    "| --- | --- | --- | --- | --- | --- |",
-    ...rows,
     "",
+    ...table.split("\n"),
   ].join("\n");
 };
 
