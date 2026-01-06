@@ -553,7 +553,8 @@ body {
 }
 
 .docs-portfolio-dialog,
-.docs-portfolio-hidden {
+.docs-portfolio-hidden,
+.docs-portfolio-command-palette {
   display: flex;
   flex-direction: column;
   gap: var(--uik-space-3);

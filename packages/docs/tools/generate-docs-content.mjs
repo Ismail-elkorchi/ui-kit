@@ -439,6 +439,38 @@ const renderComponentPortfolio = (components) => {
       size: "md",
       html: `<uik-checkbox checked><span slot="label">Remember me</span></uik-checkbox>`,
     }),
+    "uik-code-block": () => ({
+      layout: "start",
+      size: "md",
+      html: `<uik-code-block copy>npm run build</uik-code-block>`,
+    }),
+    "uik-combobox": () => ({
+      layout: "start",
+      size: "md",
+      html: `<uik-combobox open placeholder="Search" aria-label="Assignee" data-docs-portfolio="combobox">
+<span slot="label">Assignee</span>
+</uik-combobox>`,
+    }),
+    "uik-command-palette": () => ({
+      layout: "start",
+      size: "md",
+      html: `<div class="docs-portfolio-command-palette">
+<uik-button variant="outline" size="sm" data-docs-portfolio="command-palette-open">Open palette</uik-button>
+<uik-command-palette data-docs-portfolio="command-palette" placeholder="Search commands">
+<span slot="title">Command palette</span>
+<span slot="description">Type to filter commands.</span>
+<uik-visually-hidden slot="label">Search commands</uik-visually-hidden>
+</uik-command-palette>
+</div>`,
+    }),
+    "uik-description-list": () => ({
+      layout: "start",
+      size: "sm",
+      html: `<uik-description-list density="compact">
+<dt>Status</dt><dd>Active</dd>
+<dt>Owner</dt><dd>Design</dd>
+</uik-description-list>`,
+    }),
     "uik-dialog": (component) => {
       const dialogId = `docs-portfolio-dialog-${component.id}`;
       return {
@@ -476,6 +508,15 @@ const renderComponentPortfolio = (components) => {
       layout: "start",
       size: "sm",
       html: `<uik-link href="#">Explore link</uik-link>`,
+    }),
+    "uik-listbox": () => ({
+      layout: "start",
+      size: "md",
+      html: `<uik-listbox value="tokens" aria-label="Docs navigation">
+<uik-option value="overview">Overview</uik-option>
+<uik-option value="tokens">Tokens</uik-option>
+<uik-option value="components">Components</uik-option>
+</uik-listbox>`,
     }),
     "uik-menu": () => ({
       layout: "start",
@@ -519,6 +560,19 @@ const renderComponentPortfolio = (components) => {
       layout: "start",
       size: "md",
       html: `<uik-nav-rail orientation="horizontal" data-docs-portfolio="nav-rail"></uik-nav-rail>`,
+    }),
+    "uik-option": () => ({
+      layout: "start",
+      size: "sm",
+      html: `<uik-listbox aria-label="Options">
+<uik-option selected>Active item</uik-option>
+<uik-option>Inactive item</uik-option>
+</uik-listbox>`,
+    }),
+    "uik-pagination": () => ({
+      layout: "center",
+      size: "sm",
+      html: `<uik-pagination page="2" page-count="5" total="42"></uik-pagination>`,
     }),
     "uik-popover": () => ({
       layout: "overlay",
@@ -595,6 +649,32 @@ const renderComponentPortfolio = (components) => {
       layout: "start",
       size: "md",
       html: `<uik-switch checked><span slot="label">Notifications</span></uik-switch>`,
+    }),
+    "uik-tab": () => ({
+      layout: "start",
+      size: "sm",
+      html: `<uik-tabs>
+<uik-tab value="overview">Overview</uik-tab>
+<uik-tab-panel value="overview"><uik-text as="p" size="sm">Panel content</uik-text></uik-tab-panel>
+</uik-tabs>`,
+    }),
+    "uik-tab-panel": () => ({
+      layout: "start",
+      size: "sm",
+      html: `<uik-tabs>
+<uik-tab value="activity">Activity</uik-tab>
+<uik-tab-panel value="activity"><uik-text as="p" size="sm">Panel content</uik-text></uik-tab-panel>
+</uik-tabs>`,
+    }),
+    "uik-tabs": () => ({
+      layout: "start",
+      size: "md",
+      html: `<uik-tabs>
+<uik-tab value="overview">Overview</uik-tab>
+<uik-tab value="details">Details</uik-tab>
+<uik-tab-panel value="overview"><uik-text as="p" size="sm">Overview panel</uik-text></uik-tab-panel>
+<uik-tab-panel value="details"><uik-text as="p" size="sm">Details panel</uik-text></uik-tab-panel>
+</uik-tabs>`,
     }),
     "uik-text": () => ({
       layout: "start",

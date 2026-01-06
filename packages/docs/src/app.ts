@@ -1,6 +1,9 @@
 import type {
   UikButton,
+  UikCombobox,
+  UikComboboxItem,
   UikCommandPalette,
+  UikCommandPaletteItem,
   UikDialog,
   UikInput,
   UikNav,
@@ -129,18 +132,29 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
   ["uik-alert", () => import("@ismail-elkorchi/ui-primitives/uik-alert")],
   ["uik-checkbox", () => import("@ismail-elkorchi/ui-primitives/uik-checkbox")],
   [
+    "uik-code-block",
+    () => import("@ismail-elkorchi/ui-primitives/uik-code-block"),
+  ],
+  ["uik-combobox", () => import("@ismail-elkorchi/ui-primitives/uik-combobox")],
+  [
     "uik-description-list",
     () => import("@ismail-elkorchi/ui-primitives/uik-description-list"),
   ],
   ["uik-dialog", () => import("@ismail-elkorchi/ui-primitives/uik-dialog")],
   ["uik-icon", () => import("@ismail-elkorchi/ui-primitives/uik-icon")],
   ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
+  ["uik-listbox", () => import("@ismail-elkorchi/ui-primitives/uik-listbox")],
   ["uik-menu", () => import("@ismail-elkorchi/ui-primitives/uik-menu")],
   [
     "uik-menu-item",
     () => import("@ismail-elkorchi/ui-primitives/uik-menu-item"),
   ],
   ["uik-menubar", () => import("@ismail-elkorchi/ui-primitives/uik-menubar")],
+  ["uik-option", () => import("@ismail-elkorchi/ui-primitives/uik-option")],
+  [
+    "uik-pagination",
+    () => import("@ismail-elkorchi/ui-primitives/uik-pagination"),
+  ],
   ["uik-popover", () => import("@ismail-elkorchi/ui-primitives/uik-popover")],
   ["uik-progress", () => import("@ismail-elkorchi/ui-primitives/uik-progress")],
   ["uik-radio", () => import("@ismail-elkorchi/ui-primitives/uik-radio")],
@@ -155,6 +169,12 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
   ["uik-spinner", () => import("@ismail-elkorchi/ui-primitives/uik-spinner")],
   ["uik-stack", () => import("@ismail-elkorchi/ui-primitives/uik-stack")],
   ["uik-switch", () => import("@ismail-elkorchi/ui-primitives/uik-switch")],
+  ["uik-tab", () => import("@ismail-elkorchi/ui-primitives/uik-tab")],
+  [
+    "uik-tab-panel",
+    () => import("@ismail-elkorchi/ui-primitives/uik-tab-panel"),
+  ],
+  ["uik-tabs", () => import("@ismail-elkorchi/ui-primitives/uik-tabs")],
   ["uik-textarea", () => import("@ismail-elkorchi/ui-primitives/uik-textarea")],
   ["uik-tooltip", () => import("@ismail-elkorchi/ui-primitives/uik-tooltip")],
   [
@@ -617,6 +637,34 @@ const wirePortfolioPreviews = (container: HTMLElement) => {
       icon: "M5 7h14M7 12h10M9 17h6",
     },
   ];
+  const comboboxItems: UikComboboxItem[] = [
+    { id: "inbox", label: "Inbox", value: "inbox" },
+    { id: "triage", label: "Triage", value: "triage" },
+    { id: "blocked", label: "Blocked", value: "blocked", isDisabled: true },
+  ];
+  const commandPaletteItems: UikCommandPaletteItem[] = [
+    {
+      id: "new-file",
+      label: "Create file",
+      value: "new-file",
+      group: "Workspace",
+      shortcut: "Cmd+N",
+    },
+    {
+      id: "open-settings",
+      label: "Open settings",
+      value: "open-settings",
+      group: "Workspace",
+      shortcut: "Cmd+,",
+    },
+    {
+      id: "toggle-theme",
+      label: "Toggle theme",
+      value: "toggle-theme",
+      group: "View",
+      shortcut: "Cmd+T",
+    },
+  ];
 
   container
     .querySelectorAll<UikNav>('[data-docs-portfolio="nav"]')
@@ -639,6 +687,38 @@ const wirePortfolioPreviews = (container: HTMLElement) => {
       treeView.items = treeItems;
       treeView.openIds = ["design", "components"];
       treeView.currentId = "tokens";
+    });
+
+  container
+    .querySelectorAll<UikCombobox>('[data-docs-portfolio="combobox"]')
+    .forEach((combobox) => {
+      combobox.items = comboboxItems;
+      combobox.value = comboboxItems[0]?.value ?? "";
+      combobox.open = true;
+    });
+
+  container
+    .querySelectorAll<UikCommandPalette>(
+      '[data-docs-portfolio="command-palette"]',
+    )
+    .forEach((palette) => {
+      palette.items = commandPaletteItems;
+    });
+
+  container
+    .querySelectorAll<HTMLElement>(
+      '[data-docs-portfolio="command-palette-open"]',
+    )
+    .forEach((trigger) => {
+      const palette = trigger
+        .closest(".docs-portfolio-command-palette")
+        ?.querySelector<UikCommandPalette>(
+          '[data-docs-portfolio="command-palette"]',
+        );
+      if (!palette) return;
+      trigger.addEventListener("click", () => {
+        palette.show();
+      });
     });
 
   container
