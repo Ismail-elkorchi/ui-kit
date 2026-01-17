@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import { tabStyles } from "./tab-styles";
+import { tabStyles } from "./tab-styles.js";
 
 /**
  * Tab element for use inside uik-tabs.

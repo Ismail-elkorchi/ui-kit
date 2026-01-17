@@ -7,7 +7,7 @@ import "@ismail-elkorchi/ui-primitives/uik-separator";
 import {
   ensureLightDomRoot,
   LightDomSlotController,
-} from "../internal/light-dom-slot-controller";
+} from "../internal/light-dom-slot-controller.js";
 
 /**
  * Primary sidebar with heading, actions, body, and footer slots.

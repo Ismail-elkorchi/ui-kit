@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
+import { styles } from "./styles.js";
 
 /**
  * Anchor wrapper with tokenized colors and underline styling.

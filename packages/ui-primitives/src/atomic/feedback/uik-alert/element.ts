@@ -1,8 +1,8 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import { styles } from "./styles";
-import { hasSlotContent } from "../../../internal";
+import { styles } from "./styles.js";
+import { hasSlotContent } from "../../../internal/index.js";
 
 /**
  * Inline status messaging for neutral and semantic feedback.

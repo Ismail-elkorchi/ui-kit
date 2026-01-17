@@ -1,3 +1,3 @@
-export { buildTreeIndex, buildTreeItems, collectTreeIds } from "./tree";
+export { buildTreeIndex, buildTreeItems, collectTreeIds } from "./tree.js";
 
-export type { TreeIndex, TreeItem, TreeItemBase } from "./tree";
+export type { TreeIndex, TreeItem, TreeItemBase } from "./tree.js";

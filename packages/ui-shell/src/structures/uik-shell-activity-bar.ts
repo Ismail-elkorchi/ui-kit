@@ -3,16 +3,16 @@ import { LitElement, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 
-import type { UikShellActivityBarItem } from "./uik-shell-activity-bar-contract";
+import type { UikShellActivityBarItem } from "./uik-shell-activity-bar-contract.js";
 import {
   ensureLightDomRoot,
   LightDomSlotController,
-} from "../internal/light-dom-slot-controller";
+} from "../internal/light-dom-slot-controller.js";
 
 export type {
   UikShellActivityBarIcon,
   UikShellActivityBarItem,
-} from "./uik-shell-activity-bar-contract";
+} from "./uik-shell-activity-bar-contract.js";
 
 /**
  * Vertical activity bar composed with uik-nav-rail.

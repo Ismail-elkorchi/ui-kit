@@ -1,5 +1,11 @@
-export { UikListbox } from "./element";
-export { UikOption } from "./uik-option";
-export { UikCombobox } from "./uik-combobox";
-export type { UikListboxActiveDetail, UikListboxSelectDetail } from "./element";
-export type { UikComboboxItem, UikComboboxSelectDetail } from "./uik-combobox";
+export { UikListbox } from "./element.js";
+export { UikOption } from "./uik-option.js";
+export { UikCombobox } from "./uik-combobox.js";
+export type {
+  UikListboxActiveDetail,
+  UikListboxSelectDetail,
+} from "./element.js";
+export type {
+  UikComboboxItem,
+  UikComboboxSelectDetail,
+} from "./uik-combobox.js";

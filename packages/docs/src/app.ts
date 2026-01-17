@@ -23,7 +23,6 @@ import "@ismail-elkorchi/ui-primitives/uik-button";
 import "@ismail-elkorchi/ui-primitives/uik-command-palette";
 import "@ismail-elkorchi/ui-primitives/uik-heading";
 import "@ismail-elkorchi/ui-primitives/uik-link";
-import "@ismail-elkorchi/ui-primitives/uik-nav";
 import "@ismail-elkorchi/ui-primitives/uik-select";
 import "@ismail-elkorchi/ui-primitives/uik-surface";
 import "@ismail-elkorchi/ui-primitives/uik-text";
@@ -84,9 +83,12 @@ const getRouteFromLocation = (baseUrl: string) => {
   return { view, subview };
 };
 
-const buildRoutes = (): UikShellRoute[] => {
-  const docsSubviewIds = docsPages.map((page) => page.id);
-  const labSubviewIds = labPages.map((page) => page.id);
+const buildRoutes = (
+  docsPageList: DocPage[] = docsPages,
+  labPageList: DocPage[] = labPages,
+): UikShellRoute[] => {
+  const docsSubviewIds = docsPageList.map((page) => page.id);
+  const labSubviewIds = labPageList.map((page) => page.id);
 
   const createRoute = (
     id: string,
@@ -141,6 +143,10 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     () => import("@ismail-elkorchi/ui-primitives/uik-description-list"),
   ],
   ["uik-dialog", () => import("@ismail-elkorchi/ui-primitives/uik-dialog")],
+  [
+    "uik-empty-state",
+    () => import("@ismail-elkorchi/ui-patterns/uik-empty-state"),
+  ],
   ["uik-icon", () => import("@ismail-elkorchi/ui-primitives/uik-icon")],
   ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
   ["uik-listbox", () => import("@ismail-elkorchi/ui-primitives/uik-listbox")],
@@ -150,6 +156,7 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     () => import("@ismail-elkorchi/ui-primitives/uik-menu-item"),
   ],
   ["uik-menubar", () => import("@ismail-elkorchi/ui-primitives/uik-menubar")],
+  ["uik-nav", () => import("@ismail-elkorchi/ui-primitives/uik-nav")],
   ["uik-option", () => import("@ismail-elkorchi/ui-primitives/uik-option")],
   [
     "uik-pagination",
@@ -177,10 +184,6 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
   ["uik-tabs", () => import("@ismail-elkorchi/ui-primitives/uik-tabs")],
   ["uik-textarea", () => import("@ismail-elkorchi/ui-primitives/uik-textarea")],
   ["uik-tooltip", () => import("@ismail-elkorchi/ui-primitives/uik-tooltip")],
-  [
-    "uik-tree-view",
-    () => import("@ismail-elkorchi/ui-primitives/uik-tree-view"),
-  ],
 ]);
 const preloadedComponents = new Set([
   "uik-badge",
@@ -189,7 +192,6 @@ const preloadedComponents = new Set([
   "uik-command-palette",
   "uik-heading",
   "uik-link",
-  "uik-nav",
   "uik-select",
   "uik-surface",
   "uik-text",
@@ -237,9 +239,9 @@ const buildSectionNavItems = (page: DocPage, baseUrl: string): UikNavItem[] => {
     .filter(Boolean) as UikNavItem[];
 };
 
-const buildDocsGroupItems = (baseUrl: string) => {
+const buildDocsGroupItems = (pages: DocPage[], baseUrl: string) => {
   const grouped = new Map<string, DocPage[]>();
-  docsPages.forEach((page) => {
+  pages.forEach((page) => {
     const group = getPageGroup(page);
     if (!grouped.has(group)) grouped.set(group, []);
     grouped.get(group)?.push(page);
@@ -276,7 +278,11 @@ const buildDocsGroupItems = (baseUrl: string) => {
   return groups;
 };
 
-const buildNavItems = (baseUrl: string): UikNavItem[] => {
+const buildNavItems = (
+  baseUrl: string,
+  docsPageList: DocPage[] = docsPages,
+  labPageList: DocPage[] = labPages,
+): UikNavItem[] => {
   const base = normalizeBaseUrl(baseUrl);
   const toHref = (key: string) => `${base}${key}`;
 
@@ -284,12 +290,12 @@ const buildNavItems = (baseUrl: string): UikNavItem[] => {
     {
       id: "docs",
       label: "Docs",
-      children: buildDocsGroupItems(baseUrl),
+      children: buildDocsGroupItems(docsPageList, baseUrl),
     },
     {
       id: "lab",
       label: "Lab",
-      children: labPages.map((page) => ({
+      children: labPageList.map((page) => ({
         id: `lab/${page.id}`,
         label: getPageLabel(page),
         href: toHref(`lab/${page.id}`),
@@ -298,9 +304,12 @@ const buildNavItems = (baseUrl: string): UikNavItem[] => {
   ];
 };
 
-const buildMobileNavOptions = () => {
+const buildMobileNavOptions = (
+  docsPageList: DocPage[] = docsPages,
+  labPageList: DocPage[] = labPages,
+) => {
   const grouped = new Map<string, DocPage[]>();
-  docsPages.forEach((page) => {
+  docsPageList.forEach((page) => {
     const group = getPageGroup(page);
     if (!grouped.has(group)) grouped.set(group, []);
     grouped.get(group)?.push(page);
@@ -324,7 +333,7 @@ const buildMobileNavOptions = () => {
   ]
     .filter(Boolean)
     .join("");
-  const labOptions = labPages
+  const labOptions = labPageList
     .map(
       (page) => `<option value="lab/${page.id}">${getPageLabel(page)}</option>`,
     )
@@ -338,13 +347,12 @@ const buildMobileNavOptions = () => {
 
 type CommandPaletteCommand = UikCommandCenterCommand & { value: string };
 
-const buildCommandPaletteCommands = (): CommandPaletteCommand[] => {
+const buildCommandPaletteCommands = (
+  docsPageList: DocPage[] = docsPages,
+  labPageList: DocPage[] = labPages,
+): CommandPaletteCommand[] => {
   const items: CommandPaletteCommand[] = [];
-  const addItems = (
-    view: string,
-    pages: typeof docsPages,
-    fallback: string,
-  ) => {
+  const addItems = (view: string, pages: DocPage[], fallback: string) => {
     pages.forEach((page) => {
       const group = page.group ?? fallback;
       const keywords = `${group} ${page.title} ${page.summary}`.trim();
@@ -359,8 +367,8 @@ const buildCommandPaletteCommands = (): CommandPaletteCommand[] => {
     });
   };
 
-  addItems("docs", docsPages, "Docs");
-  addItems("lab", labPages, "Lab");
+  addItems("docs", docsPageList, "Docs");
+  addItems("lab", labPageList, "Lab");
   return items;
 };
 
@@ -762,12 +770,37 @@ export const mountDocsApp = (container: HTMLElement) => {
     "comfortable",
   );
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
+  const initialRoute = getRouteFromLocation(baseUrl);
+  const initialView = initialRoute.view ?? "docs";
+  const initialSubview = initialRoute.subview ?? docsPages[0]?.id;
+  const initialPage =
+    initialView === "lab"
+      ? labPages.find((page) => page.id === initialSubview)
+      : docsPages.find((page) => page.id === initialSubview);
+  const initialTitle = initialPage?.title ?? "";
+  const initialSummary = initialPage?.summary ?? "";
+  const initialGroup = initialPage?.group ?? "";
+  const initialKind = initialPage?.kind ?? "";
+  const initialPackage = initialPage?.package
+    ? `@ismail-elkorchi/${initialPage.package}`
+    : "";
+  const initialHeroLinks = initialPage ? renderHeroLinks(initialPage) : "";
+  const initialOutline = initialPage ? renderToc(initialPage) : "";
+  const initialTheme = resolveTheme();
+  const initialDensity =
+    document.documentElement.getAttribute("data-uik-density") ?? "comfortable";
+  const initialStatusMeta = `Theme: ${initialTheme} | Density: ${initialDensity}`;
+  const groupBadgeAttr = initialGroup ? "" : " hidden";
+  const kindBadgeAttr = initialKind ? "" : " hidden";
+  const packageBadgeAttr = initialPackage ? "" : " hidden";
+  const heroLinksAttr = initialHeroLinks ? "" : " hidden";
+  const mobileNavOptions = buildMobileNavOptions(docsPages, labPages);
 
   container.innerHTML = `
     <nav aria-label="Skip links">
       <a class="docs-skip-link" href="#docs-main">Skip to content</a>
     </nav>
-    <uik-shell-layout class="docs-shell">
+    <uik-shell-layout class="docs-shell" isSecondarySidebarVisible>
       <uik-shell-activity-bar
         slot="activity-bar"
         class="docs-activity-bar"
@@ -787,20 +820,20 @@ export const mountDocsApp = (container: HTMLElement) => {
         </div>
       </uik-shell-sidebar>
       <main slot="main-content" id="docs-main" class="docs-main">
-        <div class="docs-page" data-docs-page>
+          <div class="docs-page" data-docs-page>
           <uik-surface variant="card" bordered class="docs-hero">
             <uik-box padding="5">
               <div class="docs-hero-grid">
                 <div class="docs-hero-content">
                   <div class="docs-hero-top">
                     <uik-badge variant="secondary">UIK Docs</uik-badge>
-                    <uik-badge variant="outline" data-docs-group></uik-badge>
-                    <uik-badge variant="outline" data-docs-kind></uik-badge>
-                    <uik-badge variant="outline" data-docs-package></uik-badge>
+                    <uik-badge variant="outline" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</uik-badge>
+                    <uik-badge variant="outline" data-docs-kind${kindBadgeAttr}>${escapeHtml(initialKind)}</uik-badge>
+                    <uik-badge variant="outline" data-docs-package${packageBadgeAttr}>${escapeHtml(initialPackage)}</uik-badge>
                   </div>
-                  <uik-heading level="1" data-docs-title></uik-heading>
-                  <uik-text as="p" data-docs-summary class="docs-summary"></uik-text>
-                  <nav class="docs-hero-links" data-docs-hero-links aria-label="Jump to sections"></nav>
+                  <uik-heading level="1" data-docs-title>${escapeHtml(initialTitle)}</uik-heading>
+                  <uik-text as="p" data-docs-summary class="docs-summary">${escapeHtml(initialSummary)}</uik-text>
+                  <nav class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
                 </div>
                 <div class="docs-hero-panel">
                   <uik-surface variant="elevated" bordered class="docs-hero-panel-surface">
@@ -818,7 +851,7 @@ export const mountDocsApp = (container: HTMLElement) => {
                         </uik-select>
                         <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
                           <span slot="label">Page</span>
-                          ${buildMobileNavOptions()}
+                          ${mobileNavOptions}
                         </uik-select>
                       </div>
                       <div class="docs-hero-panel-actions">
@@ -836,11 +869,12 @@ export const mountDocsApp = (container: HTMLElement) => {
       <uik-shell-secondary-sidebar
         slot="secondary-sidebar"
         class="docs-outline"
+        isOpen
         heading="On this page"
         aria-label="On this page">
-        <div data-docs-outline></div>
+        <div data-docs-outline>${initialOutline}</div>
       </uik-shell-secondary-sidebar>
-      <uik-shell-status-bar slot="status-bar" class="docs-status"></uik-shell-status-bar>
+      <uik-shell-status-bar slot="status-bar" class="docs-status" message="${escapeHtml(initialTitle)}" tone="info" meta="${escapeHtml(initialStatusMeta)}"></uik-shell-status-bar>
     </uik-shell-layout>
     <uik-command-palette
       class="docs-command-palette"
@@ -857,10 +891,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   `;
 
   const pageMap = buildPageMap();
-  const routes = buildRoutes();
-  const initialRoute = getRouteFromLocation(baseUrl);
-  const initialView = initialRoute.view ?? "docs";
-  const initialSubview = initialRoute.subview ?? docsPages[0]?.id;
+  const routes = buildRoutes(docsPages, labPages);
   const router = createUikShellRouter({
     routes,
     initialView,
@@ -937,7 +968,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   }
 
   activityBar.items = buildActivityItems(routes);
-  navTree.items = buildNavItems(baseUrl);
+  navTree.items = buildNavItems(baseUrl, docsPages, labPages);
   navTree.openIds = collectOpenIds(navTree.items);
   setOutlineOpen(layout, secondarySidebar, true);
   let commandPaletteOpenButton: UikButton | null = null;
@@ -965,23 +996,31 @@ export const mountDocsApp = (container: HTMLElement) => {
     commandCenter.setOpenButton(commandPaletteOpenButton);
   };
 
+  let commandCenterInit: Promise<void> | null = null;
+  const ensureCommandCenter = () => {
+    if (!commandPalette) return Promise.resolve();
+    if (commandCenterInit) return commandCenterInit;
+    commandCenterInit = (async () => {
+      const { createUikCommandCenter } =
+        await import("@ismail-elkorchi/ui-shell/command-center");
+      commandCenter = createUikCommandCenter({
+        palette: commandPalette,
+        commands: buildCommandPaletteCommands(),
+        onSelect: (command) => {
+          if (!command.value) return;
+          const [view, subview] = command.value.split("/");
+          router.navigate(view, subview);
+          syncUrl(router.current);
+          updateNavCurrent(router.current);
+        },
+      });
+      syncCommandCenterOpenButton();
+    })();
+    return commandCenterInit;
+  };
+
   if (commandPalette) {
-    void import("@ismail-elkorchi/ui-shell/command-center").then(
-      ({ createUikCommandCenter }) => {
-        commandCenter = createUikCommandCenter({
-          palette: commandPalette,
-          commands: buildCommandPaletteCommands(),
-          onSelect: (command) => {
-            if (!command.value) return;
-            const [view, subview] = command.value.split("/");
-            router.navigate(view, subview);
-            syncUrl(router.current);
-            updateNavCurrent(router.current);
-          },
-        });
-        syncCommandCenterOpenButton();
-      },
-    );
+    void ensureCommandCenter();
   }
 
   const renderPageContent = async (view: "docs" | "lab", page: DocPage) => {

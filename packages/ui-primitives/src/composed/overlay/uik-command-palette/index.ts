@@ -1,4 +1,4 @@
-export { UikCommandPalette } from "./element";
+export { UikCommandPalette } from "./element.js";
 export type {
   UikCommandPaletteCloseReason,
   UikCommandPaletteFilter,
@@ -6,4 +6,4 @@ export type {
   UikCommandPaletteOpenChangeDetail,
   UikCommandPaletteQueryChangeDetail,
   UikCommandPaletteSelectDetail,
-} from "./element";
+} from "./element.js";

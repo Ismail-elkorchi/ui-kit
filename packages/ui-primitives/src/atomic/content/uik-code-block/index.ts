@@ -1,2 +1,2 @@
-export { UikCodeBlock } from "./element";
-export type { UikCodeBlockCopyDetail } from "./element";
+export { UikCodeBlock } from "./element.js";
+export type { UikCodeBlockCopyDetail } from "./element.js";

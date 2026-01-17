@@ -1,6 +1,6 @@
-export { UikResizablePanels } from "./element";
+export { UikResizablePanels } from "./element.js";
 export type {
   UikResizablePanelsResizeDetail,
   UikResizablePanelsResizePhase,
   UikResizablePanelsResizeSource,
-} from "./element";
+} from "./element.js";

@@ -1,11 +1,11 @@
 import { customElement, property, state } from "lit/decorators.js";
 
-import { styles } from "./styles";
-import type { UikMenuItem } from "./uik-menu-item";
-import "./uik-menu-item";
-import { UikPopover } from "../../../atomic/overlay/uik-popover/element";
-import { styles as popoverStyles } from "../../../atomic/overlay/uik-popover/styles";
-import { createId } from "../../../internal";
+import { styles } from "./styles.js";
+import type { UikMenuItem } from "./uik-menu-item.js";
+import "./uik-menu-item.js";
+import { UikPopover } from "../../../atomic/overlay/uik-popover/element.js";
+import { styles as popoverStyles } from "../../../atomic/overlay/uik-popover/styles.js";
+import { createId } from "../../../internal/index.js";
 
 export interface UikMenuActiveDetail {
   id: string;

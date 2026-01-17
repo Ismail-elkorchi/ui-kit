@@ -3,8 +3,12 @@ import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { styleMap } from "lit/directives/style-map.js";
 
-import { styles } from "./styles";
-import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
+import { styles } from "./styles.js";
+import {
+  buildDescribedBy,
+  createId,
+  hasSlotContent,
+} from "../../../internal/index.js";
 
 type SlotName =
   | "title"

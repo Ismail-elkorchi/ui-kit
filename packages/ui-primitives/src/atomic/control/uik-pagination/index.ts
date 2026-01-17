@@ -1,2 +1,2 @@
-export { UikPagination } from "./element";
-export type { UikPaginationChangeDetail } from "./element";
+export { UikPagination } from "./element.js";
+export type { UikPaginationChangeDetail } from "./element.js";

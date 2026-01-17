@@ -3,9 +3,9 @@ import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { styleMap } from "lit/directives/style-map.js";
 
-import { styles } from "./styles";
-import { buildTreeItems, collectTreeIds } from "../../../internal";
-import type { TreeItem, TreeItemBase } from "../../../internal";
+import { styles } from "./styles.js";
+import { buildTreeItems, collectTreeIds } from "../../../internal/index.js";
+import type { TreeItem, TreeItemBase } from "../../../internal/index.js";
 
 export interface UikNavItem extends TreeItemBase {
   href?: string;

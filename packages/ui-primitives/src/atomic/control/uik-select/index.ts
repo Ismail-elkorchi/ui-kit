@@ -1,1 +1,1 @@
-export { UikSelect } from "./element";
+export { UikSelect } from "./element.js";

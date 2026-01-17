@@ -1,7 +1,7 @@
 import { css } from "lit";
 import type { CSSResultGroup } from "lit";
 
-import { styles as popoverStyles } from "../../../atomic/overlay/uik-popover/styles";
+import { styles as popoverStyles } from "../../../atomic/overlay/uik-popover/styles.js";
 
 export const styles: CSSResultGroup = [
   popoverStyles,

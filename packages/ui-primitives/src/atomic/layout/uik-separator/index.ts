@@ -1,1 +1,1 @@
-export { UikSeparator } from "./element";
+export { UikSeparator } from "./element.js";

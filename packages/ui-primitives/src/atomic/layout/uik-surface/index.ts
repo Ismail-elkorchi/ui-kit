@@ -1,1 +1,1 @@
-export { UikSurface } from "./element";
+export { UikSurface } from "./element.js";

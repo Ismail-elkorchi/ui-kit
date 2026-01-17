@@ -3,8 +3,8 @@ import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { styleMap } from "lit/directives/style-map.js";
 
-import { styles } from "./styles";
-import { createId } from "../../../internal";
+import { styles } from "./styles.js";
+import { createId } from "../../../internal/index.js";
 
 export type UikResizablePanelsResizePhase = "start" | "move" | "end";
 export type UikResizablePanelsResizeSource = "pointer" | "keyboard";

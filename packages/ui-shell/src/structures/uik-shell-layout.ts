@@ -5,7 +5,7 @@ import { styleMap } from "lit/directives/style-map.js";
 import {
   ensureLightDomRoot,
   LightDomSlotController,
-} from "../internal/light-dom-slot-controller";
+} from "../internal/light-dom-slot-controller.js";
 
 /**
  * Shell region layout container with named slots.

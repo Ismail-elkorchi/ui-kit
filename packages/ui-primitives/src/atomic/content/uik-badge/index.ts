@@ -1,1 +1,1 @@
-export { UikBadge } from "./element";
+export { UikBadge } from "./element.js";

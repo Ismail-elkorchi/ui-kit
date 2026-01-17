@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
 
-import { styles } from "./styles";
+import { styles } from "./styles.js";
 
 /**
  * Utility to hide content visually while keeping it accessible.

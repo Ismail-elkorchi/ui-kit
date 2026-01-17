@@ -2,12 +2,12 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
+import { styles } from "./styles.js";
 import {
   dispatchFormFallbackEvent,
   getElementInternals,
   reflectFormValue,
-} from "../../../internal/form";
+} from "../../../internal/form.js";
 
 let inputId = 0;
 

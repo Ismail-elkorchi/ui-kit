@@ -19,7 +19,8 @@
     "packages/docs",
     "packages/ui-tokens",
     "packages/ui-primitives",
-    "packages/ui-shell"
+    "packages/ui-shell",
+    "packages/ui-patterns"
   ],
   "scripts": {
     "build": "npm run --workspaces --if-present build",
@@ -28,7 +29,7 @@
     "contracts:scaffold:primitive": "node tools/contracts/scaffold-primitive.mjs",
     "contracts:generate": "node tools/contracts/generate.mjs",
     "contracts:validate": "node tools/contracts/generate.mjs --check && node tools/contracts/validate.mjs",
-    "contracts:validate:build": "npm -w packages/ui-tokens run build && npm -w packages/ui-primitives run build && npm -w packages/ui-shell run build && npm run contracts:validate",
+    "contracts:validate:build": "npm -w packages/ui-tokens run build && npm -w packages/ui-primitives run build && npm -w packages/ui-shell run build && npm -w packages/ui-patterns run build && npm run contracts:validate",
     "prebuild-storybook": "npm run --workspaces --if-present build",
     "cem": "npm run --workspaces --if-present cem",
     "lint": "eslint . --max-warnings=0",
@@ -39,7 +40,7 @@
     "prestorybook": "npm run --workspaces --if-present build",
     "a11y:storybook": "vitest --project=storybook --run",
     "a11y:storybook:watch": "vitest --project=storybook --watch",
-    "test": "npm run --workspaces --if-present test && npm run test-storybook",
+    "test": "node tools/esm/check-relative-imports.mjs && npm run --workspaces --if-present test && npm run test-storybook",
     "test-storybook": "npm run a11y:storybook",
     "typecheck": "npm run --workspaces --if-present typecheck"
   },

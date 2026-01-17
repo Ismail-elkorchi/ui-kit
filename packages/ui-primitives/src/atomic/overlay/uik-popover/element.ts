@@ -2,13 +2,13 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
-import { createId } from "../../../internal";
+import { styles } from "./styles.js";
+import { createId } from "../../../internal/index.js";
 import {
   createEscapeKeyHandler,
   createOutsideDismissController,
-} from "../../../internal/overlay/dismiss";
-import { resolvePlacement } from "../../../internal/overlay/positioning";
+} from "../../../internal/overlay/dismiss.js";
+import { resolvePlacement } from "../../../internal/overlay/positioning.js";
 
 type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
 

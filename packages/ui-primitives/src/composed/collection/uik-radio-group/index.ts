@@ -1,1 +1,1 @@
-export { UikRadioGroup } from "./element";
+export { UikRadioGroup } from "./element.js";

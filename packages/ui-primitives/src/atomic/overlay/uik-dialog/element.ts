@@ -2,8 +2,12 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
-import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
+import { styles } from "./styles.js";
+import {
+  buildDescribedBy,
+  createId,
+  hasSlotContent,
+} from "../../../internal/index.js";
 
 type SlotName = "title" | "description";
 type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";

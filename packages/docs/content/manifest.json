@@ -61,6 +61,16 @@
       "cem": "packages/ui-shell/dist/custom-elements.json",
       "componentsTitle": "Contracts",
       "portfolioTitle": "Portfolio"
+    },
+    {
+      "id": "patterns",
+      "title": "Patterns",
+      "summary": "Composed UI patterns built from primitives and tokens.",
+      "navLabel": "Patterns",
+      "group": "Components",
+      "kind": "Guide",
+      "source": "packages/docs/content/patterns.md",
+      "format": "markdown"
     }
   ],
   "lab": [
@@ -72,6 +82,16 @@
       "group": "Lab",
       "kind": "Lab",
       "source": "packages/docs/content/lab/shell-patterns.md",
+      "format": "markdown"
+    },
+    {
+      "id": "empty-state",
+      "title": "Lab: Empty State",
+      "summary": "Try the empty state pattern with slotted actions and supporting copy.",
+      "navLabel": "Empty State",
+      "group": "Lab",
+      "kind": "Lab",
+      "source": "packages/docs/content/lab/empty-state.md",
       "format": "markdown"
     },
     {

@@ -1,1 +1,1 @@
-export { UikDialog } from "./element";
+export { UikDialog } from "./element.js";

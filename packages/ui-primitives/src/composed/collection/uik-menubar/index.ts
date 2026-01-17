@@ -1,1 +1,1 @@
-export { UikMenubar } from "./element";
+export { UikMenubar } from "./element.js";

@@ -2,10 +2,10 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
-import type { UikOption } from "./uik-option";
-import { createId } from "../../../internal";
-import "./uik-option";
+import { styles } from "./styles.js";
+import type { UikOption } from "./uik-option.js";
+import { createId } from "../../../internal/index.js";
+import "./uik-option.js";
 
 export interface UikListboxActiveDetail {
   id: string;

@@ -1,8 +1,8 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import { optionStyles } from "./option-styles";
-import { createId } from "../../../internal";
+import { optionStyles } from "./option-styles.js";
+import { createId } from "../../../internal/index.js";
 
 /**
  * Listbox option for use inside uik-listbox.

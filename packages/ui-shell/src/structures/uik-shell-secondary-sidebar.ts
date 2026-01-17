@@ -9,7 +9,7 @@ import "@ismail-elkorchi/ui-primitives/uik-separator";
 import {
   ensureLightDomRoot,
   LightDomSlotController,
-} from "../internal/light-dom-slot-controller";
+} from "../internal/light-dom-slot-controller.js";
 
 type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
 

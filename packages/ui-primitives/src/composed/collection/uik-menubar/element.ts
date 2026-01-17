@@ -2,10 +2,10 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
-import { createId } from "../../../internal";
-import type { UikMenu } from "../uik-menu";
-import "../uik-menu";
+import { styles } from "./styles.js";
+import { createId } from "../../../internal/index.js";
+import type { UikMenu } from "../uik-menu.js";
+import "../uik-menu.js";
 
 /**
  * Menubar wrapper for uik-menu triggers.

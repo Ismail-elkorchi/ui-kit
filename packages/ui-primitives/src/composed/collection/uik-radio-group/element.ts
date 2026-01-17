@@ -2,14 +2,18 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
-import type { UikRadio } from "../../../atomic/control/uik-radio";
-import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
+import { styles } from "./styles.js";
+import type { UikRadio } from "../../../atomic/control/uik-radio/index.js";
 import {
   dispatchFormFallbackEvent,
   getElementInternals,
   reflectFormValue,
-} from "../../../internal/form";
+} from "../../../internal/form.js";
+import {
+  buildDescribedBy,
+  createId,
+  hasSlotContent,
+} from "../../../internal/index.js";
 
 type SlotName = "label" | "hint" | "error";
 

@@ -1,1 +1,1 @@
-export { UikDescriptionList } from "./element";
+export { UikDescriptionList } from "./element.js";

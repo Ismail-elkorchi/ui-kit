@@ -1,1 +1,1 @@
-export { UikText } from "./element";
+export { UikText } from "./element.js";

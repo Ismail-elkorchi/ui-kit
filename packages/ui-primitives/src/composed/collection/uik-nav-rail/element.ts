@@ -3,8 +3,8 @@ import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { styleMap } from "lit/directives/style-map.js";
 
-import "../../../atomic/control/uik-button";
-import { styles } from "./styles";
+import "../../../atomic/control/uik-button/index.js";
+import { styles } from "./styles.js";
 
 export type UikNavRailIcon = string | SVGTemplateResult;
 

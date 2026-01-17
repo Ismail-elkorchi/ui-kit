@@ -1,6 +1,6 @@
-export { UikNav } from "./element";
+export { UikNav } from "./element.js";
 export type {
   UikNavItem,
   UikNavSelectDetail,
   UikNavToggleDetail,
-} from "./element";
+} from "./element.js";

@@ -2,12 +2,12 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
-import type { UikTab } from "./uik-tab";
-import type { UikTabPanel } from "./uik-tab-panel";
-import { createId } from "../../../internal";
-import "./uik-tab";
-import "./uik-tab-panel";
+import { styles } from "./styles.js";
+import type { UikTabPanel } from "./uik-tab-panel.js";
+import type { UikTab } from "./uik-tab.js";
+import { createId } from "../../../internal/index.js";
+import "./uik-tab.js";
+import "./uik-tab-panel.js";
 
 export interface UikTabsSelectDetail {
   id: string;

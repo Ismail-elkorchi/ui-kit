@@ -1,1 +1,1 @@
-export { UikHeading } from "./element";
+export { UikHeading } from "./element.js";

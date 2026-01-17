@@ -1,4 +1,8 @@
-export { createId } from "./dom";
-export { buildDescribedBy, hasSlotContent } from "./slots";
-export { buildTreeIndex, buildTreeItems, collectTreeIds } from "./collection";
-export type { TreeIndex, TreeItem, TreeItemBase } from "./collection";
+export { createId } from "./dom/index.js";
+export { buildDescribedBy, hasSlotContent } from "./slots/index.js";
+export {
+  buildTreeIndex,
+  buildTreeItems,
+  collectTreeIds,
+} from "./collection/index.js";
+export type { TreeIndex, TreeItem, TreeItemBase } from "./collection/index.js";

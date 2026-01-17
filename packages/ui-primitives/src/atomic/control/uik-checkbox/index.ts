@@ -1,1 +1,1 @@
-export { UikCheckbox } from "./element";
+export { UikCheckbox } from "./element.js";

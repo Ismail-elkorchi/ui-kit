@@ -1,1 +1,1 @@
-export { UikAlert } from "./element";
+export { UikAlert } from "./element.js";

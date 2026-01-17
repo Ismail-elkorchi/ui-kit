@@ -1,8 +1,8 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import { itemStyles } from "./item-styles";
-import { createId } from "../../../internal";
+import { itemStyles } from "./item-styles.js";
+import { createId } from "../../../internal/index.js";
 
 /**
  * Menu item for use inside uik-menu.

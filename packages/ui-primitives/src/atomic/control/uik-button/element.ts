@@ -2,8 +2,8 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { styles } from "./styles";
-import { getElementInternals } from "../../../internal/form";
+import { styles } from "./styles.js";
+import { getElementInternals } from "../../../internal/form.js";
 
 /**
  * Primary action control with variants and sizes.

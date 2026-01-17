@@ -1,1 +1,1 @@
-export { UikIcon } from "./element";
+export { UikIcon } from "./element.js";

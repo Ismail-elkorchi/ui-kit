@@ -22,6 +22,7 @@ const packageDirs = [
   path.join(import.meta.dirname, "packages/docs"),
   path.join(import.meta.dirname, "packages/ui-shell"),
   path.join(import.meta.dirname, "packages/ui-primitives"),
+  path.join(import.meta.dirname, "packages/ui-patterns"),
   path.join(import.meta.dirname, "packages/ui-tokens"),
 ];
 
@@ -227,6 +228,21 @@ export default defineConfig([
     },
   },
   {
+    // Entry points re-export src modules for build outputs.
+    files: [
+      "packages/ui-patterns/index.ts",
+      "packages/ui-patterns/register.ts",
+    ],
+    rules: {
+      "import/no-internal-modules": [
+        "error",
+        {
+          allow: ["src/**", "./src/**", "../src/**"],
+        },
+      ],
+    },
+  },
+  {
     files: [
       "src/**/*.ts",
       "src/**/*.tsx",
@@ -283,6 +299,36 @@ export default defineConfig([
             "internal/**",
             "atomic/**",
             "composed/**",
+            "collection/**",
+            "dom/**",
+            "slots/**",
+            "uik-menu/**",
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: [
+      "packages/ui-patterns/**/*.ts",
+      "packages/ui-patterns/**/*.tsx",
+      "packages/ui-patterns/**/*.mts",
+      "packages/ui-patterns/**/*.cts",
+    ],
+    rules: {
+      "import/no-internal-modules": [
+        "error",
+        {
+          allow: [
+            "lit/decorators.js",
+            "lit/directives/if-defined.js",
+            "lit/directives/style-map.js",
+            "vitest/browser",
+            "@ismail-elkorchi/ui-primitives/*",
+            "@ismail-elkorchi/ui-tokens/*",
+            "src/**",
+            "internal/**",
+            "patterns/**",
           ],
         },
       ],
@@ -306,6 +352,7 @@ export default defineConfig([
             "lit/directives/style-map.js",
             "vitest/browser",
             "@ismail-elkorchi/ui-primitives/*",
+            "@ismail-elkorchi/ui-patterns/*",
             "@ismail-elkorchi/ui-shell/*",
             "@ismail-elkorchi/ui-tokens/*",
             "src/**",

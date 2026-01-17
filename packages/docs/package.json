@@ -10,7 +10,7 @@
     "node": ">=20.11"
   },
   "scripts": {
-    "deps:build": "cd ../.. && npm -w packages/ui-tokens run build && npm -w packages/ui-primitives run build && npm -w packages/ui-shell run build",
+    "deps:build": "cd ../.. && npm -w packages/ui-tokens run build && npm -w packages/ui-primitives run build && npm -w packages/ui-shell run build && npm -w packages/ui-patterns run build",
     "generate:baseline": "node ../../tools/baseline/generate.mjs",
     "generate:content": "node ./tools/generate-docs-content.mjs",
     "dev": "vite",
@@ -24,6 +24,7 @@
     "pretest": "npm run deps:build && npm run generate:baseline && npm run generate:content"
   },
   "dependencies": {
+    "@ismail-elkorchi/ui-patterns": "0.1.2",
     "@ismail-elkorchi/ui-primitives": "0.1.2",
     "@ismail-elkorchi/ui-shell": "0.1.2",
     "@ismail-elkorchi/ui-tokens": "0.1.2",

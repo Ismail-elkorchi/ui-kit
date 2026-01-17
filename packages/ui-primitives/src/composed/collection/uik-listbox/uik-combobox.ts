@@ -2,17 +2,21 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { comboboxStyles } from "./combobox-styles";
-import type { UikListbox } from "./element";
-import { buildDescribedBy, createId, hasSlotContent } from "../../../internal";
+import { comboboxStyles } from "./combobox-styles.js";
+import type { UikListbox } from "./element.js";
 import {
   dispatchFormFallbackEvent,
   getElementInternals,
   reflectFormValue,
-} from "../../../internal/form";
-import { createOutsideDismissController } from "../../../internal/overlay/dismiss";
-import "./element";
-import "./uik-option";
+} from "../../../internal/form.js";
+import {
+  buildDescribedBy,
+  createId,
+  hasSlotContent,
+} from "../../../internal/index.js";
+import { createOutsideDismissController } from "../../../internal/overlay/dismiss.js";
+import "./element.js";
+import "./uik-option.js";
 
 type SlotName = "label" | "hint" | "error";
 

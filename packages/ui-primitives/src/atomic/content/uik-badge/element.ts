@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import { styles } from "./styles";
+import { styles } from "./styles.js";
 
 /**
  * Compact label for status or counts.
