@@ -32,7 +32,7 @@ type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
  * @cssprop --uik-component-popover-padding-y
  * @cssprop --uik-component-popover-shadow
  * @cssprop --uik-component-popover-offset
- * @cssprop --uik-z-local-overlay
+ * @cssprop --uik-component-popover-z-local-overlay
  */
 @customElement("uik-popover")
 export class UikPopover extends LitElement {

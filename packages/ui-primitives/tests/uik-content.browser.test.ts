@@ -141,7 +141,7 @@ describe("uik content primitives", () => {
       <dt>Status</dt>
       <dd>Running</dd>
       <dt>Target</dt>
-      <dd><code>0.1.2</code></dd>
+      <dd><code>0.2.0</code></dd>
     `;
     document.body.append(list);
 

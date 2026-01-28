@@ -36,6 +36,18 @@
         "$type": "dimension",
         "$description": "Command palette max width."
       },
+      "scrim": {
+        "color": {
+          "$value": "{component.dialog.scrim.color}",
+          "$type": "color",
+          "$description": "Command palette scrim color."
+        },
+        "opacity": {
+          "$value": "{component.dialog.scrim.opacity}",
+          "$type": "number",
+          "$description": "Command palette scrim opacity."
+        }
+      },
       "header": {
         "gap": {
           "$value": "{space.2}",

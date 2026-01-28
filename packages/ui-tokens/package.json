@@ -1,6 +1,6 @@
 {
   "name": "@ismail-elkorchi/ui-tokens",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "CSS design tokens packaged as reusable variables for any UI.",
   "author": "Ismail El Korchi",
   "license": "Apache-2.0",

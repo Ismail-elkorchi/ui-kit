@@ -287,7 +287,7 @@ export class UikShellSecondarySidebar extends LitElement {
         </div>
         <uik-separator
           orientation="horizontal"
-          style="--uik-separator-color: var(--uik-component-shell-divider-color);"
+          style="--uik-component-separator-color: var(--uik-component-shell-divider-color);"
         ></uik-separator>
         <div part="body-container" style=${styleMap(bodyContainerStyles)}>
           <div
@@ -299,7 +299,7 @@ export class UikShellSecondarySidebar extends LitElement {
         <div ?hidden=${!this.hasFooter}>
           <uik-separator
             orientation="horizontal"
-            style="--uik-separator-color: var(--uik-component-shell-divider-color);"
+            style="--uik-component-separator-color: var(--uik-component-shell-divider-color);"
           ></uik-separator>
           <div
             part="footer"

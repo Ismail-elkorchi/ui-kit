@@ -13,7 +13,7 @@ export const styles: CSSResultGroup = css`
 
   .panel {
     position: absolute;
-    z-index: var(--uik-z-local-overlay);
+    z-index: var(--uik-component-popover-z-local-overlay);
     min-width: max-content;
     padding: var(--uik-component-popover-padding-y)
       var(--uik-component-popover-padding-x);

@@ -8,9 +8,9 @@ import { styles } from "./styles.js";
  * @attr orientation (horizontal | vertical)
  * @part base
  * @a11y Horizontal renders <hr>; vertical uses role="separator".
- * @cssprop --uik-separator-color
- * @cssprop --uik-separator-thickness
- * @cssprop --uik-separator-radius
+ * @cssprop --uik-component-separator-color
+ * @cssprop --uik-component-separator-thickness
+ * @cssprop --uik-component-separator-radius
  */
 @customElement("uik-separator")
 export class UikSeparator extends LitElement {

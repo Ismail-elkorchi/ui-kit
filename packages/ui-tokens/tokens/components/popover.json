@@ -40,6 +40,11 @@
         "$value": "{space.2}",
         "$type": "dimension",
         "$description": "Component popover offset from trigger."
+      },
+      "zLocalOverlay": {
+        "$value": 30,
+        "$type": "number",
+        "$description": "Component popover local overlay z-index."
       }
     }
   }

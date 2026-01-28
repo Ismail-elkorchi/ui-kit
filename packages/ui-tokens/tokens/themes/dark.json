@@ -52,6 +52,24 @@
           }
         }
       }
+    },
+    "commandPalette": {
+      "scrim": {
+        "opacity": {
+          "$value": "{opacity.60}",
+          "$type": "number",
+          "$description": "Command palette scrim opacity."
+        }
+      }
+    },
+    "dialog": {
+      "scrim": {
+        "opacity": {
+          "$value": "{opacity.60}",
+          "$type": "number",
+          "$description": "Component dialog scrim opacity."
+        }
+      }
     }
   },
   "field": {
@@ -316,13 +334,6 @@
         "$type": "color",
         "$description": "Intent warning ring."
       }
-    }
-  },
-  "scrim": {
-    "opacity": {
-      "$value": 0.6,
-      "$type": "number",
-      "$description": "Scrim opacity."
     }
   },
   "scrollbar": {

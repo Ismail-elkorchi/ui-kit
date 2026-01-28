@@ -7,18 +7,18 @@ export const styles = css`
   }
 
   .separator {
-    background-color: oklch(var(--uik-separator-color));
+    background-color: oklch(var(--uik-component-separator-color));
     border: none;
-    border-radius: var(--uik-separator-radius);
+    border-radius: var(--uik-component-separator-radius);
   }
 
   .horizontal {
     width: 100%;
-    height: var(--uik-separator-thickness);
+    height: var(--uik-component-separator-thickness);
   }
 
   .vertical {
-    width: var(--uik-separator-thickness);
+    width: var(--uik-component-separator-thickness);
     height: 100%;
     min-height: var(--uik-size-control-md);
   }

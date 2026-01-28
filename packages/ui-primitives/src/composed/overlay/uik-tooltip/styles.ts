@@ -7,7 +7,7 @@ export const styles: CSSResultGroup = [
   popoverStyles,
   css`
     .panel {
-      z-index: var(--uik-z-local-tooltip);
+      z-index: var(--uik-component-tooltip-z-local-tooltip);
       padding: var(--uik-component-tooltip-padding-y)
         var(--uik-component-tooltip-padding-x);
       font-size: var(--uik-typography-font-size-2);

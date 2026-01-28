@@ -28,7 +28,7 @@ type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
  * @cssprop --uik-component-tooltip-padding-y
  * @cssprop --uik-component-tooltip-shadow
  * @cssprop --uik-component-tooltip-offset
- * @cssprop --uik-z-local-tooltip
+ * @cssprop --uik-component-tooltip-z-local-tooltip
  */
 @customElement("uik-tooltip")
 export class UikTooltip extends LitElement {

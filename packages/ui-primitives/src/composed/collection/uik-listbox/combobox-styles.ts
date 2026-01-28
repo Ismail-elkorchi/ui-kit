@@ -102,7 +102,7 @@ export const comboboxStyles = css`
   .panel {
     position: absolute;
     inset-inline: var(--uik-space-0);
-    z-index: var(--uik-z-local-overlay);
+    z-index: var(--uik-component-combobox-panel-z-local);
     margin-top: var(--uik-component-combobox-panel-offset);
   }
 

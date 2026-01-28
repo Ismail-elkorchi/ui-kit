@@ -73,16 +73,10 @@
           "$ref": "semantic/intent.json"
         },
         {
-          "$ref": "semantic/scrim.json"
-        },
-        {
           "$ref": "semantic/scrollbar.json"
         },
         {
           "$ref": "semantic/selection.json"
-        },
-        {
-          "$ref": "semantic/separator.json"
         },
         {
           "$ref": "semantic/state.json"
@@ -97,13 +91,34 @@
           "$ref": "components/badge.json"
         },
         {
+          "$ref": "components/combobox.json"
+        },
+        {
+          "$ref": "components/command-palette.json"
+        },
+        {
           "$ref": "components/button.json"
+        },
+        {
+          "$ref": "components/dialog.json"
         },
         {
           "$ref": "components/input.json"
         },
         {
+          "$ref": "components/listbox.json"
+        },
+        {
+          "$ref": "components/popover.json"
+        },
+        {
+          "$ref": "components/separator.json"
+        },
+        {
           "$ref": "components/shell.json"
+        },
+        {
+          "$ref": "components/tooltip.json"
         }
       ]
     }

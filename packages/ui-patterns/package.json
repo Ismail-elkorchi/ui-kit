@@ -1,6 +1,6 @@
 {
   "name": "@ismail-elkorchi/ui-patterns",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Composed UI patterns built from UIK primitives.",
   "author": "Ismail El Korchi",
   "license": "Apache-2.0",
@@ -68,8 +68,8 @@
   },
   "homepage": "https://github.com/Ismail-elkorchi/ui-kit",
   "dependencies": {
-    "@ismail-elkorchi/ui-primitives": "^0.1.2",
-    "@ismail-elkorchi/ui-tokens": "^0.1.2",
+    "@ismail-elkorchi/ui-primitives": "^0.2.0",
+    "@ismail-elkorchi/ui-tokens": "^0.2.0",
     "lit": "^3.1.0"
   },
   "publishConfig": {

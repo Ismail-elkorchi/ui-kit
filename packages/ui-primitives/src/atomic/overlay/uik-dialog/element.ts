@@ -40,8 +40,8 @@ type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
  * @cssprop --uik-component-dialog-title-fg
  * @cssprop --uik-component-dialog-description-fg
  * @cssprop --uik-component-dialog-actions-gap
- * @cssprop --uik-scrim-color
- * @cssprop --uik-scrim-opacity
+ * @cssprop --uik-component-dialog-scrim-color
+ * @cssprop --uik-component-dialog-scrim-opacity
  */
 @customElement("uik-dialog")
 export class UikDialog extends LitElement {

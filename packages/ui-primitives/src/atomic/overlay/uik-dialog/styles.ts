@@ -21,7 +21,10 @@ export const styles = css`
   }
 
   dialog::backdrop {
-    background-color: oklch(var(--uik-scrim-color) / var(--uik-scrim-opacity));
+    background-color: oklch(
+      var(--uik-component-dialog-scrim-color) /
+        var(--uik-component-dialog-scrim-opacity)
+    );
   }
 
   .panel {

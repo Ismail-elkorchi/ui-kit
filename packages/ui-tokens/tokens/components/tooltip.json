@@ -35,6 +35,11 @@
         "$value": "{space.2}",
         "$type": "dimension",
         "$description": "Component tooltip offset from trigger."
+      },
+      "zLocalTooltip": {
+        "$value": 40,
+        "$type": "number",
+        "$description": "Component tooltip local z-index."
       }
     }
   }

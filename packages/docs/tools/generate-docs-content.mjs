@@ -714,7 +714,7 @@ Tooltip text
       layout: "fill",
       size: "lg",
       html: `<uik-shell-activity-bar data-docs-portfolio="shell-activity-bar">
-<uik-text slot="footer" as="p" size="sm" tone="muted">v0.1.2</uik-text>
+<uik-text slot="footer" as="p" size="sm" tone="muted">v0.2.0</uik-text>
 </uik-shell-activity-bar>`,
     }),
     "uik-shell-layout": () => ({

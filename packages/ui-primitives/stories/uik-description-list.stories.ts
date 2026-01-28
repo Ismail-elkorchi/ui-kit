@@ -25,7 +25,7 @@ const meta: Meta<DescriptionListArgs> = {
       <dt>Owner</dt>
       <dd>UIK CLI</dd>
       <dt>Target</dt>
-      <dd><uik-code-block inline>0.1.2</uik-code-block></dd>
+      <dd><uik-code-block inline>0.2.0</uik-code-block></dd>
     </uik-description-list>
   `,
 };

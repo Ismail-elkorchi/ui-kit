@@ -27,16 +27,8 @@
         "$value": 10,
         "$type": "number"
       },
-      "overlay": {
-        "$value": 30,
-        "$type": "number"
-      },
       "sticky": {
         "$value": 20,
-        "$type": "number"
-      },
-      "tooltip": {
-        "$value": 40,
         "$type": "number"
       }
     }

@@ -166,7 +166,8 @@
       ],
       "cssVars": [
         "--uik-component-combobox-base-* (bg, border, fg, padding, radius, shadow)",
-        "--uik-component-combobox-panel-offset"
+        "--uik-component-combobox-panel-offset",
+        "--uik-component-combobox-panel-z-local"
       ]
     },
     {
@@ -274,8 +275,8 @@
         "--uik-component-dialog-title-fg",
         "--uik-component-dialog-description-fg",
         "--uik-component-dialog-actions-gap",
-        "--uik-scrim-color",
-        "--uik-scrim-opacity"
+        "--uik-component-dialog-scrim-color",
+        "--uik-component-dialog-scrim-opacity"
       ]
     },
     {
@@ -568,7 +569,7 @@
         "--uik-component-popover-padding-y",
         "--uik-component-popover-shadow",
         "--uik-component-popover-offset",
-        "--uik-z-local-overlay"
+        "--uik-component-popover-z-local-overlay"
       ]
     },
     {
@@ -688,9 +689,9 @@
       "events": [],
       "a11y": ["Horizontal renders <hr>; vertical uses role=\"separator\"."],
       "cssVars": [
-        "--uik-separator-color",
-        "--uik-separator-thickness",
-        "--uik-separator-radius"
+        "--uik-component-separator-color",
+        "--uik-component-separator-thickness",
+        "--uik-component-separator-radius"
       ]
     },
     {
@@ -892,7 +893,7 @@
         "--uik-component-tooltip-padding-y",
         "--uik-component-tooltip-shadow",
         "--uik-component-tooltip-offset",
-        "--uik-z-local-tooltip"
+        "--uik-component-tooltip-z-local-tooltip"
       ]
     },
     {

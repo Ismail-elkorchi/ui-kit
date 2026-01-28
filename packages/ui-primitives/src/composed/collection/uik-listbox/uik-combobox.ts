@@ -55,6 +55,7 @@ export interface UikComboboxSelectDetail {
  * @a11y Input uses role="combobox" with aria-controls + aria-activedescendant.
  * @cssprop --uik-component-combobox-base-* (bg, border, fg, padding, radius, shadow)
  * @cssprop --uik-component-combobox-panel-offset
+ * @cssprop --uik-component-combobox-panel-z-local
  */
 @customElement("uik-combobox")
 export class UikCombobox extends LitElement {

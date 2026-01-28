@@ -1,0 +1,21 @@
+{
+  "component": {
+    "separator": {
+      "color": {
+        "$value": "{color.neutral.12}",
+        "$type": "color",
+        "$description": "Component separator color."
+      },
+      "radius": {
+        "$value": "{radius.full}",
+        "$type": "dimension",
+        "$description": "Component separator radius."
+      },
+      "thickness": {
+        "$value": "{border.width.1}",
+        "$type": "dimension",
+        "$description": "Component separator thickness."
+      }
+    }
+  }
+}

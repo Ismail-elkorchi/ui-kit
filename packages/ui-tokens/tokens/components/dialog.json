@@ -56,6 +56,18 @@
           "$type": "dimension",
           "$description": "Component dialog actions gap."
         }
+      },
+      "scrim": {
+        "color": {
+          "$value": "{color.neutral.12}",
+          "$type": "color",
+          "$description": "Component dialog scrim color."
+        },
+        "opacity": {
+          "$value": "{opacity.40}",
+          "$type": "number",
+          "$description": "Component dialog scrim opacity."
+        }
       }
     }
   }

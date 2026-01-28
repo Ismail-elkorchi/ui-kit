@@ -53,7 +53,7 @@ body {
   position: fixed;
   top: var(--uik-space-4);
   left: var(--uik-space-4);
-  z-index: var(--uik-z-local-tooltip);
+  z-index: var(--uik-component-tooltip-z-local-tooltip);
   padding: var(--uik-space-2) var(--uik-space-3);
   color: oklch(var(--uik-text-strong));
   text-decoration: none;

@@ -122,6 +122,11 @@
           "$value": "{space.2}",
           "$type": "dimension",
           "$description": "Component combobox panel offset."
+        },
+        "zLocal": {
+          "$value": 30,
+          "$type": "number",
+          "$description": "Component combobox panel local z-index."
         }
       }
     }
