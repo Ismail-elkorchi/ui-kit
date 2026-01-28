@@ -94,6 +94,25 @@ Motion enhancements have an additional rule: visual transitions MUST NOT be the 
 - ui-patterns MUST publish a Custom Elements Manifest and declare it in `package.json`.
 - ui-patterns MUST provide per-pattern entrypoints and a register entrypoint.
 
+### 2.4 Package boundary and dependency DAG
+
+- **ui-tokens** MUST NOT depend on internal ui-\* packages.
+- **ui-primitives** MAY depend on **ui-tokens** and external libraries; it MUST NOT depend on **ui-patterns** or **ui-shell**.
+- **ui-patterns** MAY depend on **ui-primitives** and **ui-tokens**; it MUST NOT depend on **ui-shell**.
+- **ui-shell** MAY depend on **ui-primitives**; it MUST NOT depend on **ui-patterns** or **ui-tokens** directly.
+- **docs** MAY depend on all internal packages.
+
+### 2.5 ui-shell scope and naming invariants
+
+- Any Custom Element implemented in **ui-shell** MUST have a tag name starting with `uik-shell-`.
+- ui-shell Custom Elements MUST live under `packages/ui-shell/src/structures/`.
+- ui-shell MAY include non-visual utilities under internal modules (for example router and command-center), but MUST NOT define general-purpose UI patterns.
+
+### 2.6 docs import boundaries
+
+- The docs site MUST consume other packages only through their public entrypoints (exports map).
+- The docs site MUST NOT import other packages’ internal `src/` paths or use cross-package relative imports.
+
 ---
 
 ## 3) Styling & theming contract (overrideable, predictable, modern CSS)
@@ -349,6 +368,7 @@ The project SHOULD maintain objective "proof" gates:
 - **Visual regression**: screenshot tests for core components + states in CI.
 - **Performance budgets**: limits on JS/CSS weight, per-component update costs, and style adoption duplication (prefer shared sheets where Baseline permits). [MDN adoptedStyleSheets]
 - **Native ESM import correctness**: dist outputs MUST NOT contain extensionless relative imports; enforced by `tools/esm/check-relative-imports.mjs` and run in root `npm run test`.
+- **Architecture boundary audit**: package boundary rules and ui-shell scope MUST be enforced by `tools/architecture/check-boundaries.mjs`, wired into root `npm run test`.
 - **Docs Lighthouse budgets**: enforced by `packages/docs/tools/check-docs-lighthouse.mjs` for `/lab/perf-shell` and `/lab/perf-primitives` with thresholds: performance ≥ 0.8, accessibility ≥ 0.95, best-practices ≥ 0.95, SEO ≥ 0.8, LCP ≤ 2500ms, CLS ≤ 0.02, TBT ≤ 300ms, INP ≤ 200ms (when available). Docs MUST NOT use route-specific hacks to satisfy budgets.
 
 ---
