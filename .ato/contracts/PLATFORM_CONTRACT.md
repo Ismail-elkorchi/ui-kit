@@ -550,70 +550,88 @@ If UIK implements these as testable guarantees, it competes where multiple incum
 Copy this list into tool contexts to reduce model uncertainty; URLs are included for direct use.
 
 ```text
-Compatibility / Baseline
-- Baseline definitions: https://web.dev/baseline
-- MDN Baseline glossary: https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility
+Baseline / support policy
+- https://web.dev/baseline
+- https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility
 
-HTML + DOM (Custom Elements, shadow trees, popover)
-- HTML Standard (Custom Elements): https://html.spec.whatwg.org/multipage/custom-elements.html
-- HTML Standard (Popover): https://html.spec.whatwg.org/multipage/popover.html
-- DOM Standard: https://dom.spec.whatwg.org/
+Web platform standards
+- https://dom.spec.whatwg.org/
+- https://html.spec.whatwg.org/multipage/custom-elements.html
+- https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face
+- https://html.spec.whatwg.org/multipage/dom.html#the-slot-element
+- https://html.spec.whatwg.org/multipage/popover.html
 
-Import Maps (no-bundler path)
-- Import Maps explainer: https://github.com/WICG/import-maps
-- MDN <script type="importmap">: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script/type/importmap
+Import maps / no-bundler
+- https://github.com/WICG/import-maps
+- https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script/type/importmap
 
-Web Components metadata (CEM)
-- CEM schema: https://github.com/webcomponents/custom-elements-manifest
-- CEM intro: https://custom-elements-manifest.open-wc.org/blog/intro/
-- Tooling discovery: https://webcomponents.dev/docs/custom-elements-manifest
+Custom Elements Manifest (CEM)
+- https://github.com/webcomponents/custom-elements-manifest
+- https://custom-elements-manifest.open-wc.org/analyzer/getting-started/
+- https://webcomponents.dev/docs/custom-elements-manifest
 
-CSS foundations
-- CSS Variables: https://www.w3.org/TR/css-variables-1/
-- CSS Shadow Parts: https://www.w3.org/TR/css-shadow-parts-1/
-- Cascade layers (@layer) guide: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers
-- Container queries guide: https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries
-- CSS Nesting (TR): https://www.w3.org/TR/css-nesting-1/
-- CSS Nesting (MDN): https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Nesting
-- @scope (MDN): https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@scope
-- CSS scoping (TR): https://www.w3.org/TR/css-scoping-1/
-- Constructable stylesheets (web.dev): https://web.dev/articles/constructable-stylesheets
-- adoptedStyleSheets (MDN Document): https://developer.mozilla.org/en-US/docs/Web/API/Document/adoptedStyleSheets
-- adoptedStyleSheets (MDN ShadowRoot): https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/adoptedStyleSheets
+CSS fundamentals & theming
+- https://www.w3.org/TR/css-variables-1/
+- https://www.w3.org/TR/css-shadow-parts-1/
+- https://www.w3.org/TR/css-cascade-5/
+- https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers
+- https://www.w3.org/TR/css-contain-3/
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries
+- https://www.w3.org/TR/css-nesting-1/
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Nesting
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@scope
+- https://www.w3.org/TR/css-scoping-1/
+- https://web.dev/articles/constructable-stylesheets
+- https://developer.mozilla.org/en-US/docs/Web/API/Document/adoptedStyleSheets
+- https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/adoptedStyleSheets
 
-Tokens (DTCG 2025.10)
-- DTCG format 2025.10: https://www.designtokens.org/TR/2025.10/format/
-- DTCG resolver 2025.10: https://www.designtokens.org/TR/2025.10/resolver/
+Design tokens
+- https://www.designtokens.org/TR/2025.10/format/
+- https://www.designtokens.org/TR/2025.10/resolver/
 
 Accessibility
-- WCAG 2.2: https://www.w3.org/TR/WCAG22/
-- Understanding Target Size (Minimum): https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
-- WAI-ARIA 1.2: https://www.w3.org/TR/wai-aria-1.2/
-- ARIA APG: https://www.w3.org/WAI/ARIA/apg/
+- https://www.w3.org/TR/WCAG22/
+- https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
+- https://www.w3.org/TR/wai-aria-1.2/
+- https://www.w3.org/WAI/ARIA/apg/
 
 Motion
-- CSS Easing: https://www.w3.org/TR/css-easing-1/
-- CSS Transitions 2: https://www.w3.org/TR/css-transitions-2/
-- CSS Animations 2: https://www.w3.org/TR/css-animations-2/
-- Web Animations (WAAPI): https://www.w3.org/TR/web-animations-1/
-- Scroll-driven animations: https://www.w3.org/TR/scroll-animations-1/
-- View Transitions: https://www.w3.org/TR/css-view-transitions-1/
+- https://www.w3.org/TR/css-easing-1/
+- https://www.w3.org/TR/css-transitions-2/
+- https://www.w3.org/TR/css-animations-2/
+- https://www.w3.org/TR/web-animations-1/
+- https://www.w3.org/TR/scroll-animations-1/
+- https://www.w3.org/TR/css-view-transitions-1/
 
-Layout / UI ergonomics
-- CSS Snapshot 2025: https://www.w3.org/TR/css-2025/
-- CSS Anchor Positioning: https://www.w3.org/TR/css-anchor-position-1/
-- Scroll Snap: https://www.w3.org/TR/css-scroll-snap-1/
-- Overscroll Behavior: https://www.w3.org/TR/css-overscroll-1/
-- Viewport units (web.dev): https://web.dev/blog/viewport-units
-- scrollbar-gutter (MDN): https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-gutter
+Layout / snapshots
+- https://www.w3.org/TR/css-2025/
+- https://www.w3.org/TR/css-anchor-position-1/
+- https://www.w3.org/TR/css-scroll-snap-1/
+- https://www.w3.org/TR/css-overscroll-1/
+- https://www.w3.org/TR/css-grid-2/
+- https://www.w3.org/TR/css-align-3/
+- https://web.dev/blog/viewport-units
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-gutter
+- https://www.w3.org/TR/css-scrollbars-1/
+- https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color
+- https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values
 
-Color and preferences
-- CSS Color 4: https://www.w3.org/TR/css-color-4/
-- CSS Color Adjustment: https://www.w3.org/TR/css-color-adjust-1/
-- forced-color-adjust (MDN): https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/forced-color-adjust
+Color & user preferences
+- https://www.w3.org/TR/css-color-4/
+- https://www.w3.org/TR/css-color-5/
+- https://www.w3.org/TR/css-color-adjust-1/
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/forced-color-adjust
+- https://www.w3.org/TR/mediaqueries-5/
+- https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
+- https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
 
-Form-associated custom elements
-- HTML (form-associated CE): https://html.spec.whatwg.org/dev/custom-elements.html
-- attachInternals (MDN): https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/attachInternals
-- ElementInternals (MDN): https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals
+Focus & UI hooks (docs references used by baseline-support)
+- https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible
+- https://developer.mozilla.org/en-US/docs/Web/CSS/@layer
+- https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color
+- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog
+
+Platform APIs
+- https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals
+- https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/attachInternals
 ```
