@@ -6,7 +6,8 @@ This document is the consolidated, drift-resistant contract for a modern, standa
 
 - **ui-tokens** — design token system
 - **ui-primitives** — Web Components primitives (Custom Elements + Shadow DOM)
-- **ui-shell** — application-shell/workbench layer for composing, inspecting, and testing primitives
+- **ui-patterns** — composed components/patterns built from primitives
+- **ui-shell** — application-shell/layout layer for composing and hosting primitives
 - **docs site** — public documentation + dogfooding surface
 
 It uses RFC-2119 style language (**MUST / MUST NOT / SHOULD / SHOULD NOT / MAY**) and is intended to be **authoritative** for implementation, review, and coding-agent guidance.
@@ -37,6 +38,15 @@ When a feature is not Baseline Widely available, it MUST be treated as an enhanc
 - paired with a fallback that preserves **functional correctness**.
 
 Motion enhancements have an additional rule: visual transitions MUST NOT be the mechanism of state change; they can only be the presentation of a state change (a core principle reinforced by View Transitions). [View Transitions]
+
+### 0.4 Pre-stable policy (0.x)
+
+- The project is pre-stable (<1.0).
+- Breaking changes MAY be introduced and are expected during 0.x.
+- Migrations, deprecations, and compatibility layers MUST NOT be used at this stage.
+- When behavior or API is removed or changed, the old path MUST be removed in the same change set (no dual paths).
+- Contract text, docs, and Custom Elements Manifests MUST be updated in the same change set as the breaking change.
+- Versioning rule (pre-stable): any breaking change MUST bump the minor version (0.x).
 
 ---
 
@@ -76,6 +86,13 @@ Motion enhancements have an additional rule: visual transitions MUST NOT be the 
 
 - Components MUST be usable in any standards-capable environment (modern browsers, WebViews, desktop shells) without bundler/runtime assumptions.
 - Components MUST avoid global side effects (global resets, global listeners, global DOM mutation) unless explicitly opt-in and documented.
+
+### 2.3 ui-patterns layer (composed components)
+
+- ui-patterns components MUST be Custom Elements and follow the same standards rules as ui-primitives.
+- ui-patterns MUST compose ui-primitives and tokens, and MUST NOT depend on ui-shell at runtime.
+- ui-patterns MUST publish a Custom Elements Manifest and declare it in `package.json`.
+- ui-patterns MUST provide per-pattern entrypoints and a register entrypoint.
 
 ---
 
@@ -275,17 +292,17 @@ Treat **CSS Snapshot 2025** as the umbrella index for "what CSS includes" in 202
 
 ### 10.1 Custom Elements Manifest (CEM)
 
-- **ui-primitives** MUST publish a **Custom Elements Manifest** (`custom-elements.json`) including: properties/attributes/events/slots/CSS parts/CSS custom properties. [CEM Schema] [CEM Intro]
-- The package MUST declare the manifest location in `package.json` so tooling can discover it. [webcomponents.dev CEM Discovery]
+- **ui-primitives**, **ui-patterns**, and **ui-shell** MUST publish a **Custom Elements Manifest** (`custom-elements.json`) including: properties/attributes/events/slots/CSS parts/CSS custom properties. [CEM Schema] [CEM Intro]
+- Each package MUST declare the manifest location in `package.json` so tooling can discover it. [webcomponents.dev CEM Discovery]
 
 ### 10.2 Docs derived from authoritative metadata
 
-- API reference pages MUST be generated from the manifest (or the same analyzer pipeline) so docs cannot drift from shipped behavior.
+- API reference pages MUST be generated from the manifests (or the same analyzer pipeline) so docs cannot drift from shipped behavior.
 - Examples MUST be runnable and represent real component states; demos MUST NOT claim states/behaviors that are not implemented.
 
 ---
 
-## 11) ui-shell contract (application frame + engineering workbench)
+## 11) ui-shell contract (application frame + layout primitives)
 
 **ui-shell** is a composition and application-shell layer; a docs website is just one consumer.
 
@@ -305,23 +322,10 @@ ui-shell MUST provide cross-cutting primitives such as:
 - navigation tree/list,
 - state/overlay coordination surfaces where appropriate.
 
-### 11.3 "Canvas" requirements (being ahead as an engineering instrument)
+### 11.3 Engineering canvas responsibilities
 
-ui-shell MUST support viewing components across:
-
-- themes (light/dark/brand),
-- densities,
-- motion modes (normal/reduced),
-- viewport sizes (mobile/desktop),
-- writing directions (LTR/RTL).
-
-ui-shell MUST provide:
-
-- event logs,
-- attribute/property inspector,
-- slot/part map inspection,
-- computed-token inspection (resolved values),
-- Baseline gating visualization (Widely/Newly/Not Baseline usage). [Baseline]
+- The docs site/lab layer SHOULD provide engineering-canvas capabilities (multi-theme/density/motion/viewport/RTL viewing, inspectors, event logs, token inspection, Baseline visualization).
+- ui-shell MAY expose minimal utilities used by host apps (for example, router and command-center primitives) but is not required to ship the engineering-canvas instrumentation.
 
 ui-shell SHOULD integrate automated:
 
@@ -344,6 +348,8 @@ The project SHOULD maintain objective "proof" gates:
 - **A11y audit**: automated + spot manual checks; APG keyboard semantics verified. [APG]
 - **Visual regression**: screenshot tests for core components + states in CI.
 - **Performance budgets**: limits on JS/CSS weight, per-component update costs, and style adoption duplication (prefer shared sheets where Baseline permits). [MDN adoptedStyleSheets]
+- **Native ESM import correctness**: dist outputs MUST NOT contain extensionless relative imports; enforced by `tools/esm/check-relative-imports.mjs` and run in root `npm run test`.
+- **Docs Lighthouse budgets**: enforced by `packages/docs/tools/check-docs-lighthouse.mjs` for `/lab/perf-shell` and `/lab/perf-primitives` with thresholds: performance ≥ 0.8, accessibility ≥ 0.95, best-practices ≥ 0.95, SEO ≥ 0.8, LCP ≤ 2500ms, CLS ≤ 0.02, TBT ≤ 300ms, INP ≤ 200ms (when available). Docs MUST NOT use route-specific hacks to satisfy budgets.
 
 ---
 
