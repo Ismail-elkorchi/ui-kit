@@ -39,6 +39,16 @@
       "types": "./dist/src/patterns/uik-empty-state/index.d.ts",
       "import": "./dist/src/patterns/uik-empty-state/index.js",
       "default": "./dist/src/patterns/uik-empty-state/index.js"
+    },
+    "./uik-page-hero": {
+      "types": "./dist/src/patterns/uik-page-hero/index.d.ts",
+      "import": "./dist/src/patterns/uik-page-hero/index.js",
+      "default": "./dist/src/patterns/uik-page-hero/index.js"
+    },
+    "./uik-section-card": {
+      "types": "./dist/src/patterns/uik-section-card/index.d.ts",
+      "import": "./dist/src/patterns/uik-section-card/index.js",
+      "default": "./dist/src/patterns/uik-section-card/index.js"
     }
   },
   "sideEffects": [

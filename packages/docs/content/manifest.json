@@ -95,6 +95,26 @@
       "format": "markdown"
     },
     {
+      "id": "section-card",
+      "title": "Lab: Section Card",
+      "summary": "Use the section card pattern to group related content and actions.",
+      "navLabel": "Section Card",
+      "group": "Lab",
+      "kind": "Lab",
+      "source": "packages/docs/content/lab/section-card.md",
+      "format": "markdown"
+    },
+    {
+      "id": "page-hero",
+      "title": "Lab: Page Hero",
+      "summary": "Create a page hero with badges, summary, and control panel content.",
+      "navLabel": "Page Hero",
+      "group": "Lab",
+      "kind": "Lab",
+      "source": "packages/docs/content/lab/page-hero.md",
+      "format": "markdown"
+    },
+    {
       "id": "command-palette",
       "title": "Lab: Command Palette",
       "summary": "Use a command palette pattern to search and navigate the docs.",

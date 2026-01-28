@@ -147,6 +147,11 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     "uik-empty-state",
     () => import("@ismail-elkorchi/ui-patterns/uik-empty-state"),
   ],
+  ["uik-page-hero", () => import("@ismail-elkorchi/ui-patterns/uik-page-hero")],
+  [
+    "uik-section-card",
+    () => import("@ismail-elkorchi/ui-patterns/uik-section-card"),
+  ],
   ["uik-icon", () => import("@ismail-elkorchi/ui-primitives/uik-icon")],
   ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
   ["uik-listbox", () => import("@ismail-elkorchi/ui-primitives/uik-listbox")],
@@ -197,6 +202,8 @@ const preloadedComponents = new Set([
   "uik-text",
   "uik-tree-view",
   "uik-visually-hidden",
+  "uik-page-hero",
+  "uik-section-card",
   "uik-shell-activity-bar",
   "uik-shell-layout",
   "uik-shell-secondary-sidebar",
@@ -821,48 +828,42 @@ export const mountDocsApp = (container: HTMLElement) => {
       </uik-shell-sidebar>
       <main slot="main-content" id="docs-main" class="docs-main">
           <div class="docs-page" data-docs-page>
-          <uik-surface variant="card" bordered class="docs-hero">
-            <uik-box padding="5">
-              <div class="docs-hero-grid">
-                <div class="docs-hero-content">
-                  <div class="docs-hero-top">
-                    <uik-badge variant="secondary">UIK Docs</uik-badge>
-                    <uik-badge variant="outline" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</uik-badge>
-                    <uik-badge variant="outline" data-docs-kind${kindBadgeAttr}>${escapeHtml(initialKind)}</uik-badge>
-                    <uik-badge variant="outline" data-docs-package${packageBadgeAttr}>${escapeHtml(initialPackage)}</uik-badge>
-                  </div>
-                  <uik-heading level="1" data-docs-title>${escapeHtml(initialTitle)}</uik-heading>
-                  <uik-text as="p" data-docs-summary class="docs-summary">${escapeHtml(initialSummary)}</uik-text>
-                  <nav class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
-                </div>
-                <div class="docs-hero-panel">
-                  <uik-surface variant="elevated" bordered class="docs-hero-panel-surface">
-                    <uik-box padding="4">
-                      <div class="docs-hero-control-grid">
-                        <uik-select data-docs-control="theme">
-                          <span slot="label">Theme</span>
-                          <option value="light">Light</option>
-                          <option value="dark">Dark</option>
-                        </uik-select>
-                        <uik-select data-docs-control="density">
-                          <span slot="label">Density</span>
-                          <option value="comfortable">Comfortable</option>
-                          <option value="compact">Compact</option>
-                        </uik-select>
-                        <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
-                          <span slot="label">Page</span>
-                          ${mobileNavOptions}
-                        </uik-select>
-                      </div>
-                      <div class="docs-hero-panel-actions">
-                        <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
-                      </div>
-                    </uik-box>
-                  </uik-surface>
-                </div>
+          <uik-page-hero class="docs-hero">
+            <div slot="eyebrow" class="docs-hero-top">
+              <uik-badge variant="secondary">UIK Docs</uik-badge>
+              <uik-badge variant="outline" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</uik-badge>
+              <uik-badge variant="outline" data-docs-kind${kindBadgeAttr}>${escapeHtml(initialKind)}</uik-badge>
+              <uik-badge variant="outline" data-docs-package${packageBadgeAttr}>${escapeHtml(initialPackage)}</uik-badge>
+            </div>
+            <uik-heading slot="title" level="1" data-docs-title>${escapeHtml(
+              initialTitle,
+            )}</uik-heading>
+            <uik-text slot="summary" as="p" data-docs-summary class="docs-summary">${escapeHtml(
+              initialSummary,
+            )}</uik-text>
+            <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
+            <div slot="panel">
+              <div class="docs-hero-control-grid">
+                <uik-select data-docs-control="theme">
+                  <span slot="label">Theme</span>
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </uik-select>
+                <uik-select data-docs-control="density">
+                  <span slot="label">Density</span>
+                  <option value="comfortable">Comfortable</option>
+                  <option value="compact">Compact</option>
+                </uik-select>
+                <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
+                  <span slot="label">Page</span>
+                  ${mobileNavOptions}
+                </uik-select>
               </div>
-            </uik-box>
-          </uik-surface>
+              <div class="docs-hero-panel-actions">
+                <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
+              </div>
+            </div>
+          </uik-page-hero>
           <div class="docs-page-content" data-docs-content></div>
         </div>
       </main>

@@ -92,19 +92,17 @@ export const renderPageSections = (page: DocPageContent) => {
     .map((sectionItem) => {
       return `
         <section class="docs-section" id="${sectionItem.id}">
-          <uik-surface variant="card" bordered class="docs-section-surface">
-            <uik-box padding="4" class="docs-section-inner">
-              <uik-heading level="2" class="docs-heading docs-section-heading" data-heading-level="2">
-                <a class="docs-heading-anchor" href="#${sectionItem.id}" aria-label="Link to ${escapeHtml(
-                  sectionItem.title,
-                )}">#</a>
-                <span class="docs-heading-text">${escapeHtml(
-                  sectionItem.title,
-                )}</span>
-              </uik-heading>
-              <div class="docs-section-body">${sectionItem.body}</div>
-            </uik-box>
-          </uik-surface>
+          <uik-section-card class="docs-section-card">
+            <uik-heading slot="title" level="2" class="docs-heading docs-section-heading">
+              <a class="docs-heading-anchor" href="#${sectionItem.id}" aria-label="Link to ${escapeHtml(
+                sectionItem.title,
+              )}">#</a>
+              <span class="docs-heading-text">${escapeHtml(
+                sectionItem.title,
+              )}</span>
+            </uik-heading>
+            <div class="docs-section-body">${sectionItem.body}</div>
+          </uik-section-card>
         </section>
       `;
     })
