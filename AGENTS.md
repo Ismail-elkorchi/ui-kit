@@ -33,7 +33,7 @@ Choose the lightest mode that fits.
 ### Standard Path
 
 - Default for package/docs work.
-- Use the queue: `ato q next` -> `ato q start` -> `ato q done`.
+- Use the queue + cycle: `ato q list` -> `ato q view <id>` -> `ato cycle start --json` -> `ato cycle finish --json` (update via `ato q update <id> --input <json|path>` as needed).
 - Run the fast gate (`ato gate run --mode fast`).
 
 ### Deep Path (macro)
@@ -73,11 +73,11 @@ Risk triggers (bump mode): touching `package.json`, exports, tokens sources, com
 
 ## ATO Basics (ui-kit)
 
-- Resolve target + protocol once per session:
-  - `ato target resolve --json`
+- Resolve repo + protocol once per session:
+  - `ato repo resolve --json`
   - `ato protocol check --json`
-- Queue flow: `ato q list` -> `ato q next` -> `ato q start` -> `ato q update` -> `ato q done`
-- Evidence: attach file/log/artifact paths (and `cmd:` references) over prose; prefer `ato q evidence add`.
+- Queue flow: `ato q list` -> `ato q view <id>` -> `ato cycle start --json` -> `ato q update <id> --input <json|path>` -> `ato cycle finish --json`
+- Evidence: attach file/log/artifact paths (and `cmd:` references) over prose; prefer `ato q update <id> --evidence-add <file:...|cmd:...|log:...>`.
 
 ## Gate Workflow (ui-kit)
 
@@ -91,16 +91,16 @@ Risk triggers (bump mode): touching `package.json`, exports, tokens sources, com
 
 Hub path: `/home/ismail-el-korchi/Documents/Projects/ato`
 
-- Always resolve the current session target before cross-repo writes:
-  - `ato target resolve --json`
-- You may set the hub as a default target or pass `--target` each time:
-  - `export ATO_TARGET=/home/ismail-el-korchi/Documents/Projects/ato`
-  - `ato q intake --from /abs/path/to/source-repo --file /abs/path/to/packet.json`
-  - `ato q intake --from /abs/path/to/source-repo --file /abs/path/to/packet.json --target /home/ismail-el-korchi/Documents/Projects/ato`
+- Always resolve the current session repo before cross-repo writes:
+  - `ato repo resolve --json`
+- You may set the hub as a default repo or pass `--repo` each time:
+  - `export ATO_REPO=/home/ismail-el-korchi/Documents/Projects/ato`
+  - `ato q intake --file /abs/path/to/packet.json --dest /home/ismail-el-korchi/Documents/Projects/ato --allow-cross-store-write --json`
+  - `ato q intake --file /abs/path/to/packet.json --dest /home/ismail-el-korchi/Documents/Projects/ato --allow-cross-store-write --json --repo /abs/path/to/source-repo`
 - Transfer single item:
-  - `ato q transfer BL-XXXX --target /home/ismail-el-korchi/Documents/Projects/ato`
+  - `ato q transfer BL-XXXX --dest /home/ismail-el-korchi/Documents/Projects/ato --source /abs/path/to/source-repo --allow-cross-store-write --json`
 - Transfer many items:
-  - `ato q transfer --all --status queued --target /home/ismail-el-korchi/Documents/Projects/ato`
+  - `ato q transfer --all --status queued --dest /home/ismail-el-korchi/Documents/Projects/ato --source /abs/path/to/source-repo --allow-cross-store-write --json`
 - Provenance + investigation:
   - `ato q trace BL-XXXX --json`
 - Receipt retention:
@@ -110,8 +110,8 @@ Hub path: `/home/ismail-el-korchi/Documents/Projects/ato`
 ## Session closeout (default end-of-session ritual)
 
 - Plan + apply (apply is atomic):
-  - `ato session closeout plan --target /home/ismail-el-korchi/Documents/Projects/ato --json`
-  - `ato session closeout apply --target /home/ismail-el-korchi/Documents/Projects/ato --json`
+  - `ato session closeout plan --json`
+  - `ato session closeout apply --dest /home/ismail-el-korchi/Documents/Projects/ato --allow-cross-store-write --json`
 - Strict eligibility:
   - Plan outputs `eligible_items` and `ineligible_items` with reasons.
   - Apply transfers only eligible items by default.
@@ -127,12 +127,12 @@ Hub path: `/home/ismail-el-korchi/Documents/Projects/ato`
 ## ATO Fast Discovery (Use This Instead of Searching)
 
 - **Discovery**: `ato capability list`, `ato capability explain <id>`, `ato --help`, `ato <command> --help`
-- **Protocol/target**: `ato protocol check`, `ato target resolve|list`, `ato lock status|clear`, `ato diagnose`
-- **Queue**: `ato q list|view|next|start|block|done|update|upgrade|validate|evidence|intake|transfer|trace`
-- Queue updates require `--input`: `ato q update <id> --input <json|path>`.
+- **Protocol/repo**: `ato protocol check`, `ato repo resolve|list`, `ato lock status|clear`, `ato diagnose`
+- **Queue**: `ato q add|update|validate|view|list|trace|intake|transfer|contract-refs`
+- Queue updates can use `--input`: `ato q update <id> --input <json|path>`.
 - Queue completion may require evidence citations in `spec.inputs`/notes (file paths or `cmd:` references).
-- Queue add requires `--queue-target`, `--contract-refs`, and spec fields (`--problem`, `--outcome`, `--acceptance`, `--inputs`, `--deliverables`).
-- **Gates/loop**: `ato gate explain|run --mode fast|full`, `ato loop check|run`
+- Queue add requires `--problem`, `--outcome`, `--plan-steps`, `--acceptance`, `--inputs`, `--deliverables` (optional: `--queue-target`, `--contract-refs`).
+- **Gates/cycle**: `ato gate explain|run --mode fast|full`, `ato cycle start|finish|abort`, `ato status`
 - **Contracts/docs**: `ato contract index|extract|compliance`, `ato docs delta`
 - **Impact/deps/tests**: `ato impact build|query`, `ato deps build|query|lint`, `ato test select`
 - **Dev/dashboard**: `ato dev run`, `ato dashboard build|serve`, `ato trace run`
