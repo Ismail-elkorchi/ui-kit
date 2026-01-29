@@ -1,4 +1,5 @@
 import type { UikTreeView } from "@ismail-elkorchi/ui-primitives";
+import type { UikShellLayout } from "@ismail-elkorchi/ui-shell";
 import "@ismail-elkorchi/ui-tokens/base.css";
 import { beforeEach, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
@@ -27,6 +28,12 @@ describe("docs navigation", () => {
 
   it("navigates to the tokens page via keyboard", async () => {
     await customElements.whenDefined("uik-tree-view");
+    const layout = document.querySelector<UikShellLayout>("uik-shell-layout");
+    if (layout?.hasAttribute("data-shell-narrow")) {
+      layout.isPrimarySidebarOpen = true;
+      await layout.updateComplete;
+      await nextFrame();
+    }
     const navTree = document.querySelector<UikTreeView>("[data-docs-nav-tree]");
     await navTree?.updateComplete;
     await waitForContent();

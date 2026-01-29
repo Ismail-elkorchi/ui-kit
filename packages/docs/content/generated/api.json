@@ -4789,6 +4789,12 @@
           "summary": "Shell region layout container with named slots.",
           "attributes": [
             {
+              "name": "isPrimarySidebarOpen",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
               "name": "isSecondarySidebarVisible",
               "type": "boolean",
               "description": "boolean",
@@ -4797,13 +4803,25 @@
           ],
           "properties": [
             {
+              "name": "isPrimarySidebarOpen",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
               "name": "isSecondarySidebarVisible",
               "type": "boolean",
               "description": "",
               "default": "false"
             }
           ],
-          "events": [],
+          "events": [
+            { "name": "primary-sidebar-open", "description": "" },
+            {
+              "name": "primary-sidebar-close",
+              "description": "detail: {reason}"
+            }
+          ],
           "slots": [
             { "name": "activity-bar", "description": "" },
             { "name": "main-content", "description": "" },
@@ -4813,18 +4831,37 @@
           ],
           "cssParts": [
             { "name": "activity-bar", "description": "" },
+            { "name": "drawer", "description": "" },
             { "name": "layout", "description": "" },
             { "name": "main-content", "description": "" },
             { "name": "primary-sidebar", "description": "" },
             { "name": "row", "description": "" },
+            { "name": "scrim", "description": "" },
             { "name": "secondary-sidebar", "description": "" },
             { "name": "status-bar", "description": "" }
           ],
           "cssCustomProperties": [
             {
+              "name": "--uik-component-shell-collapse-breakpoint",
+              "description": ""
+            },
+            {
               "name": "--uik-component-shell-divider-color",
               "description": ""
             },
+            {
+              "name": "--uik-component-shell-drawer-scrim-color",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-drawer-scrim-opacity",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-drawer-scrim-z",
+              "description": ""
+            },
+            { "name": "--uik-component-shell-drawer-z", "description": "" },
             { "name": "--uik-component-shell-scrollbar-*", "description": "" }
           ],
           "a11y": ["Use semantic elements inside slots for landmarks."],

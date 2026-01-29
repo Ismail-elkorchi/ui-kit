@@ -1,5 +1,5 @@
 import { LitElement, html, nothing } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 import {
@@ -10,6 +10,7 @@ import {
 /**
  * Shell region layout container with named slots.
  * @attr isSecondarySidebarVisible (boolean)
+ * @attr isPrimarySidebarOpen (boolean)
  * @slot activity-bar
  * @slot primary-sidebar
  * @slot main-content
@@ -17,19 +18,44 @@ import {
  * @slot status-bar
  * @part layout
  * @part row
+ * @part drawer
+ * @part scrim
  * @part activity-bar
  * @part primary-sidebar
  * @part main-content
  * @part secondary-sidebar
  * @part status-bar
+ * @event primary-sidebar-open
+ * @event primary-sidebar-close (detail: {reason})
  * @a11y Use semantic elements inside slots for landmarks.
  * @cssprop --uik-component-shell-divider-color
  * @cssprop --uik-component-shell-scrollbar-*
+ * @cssprop --uik-component-shell-collapse-breakpoint
+ * @cssprop --uik-component-shell-drawer-scrim-color
+ * @cssprop --uik-component-shell-drawer-scrim-opacity
+ * @cssprop --uik-component-shell-drawer-scrim-z
+ * @cssprop --uik-component-shell-drawer-z
  */
 @customElement("uik-shell-layout")
 export class UikShellLayout extends LitElement {
   @property({ type: Boolean }) accessor isSecondarySidebarVisible = false;
+  @property({ type: Boolean }) accessor isPrimarySidebarOpen = false;
+  @state() private accessor isNarrow = false;
   private slotController?: LightDomSlotController;
+  private resizeObserver: ResizeObserver | null = null;
+  private previousPrimaryFocus: HTMLElement | null = null;
+  private pendingCloseReason: OverlayCloseReason | null = null;
+  private scrollLockActive = false;
+  private previousDocumentOverflow: string | null = null;
+  private previousBodyOverflow: string | null = null;
+  private scrimElement: HTMLDivElement | null = null;
+
+  private readonly closeReasons: OverlayCloseReason[] = [
+    "escape",
+    "outside",
+    "programmatic",
+    "toggle",
+  ];
 
   override connectedCallback() {
     super.connectedCallback();
@@ -64,19 +90,218 @@ export class UikShellLayout extends LitElement {
       ],
     );
     this.slotController.connect();
+    this.resizeObserver ??= new ResizeObserver((entries) => {
+      const entry = entries[0];
+      const width = entry
+        ? entry.contentRect.width
+        : this.getBoundingClientRect().width;
+      this.updateNarrowState(width);
+    });
+    this.resizeObserver.observe(this);
+    this.addEventListener("keydown", this.onKeydown);
   }
 
   override disconnectedCallback() {
     this.slotController?.disconnect();
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = null;
+    this.removeEventListener("keydown", this.onKeydown);
+    this.unlockScroll();
+    this.removeScrim();
     super.disconnectedCallback();
   }
 
   override firstUpdated() {
     this.slotController?.sync();
+    this.updateNarrowState(this.getBoundingClientRect().width);
   }
 
   override createRenderRoot() {
     return ensureLightDomRoot(this);
+  }
+
+  private get drawerOpen() {
+    return this.isNarrow && this.isPrimarySidebarOpen;
+  }
+
+  private updateNarrowState(width: number) {
+    if (!Number.isFinite(width) || width <= 0) return;
+    const breakpoint = this.resolveCollapseBreakpoint();
+    if (!Number.isFinite(breakpoint) || breakpoint <= 0) return;
+    const next = width <= breakpoint;
+    if (next === this.isNarrow) return;
+    this.isNarrow = next;
+  }
+
+  private resolveCollapseBreakpoint(): number {
+    const raw = getComputedStyle(this)
+      .getPropertyValue("--uik-component-shell-collapse-breakpoint")
+      .trim();
+    if (!raw) return 0;
+    const rootFont = Number.parseFloat(
+      getComputedStyle(document.documentElement).fontSize || "16",
+    );
+    const numeric = Number.parseFloat(raw);
+    if (!Number.isFinite(numeric)) return 0;
+    if (raw.endsWith("rem")) return numeric * rootFont;
+    if (raw.endsWith("em")) return numeric * rootFont;
+    return numeric;
+  }
+
+  private captureFocusOrigin() {
+    const active = document.activeElement;
+    if (active instanceof HTMLElement && !this.contains(active)) {
+      this.previousPrimaryFocus = active;
+    } else if (active instanceof HTMLElement) {
+      this.previousPrimaryFocus = active;
+    }
+  }
+
+  private restoreFocus() {
+    const target = this.previousPrimaryFocus;
+    this.previousPrimaryFocus = null;
+    if (target?.isConnected) {
+      target.focus();
+    }
+  }
+
+  private lockScroll() {
+    if (this.scrollLockActive) return;
+    this.scrollLockActive = true;
+    const doc = document.documentElement;
+    const body = document.body;
+    this.previousDocumentOverflow = doc.style.overflow;
+    this.previousBodyOverflow = body.style.overflow;
+    doc.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+  }
+
+  private unlockScroll() {
+    if (!this.scrollLockActive) return;
+    const doc = document.documentElement;
+    const body = document.body;
+    doc.style.overflow = this.previousDocumentOverflow ?? "";
+    body.style.overflow = this.previousBodyOverflow ?? "";
+    this.previousDocumentOverflow = null;
+    this.previousBodyOverflow = null;
+    this.scrollLockActive = false;
+  }
+
+  private focusDrawerContent() {
+    const drawer = this.querySelector<HTMLElement>("[data-shell-drawer]");
+    if (!drawer) return;
+    const focusable = drawer.querySelector<HTMLElement>(
+      [
+        "button",
+        "[href]",
+        "input",
+        "select",
+        "textarea",
+        "[tabindex]:not([tabindex='-1'])",
+      ].join(","),
+    );
+    focusable?.focus();
+  }
+
+  private closePrimarySidebar(reason: OverlayCloseReason) {
+    if (!this.isPrimarySidebarOpen) return;
+    if (!this.closeReasons.includes(reason)) {
+      this.pendingCloseReason = "programmatic";
+    } else {
+      this.pendingCloseReason = reason;
+    }
+    this.isPrimarySidebarOpen = false;
+  }
+
+  private onKeydown = (event: KeyboardEvent) => {
+    if (!this.drawerOpen) return;
+    if (event.defaultPrevented) return;
+    if (event.key !== "Escape") return;
+    event.preventDefault();
+    event.stopPropagation();
+    this.closePrimarySidebar("escape");
+  };
+
+  private onScrimClick = () => {
+    this.closePrimarySidebar("outside");
+  };
+
+  private applyScrimStyles(target: HTMLElement) {
+    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    target.style.position = "fixed";
+    target.style.inset = "0";
+    target.style.backgroundColor = forcedColors
+      ? "CanvasText"
+      : "oklch(var(--uik-component-shell-drawer-scrim-color))";
+    target.style.opacity = forcedColors
+      ? "0.25"
+      : "var(--uik-component-shell-drawer-scrim-opacity)";
+    target.style.zIndex = "var(--uik-component-shell-drawer-scrim-z)";
+    target.style.pointerEvents = "auto";
+  }
+
+  private ensureScrim() {
+    if (this.scrimElement?.isConnected) return;
+    const scrim = document.createElement("div");
+    scrim.setAttribute("data-shell-scrim", "");
+    scrim.setAttribute("part", "scrim");
+    this.applyScrimStyles(scrim);
+    scrim.addEventListener("click", this.onScrimClick);
+    document.body.append(scrim);
+    this.scrimElement = scrim;
+  }
+
+  private removeScrim() {
+    if (!this.scrimElement) return;
+    this.scrimElement.removeEventListener("click", this.onScrimClick);
+    this.scrimElement.remove();
+    this.scrimElement = null;
+  }
+
+  override updated(changedProps: Map<string, unknown>) {
+    const wasNarrow =
+      (changedProps.get("isNarrow") as boolean | undefined) ?? this.isNarrow;
+    const wasPrimaryOpen =
+      (changedProps.get("isPrimarySidebarOpen") as boolean | undefined) ??
+      this.isPrimarySidebarOpen;
+    const wasDrawerOpen = wasNarrow && wasPrimaryOpen;
+    const nowDrawerOpen = this.drawerOpen;
+
+    if (changedProps.has("isNarrow")) {
+      this.toggleAttribute("data-shell-narrow", this.isNarrow);
+      if (!this.isNarrow && this.isPrimarySidebarOpen) {
+        this.pendingCloseReason ??= "programmatic";
+        this.isPrimarySidebarOpen = false;
+      }
+    }
+
+    if (wasDrawerOpen !== nowDrawerOpen) {
+      if (nowDrawerOpen) {
+        this.captureFocusOrigin();
+        this.lockScroll();
+        this.ensureScrim();
+        requestAnimationFrame(() => this.focusDrawerContent());
+        this.dispatchEvent(
+          new CustomEvent("primary-sidebar-open", {
+            bubbles: true,
+            composed: true,
+          }),
+        );
+      } else {
+        this.unlockScroll();
+        this.removeScrim();
+        this.restoreFocus();
+        const reason = this.pendingCloseReason ?? "toggle";
+        this.pendingCloseReason = null;
+        this.dispatchEvent(
+          new CustomEvent("primary-sidebar-close", {
+            detail: { reason },
+            bubbles: true,
+            composed: true,
+          }),
+        );
+      }
+    }
   }
 
   override render() {
@@ -106,9 +331,35 @@ export class UikShellLayout extends LitElement {
       minHeight: "var(--uik-space-0)",
       overflow: "hidden",
     };
-    const fixedRegionStyles = {
-      flexShrink: "0",
-    };
+    const fixedRegionStyles = { flexShrink: "0" };
+    const drawerWidth =
+      "min(100vw, calc(var(--uik-component-shell-activity-bar-width) + var(--uik-component-shell-sidebar-width)))";
+    const isReducedMotion =
+      document.documentElement.getAttribute("data-uik-motion") === "reduced" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const drawerStyles = this.isNarrow
+      ? {
+          position: "fixed",
+          insetBlock: "0",
+          insetInlineStart: "0",
+          width: drawerWidth,
+          maxWidth: "100vw",
+          display: "flex",
+          flexDirection: "row",
+          height: "100%",
+          transform: this.drawerOpen ? "translateX(0)" : "translateX(-100%)",
+          transition: isReducedMotion
+            ? "none"
+            : "transform var(--uik-motion-transition-transform)",
+          zIndex: "var(--uik-component-shell-drawer-z)",
+          pointerEvents: this.drawerOpen ? "auto" : "none",
+        }
+      : {
+          display: "flex",
+          flexDirection: "row",
+          height: "100%",
+          flexShrink: "0",
+        };
     const mainStyles = {
       display: "flex",
       flex: "1 1 auto",
@@ -138,7 +389,6 @@ export class UikShellLayout extends LitElement {
     const statusSlotStyles = {
       width: "100%",
     };
-
     return html`
       <div
         part="layout"
@@ -150,26 +400,34 @@ export class UikShellLayout extends LitElement {
       >
         <div part="row" style=${styleMap(rowStyles)}>
           <div
-            part="activity-bar"
-            style=${styleMap(fixedRegionStyles)}
-            data-region="activity-bar"
-            role="presentation"
+            part="drawer"
+            style=${styleMap(drawerStyles)}
+            data-shell-drawer
+            aria-hidden=${this.isNarrow && !this.drawerOpen ? "true" : "false"}
+            ?inert=${this.isNarrow && !this.drawerOpen}
           >
             <div
-              data-shell-slot="activity-bar"
-              style=${styleMap(slotColumnStyles)}
-            ></div>
-          </div>
-          <div
-            part="primary-sidebar"
-            style=${styleMap(fixedRegionStyles)}
-            data-region="primary-sidebar"
-            role="presentation"
-          >
+              part="activity-bar"
+              style=${styleMap(fixedRegionStyles)}
+              data-region="activity-bar"
+              role="presentation"
+            >
+              <div
+                data-shell-slot="activity-bar"
+                style=${styleMap(slotColumnStyles)}
+              ></div>
+            </div>
             <div
-              data-shell-slot="primary-sidebar"
-              style=${styleMap(slotColumnStyles)}
-            ></div>
+              part="primary-sidebar"
+              style=${styleMap(fixedRegionStyles)}
+              data-region="primary-sidebar"
+              role="presentation"
+            >
+              <div
+                data-shell-slot="primary-sidebar"
+                style=${styleMap(slotColumnStyles)}
+              ></div>
+            </div>
           </div>
           <div
             part="main-content"
@@ -209,6 +467,8 @@ export class UikShellLayout extends LitElement {
     `;
   }
 }
+
+type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
 
 declare global {
   interface HTMLElementTagNameMap {

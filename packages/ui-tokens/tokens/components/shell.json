@@ -69,6 +69,37 @@
           "$description": "Component shell scrollbar track."
         }
       },
+      "collapse": {
+        "breakpoint": {
+          "$value": "{layout.breakpoint.shellCollapse}",
+          "$type": "dimension",
+          "$description": "Component shell collapse breakpoint for responsive drawers."
+        }
+      },
+      "drawer": {
+        "scrim": {
+          "color": {
+            "$value": "{component.dialog.scrim.color}",
+            "$type": "color",
+            "$description": "Component shell drawer scrim color."
+          },
+          "opacity": {
+            "$value": "{component.dialog.scrim.opacity}",
+            "$type": "number",
+            "$description": "Component shell drawer scrim opacity."
+          },
+          "z": {
+            "$value": "{z.context.modal}",
+            "$type": "number",
+            "$description": "Component shell drawer scrim z-index."
+          }
+        },
+        "z": {
+          "$value": "{z.context.toast}",
+          "$type": "number",
+          "$description": "Component shell drawer z-index."
+        }
+      },
       "secondarySidebar": {
         "bg": {
           "$value": "{surface.bg}",

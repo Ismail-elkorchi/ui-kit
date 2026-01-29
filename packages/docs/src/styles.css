@@ -253,8 +253,17 @@ body {
 
 .docs-hero-panel-actions {
   display: flex;
+  gap: var(--uik-space-2);
   justify-content: flex-end;
   margin-top: var(--uik-space-3);
+}
+
+[data-docs-action="nav-toggle"] {
+  display: none;
+}
+
+uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
+  display: inline-flex;
 }
 
 .docs-mobile-nav {

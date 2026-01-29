@@ -454,10 +454,12 @@ const setOutlineOpen = (
   layout: UikShellLayout,
   secondary: UikShellSecondarySidebar,
   isOpen: boolean,
+  options: { focus?: boolean } = {},
 ) => {
+  const { focus = true } = options;
   secondary.isOpen = isOpen;
   layout.isSecondarySidebarVisible = isOpen;
-  if (isOpen) {
+  if (isOpen && focus) {
     void secondary.updateComplete.then(() => {
       const closeButton = secondary.querySelector<UikButton>(
         'uik-button[part="close-button"]',
@@ -814,6 +816,7 @@ export const mountDocsApp = (container: HTMLElement) => {
         aria-label="Primary navigation"></uik-shell-activity-bar>
       <uik-shell-sidebar
         slot="primary-sidebar"
+        id="docs-sidebar"
         class="docs-sidebar"
         heading="Navigation"
         subtitle="UIK"
@@ -860,6 +863,15 @@ export const mountDocsApp = (container: HTMLElement) => {
                 </uik-select>
               </div>
               <div class="docs-hero-panel-actions">
+                <uik-button
+                  variant="ghost"
+                  size="sm"
+                  data-docs-action="nav-toggle"
+                  aria-controls="docs-sidebar"
+                  aria-expanded="false"
+                >
+                  Menu
+                </uik-button>
                 <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
               </div>
             </div>
@@ -932,6 +944,9 @@ export const mountDocsApp = (container: HTMLElement) => {
   const outlineToggle = container.querySelector<UikButton>(
     '[data-docs-action="outline-toggle"]',
   );
+  const navToggle = container.querySelector<UikButton>(
+    '[data-docs-action="nav-toggle"]',
+  );
   const themeSelect = container.querySelector<UikSelect>(
     'uik-select[data-docs-control="theme"]',
   );
@@ -971,7 +986,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   activityBar.items = buildActivityItems(routes);
   navTree.items = buildNavItems(baseUrl, docsPages, labPages);
   navTree.openIds = collectOpenIds(navTree.items);
-  setOutlineOpen(layout, secondarySidebar, true);
+  setOutlineOpen(layout, secondarySidebar, true, { focus: false });
   let commandPaletteOpenButton: UikButton | null = null;
 
   const setBadgeContent = (element: HTMLElement | null, value?: string) => {
@@ -998,6 +1013,16 @@ export const mountDocsApp = (container: HTMLElement) => {
   };
 
   let commandCenterInit: Promise<void> | null = null;
+  let commandCenterBootstrapAbort: AbortController | null = null;
+  const isEditableElement = (element: Element | null) => {
+    if (!element) return false;
+    const tag = element.tagName;
+    if (["INPUT", "TEXTAREA", "SELECT"].includes(tag)) return true;
+    if (element instanceof HTMLElement && element.isContentEditable) {
+      return true;
+    }
+    return ["UIK-INPUT", "UIK-TEXTAREA", "UIK-COMBOBOX"].includes(tag);
+  };
   const ensureCommandCenter = () => {
     if (!commandPalette) return Promise.resolve();
     if (commandCenterInit) return commandCenterInit;
@@ -1016,13 +1041,64 @@ export const mountDocsApp = (container: HTMLElement) => {
         },
       });
       syncCommandCenterOpenButton();
+      commandCenterBootstrapAbort?.abort();
+      commandCenterBootstrapAbort = null;
     })();
     return commandCenterInit;
   };
 
   if (commandPalette) {
-    void ensureCommandCenter();
+    const scheduleCommandCenter = () => {
+      void ensureCommandCenter();
+    };
+    if ("requestIdleCallback" in window) {
+      (
+        window as Window & {
+          requestIdleCallback: (
+            callback: IdleRequestCallback,
+            options?: IdleRequestOptions,
+          ) => number;
+        }
+      ).requestIdleCallback(scheduleCommandCenter, { timeout: 1500 });
+    } else {
+      globalThis.setTimeout(scheduleCommandCenter, 0);
+    }
   }
+
+  const installCommandCenterBootstrap = () => {
+    if (!commandPalette || commandCenter) return;
+    commandCenterBootstrapAbort?.abort();
+    commandCenterBootstrapAbort = new AbortController();
+    const { signal } = commandCenterBootstrapAbort;
+    const triggerOpen = () => {
+      commandPalette.show();
+      void ensureCommandCenter().then(() => {
+        commandCenter?.open();
+      });
+    };
+    window.addEventListener(
+      "keydown",
+      (event: KeyboardEvent) => {
+        if (event.defaultPrevented) return;
+        if (!event.metaKey && !event.ctrlKey) return;
+        if (event.key.toLowerCase() !== "k") return;
+        if (isEditableElement(document.activeElement)) return;
+        event.preventDefault();
+        triggerOpen();
+      },
+      { signal },
+    );
+    if (commandPaletteOpenButton) {
+      commandPaletteOpenButton.addEventListener(
+        "click",
+        (event) => {
+          event.preventDefault();
+          triggerOpen();
+        },
+        { signal },
+      );
+    }
+  };
 
   const renderPageContent = async (view: "docs" | "lab", page: DocPage) => {
     const token = (contentRenderToken += 1);
@@ -1064,6 +1140,7 @@ export const mountDocsApp = (container: HTMLElement) => {
           wireLabCommandPaletteControls(contentElement);
       }
       syncCommandCenterOpenButton();
+      installCommandCenterBootstrap();
     }
 
     if (!shouldAwaitComponents) {
@@ -1169,11 +1246,25 @@ export const mountDocsApp = (container: HTMLElement) => {
   });
 
   outlineToggle?.addEventListener("click", () => {
-    setOutlineOpen(layout, secondarySidebar, !secondarySidebar.isOpen);
+    setOutlineOpen(layout, secondarySidebar, !secondarySidebar.isOpen, {
+      focus: true,
+    });
+  });
+
+  navToggle?.addEventListener("click", () => {
+    layout.isPrimarySidebarOpen = true;
+  });
+
+  layout.addEventListener("primary-sidebar-open", () => {
+    navToggle?.setAttribute("aria-expanded", "true");
+  });
+
+  layout.addEventListener("primary-sidebar-close", () => {
+    navToggle?.setAttribute("aria-expanded", "false");
   });
 
   secondarySidebar.addEventListener("secondary-sidebar-close", () => {
-    setOutlineOpen(layout, secondarySidebar, false);
+    setOutlineOpen(layout, secondarySidebar, false, { focus: true });
   });
 
   themeSelect?.addEventListener("change", () => {

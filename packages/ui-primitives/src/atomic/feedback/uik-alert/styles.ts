@@ -3,6 +3,8 @@ import { css } from "lit";
 export const styles = css`
   :host {
     display: block;
+
+    --uik-component-text-color-default: var(--uik-component-alert-neutral-fg);
   }
 
   .alert {
@@ -23,10 +25,18 @@ export const styles = css`
     border-color: oklch(var(--uik-component-alert-info-border));
   }
 
+  :host([variant="info"]) {
+    --uik-component-text-color-default: var(--uik-component-alert-info-fg);
+  }
+
   :host([variant="success"]) .alert {
     color: oklch(var(--uik-component-alert-success-fg));
     background-color: oklch(var(--uik-component-alert-success-bg));
     border-color: oklch(var(--uik-component-alert-success-border));
+  }
+
+  :host([variant="success"]) {
+    --uik-component-text-color-default: var(--uik-component-alert-success-fg);
   }
 
   :host([variant="warning"]) .alert {
@@ -35,10 +45,18 @@ export const styles = css`
     border-color: oklch(var(--uik-component-alert-warning-border));
   }
 
+  :host([variant="warning"]) {
+    --uik-component-text-color-default: var(--uik-component-alert-warning-fg);
+  }
+
   :host([variant="danger"]) .alert {
     color: oklch(var(--uik-component-alert-danger-fg));
     background-color: oklch(var(--uik-component-alert-danger-bg));
     border-color: oklch(var(--uik-component-alert-danger-border));
+  }
+
+  :host([variant="danger"]) {
+    --uik-component-text-color-default: var(--uik-component-alert-danger-fg);
   }
 
   .title {

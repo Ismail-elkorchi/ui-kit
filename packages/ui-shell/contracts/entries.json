@@ -29,7 +29,10 @@
       "id": "shell-layout",
       "tagName": "uik-shell-layout",
       "summary": "Shell region layout container with named slots.",
-      "attributes": ["isSecondarySidebarVisible (boolean)"],
+      "attributes": [
+        "isSecondarySidebarVisible (boolean)",
+        "isPrimarySidebarOpen (boolean)"
+      ],
       "slots": [
         "activity-bar",
         "primary-sidebar",
@@ -40,17 +43,27 @@
       "parts": [
         "layout",
         "row",
+        "drawer",
+        "scrim",
         "activity-bar",
         "primary-sidebar",
         "main-content",
         "secondary-sidebar",
         "status-bar"
       ],
-      "events": [],
+      "events": [
+        "primary-sidebar-open",
+        "primary-sidebar-close (detail: {reason})"
+      ],
       "a11y": ["Use semantic elements inside slots for landmarks."],
       "cssVars": [
         "--uik-component-shell-divider-color",
-        "--uik-component-shell-scrollbar-*"
+        "--uik-component-shell-scrollbar-*",
+        "--uik-component-shell-collapse-breakpoint",
+        "--uik-component-shell-drawer-scrim-color",
+        "--uik-component-shell-drawer-scrim-opacity",
+        "--uik-component-shell-drawer-scrim-z",
+        "--uik-component-shell-drawer-z"
       ],
       "kind": "component"
     },

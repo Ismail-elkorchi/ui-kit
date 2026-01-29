@@ -6,6 +6,7 @@ Token-driven shell components (activity bar, sidebars, status bar, and an option
 
 - Regions: left rail (`activity-bar`), primary sidebar, main content, optional secondary sidebar, and status bar.
 - `uik-shell-layout` stitches the regions together and tags them with `data-region` attributes to keep the layout contract visible in the DOM.
+- Responsive collapse: below `--uik-component-shell-collapse-breakpoint`, the activity bar + primary sidebar collapse into an off-canvas drawer controlled by `isPrimarySidebarOpen`.
 - Shell components expose only UI surface/state; business logic should live in the host app.
 - **Contract**: Shell components use `ui-primitives` strictly via their public API (attributes/props). Visual styling comes from `--uik-*` custom properties (no framework utility classes).
 
@@ -26,6 +27,7 @@ Token-driven shell components (activity bar, sidebars, status bar, and an option
 
 - Overlay-like shells emit close events with `detail.reason` aligned to primitives: `escape | outside | programmatic | toggle`.
 - `uik-shell-secondary-sidebar` captures the previously focused element on open and restores focus on close (unless a `focus-return-target` is provided).
+- `uik-shell-layout` drawer restores focus to the opener on close and locks body scrolling while open.
 
 ## Using the components
 
@@ -97,7 +99,7 @@ html`
 
 ### Component notes
 
-- `uik-shell-layout`: named slots `activity-bar`, `primary-sidebar`, `main-content`, `secondary-sidebar`, `status-bar`.
+- `uik-shell-layout`: named slots `activity-bar`, `primary-sidebar`, `main-content`, `secondary-sidebar`, `status-bar`. `isPrimarySidebarOpen` toggles the responsive drawer; emits `primary-sidebar-open` and `primary-sidebar-close`.
 - `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-bar-select`; optional `footer` slot; delegates roving focus to `uik-nav-rail` (set `aria-label` if you need a custom name).
 - `uik-shell-sidebar`: `slot="actions"` for header actions, default slot for body, optional `slot="footer"`; `isBodyPadded`/`isBodyScrollable` toggle spacing + scroll.
 - `uik-shell-secondary-sidebar`: controlled via `.isOpen`; optional `focus-return-target` (selector or element) to restore focus on close; Escape and the close button emit `secondary-sidebar-close` (`detail.reason` is `escape | toggle`).
@@ -107,6 +109,7 @@ html`
 ### Custom properties
 
 - Activity bar: `--uik-component-shell-activity-bar-bg`, `--uik-component-shell-activity-bar-fg`, `--uik-component-shell-activity-bar-width`, `--uik-component-shell-activity-bar-item-size`, `--uik-component-shell-activity-bar-item-icon-size`, `--uik-component-shell-activity-bar-item-indicator-bg`, `--uik-component-shell-activity-bar-item-indicator-radius`, `--uik-component-shell-activity-bar-item-indicator-width`.
+- Drawer: `--uik-component-shell-collapse-breakpoint`, `--uik-component-shell-drawer-scrim-color`, `--uik-component-shell-drawer-scrim-opacity`, `--uik-component-shell-drawer-scrim-z`, `--uik-component-shell-drawer-z`.
 - Sidebar: `--uik-component-shell-sidebar-bg`, `--uik-component-shell-sidebar-fg`, `--uik-component-shell-sidebar-width`.
 - Secondary sidebar: `--uik-component-shell-secondary-sidebar-bg`, `--uik-component-shell-secondary-sidebar-width`.
 - Status bar: `--uik-component-shell-status-bar-bg`, `--uik-component-shell-status-bar-fg`, `--uik-component-shell-status-bar-height`.

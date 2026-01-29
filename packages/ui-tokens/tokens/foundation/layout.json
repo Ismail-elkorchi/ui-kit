@@ -108,6 +108,15 @@
           "$type": "dimension"
         }
       }
+    },
+    "breakpoint": {
+      "shellCollapse": {
+        "$value": {
+          "value": 48,
+          "unit": "rem"
+        },
+        "$type": "dimension"
+      }
     }
   }
 }
