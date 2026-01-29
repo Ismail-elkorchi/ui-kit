@@ -1,0 +1,5198 @@
+{
+  "$schema": "./api.schema.json",
+  "schemaVersion": "1.0.0",
+  "packages": [
+    {
+      "id": "ui-primitives",
+      "name": "Primitives",
+      "contracts": "packages/ui-primitives/contracts/components.json",
+      "cem": "packages/ui-primitives/dist/custom-elements.json",
+      "components": [
+        {
+          "id": "alert",
+          "tagName": "uik-alert",
+          "name": "<uik-alert>",
+          "kind": "component",
+          "summary": "Inline status messaging for neutral and semantic feedback.",
+          "attributes": [
+            {
+              "name": "variant",
+              "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+              "description": "neutral | info | success | warning | danger",
+              "default": "\"neutral\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "variant",
+              "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+              "description": "",
+              "default": "\"neutral\""
+            }
+          ],
+          "events": [],
+          "slots": [
+            { "name": "default", "description": "message body" },
+            { "name": "title", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "body", "description": "" },
+            { "name": "title", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-alert-{neutral|info|success|warning|danger}-{bg|border|fg}",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "role=\"status\" by default; warning/danger switches to role=\"alert\"."
+          ],
+          "notes": []
+        },
+        {
+          "id": "badge",
+          "tagName": "uik-badge",
+          "name": "<uik-badge>",
+          "kind": "component",
+          "summary": "Compact label for status or counts.",
+          "attributes": [
+            {
+              "name": "variant",
+              "type": "| \"default\" | \"secondary\" | \"danger\" | \"outline\"",
+              "description": "default | secondary | danger | outline",
+              "default": "\"default\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "variant",
+              "type": "| \"default\" | \"secondary\" | \"danger\" | \"outline\"",
+              "description": "",
+              "default": "\"default\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "label" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-badge-{default|secondary|danger|outline}-{bg|border|fg|shadow}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-badge-base-*",
+              "description": "padding, radius, font, border"
+            }
+          ],
+          "a11y": ["Inline element; provide meaningful text content."],
+          "notes": []
+        },
+        {
+          "id": "box",
+          "tagName": "uik-box",
+          "name": "<uik-box>",
+          "kind": "component",
+          "summary": "Simple padded container with background and border hooks.",
+          "attributes": [
+            {
+              "name": "inline",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "padding",
+              "type": "\"0\" | \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\"",
+              "description": "0-6",
+              "default": "\"0\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "inline",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "padding",
+              "type": "\"0\" | \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\"",
+              "description": "",
+              "default": "\"0\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            { "name": "--uik-component-box-bg", "description": "" },
+            { "name": "--uik-component-box-bg-opacity", "description": "" },
+            { "name": "--uik-component-box-border-color", "description": "" },
+            { "name": "--uik-component-box-border-opacity", "description": "" },
+            { "name": "--uik-component-box-border-width", "description": "" },
+            { "name": "--uik-component-box-padding-{0..6}", "description": "" },
+            { "name": "--uik-component-box-radius", "description": "" }
+          ],
+          "a11y": ["Presentational wrapper; use semantic HTML inside."],
+          "notes": []
+        },
+        {
+          "id": "button",
+          "tagName": "uik-button",
+          "name": "<uik-button>",
+          "kind": "component",
+          "summary": "Primary action control with variants and sizes.",
+          "attributes": [
+            {
+              "name": "active",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "aria-controls",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-expanded",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-haspopup",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-pressed",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "muted",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "role",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "type": "| \"default\" | \"sm\" | \"lg\" | \"icon\"",
+              "description": "default | sm | lg | icon",
+              "default": "\"default\""
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "number",
+              "default": "0"
+            },
+            {
+              "name": "type",
+              "type": "\"button\" | \"submit\" | \"reset\"",
+              "description": "button | submit | reset",
+              "default": "\"button\""
+            },
+            {
+              "name": "variant",
+              "type": "| \"solid\" | \"danger\" | \"outline\" | \"secondary\" | \"ghost\" | \"link\"",
+              "description": "solid | danger | outline | secondary | ghost | link",
+              "default": "\"solid\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "active",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "ariaControlsValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaExpandedValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaHaspopupValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaPressedValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "muted",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "roleValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "type": "| \"default\" | \"sm\" | \"lg\" | \"icon\"",
+              "description": "",
+              "default": "\"default\""
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            },
+            {
+              "name": "type",
+              "type": "\"button\" | \"submit\" | \"reset\"",
+              "description": "",
+              "default": "\"button\""
+            },
+            {
+              "name": "variant",
+              "type": "| \"solid\" | \"danger\" | \"outline\" | \"secondary\" | \"ghost\" | \"link\"",
+              "description": "",
+              "default": "\"solid\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native button events bubble from the internal <button>.",
+              "description": ""
+            }
+          ],
+          "slots": [{ "name": "default", "description": "label or icon" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-button-{sm|md|lg}-*",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-button-{solid|ghost|outline|secondary|danger|link}-*",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-button-base-*",
+              "description": "gap, font, focus ring, border"
+            }
+          ],
+          "a11y": [
+            "Forward aria-label, aria-labelledby, aria-describedby, aria-pressed, aria-haspopup, aria-expanded, and aria-controls to the internal button.",
+            "Roles remain on the host for Shadow DOM parentage-sensitive patterns (menus/menubars).",
+            "Icon-only buttons should provide an accessible name."
+          ],
+          "notes": []
+        },
+        {
+          "id": "checkbox",
+          "tagName": "uik-checkbox",
+          "name": "<uik-checkbox>",
+          "kind": "component",
+          "summary": "Form-associated checkbox control with label, hint, and error slots.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "checked",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "indeterminate",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "number",
+              "default": "0"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"on\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "checked",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "indeterminate",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"on\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native change bubbles from the internal <input>.",
+              "description": ""
+            }
+          ],
+          "slots": [
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-checkbox-accent", "description": "" },
+            { "name": "--uik-component-checkbox-size", "description": "" }
+          ],
+          "a11y": [
+            "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
+          ],
+          "notes": []
+        },
+        {
+          "id": "code-block",
+          "tagName": "uik-code-block",
+          "name": "<uik-code-block>",
+          "kind": "component",
+          "summary": "Read-only code block with optional copy action.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "copy",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "copy-label",
+              "type": "string",
+              "description": "",
+              "default": "\"Copy\""
+            },
+            {
+              "name": "inline",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "copy",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "copyLabel",
+              "type": "string",
+              "description": "",
+              "default": "\"Copy\""
+            },
+            {
+              "name": "inline",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "code-block-copy",
+              "description": "detail: {value, success}"
+            }
+          ],
+          "slots": [
+            { "name": "copy-label", "description": "" },
+            { "name": "default", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "content", "description": "" },
+            { "name": "copy-button", "description": "" },
+            { "name": "inline", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-code-block-bg", "description": "" },
+            { "name": "--uik-component-code-block-border", "description": "" },
+            {
+              "name": "--uik-component-code-block-border-width",
+              "description": ""
+            },
+            { "name": "--uik-component-code-block-copy-bg", "description": "" },
+            {
+              "name": "--uik-component-code-block-copy-border",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-border-width",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-disabled-opacity",
+              "description": ""
+            },
+            { "name": "--uik-component-code-block-copy-fg", "description": "" },
+            {
+              "name": "--uik-component-code-block-copy-focus-offset",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-focus-width",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-font-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-font-weight",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-line-height",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-offset",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-padding-x",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-padding-y",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-copy-radius",
+              "description": ""
+            },
+            { "name": "--uik-component-code-block-fg", "description": "" },
+            {
+              "name": "--uik-component-code-block-font-family",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-font-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-font-weight",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-line-height",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-max-height",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-padding-x",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-code-block-padding-y",
+              "description": ""
+            },
+            { "name": "--uik-component-code-block-radius", "description": "" }
+          ],
+          "a11y": [],
+          "notes": []
+        },
+        {
+          "id": "combobox",
+          "tagName": "uik-combobox",
+          "name": "<uik-combobox>",
+          "kind": "component",
+          "summary": "Combobox with input + listbox popup.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "autocomplete",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "enterkeyhint",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "inputmode",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "autocomplete",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "enterKeyHint",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "inputMode",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "items",
+              "type": "UikComboboxItem[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "combobox-select",
+              "description": "detail: {value, item}"
+            }
+          ],
+          "slots": [
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" },
+            { "name": "panel", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-combobox-base-*",
+              "description": "bg, border, fg, padding, radius, shadow"
+            },
+            {
+              "name": "--uik-component-combobox-panel-offset",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-combobox-panel-z-local",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Input uses role=\"combobox\" with aria-controls + aria-activedescendant."
+          ],
+          "notes": []
+        },
+        {
+          "id": "command-palette",
+          "tagName": "uik-command-palette",
+          "name": "<uik-command-palette>",
+          "kind": "component",
+          "summary": "Command palette overlay with filtering, keyboard navigation, and selection.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disable-auto-close",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "disable-filter",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "highlight-matches",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "true"
+            },
+            {
+              "name": "input-label",
+              "type": "string",
+              "description": "",
+              "default": "\"Search commands\""
+            },
+            {
+              "name": "item-height",
+              "type": "number | null",
+              "description": "number",
+              "default": "null"
+            },
+            {
+              "name": "loading",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "overscan",
+              "type": "number",
+              "description": "number",
+              "default": "4"
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"Search commands\""
+            },
+            {
+              "name": "query",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "viewport-height",
+              "type": "number | null",
+              "description": "number",
+              "default": "null"
+            },
+            {
+              "name": "virtualize",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disableAutoClose",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disableFilter",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "filter",
+              "type": "UikCommandPaletteFilter | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "highlightMatches",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "inputLabel",
+              "type": "string",
+              "description": "",
+              "default": "\"Search commands\""
+            },
+            {
+              "name": "itemHeight",
+              "type": "number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "items",
+              "type": "UikCommandPaletteItem[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "loading",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "overscan",
+              "type": "number",
+              "description": "",
+              "default": "4"
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"Search commands\""
+            },
+            {
+              "name": "query",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "viewportHeight",
+              "type": "number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "virtualize",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "command-palette-open-change",
+              "description": "detail: {open, reason}"
+            },
+            {
+              "name": "command-palette-query-change",
+              "description": "detail: {query}"
+            },
+            {
+              "name": "command-palette-select",
+              "description": "detail: {item, query}"
+            }
+          ],
+          "slots": [
+            { "name": "description", "description": "" },
+            { "name": "empty", "description": "" },
+            { "name": "footer", "description": "" },
+            { "name": "label", "description": "" },
+            { "name": "loading", "description": "" },
+            { "name": "title", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "description", "description": "" },
+            { "name": "dialog", "description": "" },
+            { "name": "empty", "description": "" },
+            { "name": "footer", "description": "" },
+            { "name": "group", "description": "" },
+            { "name": "group-label", "description": "" },
+            { "name": "header", "description": "" },
+            { "name": "highlight", "description": "" },
+            { "name": "input", "description": "" },
+            { "name": "item", "description": "" },
+            { "name": "item-description", "description": "" },
+            { "name": "item-label", "description": "" },
+            { "name": "item-shortcut", "description": "" },
+            { "name": "label", "description": "" },
+            { "name": "list", "description": "" },
+            { "name": "loading", "description": "" },
+            { "name": "panel", "description": "" },
+            { "name": "title", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-command-palette-*",
+              "description": "panel, input, list, item, highlight"
+            }
+          ],
+          "a11y": [
+            "Uses combobox + listbox with aria-activedescendant for keyboard navigation."
+          ],
+          "notes": []
+        },
+        {
+          "id": "description-list",
+          "tagName": "uik-description-list",
+          "name": "<uik-description-list>",
+          "kind": "component",
+          "summary": "Definition list wrapper for label/value metadata.",
+          "attributes": [
+            {
+              "name": "density",
+              "type": "\"comfortable\" | \"compact\"",
+              "description": "comfortable | compact",
+              "default": "\"comfortable\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "density",
+              "type": "\"comfortable\" | \"compact\"",
+              "description": "",
+              "default": "\"comfortable\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "dt + dd pairs" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-description-list-column-gap",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-column-gap-compact",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-row-gap",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-row-gap-compact",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-term-color",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-term-font-family",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-term-font-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-term-font-weight",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-term-line-height",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-term-width",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-value-color",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-value-font-family",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-value-font-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-value-font-weight",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-description-list-value-line-height",
+              "description": ""
+            }
+          ],
+          "a11y": ["Use dt/dd pairs for correct definition list semantics."],
+          "notes": []
+        },
+        {
+          "id": "dialog",
+          "tagName": "uik-dialog",
+          "name": "<uik-dialog>",
+          "kind": "component",
+          "summary": "Native dialog wrapper with slots for title, description, and actions.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "modal",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "true"
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "modal",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "Native close and cancel bubble from <dialog>.",
+              "description": ""
+            },
+            {
+              "name": "overlay-close",
+              "description": "detail: {reason}) (escape | programmatic | toggle"
+            }
+          ],
+          "slots": [
+            { "name": "actions", "description": "" },
+            { "name": "default", "description": "body" },
+            { "name": "description", "description": "" },
+            { "name": "title", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "actions", "description": "" },
+            { "name": "base", "description": "" },
+            { "name": "body", "description": "" },
+            { "name": "description", "description": "" },
+            { "name": "panel", "description": "" },
+            { "name": "title", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-dialog-actions-gap", "description": "" },
+            { "name": "--uik-component-dialog-bg", "description": "" },
+            { "name": "--uik-component-dialog-border", "description": "" },
+            {
+              "name": "--uik-component-dialog-description-fg",
+              "description": ""
+            },
+            { "name": "--uik-component-dialog-fg", "description": "" },
+            { "name": "--uik-component-dialog-max-width", "description": "" },
+            { "name": "--uik-component-dialog-padding", "description": "" },
+            { "name": "--uik-component-dialog-radius", "description": "" },
+            { "name": "--uik-component-dialog-scrim-color", "description": "" },
+            {
+              "name": "--uik-component-dialog-scrim-opacity",
+              "description": ""
+            },
+            { "name": "--uik-component-dialog-shadow", "description": "" },
+            { "name": "--uik-component-dialog-title-fg", "description": "" }
+          ],
+          "a11y": [
+            "Uses native dialog semantics; forwards aria-* attributes to <dialog>.",
+            "Escape closes and overlay-close reports reason; focus returns to the opener."
+          ],
+          "notes": []
+        },
+        {
+          "id": "heading",
+          "tagName": "uik-heading",
+          "name": "<uik-heading>",
+          "kind": "component",
+          "summary": "Tokenized heading typography with semantic levels.",
+          "attributes": [
+            {
+              "name": "level",
+              "type": "number",
+              "description": "1-6",
+              "default": "2"
+            },
+            {
+              "name": "tone",
+              "type": "| \"default\" | \"strong\" | \"muted\" | \"danger\" | \"success\" | \"warning\" | \"info\"",
+              "description": "default | strong | muted | danger | success | warning | info",
+              "default": "\"strong\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "level",
+              "type": "number",
+              "description": "",
+              "default": "2"
+            },
+            {
+              "name": "tone",
+              "type": "| \"default\" | \"strong\" | \"muted\" | \"danger\" | \"success\" | \"warning\" | \"info\"",
+              "description": "",
+              "default": "\"strong\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-heading-color-{default|strong|muted|danger|success|warning|info}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-heading-line-height-{1..6}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-heading-size-{1..6}",
+              "description": ""
+            },
+            { "name": "--uik-component-heading-weight", "description": "" }
+          ],
+          "a11y": ["Renders the matching native heading element."],
+          "notes": []
+        },
+        {
+          "id": "icon",
+          "tagName": "uik-icon",
+          "name": "<uik-icon>",
+          "kind": "component",
+          "summary": "Sized icon wrapper for inline SVG content.",
+          "attributes": [
+            {
+              "name": "aria-hidden",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "type": "| \"xs\" | \"sm\" | \"md\" | \"lg\"",
+              "description": "xs | sm | md | lg",
+              "default": "\"md\""
+            },
+            {
+              "name": "tone",
+              "type": "| \"default\" | \"muted\" | \"danger\" | \"success\" | \"warning\" | \"info\" | \"inverse\"",
+              "description": "default | muted | danger | success | warning | info | inverse",
+              "default": "\"default\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaHiddenValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "type": "| \"xs\" | \"sm\" | \"md\" | \"lg\"",
+              "description": "",
+              "default": "\"md\""
+            },
+            {
+              "name": "tone",
+              "type": "| \"default\" | \"muted\" | \"danger\" | \"success\" | \"warning\" | \"info\" | \"inverse\"",
+              "description": "",
+              "default": "\"default\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "svg" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-icon-color-{default|muted|danger|success|warning|info|inverse}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-icon-size-{xs|sm|md|lg}",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Use aria-label for meaningful icons; icons are aria-hidden by default when unlabeled."
+          ],
+          "notes": []
+        },
+        {
+          "id": "input",
+          "tagName": "uik-input",
+          "name": "<uik-input>",
+          "kind": "component",
+          "summary": "Form-associated text input with labels, hints, and errors.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "autocomplete",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "enterkeyhint",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "inputmode",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "description": "",
+              "default": "\"text\""
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "autocomplete",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "enterKeyHint",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "inputMode",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "description": "",
+              "default": "\"text\""
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native input and change bubble from the internal <input>.",
+              "description": ""
+            }
+          ],
+          "slots": [
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-input-base-*",
+              "description": "bg, border, fg, padding, radius, shadow, selection"
+            }
+          ],
+          "a11y": [
+            "Label slot associates via for; hint and error are wired to aria-describedby.",
+            "aria-invalid is set when invalid or error content is present."
+          ],
+          "notes": []
+        },
+        {
+          "id": "link",
+          "tagName": "uik-link",
+          "name": "<uik-link>",
+          "kind": "component",
+          "summary": "Anchor wrapper with tokenized colors and underline styling.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "download",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "href",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "rel",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "target",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "download",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "href",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "rel",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "target",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native anchor events bubble from the internal <a>.",
+              "description": ""
+            }
+          ],
+          "slots": [{ "name": "default", "description": "link text" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            { "name": "--uik-component-link-fg-default", "description": "" },
+            { "name": "--uik-component-link-fg-hover", "description": "" },
+            {
+              "name": "--uik-component-link-underline-offset",
+              "description": ""
+            }
+          ],
+          "a11y": ["Forward aria-* attributes to <a>."],
+          "notes": []
+        },
+        {
+          "id": "listbox",
+          "tagName": "uik-listbox",
+          "name": "<uik-listbox>",
+          "kind": "component",
+          "summary": "Listbox selection container with roving focus support.",
+          "attributes": [
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "focus-mode",
+              "type": "\"roving\" | \"activedescendant\"",
+              "description": "roving | activedescendant",
+              "default": "\"roving\""
+            },
+            {
+              "name": "selection-mode",
+              "type": "\"single\" | \"multiple\"",
+              "description": "single | multiple",
+              "default": "\"single\""
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "focusMode",
+              "type": "\"roving\" | \"activedescendant\"",
+              "description": "",
+              "default": "\"roving\""
+            },
+            {
+              "name": "selectedValues",
+              "type": "string[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "selectionMode",
+              "type": "\"single\" | \"multiple\"",
+              "description": "",
+              "default": "\"single\""
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "listbox-active",
+              "description": "detail: {id, value, option}"
+            },
+            {
+              "name": "listbox-select",
+              "description": "detail: {value, values, option}"
+            }
+          ],
+          "slots": [
+            { "name": "default", "description": "uik-option children" }
+          ],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-listbox-*",
+              "description": "bg, fg, border, radius, padding, shadow"
+            }
+          ],
+          "a11y": [
+            "Roving focus with Arrow/Home/End; Enter/Space selects the focused option."
+          ],
+          "notes": []
+        },
+        {
+          "id": "menu",
+          "tagName": "uik-menu",
+          "name": "<uik-menu>",
+          "kind": "component",
+          "summary": "Menu panel with trigger slot and roving focus items.",
+          "attributes": [
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "placement",
+              "type": "| \"bottom-start\" | \"bottom\" | \"bottom-end\" | \"top-start\" | \"top\" | \"top-end\"",
+              "description": "",
+              "default": "\"bottom-start\""
+            },
+            {
+              "name": "popover",
+              "type": "\"\" | \"auto\" | \"manual\" | \"hint\"",
+              "description": "auto | manual | hint",
+              "default": "\"\""
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "placement",
+              "type": "| \"bottom-start\" | \"bottom\" | \"bottom-end\" | \"top-start\" | \"top\" | \"top-end\"",
+              "description": "",
+              "default": "\"bottom-start\""
+            },
+            {
+              "name": "popover",
+              "type": "\"\" | \"auto\" | \"manual\" | \"hint\"",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "menu-active",
+              "description": "detail: {id, value, item}"
+            },
+            {
+              "name": "menu-select",
+              "description": "detail: {id, value, item}"
+            },
+            { "name": "menu-open", "description": "" },
+            { "name": "menu-close", "description": "" },
+            { "name": "overlay-close", "description": "detail: {reason}" }
+          ],
+          "slots": [
+            { "name": "default", "description": "uik-menu-item children" },
+            { "name": "trigger", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-menu-*",
+              "description": "bg, fg, border, radius, padding, shadow, offset, gap"
+            },
+            {
+              "name": "--uik-component-menu-item-*",
+              "description": "bg, fg, padding, radius, height, state colors"
+            },
+            { "name": "--uik-component-popover-bg", "description": "" },
+            { "name": "--uik-component-popover-border", "description": "" },
+            { "name": "--uik-component-popover-fg", "description": "" },
+            { "name": "--uik-component-popover-offset", "description": "" },
+            { "name": "--uik-component-popover-padding-x", "description": "" },
+            { "name": "--uik-component-popover-padding-y", "description": "" },
+            { "name": "--uik-component-popover-radius", "description": "" },
+            { "name": "--uik-component-popover-shadow", "description": "" },
+            {
+              "name": "--uik-component-popover-z-local-overlay",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Roving focus with Arrow/Home/End; Enter/Space selects; Escape closes and returns focus."
+          ],
+          "notes": []
+        },
+        {
+          "id": "menu-item",
+          "tagName": "uik-menu-item",
+          "name": "<uik-menu-item>",
+          "kind": "component",
+          "summary": "Menu item for use inside uik-menu.",
+          "attributes": [
+            {
+              "name": "active",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "number",
+              "default": "-1"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "active",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "",
+              "default": "-1"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "label" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-menu-item-*",
+              "description": "bg, fg, padding, radius, height, state colors"
+            }
+          ],
+          "a11y": [],
+          "notes": []
+        },
+        {
+          "id": "menubar",
+          "tagName": "uik-menubar",
+          "name": "<uik-menubar>",
+          "kind": "component",
+          "summary": "Menubar wrapper for uik-menu triggers.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "uik-menu children" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-menubar-*",
+              "description": "bg, fg, border, radius, padding, gap"
+            }
+          ],
+          "a11y": [
+            "Roving focus across triggers with ArrowLeft/Right, Home/End; ArrowDown opens."
+          ],
+          "notes": []
+        },
+        {
+          "id": "nav",
+          "tagName": "uik-nav",
+          "name": "<uik-nav>",
+          "kind": "component",
+          "summary": "Navigation list with grouped links and current state.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "currentId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "items",
+              "type": "array",
+              "description": "array",
+              "default": ""
+            },
+            {
+              "name": "openIds",
+              "type": "string[]",
+              "description": "string[]",
+              "default": ""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "currentId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "items",
+              "type": "UikNavItem[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "openIds",
+              "type": "string[]",
+              "description": "",
+              "default": "[]"
+            }
+          ],
+          "events": [
+            { "name": "nav-select", "description": "" },
+            { "name": "nav-toggle", "description": "" }
+          ],
+          "slots": [],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "item", "description": "" },
+            { "name": "label", "description": "" },
+            { "name": "link", "description": "" },
+            { "name": "toggle", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-nav-indent", "description": "" },
+            { "name": "--uik-component-nav-item-*", "description": "" },
+            { "name": "--uik-component-nav-text-*", "description": "" },
+            { "name": "--uik-component-nav-toggle-fg", "description": "" }
+          ],
+          "a11y": [
+            "Renders anchors inside a nav landmark; active links expose aria-current."
+          ],
+          "notes": []
+        },
+        {
+          "id": "nav-rail",
+          "tagName": "uik-nav-rail",
+          "name": "<uik-nav-rail>",
+          "kind": "component",
+          "summary": "Navigation rail with roving focus and icon buttons.",
+          "attributes": [
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "items",
+              "type": "array",
+              "description": "array",
+              "default": ""
+            },
+            {
+              "name": "orientation",
+              "type": "\"vertical\" | \"horizontal\"",
+              "description": "vertical | horizontal",
+              "default": "\"vertical\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "items",
+              "type": "UikNavRailItem[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "orientation",
+              "type": "\"vertical\" | \"horizontal\"",
+              "description": "",
+              "default": "\"vertical\""
+            }
+          ],
+          "events": [{ "name": "nav-rail-select", "description": "" }],
+          "slots": [],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "item", "description": "" },
+            { "name": "item-button", "description": "" },
+            { "name": "item-icon", "description": "" },
+            { "name": "item-indicator", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-nav-rail-bg", "description": "" },
+            { "name": "--uik-component-nav-rail-fg", "description": "" },
+            { "name": "--uik-component-nav-rail-gap", "description": "" },
+            { "name": "--uik-component-nav-rail-icon-size", "description": "" },
+            {
+              "name": "--uik-component-nav-rail-item-indicator-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-nav-rail-item-indicator-radius",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-nav-rail-item-indicator-width",
+              "description": ""
+            },
+            { "name": "--uik-component-nav-rail-item-size", "description": "" },
+            { "name": "--uik-component-nav-rail-padding-y", "description": "" },
+            { "name": "--uik-component-nav-rail-width", "description": "" }
+          ],
+          "a11y": [
+            "Toolbar role with roving focus; Arrow/Home/End move focus; Enter/Space activate items."
+          ],
+          "notes": []
+        },
+        {
+          "id": "option",
+          "tagName": "uik-option",
+          "name": "<uik-option>",
+          "kind": "component",
+          "summary": "Listbox option for use inside uik-listbox.",
+          "attributes": [
+            {
+              "name": "active",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "number",
+              "default": "-1"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "active",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "",
+              "default": "-1"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "label" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-listbox-item-*",
+              "description": "bg, fg, padding, radius, height, state colors"
+            }
+          ],
+          "a11y": [],
+          "notes": []
+        },
+        {
+          "id": "pagination",
+          "tagName": "uik-pagination",
+          "name": "<uik-pagination>",
+          "kind": "component",
+          "summary": "Pagination control with previous/next and page buttons.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "max-buttons",
+              "type": "number",
+              "description": "",
+              "default": "7"
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "description": "",
+              "default": "1"
+            },
+            {
+              "name": "page-count",
+              "type": "number",
+              "description": "",
+              "default": "1"
+            },
+            {
+              "name": "total",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "maxButtons",
+              "type": "number",
+              "description": "",
+              "default": "7"
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "description": "",
+              "default": "1"
+            },
+            {
+              "name": "pageCount",
+              "type": "number",
+              "description": "",
+              "default": "1"
+            },
+            {
+              "name": "total",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            }
+          ],
+          "events": [
+            { "name": "pagination-change", "description": "detail: {page}" }
+          ],
+          "slots": [{ "name": "summary", "description": "" }],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "button", "description": "" },
+            { "name": "ellipsis", "description": "" },
+            { "name": "item", "description": "" },
+            { "name": "list", "description": "" },
+            { "name": "summary", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-pagination-button-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-bg-active",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-bg-hover",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-border",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-border-width",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-current-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-current-border",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-current-fg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-disabled-opacity",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-fg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-focus-offset",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-focus-width",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-font-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-font-weight",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-height",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-line-height",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-min-width",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-padding-x",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-padding-y",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-button-radius",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-ellipsis-color",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-font-family",
+              "description": ""
+            },
+            { "name": "--uik-component-pagination-gap", "description": "" },
+            {
+              "name": "--uik-component-pagination-summary-color",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-summary-font-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-pagination-summary-font-weight",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Buttons are native and expose aria-current on the active page."
+          ],
+          "notes": []
+        },
+        {
+          "id": "popover",
+          "tagName": "uik-popover",
+          "name": "<uik-popover>",
+          "kind": "component",
+          "summary": "Popover panel with trigger slot and optional native popover support.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "placement",
+              "type": "| \"bottom-start\" | \"bottom\" | \"bottom-end\" | \"top-start\" | \"top\" | \"top-end\"",
+              "description": "",
+              "default": "\"bottom-start\""
+            },
+            {
+              "name": "popover",
+              "type": "\"\" | \"auto\" | \"manual\" | \"hint\"",
+              "description": "auto | manual | hint",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "placement",
+              "type": "| \"bottom-start\" | \"bottom\" | \"bottom-end\" | \"top-start\" | \"top\" | \"top-end\"",
+              "description": "",
+              "default": "\"bottom-start\""
+            },
+            {
+              "name": "popover",
+              "type": "\"\" | \"auto\" | \"manual\" | \"hint\"",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Trigger events bubble; panel listens to native popover toggle when supported.",
+              "description": ""
+            },
+            {
+              "name": "overlay-close",
+              "description": "detail: {reason}) (escape | outside | programmatic | toggle"
+            }
+          ],
+          "slots": [
+            { "name": "default", "description": "panel content" },
+            { "name": "trigger", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-popover-bg", "description": "" },
+            { "name": "--uik-component-popover-border", "description": "" },
+            { "name": "--uik-component-popover-fg", "description": "" },
+            { "name": "--uik-component-popover-offset", "description": "" },
+            { "name": "--uik-component-popover-padding-x", "description": "" },
+            { "name": "--uik-component-popover-padding-y", "description": "" },
+            { "name": "--uik-component-popover-radius", "description": "" },
+            { "name": "--uik-component-popover-shadow", "description": "" },
+            {
+              "name": "--uik-component-popover-z-local-overlay",
+              "description": ""
+            }
+          ],
+          "a11y": ["Forward aria-* attributes to the panel."],
+          "notes": []
+        },
+        {
+          "id": "progress",
+          "tagName": "uik-progress",
+          "name": "<uik-progress>",
+          "kind": "component",
+          "summary": "Progress indicator with determinate and indeterminate modes.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "indeterminate",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "max",
+              "type": "number",
+              "description": "",
+              "default": "100"
+            },
+            {
+              "name": "value",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "indeterminate",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "max",
+              "type": "number",
+              "description": "",
+              "default": "100"
+            },
+            {
+              "name": "value",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            { "name": "--uik-component-progress-bar-bg", "description": "" },
+            { "name": "--uik-component-progress-height", "description": "" },
+            { "name": "--uik-component-progress-min-width", "description": "" },
+            { "name": "--uik-component-progress-radius", "description": "" },
+            { "name": "--uik-component-progress-track-bg", "description": "" }
+          ],
+          "a11y": [
+            "Forward aria-label and aria-labelledby to the internal <progress>."
+          ],
+          "notes": []
+        },
+        {
+          "id": "radio",
+          "tagName": "uik-radio",
+          "name": "<uik-radio>",
+          "kind": "component",
+          "summary": "Form-associated radio control with label, hint, and error slots.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "checked",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "groupDisabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"on\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "checked",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "groupDisabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"on\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native change bubbles from the internal <input>.",
+              "description": ""
+            }
+          ],
+          "slots": [
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-radio-accent", "description": "" },
+            { "name": "--uik-component-radio-size", "description": "" }
+          ],
+          "a11y": [
+            "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
+          ],
+          "notes": []
+        },
+        {
+          "id": "radio-group",
+          "tagName": "uik-radio-group",
+          "name": "<uik-radio-group>",
+          "kind": "component",
+          "summary": "Radio group wrapper with keyboard arrow navigation.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "orientation",
+              "type": "\"vertical\" | \"horizontal\"",
+              "description": "vertical | horizontal",
+              "default": "\"vertical\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "orientation",
+              "type": "\"vertical\" | \"horizontal\"",
+              "description": "",
+              "default": "\"vertical\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native change bubbles from child radios.",
+              "description": ""
+            }
+          ],
+          "slots": [
+            { "name": "default", "description": "<uik-radio> children" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-radio-group-gap", "description": "" }
+          ],
+          "a11y": [
+            "Label slot wires aria-labelledby; hint/error are announced via aria-describedby."
+          ],
+          "notes": []
+        },
+        {
+          "id": "resizable-panels",
+          "tagName": "uik-resizable-panels",
+          "name": "<uik-resizable-panels>",
+          "kind": "component",
+          "summary": "Resizable two-panel layout with a keyboard-accessible separator.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "min-end-size",
+              "type": "| number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "min-start-size",
+              "type": "number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "minEndSize",
+              "type": "number, px",
+              "description": "number, px",
+              "default": ""
+            },
+            {
+              "name": "minStartSize",
+              "type": "number, px",
+              "description": "number, px",
+              "default": ""
+            },
+            {
+              "name": "orientation",
+              "type": "| \"horizontal\" | \"vertical\"",
+              "description": "horizontal | vertical",
+              "default": "\"horizontal\""
+            },
+            {
+              "name": "start-size",
+              "type": "| number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "startSize",
+              "type": "number, px",
+              "description": "number, px",
+              "default": ""
+            },
+            {
+              "name": "step",
+              "type": "number | null",
+              "description": "number, px",
+              "default": "null"
+            },
+            {
+              "name": "step-large",
+              "type": "| number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "stepLarge",
+              "type": "number, px",
+              "description": "number, px",
+              "default": ""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "minEndSize",
+              "type": "| number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "minStartSize",
+              "type": "number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "orientation",
+              "type": "| \"horizontal\" | \"vertical\"",
+              "description": "",
+              "default": "\"horizontal\""
+            },
+            {
+              "name": "startSize",
+              "type": "| number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "step",
+              "type": "number | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "stepLarge",
+              "type": "| number | null",
+              "description": "",
+              "default": "null"
+            }
+          ],
+          "events": [
+            {
+              "name": "resizable-panels-resize",
+              "description": "detail: {startSize, endSize, ratio, source, phase}"
+            }
+          ],
+          "slots": [
+            { "name": "end", "description": "" },
+            { "name": "start", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "handle", "description": "" },
+            { "name": "handle-grip", "description": "" },
+            { "name": "panel-end", "description": "" },
+            { "name": "panel-start", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-resizable-panels-handle-active-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-handle-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-handle-hit",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-handle-hover-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-handle-radius",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-handle-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-panel-min-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-panel-start-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-step",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-resizable-panels-step-lg",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Handle uses role=\"separator\" with keyboard resizing; defaults aria-label to \"Resize panels\" unless aria-label/aria-labelledby is set."
+          ],
+          "notes": []
+        },
+        {
+          "id": "select",
+          "tagName": "uik-select",
+          "name": "<uik-select>",
+          "kind": "component",
+          "summary": "Form-associated select with label, hint, and error slots.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native change bubbles from the internal <select>.",
+              "description": ""
+            }
+          ],
+          "slots": [
+            { "name": "default", "description": "<option> elements" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-select-base-*",
+              "description": "bg, border, fg, padding, radius, shadow, font"
+            }
+          ],
+          "a11y": [
+            "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
+          ],
+          "notes": []
+        },
+        {
+          "id": "separator",
+          "tagName": "uik-separator",
+          "name": "<uik-separator>",
+          "kind": "component",
+          "summary": "Horizontal or vertical separator line.",
+          "attributes": [
+            {
+              "name": "orientation",
+              "type": "| \"horizontal\" | \"vertical\"",
+              "description": "horizontal | vertical",
+              "default": "\"horizontal\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "orientation",
+              "type": "| \"horizontal\" | \"vertical\"",
+              "description": "",
+              "default": "\"horizontal\""
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            { "name": "--uik-component-separator-color", "description": "" },
+            { "name": "--uik-component-separator-radius", "description": "" },
+            { "name": "--uik-component-separator-thickness", "description": "" }
+          ],
+          "a11y": [
+            "Horizontal renders <hr>; vertical uses role=\"separator\"."
+          ],
+          "notes": []
+        },
+        {
+          "id": "spinner",
+          "tagName": "uik-spinner",
+          "name": "<uik-spinner>",
+          "kind": "component",
+          "summary": "Loading spinner with tone and size variations.",
+          "attributes": [
+            {
+              "name": "size",
+              "type": "| \"sm\" | \"md\" | \"lg\"",
+              "description": "sm | md | lg",
+              "default": "\"md\""
+            },
+            {
+              "name": "tone",
+              "type": "| \"default\" | \"muted\" | \"primary\" | \"danger\" | \"success\" | \"warning\" | \"info\"",
+              "description": "default | muted | primary | danger | success | warning | info",
+              "default": "\"default\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "size",
+              "type": "| \"sm\" | \"md\" | \"lg\"",
+              "description": "",
+              "default": "\"md\""
+            },
+            {
+              "name": "tone",
+              "type": "| \"default\" | \"muted\" | \"primary\" | \"danger\" | \"success\" | \"warning\" | \"info\"",
+              "description": "",
+              "default": "\"default\""
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-spinner-indicator-{default|muted|primary|danger|success|warning|info}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-spinner-size-{sm|md|lg}",
+              "description": ""
+            },
+            { "name": "--uik-component-spinner-track", "description": "" }
+          ],
+          "a11y": ["Add aria-label if the spinner is meaningful."],
+          "notes": []
+        },
+        {
+          "id": "stack",
+          "tagName": "uik-stack",
+          "name": "<uik-stack>",
+          "kind": "component",
+          "summary": "Flex stack for layout spacing and alignment.",
+          "attributes": [
+            {
+              "name": "align",
+              "type": "| \"start\" | \"center\" | \"end\" | \"stretch\"",
+              "description": "",
+              "default": "\"stretch\""
+            },
+            {
+              "name": "direction",
+              "type": "\"vertical\" | \"horizontal\"",
+              "description": "vertical | horizontal",
+              "default": "\"vertical\""
+            },
+            {
+              "name": "gap",
+              "type": "| \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\"",
+              "description": "1-6",
+              "default": "\"3\""
+            },
+            {
+              "name": "justify",
+              "type": "\"start\" | \"center\" | \"end\" | \"between\"",
+              "description": "",
+              "default": "\"start\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "align",
+              "type": "| \"start\" | \"center\" | \"end\" | \"stretch\"",
+              "description": "",
+              "default": "\"stretch\""
+            },
+            {
+              "name": "direction",
+              "type": "\"vertical\" | \"horizontal\"",
+              "description": "",
+              "default": "\"vertical\""
+            },
+            {
+              "name": "gap",
+              "type": "| \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\"",
+              "description": "",
+              "default": "\"3\""
+            },
+            {
+              "name": "justify",
+              "type": "\"start\" | \"center\" | \"end\" | \"between\"",
+              "description": "",
+              "default": "\"start\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            { "name": "--uik-component-stack-gap-{1..6}", "description": "" }
+          ],
+          "a11y": ["Use semantic wrappers for landmark content."],
+          "notes": []
+        },
+        {
+          "id": "surface",
+          "tagName": "uik-surface",
+          "name": "<uik-surface>",
+          "kind": "component",
+          "summary": "Surface wrapper for background, border, and elevation tokens.",
+          "attributes": [
+            {
+              "name": "bordered",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "variant",
+              "type": "\"base\" | \"muted\" | \"card\" | \"elevated\" | \"popover\"",
+              "description": "base | muted | card | elevated | popover",
+              "default": "\"base\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "bordered",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "variant",
+              "type": "\"base\" | \"muted\" | \"card\" | \"elevated\" | \"popover\"",
+              "description": "",
+              "default": "\"base\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-surface-bg-{default|muted|card|elevated|popover}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-surface-border-color-{default|bordered}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-surface-border-width-{default|bordered}",
+              "description": ""
+            },
+            { "name": "--uik-component-surface-radius", "description": "" },
+            {
+              "name": "--uik-component-surface-shadow-{default|card|elevated|popover}",
+              "description": ""
+            }
+          ],
+          "a11y": ["Use semantic HTML inside; does not add roles."],
+          "notes": []
+        },
+        {
+          "id": "switch",
+          "tagName": "uik-switch",
+          "name": "<uik-switch>",
+          "kind": "component",
+          "summary": "Form-associated switch control with label, hint, and error slots.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "checked",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"on\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "checked",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"on\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native change bubbles from the internal <input>.",
+              "description": ""
+            }
+          ],
+          "slots": [
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" },
+            { "name": "thumb", "description": "" },
+            { "name": "track", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-switch-height", "description": "" },
+            { "name": "--uik-component-switch-padding", "description": "" },
+            { "name": "--uik-component-switch-thumb-bg", "description": "" },
+            {
+              "name": "--uik-component-switch-thumb-shadow",
+              "description": ""
+            },
+            { "name": "--uik-component-switch-thumb-size", "description": "" },
+            {
+              "name": "--uik-component-switch-track-bg-checked",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-switch-track-bg-default",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-switch-track-border-checked",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-switch-track-border-default",
+              "description": ""
+            },
+            { "name": "--uik-component-switch-width", "description": "" }
+          ],
+          "a11y": [
+            "Uses role=\"switch\" and supports label slot or aria-label."
+          ],
+          "notes": []
+        },
+        {
+          "id": "tab",
+          "tagName": "uik-tab",
+          "name": "<uik-tab>",
+          "kind": "component",
+          "summary": "Tab element for use inside uik-tabs.",
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "number",
+              "default": "-1"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "tabIndexValue",
+              "type": "number",
+              "description": "",
+              "default": "-1"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "label" }],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "indicator", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-tabs-tab-*",
+              "description": "bg, fg, padding, radius, indicator"
+            }
+          ],
+          "a11y": [],
+          "notes": []
+        },
+        {
+          "id": "tab-panel",
+          "tagName": "uik-tab-panel",
+          "name": "<uik-tab-panel>",
+          "kind": "component",
+          "summary": "Tab panel for use inside uik-tabs.",
+          "attributes": [
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "panel content" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            { "name": "--uik-component-tabs-panel-padding", "description": "" }
+          ],
+          "a11y": [],
+          "notes": []
+        },
+        {
+          "id": "tabs",
+          "tagName": "uik-tabs",
+          "name": "<uik-tabs>",
+          "kind": "component",
+          "summary": "Tabs container with roving focus and panels.",
+          "attributes": [
+            {
+              "name": "activation",
+              "type": "\"auto\" | \"manual\"",
+              "description": "auto | manual",
+              "default": "\"auto\""
+            },
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "orientation",
+              "type": "\"horizontal\" | \"vertical\"",
+              "description": "horizontal | vertical",
+              "default": "\"horizontal\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "activation",
+              "type": "\"auto\" | \"manual\"",
+              "description": "",
+              "default": "\"auto\""
+            },
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "orientation",
+              "type": "\"horizontal\" | \"vertical\"",
+              "description": "",
+              "default": "\"horizontal\""
+            }
+          ],
+          "events": [{ "name": "tabs-select", "description": "detail: {id}" }],
+          "slots": [
+            { "name": "panel", "description": "uik-tab-panel children" },
+            { "name": "tab", "description": "uik-tab children" }
+          ],
+          "cssParts": [
+            { "name": "panels", "description": "" },
+            { "name": "tablist", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-tabs-*",
+              "description": "border, gap, tab, panel"
+            }
+          ],
+          "a11y": [
+            "Arrow keys move focus; Enter/Space activate when activation=manual."
+          ],
+          "notes": []
+        },
+        {
+          "id": "text",
+          "tagName": "uik-text",
+          "name": "<uik-text>",
+          "kind": "component",
+          "summary": "Tokenized text wrapper for size, weight, tone, and truncation.",
+          "attributes": [
+            {
+              "name": "as",
+              "type": "\"p\" | \"span\" | \"div\" | \"label\"",
+              "description": "span | p | div | label",
+              "default": "\"span\""
+            },
+            {
+              "name": "size",
+              "type": "| \"sm\" | \"md\" | \"lg\" | \"xl\"",
+              "description": "sm | md | lg | xl",
+              "default": "\"md\""
+            },
+            {
+              "name": "tone",
+              "type": "| \"default\" | \"muted\" | \"strong\" | \"danger\" | \"success\" | \"warning\" | \"info\"",
+              "description": "",
+              "default": "\"default\""
+            },
+            {
+              "name": "truncate",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "weight",
+              "type": "| \"regular\" | \"medium\" | \"semibold\" | \"bold\"",
+              "description": "",
+              "default": "\"regular\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "as",
+              "type": "\"p\" | \"span\" | \"div\" | \"label\"",
+              "description": "",
+              "default": "\"span\""
+            },
+            {
+              "name": "size",
+              "type": "| \"sm\" | \"md\" | \"lg\" | \"xl\"",
+              "description": "",
+              "default": "\"md\""
+            },
+            {
+              "name": "tone",
+              "type": "| \"default\" | \"muted\" | \"strong\" | \"danger\" | \"success\" | \"warning\" | \"info\"",
+              "description": "",
+              "default": "\"default\""
+            },
+            {
+              "name": "truncate",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "weight",
+              "type": "| \"regular\" | \"medium\" | \"semibold\" | \"bold\"",
+              "description": "",
+              "default": "\"regular\""
+            }
+          ],
+          "events": [],
+          "slots": [{ "name": "default", "description": "" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-text-color-{default|muted|strong|danger|success|warning|info}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-text-line-height-{sm|md|lg|xl}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-text-size-{sm|md|lg|xl}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-text-weight-{regular|medium|semibold|bold}",
+              "description": ""
+            }
+          ],
+          "a11y": ["Use as=label for form labels when needed."],
+          "notes": []
+        },
+        {
+          "id": "textarea",
+          "tagName": "uik-textarea",
+          "name": "<uik-textarea>",
+          "kind": "component",
+          "summary": "Form-associated textarea with label, hint, and error slots.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "rows",
+              "type": "number",
+              "description": "",
+              "default": "3"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "invalid",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "rows",
+              "type": "number",
+              "description": "",
+              "default": "3"
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Native input and change bubble from the internal <textarea>.",
+              "description": ""
+            }
+          ],
+          "slots": [
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "hint", "description": "" },
+            { "name": "label", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-textarea-base-*",
+              "description": "bg, border, fg, padding, radius, shadow, min-height"
+            }
+          ],
+          "a11y": [
+            "Provide a label slot or aria-label; hint/error are wired via aria-describedby."
+          ],
+          "notes": []
+        },
+        {
+          "id": "tooltip",
+          "tagName": "uik-tooltip",
+          "name": "<uik-tooltip>",
+          "kind": "component",
+          "summary": "Tooltip panel with trigger slot.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "placement",
+              "type": "| \"bottom-start\" | \"bottom\" | \"bottom-end\" | \"top-start\" | \"top\" | \"top-end\"",
+              "description": "",
+              "default": "\"bottom-start\""
+            },
+            {
+              "name": "popover",
+              "type": "\"\" | \"auto\" | \"manual\" | \"hint\"",
+              "description": "defaults to hint",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "placement",
+              "type": "| \"bottom-start\" | \"bottom\" | \"bottom-end\" | \"top-start\" | \"top\" | \"top-end\"",
+              "description": "",
+              "default": "\"bottom-start\""
+            },
+            {
+              "name": "popover",
+              "type": "\"\" | \"auto\" | \"manual\" | \"hint\"",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "Trigger events bubble from slotted trigger.",
+              "description": ""
+            },
+            {
+              "name": "overlay-close",
+              "description": "detail: {reason}) (escape | outside | programmatic | toggle"
+            }
+          ],
+          "slots": [
+            { "name": "default", "description": "tooltip content" },
+            { "name": "trigger", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "control", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-tooltip-bg", "description": "" },
+            { "name": "--uik-component-tooltip-fg", "description": "" },
+            { "name": "--uik-component-tooltip-offset", "description": "" },
+            { "name": "--uik-component-tooltip-padding-x", "description": "" },
+            { "name": "--uik-component-tooltip-padding-y", "description": "" },
+            { "name": "--uik-component-tooltip-radius", "description": "" },
+            { "name": "--uik-component-tooltip-shadow", "description": "" },
+            {
+              "name": "--uik-component-tooltip-z-local-tooltip",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Panel uses role=\"tooltip\" and wires aria-describedby to trigger."
+          ],
+          "notes": []
+        },
+        {
+          "id": "tree-view",
+          "tagName": "uik-tree-view",
+          "name": "<uik-tree-view>",
+          "kind": "component",
+          "summary": "Tree view navigation list with expandable branches.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "currentId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "items",
+              "type": "array",
+              "description": "array",
+              "default": ""
+            },
+            {
+              "name": "openIds",
+              "type": "string[]",
+              "description": "string[]",
+              "default": ""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "currentId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "items",
+              "type": "UikTreeViewItem[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "openIds",
+              "type": "string[]",
+              "description": "",
+              "default": "[]"
+            }
+          ],
+          "events": [
+            { "name": "tree-view-activate", "description": "" },
+            { "name": "tree-view-toggle", "description": "" }
+          ],
+          "slots": [],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "item", "description": "" },
+            { "name": "label", "description": "" },
+            { "name": "toggle", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-tree-view-indent", "description": "" },
+            { "name": "--uik-component-tree-view-item-*", "description": "" },
+            { "name": "--uik-component-tree-view-text-*", "description": "" },
+            { "name": "--uik-component-tree-view-toggle-fg", "description": "" }
+          ],
+          "a11y": [
+            "Treeview role with roving focus; Arrow keys move, typeahead jumps, Enter/Space activates."
+          ],
+          "notes": [
+            "Typeahead: typing letters moves focus to the next matching label.",
+            "Multi-select patterns are app-owned; compose selection controls alongside items.",
+            "Async loading: listen to tree-view-toggle or tree-view-activate and update items/openIds when children load."
+          ]
+        },
+        {
+          "id": "visually-hidden",
+          "tagName": "uik-visually-hidden",
+          "name": "<uik-visually-hidden>",
+          "kind": "component",
+          "summary": "Utility to hide content visually while keeping it accessible.",
+          "attributes": [],
+          "properties": [],
+          "events": [],
+          "slots": [{ "name": "default", "description": "" }],
+          "cssParts": [{ "name": "base", "description": "" }],
+          "cssCustomProperties": [],
+          "a11y": ["Use for screen-reader-only labels or descriptions."],
+          "notes": []
+        }
+      ]
+    },
+    {
+      "id": "ui-shell",
+      "name": "Shell",
+      "contracts": "packages/ui-shell/contracts/entries.json",
+      "cem": "packages/ui-shell/dist/custom-elements.json",
+      "components": [
+        {
+          "id": "shell-activity-bar",
+          "tagName": "uik-shell-activity-bar",
+          "name": "<uik-shell-activity-bar>",
+          "kind": "component",
+          "summary": "Vertical activity bar composed with uik-nav-rail.",
+          "attributes": [
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "string",
+              "default": "\"\""
+            },
+            {
+              "name": "items",
+              "type": "array",
+              "description": "array",
+              "default": ""
+            }
+          ],
+          "properties": [
+            {
+              "name": "activeId",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "items",
+              "type": "UikShellActivityBarItem[]",
+              "description": "",
+              "default": "[]"
+            }
+          ],
+          "events": [
+            { "name": "activity-bar-select", "description": "detail: {id}" }
+          ],
+          "slots": [{ "name": "footer", "description": "" }],
+          "cssParts": [
+            { "name": "activity-bar", "description": "" },
+            { "name": "footer", "description": "" },
+            { "name": "spacer", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-shell-activity-bar-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-activity-bar-fg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-activity-bar-item-icon-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-activity-bar-item-indicator-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-activity-bar-item-indicator-radius",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-activity-bar-item-indicator-width",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-activity-bar-item-size",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-activity-bar-width",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Delegates roving focus behavior to uik-nav-rail; set aria-label if needed."
+          ],
+          "notes": []
+        },
+        {
+          "id": "shell-layout",
+          "tagName": "uik-shell-layout",
+          "name": "<uik-shell-layout>",
+          "kind": "component",
+          "summary": "Shell region layout container with named slots.",
+          "attributes": [
+            {
+              "name": "isSecondarySidebarVisible",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            }
+          ],
+          "properties": [
+            {
+              "name": "isSecondarySidebarVisible",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            }
+          ],
+          "events": [],
+          "slots": [
+            { "name": "activity-bar", "description": "" },
+            { "name": "main-content", "description": "" },
+            { "name": "primary-sidebar", "description": "" },
+            { "name": "secondary-sidebar", "description": "" },
+            { "name": "status-bar", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "activity-bar", "description": "" },
+            { "name": "layout", "description": "" },
+            { "name": "main-content", "description": "" },
+            { "name": "primary-sidebar", "description": "" },
+            { "name": "row", "description": "" },
+            { "name": "secondary-sidebar", "description": "" },
+            { "name": "status-bar", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-shell-divider-color",
+              "description": ""
+            },
+            { "name": "--uik-component-shell-scrollbar-*", "description": "" }
+          ],
+          "a11y": ["Use semantic elements inside slots for landmarks."],
+          "notes": []
+        },
+        {
+          "id": "shell-secondary-sidebar",
+          "tagName": "uik-shell-secondary-sidebar",
+          "name": "<uik-shell-secondary-sidebar>",
+          "kind": "component",
+          "summary": "Secondary sidebar panel with header and optional footer.",
+          "attributes": [
+            {
+              "name": "focus-return-target",
+              "type": "| string | HTMLElement | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "focusReturnTarget",
+              "type": "selector | element",
+              "description": "selector | element",
+              "default": ""
+            },
+            {
+              "name": "heading",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "isOpen",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
+            }
+          ],
+          "properties": [
+            {
+              "name": "focusReturnTarget",
+              "type": "| string | HTMLElement | null",
+              "description": "",
+              "default": "null"
+            },
+            {
+              "name": "heading",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "isOpen",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "secondary-sidebar-close",
+              "description": "detail: {reason}"
+            }
+          ],
+          "slots": [
+            { "name": "default", "description": "" },
+            { "name": "footer", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "body", "description": "" },
+            { "name": "close-button", "description": "" },
+            { "name": "footer", "description": "" },
+            { "name": "header", "description": "" },
+            { "name": "heading", "description": "" },
+            { "name": "secondary-sidebar", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-shell-secondary-sidebar-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-secondary-sidebar-width",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading."
+          ],
+          "notes": []
+        },
+        {
+          "id": "shell-sidebar",
+          "tagName": "uik-shell-sidebar",
+          "name": "<uik-shell-sidebar>",
+          "kind": "component",
+          "summary": "Primary sidebar with heading, actions, body, and footer slots.",
+          "attributes": [
+            {
+              "name": "heading",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "isBodyPadded",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "isBodyScrollable",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "subtitle",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "heading",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "isBodyPadded",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "isBodyScrollable",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "subtitle",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [],
+          "slots": [
+            { "name": "actions", "description": "" },
+            { "name": "default", "description": "" },
+            { "name": "footer", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "actions", "description": "" },
+            { "name": "body", "description": "" },
+            { "name": "footer", "description": "" },
+            { "name": "header", "description": "" },
+            { "name": "heading", "description": "" },
+            { "name": "sidebar", "description": "" },
+            { "name": "subtitle", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-shell-sidebar-bg", "description": "" },
+            { "name": "--uik-component-shell-sidebar-fg", "description": "" },
+            { "name": "--uik-component-shell-sidebar-width", "description": "" }
+          ],
+          "a11y": [
+            "Sidebar is an <aside>; ensure internal landmarks and labels."
+          ],
+          "notes": []
+        },
+        {
+          "id": "shell-status-bar",
+          "tagName": "uik-shell-status-bar",
+          "name": "<uik-shell-status-bar>",
+          "kind": "component",
+          "summary": "Status bar for global status and actions.",
+          "attributes": [
+            {
+              "name": "message",
+              "type": "string",
+              "description": "",
+              "default": "\"Ready\""
+            },
+            {
+              "name": "meta",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "tone",
+              "type": "StatusBarTone",
+              "description": "info | success | danger | muted",
+              "default": "\"info\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "message",
+              "type": "string",
+              "description": "",
+              "default": "\"Ready\""
+            },
+            {
+              "name": "meta",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "tone",
+              "type": "StatusBarTone",
+              "description": "",
+              "default": "\"info\""
+            }
+          ],
+          "events": [],
+          "slots": [
+            { "name": "actions", "description": "" },
+            { "name": "meta", "description": "" }
+          ],
+          "cssParts": [
+            { "name": "actions", "description": "" },
+            { "name": "message", "description": "" },
+            { "name": "meta", "description": "" },
+            { "name": "status-bar", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-shell-status-bar-bg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-status-bar-fg",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-shell-status-bar-height",
+              "description": ""
+            }
+          ],
+          "a11y": [
+            "Use short status text; provide accessible names for actions."
+          ],
+          "notes": []
+        }
+      ]
+    },
+    {
+      "id": "ui-patterns",
+      "name": "Patterns",
+      "contracts": null,
+      "cem": "packages/ui-patterns/dist/custom-elements.json",
+      "components": [
+        {
+          "id": "empty-state",
+          "tagName": "uik-empty-state",
+          "name": "<uik-empty-state>",
+          "kind": "component",
+          "summary": "Composed empty state pattern built from primitives.",
+          "attributes": [],
+          "properties": [],
+          "events": [],
+          "slots": [
+            { "name": "actions", "description": "Action buttons or links." },
+            {
+              "name": "default",
+              "description": "Optional supporting content."
+            },
+            {
+              "name": "description",
+              "description": "Supporting description text."
+            },
+            { "name": "title", "description": "Primary heading content." }
+          ],
+          "cssParts": [
+            { "name": "actions", "description": "Actions container." },
+            { "name": "base", "description": "Surface wrapper." },
+            { "name": "content", "description": "Content container." },
+            { "name": "description", "description": "Description container." },
+            { "name": "title", "description": "Heading container." }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-space-2", "description": "" },
+            { "name": "--uik-space-3", "description": "" },
+            { "name": "--uik-space-6", "description": "" }
+          ],
+          "a11y": [],
+          "notes": []
+        },
+        {
+          "id": "page-hero",
+          "tagName": "uik-page-hero",
+          "name": "<uik-page-hero>",
+          "kind": "component",
+          "summary": "Page hero pattern with content and optional control panel.",
+          "attributes": [],
+          "properties": [],
+          "events": [],
+          "slots": [
+            {
+              "name": "eyebrow",
+              "description": "Eyebrow content (badges or metadata)."
+            },
+            { "name": "links", "description": "Optional hero links." },
+            {
+              "name": "panel",
+              "description": "Optional control panel content."
+            },
+            { "name": "summary", "description": "Supporting summary content." },
+            { "name": "title", "description": "Primary hero title content." }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "Surface wrapper." },
+            { "name": "body", "description": "Content column." },
+            { "name": "content", "description": "Content container." },
+            { "name": "eyebrow", "description": "Eyebrow container." },
+            { "name": "layout", "description": "Layout wrapper." },
+            { "name": "links", "description": "Links container." },
+            { "name": "panel", "description": "Panel wrapper." },
+            {
+              "name": "panel-content",
+              "description": "Panel content container."
+            },
+            {
+              "name": "panel-surface",
+              "description": "Panel surface wrapper."
+            },
+            { "name": "summary", "description": "Summary container." },
+            { "name": "title", "description": "Title container." }
+          ],
+          "cssCustomProperties": [],
+          "a11y": [],
+          "notes": []
+        },
+        {
+          "id": "section-card",
+          "tagName": "uik-section-card",
+          "name": "<uik-section-card>",
+          "kind": "component",
+          "summary": "Section card pattern for grouping related content.",
+          "attributes": [],
+          "properties": [],
+          "events": [],
+          "slots": [
+            {
+              "name": "actions",
+              "description": "Optional actions for the section."
+            },
+            { "name": "default", "description": "Section body content." },
+            { "name": "title", "description": "Section heading content." }
+          ],
+          "cssParts": [
+            { "name": "actions", "description": "Actions container." },
+            { "name": "base", "description": "Surface wrapper." },
+            { "name": "body", "description": "Body container." },
+            { "name": "content", "description": "Content container." },
+            { "name": "header", "description": "Header container." },
+            { "name": "title", "description": "Title container." }
+          ],
+          "cssCustomProperties": [],
+          "a11y": [],
+          "notes": []
+        }
+      ]
+    }
+  ]
+}

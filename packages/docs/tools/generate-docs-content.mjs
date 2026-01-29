@@ -1,9 +1,12 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import process from "node:process";
 import { fileURLToPath } from "node:url";
 
+import Ajv from "ajv";
 import { marked } from "marked";
 import MiniSearch from "minisearch";
+import prettier from "prettier";
 import Prism from "prismjs";
 import loadLanguages from "prismjs/components/index.js";
 
@@ -12,6 +15,9 @@ const repoRoot = path.resolve(scriptDir, "../../..");
 const docsRoot = path.join(repoRoot, "packages/docs");
 const contentRoot = path.join(docsRoot, "content");
 const manifestPath = path.join(contentRoot, "manifest.json");
+const generatedContentDir = path.join(contentRoot, "generated");
+const apiSchemaPath = path.join(generatedContentDir, "api.schema.json");
+const apiOutputPath = path.join(generatedContentDir, "api.json");
 const manifestOutputPath = path.join(
   docsRoot,
   "src/generated/docs-manifest.json",
@@ -70,6 +76,11 @@ const normalizeSearchText = (value) =>
   stripHtml(String(value ?? ""))
     .replace(/\s+/g, " ")
     .trim();
+
+const formatJson = async (data) =>
+  prettier.format(JSON.stringify(data), {
+    parser: "json",
+  });
 
 const normalizeLanguage = (value) => {
   const key = String(value ?? "")
@@ -187,6 +198,232 @@ const readJson = async (relativePath) =>
 const normalizeTypeText = (value) =>
   value.replace(/\s+/g, " ").replace(/\|/g, "|").trim();
 
+const stripParens = (value) => {
+  const text = String(value ?? "").trim();
+  if (text.startsWith("(") && text.endsWith(")")) {
+    return text.slice(1, -1).trim();
+  }
+  return text;
+};
+
+const parseContractEntry = (value) => {
+  const raw = String(value ?? "").trim();
+  if (!raw) return null;
+  const match = raw.match(/^([^()]+?)(?:\s*\((.+)\))?$/);
+  const name = match ? match[1].trim() : raw;
+  const detail = match?.[2]?.trim() ?? "";
+  return { name, detail };
+};
+
+const mergeNamedItems = (primary, secondary, fields) => {
+  const map = new Map();
+  for (const item of primary ?? []) {
+    if (!item?.name) continue;
+    map.set(item.name, { ...item });
+  }
+  for (const item of secondary ?? []) {
+    if (!item?.name) continue;
+    if (!map.has(item.name)) {
+      map.set(item.name, { ...item });
+      continue;
+    }
+    const existing = map.get(item.name);
+    for (const field of fields) {
+      if (existing[field] === undefined || existing[field] === "") {
+        if (item[field] !== undefined && item[field] !== "") {
+          existing[field] = item[field];
+        }
+      }
+    }
+  }
+  return Array.from(map.values()).sort((a, b) =>
+    String(a.name).localeCompare(String(b.name)),
+  );
+};
+
+const toCemAttributes = (attributes) =>
+  (attributes ?? [])
+    .map((attribute) => ({
+      name: attribute?.name ?? "",
+      type: attribute?.type?.text ? normalizeTypeText(attribute.type.text) : "",
+      description: stripParens(attribute?.description ?? ""),
+      default: attribute?.default ?? "",
+    }))
+    .filter((attribute) => attribute.name);
+
+const toCemProperties = (members) =>
+  (members ?? [])
+    .filter(
+      (member) =>
+        member?.kind === "field" &&
+        member?.privacy !== "private" &&
+        member?.privacy !== "protected",
+    )
+    .map((member) => ({
+      name: member?.name ?? "",
+      type: member?.type?.text ? normalizeTypeText(member.type.text) : "",
+      description: stripParens(member?.description ?? ""),
+      default: member?.default ?? "",
+    }))
+    .filter((member) => member.name);
+
+const toCemSlots = (slots) =>
+  (slots ?? [])
+    .map((slot) => ({
+      name: slot?.name ?? "",
+      description: stripParens(slot?.description ?? ""),
+    }))
+    .filter((slot) => slot.name);
+
+const toCemParts = (parts) =>
+  (parts ?? [])
+    .map((part) => ({
+      name: part?.name ?? "",
+      description: stripParens(part?.description ?? ""),
+    }))
+    .filter((part) => part.name);
+
+const toCemCssProperties = (properties) =>
+  (properties ?? [])
+    .map((property) => ({
+      name: property?.name ?? "",
+      description: stripParens(property?.description ?? ""),
+    }))
+    .filter((property) => property.name);
+
+const toContractAttributes = (attributes) =>
+  (attributes ?? [])
+    .map(parseContractEntry)
+    .filter(Boolean)
+    .map((entry) => ({
+      name: entry.name,
+      type: entry.detail ?? "",
+      description: "",
+      default: "",
+    }))
+    .filter((entry) => entry.name);
+
+const toContractNamedList = (items) =>
+  (items ?? [])
+    .map(parseContractEntry)
+    .filter(Boolean)
+    .map((entry) => ({
+      name: entry.name,
+      description: entry.detail ?? "",
+    }))
+    .filter((entry) => entry.name);
+
+const buildApiComponents = (contracts, cem) => {
+  const entries = contracts?.components ?? contracts?.entries ?? [];
+  const contractMap = new Map(
+    entries
+      .filter((entry) => entry?.tagName)
+      .map((entry) => [entry.tagName, entry]),
+  );
+  const cemMap = new Map(
+    cem?.modules
+      ? cem.modules
+          .flatMap((module) => module.declarations ?? [])
+          .filter((declaration) => declaration?.tagName)
+          .map((declaration) => [declaration.tagName, declaration])
+      : [],
+  );
+
+  const tagNames = Array.from(
+    new Set([...contractMap.keys(), ...cemMap.keys()]),
+  ).sort((a, b) => a.localeCompare(b));
+
+  return tagNames.map((tagName) => {
+    const contractEntry = contractMap.get(tagName);
+    const cemEntry = cemMap.get(tagName);
+    const summary = contractEntry?.summary ?? cemEntry?.description ?? "";
+    const attributes = mergeNamedItems(
+      toCemAttributes(cemEntry?.attributes),
+      toContractAttributes(contractEntry?.attributes),
+      ["type", "description", "default"],
+    );
+    const properties = toCemProperties(cemEntry?.members).sort((a, b) =>
+      String(a.name).localeCompare(String(b.name)),
+    );
+    const slots = mergeNamedItems(
+      toCemSlots(cemEntry?.slots),
+      toContractNamedList(contractEntry?.slots),
+      ["description"],
+    );
+    const parts = mergeNamedItems(
+      toCemParts(cemEntry?.cssParts),
+      toContractNamedList(contractEntry?.parts),
+      ["description"],
+    );
+    const cssCustomProperties = mergeNamedItems(
+      toCemCssProperties(cemEntry?.cssProperties),
+      toContractNamedList(contractEntry?.cssVars),
+      ["description"],
+    );
+    const events = toContractNamedList(contractEntry?.events);
+
+    return {
+      id: contractEntry?.id ?? (tagName ? tagName.replace(/^uik-/, "") : ""),
+      tagName,
+      name: contractEntry?.name ?? `<${tagName}>`,
+      kind: contractEntry?.kind ?? "component",
+      summary,
+      attributes,
+      properties,
+      events,
+      slots,
+      cssParts: parts,
+      cssCustomProperties,
+      a11y: contractEntry?.a11y ?? [],
+      notes: contractEntry?.notes ?? [],
+    };
+  });
+};
+
+const apiPackageDefinitions = [
+  {
+    id: "ui-primitives",
+    name: "Primitives",
+    contracts: "packages/ui-primitives/contracts/components.json",
+    cem: "packages/ui-primitives/dist/custom-elements.json",
+  },
+  {
+    id: "ui-shell",
+    name: "Shell",
+    contracts: "packages/ui-shell/contracts/entries.json",
+    cem: "packages/ui-shell/dist/custom-elements.json",
+  },
+  {
+    id: "ui-patterns",
+    name: "Patterns",
+    contracts: null,
+    cem: "packages/ui-patterns/dist/custom-elements.json",
+  },
+];
+
+const buildDocsApiModel = async () => {
+  const packages = [];
+  for (const definition of apiPackageDefinitions) {
+    const contracts = definition.contracts
+      ? await readJson(definition.contracts)
+      : null;
+    const cem = definition.cem ? await readJson(definition.cem) : null;
+    packages.push({
+      id: definition.id,
+      name: definition.name,
+      contracts: definition.contracts,
+      cem: definition.cem,
+      components: buildApiComponents(contracts, cem),
+    });
+  }
+
+  return {
+    $schema: "./api.schema.json",
+    schemaVersion: "1.0.0",
+    packages,
+  };
+};
+
 const componentGroupDefinitions = [
   {
     id: "shell",
@@ -290,60 +527,17 @@ const resolveComponentGroup = (tagName) => {
   return componentGroupMeta.get(groupId) ?? componentGroupMeta.get("utilities");
 };
 
-const formatAttributesFromCem = (attributes) => {
-  if (!attributes?.length) return [];
-  return attributes.map((attribute) => {
-    const name = attribute.name ?? "";
-    const rawType = attribute.type?.text
-      ? normalizeTypeText(attribute.type.text)
-      : "";
-    return rawType ? `${name} (${rawType})` : name;
-  });
-};
-
-const buildComponentsFromContracts = (contracts, cem) => {
-  const entries = contracts.components ?? contracts.entries ?? [];
-  const cemEntries = cem?.modules
-    ? new Map(
-        cem.modules
-          .flatMap((module) => module.declarations ?? [])
-          .filter((declaration) => declaration?.tagName)
-          .map((declaration) => [declaration.tagName, declaration]),
-      )
-    : new Map();
-
-  return entries.map((entry) => {
-    const kind = entry.kind ?? "component";
-    const tagName = entry.tagName;
-    const cemEntry = tagName ? cemEntries.get(tagName) : null;
-    const name = entry.name ?? (tagName ? `<${tagName}>` : entry.id);
-    const id =
-      entry.id ?? (tagName ? tagName.replace(/^uik-/, "") : slugify(name));
+const buildComponentsFromApi = (components) =>
+  (components ?? []).map((component) => {
+    const tagName = component.tagName ?? "";
     const groupMeta = resolveComponentGroup(tagName);
-    const attributes =
-      entry.attributes && entry.attributes.length
-        ? entry.attributes
-        : formatAttributesFromCem(cemEntry?.attributes);
-
     return {
-      id,
-      tagName: tagName ?? "",
-      name,
-      kind,
+      ...component,
       group: groupMeta?.id ?? "utilities",
       groupLabel: groupMeta?.label ?? "Utilities",
       groupDescription: groupMeta?.description ?? "",
-      summary: entry.summary ?? "",
-      attributes: attributes ?? [],
-      slots: entry.slots ?? [],
-      parts: entry.parts ?? [],
-      events: entry.events ?? [],
-      a11y: entry.a11y ?? [],
-      cssVars: entry.cssVars ?? [],
-      notes: entry.notes ?? [],
     };
   });
-};
 
 const renderInlineMarkdown = (value) =>
   marked.parseInline(escapeHtml(String(value ?? "")));
@@ -842,11 +1036,24 @@ ${cards.join("\n")}
 };
 
 const renderComponentCards = (components) => {
+  const formatApiItem = (item) => {
+    if (!item) return "";
+    if (typeof item === "string") return item;
+    const name = String(item.name ?? "").trim();
+    if (!name) return "";
+    const details = [];
+    if (item.type) details.push(String(item.type).trim());
+    if (item.default) details.push(`default: ${item.default}`);
+    if (item.description) details.push(String(item.description).trim());
+    return details.length ? `${name} (${details.join("; ")})` : name;
+  };
   const buildList = (items) => {
     if (!items.length) {
       return '<uik-text as="p" class="docs-paragraph">None.</uik-text>';
     }
     const listItems = items
+      .map(formatApiItem)
+      .filter(Boolean)
       .map(
         (item) =>
           `<li><uik-text as="p" class="docs-paragraph">${renderInlineMarkdown(item)}</uik-text></li>`,
@@ -903,11 +1110,12 @@ const renderComponentCards = (components) => {
           <uik-separator class="docs-component-separator"></uik-separator>
           <uik-description-list class="docs-component-description" density="compact">
             ${buildRow("API", component.attributes ?? [])}
+            ${buildRow("Properties", component.properties ?? [])}
             ${buildRow("Slots", component.slots ?? [])}
             ${buildRow("Parts", component.parts ?? [])}
             ${buildRow("Events", component.events ?? [])}
             ${buildRow("A11y", component.a11y ?? [])}
-            ${buildRow("CSS Vars", component.cssVars ?? [])}
+            ${buildRow("CSS Vars", component.cssCustomProperties ?? [])}
             ${notesRow}
           </uik-description-list>
         </article>
@@ -917,7 +1125,7 @@ const renderComponentCards = (components) => {
     .join("\n");
 };
 
-const buildComponentsPage = async (entry) => {
+const buildComponentsPage = async (entry, apiLookup) => {
   const readme = await readRepoFile(entry.readme);
   const componentsTitle = entry.componentsTitle ?? "Components and contracts";
   const componentsSourceTitle = entry.componentsSourceTitle ?? componentsTitle;
@@ -931,11 +1139,8 @@ const buildComponentsPage = async (entry) => {
     (section) => !hiddenTitles.has(section.title.toLowerCase()),
   );
 
-  const contracts = entry.contracts ? await readJson(entry.contracts) : null;
-  const cem = entry.cem ? await readJson(entry.cem) : null;
-  const components = contracts
-    ? buildComponentsFromContracts(contracts, cem)
-    : [];
+  const apiPackage = apiLookup?.get(entry.package ?? "");
+  const components = buildComponentsFromApi(apiPackage?.components ?? []);
 
   const nextSections = [...rawSections];
 
@@ -999,11 +1204,11 @@ const buildMarkdownPage = async (entry) => {
   };
 };
 
-const buildPages = async (entries) => {
+const buildPages = async (entries, apiLookup) => {
   const pages = [];
   for (const entry of entries) {
     if (entry.type === "components") {
-      pages.push(await buildComponentsPage(entry));
+      pages.push(await buildComponentsPage(entry, apiLookup));
     } else {
       pages.push(await buildMarkdownPage(entry));
     }
@@ -1027,10 +1232,8 @@ const writePageContent = async (kind, page) => {
   const output = { sections: page.sections ?? [] };
   const outputDir = path.join(pagesOutputDir, kind);
   await fs.mkdir(outputDir, { recursive: true });
-  await fs.writeFile(
-    path.join(outputDir, `${page.id}.json`),
-    `${JSON.stringify(output, null, 2)}\n`,
-  );
+  const payload = await formatJson(output);
+  await fs.writeFile(path.join(outputDir, `${page.id}.json`), payload);
 };
 
 const buildSearchDocuments = (pages, kind) =>
@@ -1077,29 +1280,88 @@ const buildSearchIndex = (docsPages, labPages) => {
   return { schemaVersion: 1, index: miniSearch.toJSON() };
 };
 
+const validateApiModel = async (apiModel) => {
+  const schema = JSON.parse(await fs.readFile(apiSchemaPath, "utf8"));
+  const ajv = new Ajv({ allErrors: true, allowUnionTypes: true });
+  const valid = ajv.validate(schema, apiModel);
+  if (!valid) {
+    const details = ajv.errorsText(ajv.errors, { separator: "\n" });
+    throw new Error(`Docs API schema validation failed:\n${details}`);
+  }
+};
+
+const writeOrCheck = async (filePath, content, check, mismatches) => {
+  if (!check) {
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, content);
+    return;
+  }
+  try {
+    const current = await fs.readFile(filePath, "utf8");
+    if (current !== content) {
+      mismatches.push(filePath);
+    }
+  } catch {
+    mismatches.push(filePath);
+  }
+};
+
 const run = async () => {
+  const args = new Set(process.argv.slice(2));
+  const check = args.has("--check");
+  const apiOnly = args.has("--api");
+  const mismatches = [];
+
+  const apiModel = await buildDocsApiModel();
+  await validateApiModel(apiModel);
+  const apiPayload = await formatJson(apiModel);
+  await writeOrCheck(apiOutputPath, apiPayload, check, mismatches);
+
+  if (apiOnly) {
+    if (mismatches.length) {
+      throw new Error(`Docs API output out of date:\n${mismatches.join("\n")}`);
+    }
+    return;
+  }
+
   const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
-  const docsPages = await buildPages(manifest.docs ?? []);
-  const labPages = await buildPages(manifest.lab ?? []);
+  const apiLookup = new Map(apiModel.packages.map((pkg) => [pkg.id, pkg]));
+  const docsPages = await buildPages(manifest.docs ?? [], apiLookup);
+  const labPages = await buildPages(manifest.lab ?? [], apiLookup);
   const output = {
     docsPages: docsPages.map(toPageMeta),
     labPages: labPages.map(toPageMeta),
   };
   const searchIndex = buildSearchIndex(docsPages, labPages);
 
-  await fs.mkdir(path.dirname(manifestOutputPath), { recursive: true });
-  await fs.writeFile(
-    manifestOutputPath,
-    `${JSON.stringify(output, null, 2)}\n`,
-  );
-  await Promise.all([
-    ...docsPages.map((page) => writePageContent("docs", page)),
-    ...labPages.map((page) => writePageContent("lab", page)),
-  ]);
-  await fs.writeFile(
-    searchIndexPath,
-    `${JSON.stringify(searchIndex, null, 2)}\n`,
-  );
+  const manifestPayload = await formatJson(output);
+  const searchPayload = await formatJson(searchIndex);
+
+  await writeOrCheck(manifestOutputPath, manifestPayload, check, mismatches);
+  if (!check) {
+    await Promise.all([
+      ...docsPages.map((page) => writePageContent("docs", page)),
+      ...labPages.map((page) => writePageContent("lab", page)),
+    ]);
+  } else {
+    for (const page of docsPages) {
+      const outputPath = path.join(pagesOutputDir, "docs", `${page.id}.json`);
+      const payload = await formatJson({ sections: page.sections ?? [] });
+      await writeOrCheck(outputPath, payload, true, mismatches);
+    }
+    for (const page of labPages) {
+      const outputPath = path.join(pagesOutputDir, "lab", `${page.id}.json`);
+      const payload = await formatJson({ sections: page.sections ?? [] });
+      await writeOrCheck(outputPath, payload, true, mismatches);
+    }
+  }
+  await writeOrCheck(searchIndexPath, searchPayload, check, mismatches);
+
+  if (check && mismatches.length) {
+    throw new Error(
+      `Docs generated output out of date:\n${mismatches.join("\n")}`,
+    );
+  }
 };
 
 await run();

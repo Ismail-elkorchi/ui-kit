@@ -40,7 +40,7 @@
     "prestorybook": "npm run --workspaces --if-present build",
     "a11y:storybook": "vitest --project=storybook --run",
     "a11y:storybook:watch": "vitest --project=storybook --watch",
-    "test": "node tools/esm/check-relative-imports.mjs && node tools/architecture/check-boundaries.mjs && npm run --workspaces --if-present test && npm run test-storybook",
+    "test": "node tools/esm/check-relative-imports.mjs && node tools/architecture/check-boundaries.mjs && node packages/docs/tools/generate-docs-content.mjs --api --check && npm run --workspaces --if-present test && npm run test-storybook",
     "test-storybook": "npm run a11y:storybook",
     "typecheck": "npm run --workspaces --if-present typecheck"
   },

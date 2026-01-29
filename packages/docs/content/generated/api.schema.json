@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UIK Docs API Model",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "packages"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "type": "string" },
+    "packages": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/package" }
+    }
+  },
+  "$defs": {
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "components"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "contracts": { "type": ["string", "null"] },
+        "cem": { "type": ["string", "null"] },
+        "components": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/component" }
+        }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "tagName",
+        "name",
+        "kind",
+        "summary",
+        "attributes",
+        "properties",
+        "events",
+        "slots",
+        "cssParts",
+        "cssCustomProperties"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "tagName": { "type": "string" },
+        "name": { "type": "string" },
+        "kind": { "type": "string" },
+        "summary": { "type": "string" },
+        "attributes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/attribute" }
+        },
+        "properties": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/property" }
+        },
+        "events": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/event" }
+        },
+        "slots": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/namedItem" }
+        },
+        "cssParts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/namedItem" }
+        },
+        "cssCustomProperties": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/namedItem" }
+        },
+        "a11y": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "attribute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "default": { "type": "string" }
+      }
+    },
+    "property": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "default": { "type": "string" }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "namedItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    }
+  }
+}

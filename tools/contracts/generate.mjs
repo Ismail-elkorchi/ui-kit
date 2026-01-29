@@ -2,6 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import prettier from "prettier";
 import ts from "typescript";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -315,14 +316,19 @@ const buildComponentContracts = async ({
   return entries;
 };
 
+const formatJson = async (data) =>
+  prettier.format(JSON.stringify(data), {
+    parser: "json",
+  });
+
 const writeJson = async (filePath, data) => {
-  const output = `${JSON.stringify(data, null, 2)}\n`;
+  const output = await formatJson(data);
   await fs.writeFile(filePath, output);
   return output;
 };
 
 const checkJson = async (filePath, data) => {
-  const next = `${JSON.stringify(data, null, 2)}\n`;
+  const next = await formatJson(data);
   const current = await fs.readFile(filePath, "utf8");
   if (current !== next) {
     throw new Error(
