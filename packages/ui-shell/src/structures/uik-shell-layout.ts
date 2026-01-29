@@ -130,6 +130,9 @@ export class UikShellLayout extends LitElement {
     if (!Number.isFinite(breakpoint) || breakpoint <= 0) return;
     const next = width <= breakpoint;
     if (next === this.isNarrow) return;
+    if (next) {
+      this.closeSecondarySidebar();
+    }
     this.isNarrow = next;
   }
 
@@ -189,18 +192,96 @@ export class UikShellLayout extends LitElement {
 
   private focusDrawerContent() {
     const drawer = this.querySelector<HTMLElement>("[data-shell-drawer]");
-    if (!drawer) return;
-    const focusable = drawer.querySelector<HTMLElement>(
-      [
-        "button",
-        "[href]",
-        "input",
-        "select",
-        "textarea",
-        "[tabindex]:not([tabindex='-1'])",
-      ].join(","),
+    this.findFirstFocusable(drawer)?.focus();
+  }
+
+  private getFocusableSelector() {
+    return [
+      "button",
+      "[href]",
+      "input",
+      "select",
+      "textarea",
+      "[tabindex]:not([tabindex='-1'])",
+    ].join(",");
+  }
+
+  private findFirstFocusable(container: Element | null): HTMLElement | null {
+    if (!container) return null;
+    return (
+      container.querySelector<HTMLElement>(this.getFocusableSelector()) ?? null
     );
-    focusable?.focus();
+  }
+
+  private focusFallback() {
+    const mainRegion = this.querySelector<HTMLElement>(
+      '[data-region="main-content"]',
+    );
+    const focusable = this.findFirstFocusable(mainRegion);
+    if (focusable) {
+      focusable.focus();
+      return;
+    }
+    if (!this.hasAttribute("tabindex")) {
+      this.tabIndex = -1;
+    }
+    this.focus();
+  }
+
+  private isActiveWithin(region: string) {
+    const active = document.activeElement;
+    if (!(active instanceof HTMLElement)) return false;
+    const container = this.querySelector<HTMLElement>(
+      `[data-region="${region}"]`,
+    );
+    return !!container?.contains(active);
+  }
+
+  private moveFocusFromCollapsedRegions() {
+    const active = document.activeElement;
+    if (!(active instanceof HTMLElement)) return;
+    const inPrimary = this.isActiveWithin("primary-sidebar");
+    const inActivity = this.isActiveWithin("activity-bar");
+    const inSecondary = this.isActiveWithin("secondary-sidebar");
+    const primaryCollapsed =
+      this.isNarrow && !this.isPrimarySidebarOpen && (inPrimary || inActivity);
+    const secondaryCollapsed = !this.isSecondarySidebarVisible && inSecondary;
+    if (primaryCollapsed || secondaryCollapsed) {
+      this.focusFallback();
+    }
+  }
+
+  private closeSecondarySidebar() {
+    if (!this.isSecondarySidebarVisible) return;
+    this.isSecondarySidebarVisible = false;
+    const secondary = this.querySelector<HTMLElement>(
+      'uik-shell-secondary-sidebar[slot="secondary-sidebar"]',
+    );
+    if (!secondary || !("isOpen" in secondary)) return;
+    const typedSecondary = secondary as {
+      isOpen?: boolean;
+      focusReturnTarget?: string | HTMLElement | null;
+    };
+    const wasOpen = Boolean(typedSecondary.isOpen);
+    typedSecondary.isOpen = false;
+    if (!wasOpen) return;
+    const target = this.resolveSecondaryReturnTarget(typedSecondary);
+    if (target) {
+      target.focus();
+    } else {
+      this.focusFallback();
+    }
+  }
+
+  private resolveSecondaryReturnTarget(secondary: {
+    focusReturnTarget?: string | HTMLElement | null;
+  }): HTMLElement | null {
+    const target = secondary.focusReturnTarget;
+    if (target instanceof HTMLElement && target.isConnected) return target;
+    if (typeof target === "string" && target.trim()) {
+      return document.querySelector<HTMLElement>(target) ?? null;
+    }
+    return null;
   }
 
   private closePrimarySidebar(reason: OverlayCloseReason) {
@@ -272,6 +353,9 @@ export class UikShellLayout extends LitElement {
       if (!this.isNarrow && this.isPrimarySidebarOpen) {
         this.pendingCloseReason ??= "programmatic";
         this.isPrimarySidebarOpen = false;
+      }
+      if (this.isNarrow) {
+        this.moveFocusFromCollapsedRegions();
       }
     }
 
@@ -370,9 +454,10 @@ export class UikShellLayout extends LitElement {
     const statusBarStyles = {
       flexShrink: "0",
     };
+    const secondaryHidden = !this.isSecondarySidebarVisible;
     const secondaryStyles = {
       ...fixedRegionStyles,
-      display: this.isSecondarySidebarVisible ? "block" : "none",
+      display: secondaryHidden ? "none" : "block",
     };
     const slotColumnStyles = {
       height: "100%",
@@ -445,6 +530,8 @@ export class UikShellLayout extends LitElement {
             style=${styleMap(secondaryStyles)}
             data-region="secondary-sidebar"
             role="presentation"
+            aria-hidden=${secondaryHidden ? "true" : "false"}
+            ?inert=${secondaryHidden}
           >
             <div
               data-shell-slot="secondary-sidebar"

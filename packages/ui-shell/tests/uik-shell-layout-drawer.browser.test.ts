@@ -8,9 +8,9 @@ import "../index";
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-const setupLayout = async () => {
+const setupLayout = async (width = 360) => {
   const layout = document.createElement("uik-shell-layout") as UikShellLayout;
-  layout.style.width = "360px";
+  layout.style.width = `${width.toString()}px`;
   layout.style.height = "400px";
   layout.style.setProperty(
     "--uik-component-shell-collapse-breakpoint",
@@ -32,6 +32,12 @@ const setupLayout = async () => {
   await nextFrame();
   await nextFrame();
   return layout;
+};
+
+const setLayoutWidth = async (layout: UikShellLayout, width: number) => {
+  layout.style.width = `${width.toString()}px`;
+  await nextFrame();
+  await nextFrame();
 };
 
 describe("uik-shell-layout drawer", () => {
@@ -62,6 +68,42 @@ describe("uik-shell-layout drawer", () => {
     await layout.updateComplete;
 
     expect(layout.isPrimarySidebarOpen).toBe(false);
+    expect(document.activeElement).toBe(opener);
+  });
+
+  it("collapses drawer content at narrow widths and prevents focus", async () => {
+    const layout = await setupLayout(360);
+    const drawer = layout.querySelector<HTMLElement>("[data-shell-drawer]");
+    const drawerButton = layout.querySelector<HTMLButtonElement>(
+      "[data-drawer-button]",
+    );
+    if (!drawer || !drawerButton) {
+      throw new Error("Expected drawer and drawer button.");
+    }
+
+    expect(layout.hasAttribute("data-shell-narrow")).toBe(true);
+    expect(drawer.hasAttribute("inert")).toBe(true);
+
+    drawerButton.focus();
+    expect(document.activeElement).not.toBe(drawerButton);
+  });
+
+  it("moves focus to main content when collapsing while focused in the sidebar", async () => {
+    const layout = await setupLayout(640);
+    const drawerButton = layout.querySelector<HTMLButtonElement>(
+      "[data-drawer-button]",
+    );
+    const opener = layout.querySelector<HTMLButtonElement>("[data-opener]");
+    if (!drawerButton || !opener) {
+      throw new Error("Expected drawer button and opener.");
+    }
+
+    drawerButton.focus();
+    expect(document.activeElement).toBe(drawerButton);
+
+    await setLayoutWidth(layout, 360);
+
+    expect(layout.hasAttribute("data-shell-narrow")).toBe(true);
     expect(document.activeElement).toBe(opener);
   });
 
