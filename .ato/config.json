@@ -70,7 +70,7 @@
     "scopeMap": [
       {
         "prefix": ".ato/",
-        "scope": "internal"
+        "scope": "root"
       },
       {
         "prefix": "packages/ui-tokens/",
