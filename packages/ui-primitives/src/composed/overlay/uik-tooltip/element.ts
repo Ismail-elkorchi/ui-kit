@@ -52,6 +52,7 @@ export class UikTooltip extends LitElement {
   private readonly panelId = createId("uik-tooltip");
   private pointerInPanel = false;
   private pendingCloseReason: OverlayCloseReason | null = null;
+  private focusReturnElement: HTMLElement | null = null;
 
   static override readonly styles = styles;
 
@@ -79,8 +80,14 @@ export class UikTooltip extends LitElement {
     if (changed.has("open")) {
       this.syncOpenState();
       const previous = changed.get("open") as boolean | undefined;
+      if (!previous && this.open && this.openOn === "click") {
+        this.captureFocusOrigin();
+      }
       if (previous && !this.open) {
         this.emitCloseReason();
+        if (this.openOn === "click") {
+          this.restoreFocus();
+        }
       }
     }
   }
@@ -116,6 +123,30 @@ export class UikTooltip extends LitElement {
         composed: true,
       }),
     );
+  }
+
+  private captureFocusOrigin() {
+    const active = document.activeElement;
+    const trigger = this.getTriggerElement();
+    if (
+      active instanceof HTMLElement &&
+      active !== this &&
+      !this.contains(active)
+    ) {
+      this.focusReturnElement = active;
+      return;
+    }
+    if (trigger?.isConnected) {
+      this.focusReturnElement = trigger;
+    }
+  }
+
+  private restoreFocus() {
+    const target = this.focusReturnElement;
+    this.focusReturnElement = null;
+    if (target?.isConnected) {
+      target.focus();
+    }
   }
 
   private syncOpenState() {
@@ -217,6 +248,15 @@ export class UikTooltip extends LitElement {
 
   private get triggerSlot(): HTMLSlotElement | null {
     return this.renderRoot.querySelector('slot[name="trigger"]');
+  }
+
+  private getTriggerElement(): HTMLElement | null {
+    const slot = this.triggerSlot;
+    const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+    const trigger = assigned.find(
+      (element): element is HTMLElement => element instanceof HTMLElement,
+    );
+    return trigger ?? null;
   }
 
   private syncTriggerAria() {

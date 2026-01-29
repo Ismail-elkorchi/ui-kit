@@ -69,6 +69,10 @@ export class UikPopover extends LitElement {
     // intended for subclasses
   }
 
+  protected get shouldManageFocusReturn(): boolean {
+    return this.openOn === "click";
+  }
+
   private get panelElement(): HTMLElement | null {
     return this.renderRoot.querySelector(".panel");
   }
@@ -81,6 +85,8 @@ export class UikPopover extends LitElement {
     return this.popoverSupported && this.popover !== "";
   }
 
+  private popoverFocusReturnElement: HTMLElement | null = null;
+
   override firstUpdated() {
     this.syncOpenState();
     this.syncDismissListeners();
@@ -91,8 +97,14 @@ export class UikPopover extends LitElement {
       this.syncOpenState();
       this.syncDismissListeners();
       const previous = changed.get("open") as boolean | undefined;
+      if (!previous && this.open && this.shouldManageFocusReturn) {
+        this.captureFocusOrigin();
+      }
       if (previous && !this.open) {
         this.emitCloseReason();
+        if (this.shouldManageFocusReturn) {
+          this.restoreFocus();
+        }
       }
     }
   }
@@ -128,6 +140,41 @@ export class UikPopover extends LitElement {
         composed: true,
       }),
     );
+  }
+
+  private captureFocusOrigin() {
+    const active = document.activeElement;
+    const trigger = this.getTriggerElement();
+    if (
+      active instanceof HTMLElement &&
+      active !== this &&
+      !this.contains(active)
+    ) {
+      this.popoverFocusReturnElement = active;
+      return;
+    }
+    if (trigger?.isConnected) {
+      this.popoverFocusReturnElement = trigger;
+    }
+  }
+
+  private restoreFocus() {
+    const target = this.popoverFocusReturnElement;
+    this.popoverFocusReturnElement = null;
+    if (target?.isConnected) {
+      target.focus();
+    }
+  }
+
+  getTriggerElement(): HTMLElement | null {
+    const slot = this.renderRoot.querySelector<HTMLSlotElement>(
+      'slot[name="trigger"]',
+    );
+    const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+    const trigger = assigned.find(
+      (element): element is HTMLElement => element instanceof HTMLElement,
+    );
+    return trigger ?? null;
   }
 
   private syncOpenState() {

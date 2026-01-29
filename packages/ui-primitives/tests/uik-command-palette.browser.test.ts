@@ -9,6 +9,7 @@ import type {
   UikCommandPaletteSelectDetail,
 } from "../src/composed/overlay/uik-command-palette";
 import "../src/composed/overlay/uik-command-palette";
+import { styles as commandPaletteStyles } from "../src/composed/overlay/uik-command-palette/styles";
 
 const items = [
   {
@@ -159,5 +160,14 @@ describe("uik-command-palette", () => {
     }
 
     await runA11y(dialog);
+  });
+
+  it("includes reduced-motion and forced-colors fallbacks", () => {
+    const cssText =
+      "cssText" in commandPaletteStyles
+        ? commandPaletteStyles.cssText
+        : String(commandPaletteStyles);
+    expect(cssText).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(cssText).toContain("@media (forced-colors: active)");
   });
 });

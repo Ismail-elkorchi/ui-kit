@@ -48,6 +48,9 @@ export class UikMenu extends UikPopover {
 
   protected override readonly panelRole = "menu";
   protected override readonly panelId = createId("uik-menu");
+  protected override get shouldManageFocusReturn(): boolean {
+    return false;
+  }
   static override readonly styles = [popoverStyles, styles];
 
   private focusReturnElement: HTMLElement | null = null;
@@ -100,7 +103,7 @@ export class UikMenu extends UikPopover {
     if (changed.has("open")) {
       const wasOpen = changed.get("open") as boolean | undefined;
       if (!wasOpen && this.open) {
-        this.captureFocusOrigin();
+        this.captureMenuFocusOrigin();
         this.pendingInitialFocus ??= "first";
         void this.updateComplete.then(() => this.applyInitialFocus());
         this.dispatchEvent(
@@ -112,7 +115,7 @@ export class UikMenu extends UikPopover {
         this.dispatchEvent(
           new CustomEvent("menu-close", { bubbles: true, composed: true }),
         );
-        this.restoreFocus();
+        this.restoreMenuFocus();
       }
     }
   }
@@ -132,7 +135,7 @@ export class UikMenu extends UikPopover {
     this.suppressFocusReturn = true;
   }
 
-  getTriggerElement(): HTMLElement | null {
+  override getTriggerElement(): HTMLElement | null {
     const slot = this.renderRoot.querySelector<HTMLSlotElement>(
       'slot[name="trigger"]',
     );
@@ -372,7 +375,7 @@ export class UikMenu extends UikPopover {
     panel?.setAttribute("aria-orientation", "vertical");
   }
 
-  private captureFocusOrigin() {
+  private captureMenuFocusOrigin() {
     const active = document.activeElement;
     if (!(active instanceof HTMLElement)) return;
     const panel = this.getPanelElement();
@@ -380,7 +383,7 @@ export class UikMenu extends UikPopover {
     this.focusReturnElement = active;
   }
 
-  private restoreFocus() {
+  private restoreMenuFocus() {
     if (this.suppressFocusReturn) {
       this.suppressFocusReturn = false;
       this.focusReturnElement = null;

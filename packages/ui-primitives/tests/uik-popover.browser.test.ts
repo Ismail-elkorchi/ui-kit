@@ -64,7 +64,7 @@ describe("uik-popover", () => {
     const popover = document.createElement("uik-popover") as UikPopover;
     popover.innerHTML = `
       <span slot="trigger">Trigger</span>
-      <div>Content</div>
+      <button>Panel action</button>
     `;
     document.body.append(popover);
 
@@ -82,7 +82,7 @@ describe("uik-popover", () => {
     });
     popover.innerHTML = `
       <span slot="trigger">Trigger</span>
-      <div>Content</div>
+      <button>Panel action</button>
     `;
     document.body.append(popover);
 
@@ -127,7 +127,11 @@ describe("uik-popover", () => {
     const triggerSlot = popover.querySelector<HTMLElement>('[slot="trigger"]');
     if (!triggerSlot) throw new Error("Expected trigger slot.");
     triggerSlot.dispatchEvent(
-      new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
+      new KeyboardEvent("keydown", {
+        key: "Enter",
+        bubbles: true,
+        composed: true,
+      }),
     );
     await popover.updateComplete;
     expect(popover.open).toBe(false);
@@ -140,8 +144,8 @@ describe("uik-popover", () => {
     });
     (popover as unknown as { openOn: "hover" | "click" }).openOn = "hover";
     popover.innerHTML = `
-      <span slot="trigger">Trigger</span>
-      <div>Content</div>
+      <button slot="trigger">Trigger</button>
+      <button>Panel action</button>
     `;
     document.body.append(popover);
 
@@ -164,8 +168,8 @@ describe("uik-popover", () => {
       get: () => false,
     });
     popover.innerHTML = `
-      <span slot="trigger">Trigger</span>
-      <div>Content</div>
+      <button slot="trigger">Trigger</button>
+      <button>Panel action</button>
     `;
     document.body.append(popover);
 
@@ -215,8 +219,8 @@ describe("uik-popover", () => {
     });
     (popover as unknown as { openOn: "hover" | "click" }).openOn = "hover";
     popover.innerHTML = `
-      <span slot="trigger">Trigger</span>
-      <div>Content</div>
+      <button slot="trigger">Trigger</button>
+      <button>Panel action</button>
     `;
     document.body.append(popover);
 
@@ -275,8 +279,8 @@ describe("uik-popover", () => {
     });
     popover.placement = "invalid" as UikPopover["placement"];
     popover.innerHTML = `
-      <span slot="trigger">Trigger</span>
-      <div>Content</div>
+      <button slot="trigger">Trigger</button>
+      <button>Panel action</button>
     `;
     document.body.append(popover);
 
@@ -312,8 +316,8 @@ describe("uik-popover", () => {
       get: () => false,
     });
     popover.innerHTML = `
-      <span slot="trigger">Trigger</span>
-      <div>Content</div>
+      <button slot="trigger">Trigger</button>
+      <button>Panel action</button>
     `;
     document.body.append(popover);
 
@@ -324,8 +328,17 @@ describe("uik-popover", () => {
       reason = (event as CustomEvent<{ reason: string }>).detail.reason;
     });
 
+    const trigger = popover.querySelector<HTMLButtonElement>("button[slot]");
+    if (!trigger) throw new Error("Expected trigger.");
+    trigger.focus();
+
     popover.open = true;
     await popover.updateComplete;
+
+    const panelAction =
+      popover.querySelector<HTMLButtonElement>("button:not([slot])");
+    if (!panelAction) throw new Error("Expected panel action.");
+    panelAction.focus();
 
     document.dispatchEvent(
       new PointerEvent("pointerdown", {
@@ -338,6 +351,7 @@ describe("uik-popover", () => {
 
     expect(popover.open).toBe(false);
     expect(reason).toBe("outside");
+    expect(document.activeElement).toBe(trigger);
   });
 
   it("invokes popover methods when Popover API is supported", async () => {
@@ -373,6 +387,37 @@ describe("uik-popover", () => {
 
     expect(shown).toBe(1);
     expect(hidden).toBe(1);
+  });
+
+  it("restores focus to trigger on escape close", async () => {
+    const popover = document.createElement("uik-popover") as UikPopover;
+    Object.defineProperty(popover, "popoverSupported", {
+      get: () => false,
+    });
+    popover.innerHTML = `
+      <button slot="trigger">Trigger</button>
+      <button>Panel action</button>
+    `;
+    document.body.append(popover);
+    await popover.updateComplete;
+
+    const trigger = popover.querySelector<HTMLButtonElement>("button[slot]");
+    if (!trigger) throw new Error("Expected trigger.");
+    trigger.focus();
+
+    popover.open = true;
+    await popover.updateComplete;
+
+    const panel = popover.shadowRoot?.querySelector<HTMLElement>(".panel");
+    if (!panel) throw new Error("Expected panel.");
+
+    panel.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+    await popover.updateComplete;
+
+    expect(popover.open).toBe(false);
+    expect(document.activeElement).toBe(trigger);
   });
 
   it("no-ops open state sync when panel is missing", async () => {
