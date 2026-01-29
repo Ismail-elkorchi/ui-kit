@@ -120,13 +120,25 @@ const renderMarkdown = (features) => {
   ].join("\n");
 };
 
-const writeJson = async (filePath, data) => {
-  const contents = `${JSON.stringify(data, null, 2)}\n`;
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, contents, "utf8");
+const writeOrCheck = async (filePath, contents, check, mismatches) => {
+  if (!check) {
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, contents, "utf8");
+    return;
+  }
+  try {
+    const current = await fs.readFile(filePath, "utf8");
+    if (current !== contents) {
+      mismatches.push(filePath);
+    }
+  } catch {
+    mismatches.push(filePath);
+  }
 };
 
 const run = async () => {
+  const check = process.argv.includes("--check");
+  const mismatches = [];
   const source = await readJson(sourcePath);
   const normalizedFeatures = normalizeFeatures(source.features ?? []);
   const output = {
@@ -134,13 +146,17 @@ const run = async () => {
     features: normalizedFeatures,
   };
 
-  await writeJson(docsPublicPath, output);
-  await fs.mkdir(path.dirname(docsContentPath), { recursive: true });
-  await fs.writeFile(
-    docsContentPath,
-    `${renderMarkdown(normalizedFeatures)}\n`,
-    "utf8",
-  );
+  const jsonPayload = `${JSON.stringify(output, null, 2)}\n`;
+  const markdownPayload = `${renderMarkdown(normalizedFeatures)}\n`;
+
+  await writeOrCheck(docsPublicPath, jsonPayload, check, mismatches);
+  await writeOrCheck(docsContentPath, markdownPayload, check, mismatches);
+
+  if (check && mismatches.length) {
+    throw new Error(
+      `Baseline support outputs out of date:\n${mismatches.join("\n")}`,
+    );
+  }
 };
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

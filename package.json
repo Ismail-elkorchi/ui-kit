@@ -30,6 +30,7 @@
     "contracts:generate": "node tools/contracts/generate.mjs",
     "contracts:validate": "node tools/contracts/generate.mjs --check && node tools/contracts/validate.mjs",
     "contracts:validate:build": "npm -w packages/ui-tokens run build && npm -w packages/ui-primitives run build && npm -w packages/ui-shell run build && npm -w packages/ui-patterns run build && npm run contracts:validate",
+    "build:deps": "npm -w packages/ui-tokens run build && npm -w packages/ui-primitives run build && npm -w packages/ui-shell run build && npm -w packages/ui-patterns run build",
     "prebuild-storybook": "npm run --workspaces --if-present build",
     "cem": "npm run --workspaces --if-present cem",
     "lint": "eslint . --max-warnings=0",
@@ -40,7 +41,7 @@
     "prestorybook": "npm run --workspaces --if-present build",
     "a11y:storybook": "vitest --project=storybook --run",
     "a11y:storybook:watch": "vitest --project=storybook --watch",
-    "test": "node tools/esm/check-relative-imports.mjs && node tools/architecture/check-boundaries.mjs && node packages/docs/tools/generate-docs-content.mjs --api --check && npm run --workspaces --if-present test && npm run test-storybook",
+    "test": "npm run build:deps && node tools/esm/check-relative-imports.mjs && node tools/architecture/check-boundaries.mjs && node packages/docs/tools/generate-docs-content.mjs --api --check && node tools/baseline/generate.mjs --check && npm run contracts:validate && ato q validate && npm run --workspaces --if-present test && npm run test-storybook",
     "test-storybook": "npm run a11y:storybook",
     "typecheck": "npm run --workspaces --if-present typecheck"
   },
