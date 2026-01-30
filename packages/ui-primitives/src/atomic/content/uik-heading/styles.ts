@@ -3,6 +3,34 @@ import { css } from "lit";
 export const styles = css`
   :host {
     display: block;
+
+    --uik-heading-line-height-1: var(--uik-component-heading-line-height-1);
+    --uik-heading-line-height-2: var(--uik-component-heading-line-height-2);
+    --uik-heading-line-height-3: var(--uik-component-heading-line-height-3);
+    --uik-heading-line-height-4: var(--uik-component-heading-line-height-4);
+    --uik-heading-line-height-5: var(--uik-component-heading-line-height-5);
+    --uik-heading-line-height-6: var(--uik-component-heading-line-height-6);
+  }
+
+  :host([leading="roomy"]) {
+    --uik-heading-line-height-1: var(
+      --uik-component-heading-line-height-roomy-1
+    );
+    --uik-heading-line-height-2: var(
+      --uik-component-heading-line-height-roomy-2
+    );
+    --uik-heading-line-height-3: var(
+      --uik-component-heading-line-height-roomy-3
+    );
+    --uik-heading-line-height-4: var(
+      --uik-component-heading-line-height-roomy-4
+    );
+    --uik-heading-line-height-5: var(
+      --uik-component-heading-line-height-roomy-5
+    );
+    --uik-heading-line-height-6: var(
+      --uik-component-heading-line-height-roomy-6
+    );
   }
 
   .heading {
@@ -10,38 +38,38 @@ export const styles = css`
     font-family: var(--uik-typography-font-family-sans);
     font-size: var(--uik-component-heading-size-2);
     font-weight: var(--uik-component-heading-weight);
-    line-height: var(--uik-component-heading-line-height-2);
+    line-height: var(--uik-heading-line-height-2);
     color: oklch(var(--uik-component-heading-color-strong));
   }
 
   :host([level="1"]) .heading {
     font-size: var(--uik-component-heading-size-1);
-    line-height: var(--uik-component-heading-line-height-1);
+    line-height: var(--uik-heading-line-height-1);
   }
 
   :host([level="2"]) .heading {
     font-size: var(--uik-component-heading-size-2);
-    line-height: var(--uik-component-heading-line-height-2);
+    line-height: var(--uik-heading-line-height-2);
   }
 
   :host([level="3"]) .heading {
     font-size: var(--uik-component-heading-size-3);
-    line-height: var(--uik-component-heading-line-height-3);
+    line-height: var(--uik-heading-line-height-3);
   }
 
   :host([level="4"]) .heading {
     font-size: var(--uik-component-heading-size-4);
-    line-height: var(--uik-component-heading-line-height-4);
+    line-height: var(--uik-heading-line-height-4);
   }
 
   :host([level="5"]) .heading {
     font-size: var(--uik-component-heading-size-5);
-    line-height: var(--uik-component-heading-line-height-5);
+    line-height: var(--uik-heading-line-height-5);
   }
 
   :host([level="6"]) .heading {
     font-size: var(--uik-component-heading-size-6);
-    line-height: var(--uik-component-heading-line-height-6);
+    line-height: var(--uik-heading-line-height-6);
   }
 
   :host([tone="default"]) .heading {

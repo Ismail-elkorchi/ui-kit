@@ -14,6 +14,7 @@ type HeadingArgs = {
     | "success"
     | "warning"
     | "info";
+  leading: "compact" | "roomy";
 };
 
 const meta: Meta<HeadingArgs> = {
@@ -26,11 +27,12 @@ const meta: Meta<HeadingArgs> = {
   args: {
     level: 2,
     tone: "strong",
+    leading: "compact",
   },
   render: (args) => html`
-    <uik-heading level=${args.level} tone=${args.tone}
-      >Section heading</uik-heading
-    >
+    <uik-heading level=${args.level} tone=${args.tone} leading=${args.leading}>
+      Section heading
+    </uik-heading>
   `,
 };
 
@@ -40,4 +42,11 @@ type Story = StoryObj<HeadingArgs>;
 
 export const Default: Story = {
   ...interactionStory,
+};
+
+export const Roomy: Story = {
+  ...interactionStory,
+  args: {
+    leading: "roomy",
+  },
 };

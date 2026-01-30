@@ -7,11 +7,13 @@ import { styles } from "./styles.js";
  * Tokenized heading typography with semantic levels.
  * @attr level (1-6)
  * @attr tone (default | strong | muted | danger | success | warning | info)
+ * @attr leading (compact | roomy)
  * @slot default
  * @part base
  * @a11y Renders the matching native heading element.
  * @cssprop --uik-component-heading-size-{1..6}
  * @cssprop --uik-component-heading-line-height-{1..6}
+ * @cssprop --uik-component-heading-line-height-roomy-{1..6}
  * @cssprop --uik-component-heading-weight
  * @cssprop --uik-component-heading-color-{default|strong|muted|danger|success|warning|info}
  */
@@ -27,6 +29,8 @@ export class UikHeading extends LitElement {
     | "success"
     | "warning"
     | "info" = "strong";
+  @property({ type: String, reflect: true, useDefault: true })
+  accessor leading: "compact" | "roomy" = "compact";
 
   static override readonly styles = styles;
 

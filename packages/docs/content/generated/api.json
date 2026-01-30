@@ -1440,6 +1440,12 @@
           "summary": "Tokenized heading typography with semantic levels.",
           "attributes": [
             {
+              "name": "leading",
+              "type": "\"compact\" | \"roomy\"",
+              "description": "compact | roomy",
+              "default": "\"compact\""
+            },
+            {
               "name": "level",
               "type": "number",
               "description": "1-6",
@@ -1453,6 +1459,12 @@
             }
           ],
           "properties": [
+            {
+              "name": "leading",
+              "type": "\"compact\" | \"roomy\"",
+              "description": "",
+              "default": "\"compact\""
+            },
             {
               "name": "level",
               "type": "number",
@@ -1476,6 +1488,10 @@
             },
             {
               "name": "--uik-component-heading-line-height-{1..6}",
+              "description": ""
+            },
+            {
+              "name": "--uik-component-heading-line-height-roomy-{1..6}",
               "description": ""
             },
             {

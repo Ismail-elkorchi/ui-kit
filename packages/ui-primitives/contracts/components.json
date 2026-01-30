@@ -288,7 +288,8 @@
       "summary": "Tokenized heading typography with semantic levels.",
       "attributes": [
         "level (1-6)",
-        "tone (default | strong | muted | danger | success | warning | info)"
+        "tone (default | strong | muted | danger | success | warning | info)",
+        "leading (compact | roomy)"
       ],
       "slots": ["default"],
       "parts": ["base"],
@@ -297,6 +298,7 @@
       "cssVars": [
         "--uik-component-heading-size-{1..6}",
         "--uik-component-heading-line-height-{1..6}",
+        "--uik-component-heading-line-height-roomy-{1..6}",
         "--uik-component-heading-weight",
         "--uik-component-heading-color-{default|strong|muted|danger|success|warning|info}"
       ]
