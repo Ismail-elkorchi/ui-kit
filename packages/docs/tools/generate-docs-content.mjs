@@ -89,6 +89,49 @@ const normalizeLanguage = (value) => {
   return supportedLanguages.get(key) ?? "";
 };
 
+const admonitionConfig = new Map([
+  ["NOTE", { variant: "info", label: "Note" }],
+  ["TIP", { variant: "success", label: "Tip" }],
+  ["IMPORTANT", { variant: "neutral", label: "Important" }],
+  ["WARNING", { variant: "warning", label: "Warning" }],
+  ["CAUTION", { variant: "danger", label: "Caution" }],
+]);
+
+const parseAdmonition = (text) => {
+  const lines = String(text ?? "").split("\n");
+  if (lines.length === 0) return null;
+  const firstLine = lines[0].trim();
+  const match = firstLine.match(
+    /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](?:\s+(.*))?$/i,
+  );
+  if (!match) return null;
+  const type = match[1].toUpperCase();
+  const config = admonitionConfig.get(type);
+  if (!config) return null;
+  const trailing = match[2]?.trim() ?? "";
+  const bodyLines = [];
+  if (trailing) bodyLines.push(trailing);
+  bodyLines.push(...lines.slice(1));
+  const bodyMarkdown = bodyLines.join("\n").trim();
+  return { ...config, bodyMarkdown };
+};
+
+const renderAdmonition = (token, parser) => {
+  const payload = parseAdmonition(token?.text ?? "");
+  if (!payload) return null;
+  const { variant, label, bodyMarkdown } = payload;
+  const title = escapeHtml(label);
+  const body = bodyMarkdown
+    ? parser.parse(marked.lexer(bodyMarkdown, parser.options)).trim()
+    : "";
+  const bodyMarkup = body ? `\n${body}\n` : "";
+  return `
+    <uik-alert class="docs-admonition" variant="${variant}">
+      <span slot="title">${title}</span>${bodyMarkup}
+    </uik-alert>
+  `.trim();
+};
+
 const highlightCodeBlock = (code, language) => {
   if (!language) return escapeHtml(code);
   const grammar = Prism.languages[language];
@@ -109,10 +152,34 @@ const createSlugger = () => {
   };
 };
 
+marked.use({
+  extensions: [
+    {
+      name: "blockquote",
+      renderer(token) {
+        return renderAdmonition(token, this.parser) ?? false;
+      },
+    },
+  ],
+});
+
 const createRenderer = (slugger) => {
   const renderer = new marked.Renderer();
   renderer.paragraph = (text) =>
     `<uik-text as="p" class="docs-paragraph">${text}</uik-text>`;
+  renderer.blockquote = (quote) =>
+    `<blockquote class="docs-blockquote">${quote}</blockquote>`;
+  renderer.table = (header, body) => {
+    const tableBody = body ? `<tbody>${body}</tbody>` : "";
+    return `
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>${header}</thead>
+          ${tableBody}
+        </table>
+      </div>
+    `.trim();
+  };
   renderer.list = (body, ordered) => {
     const tag = ordered ? "ol" : "ul";
     return `<${tag} class="docs-list">${body}</${tag}>`;

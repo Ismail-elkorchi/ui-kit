@@ -145,6 +145,16 @@
       "format": "markdown"
     },
     {
+      "id": "markdown-rendering",
+      "title": "Lab: Markdown Rendering",
+      "summary": "Verify tables, admonitions, and token-first markdown styling.",
+      "navLabel": "Markdown Rendering",
+      "group": "Lab",
+      "kind": "Lab",
+      "source": "packages/docs/content/lab/markdown-rendering.md",
+      "format": "markdown"
+    },
+    {
       "id": "perf-shell",
       "title": "Perf Fixture: Shell Layout",
       "summary": "Stable shell layout snapshot for Lighthouse audits.",
