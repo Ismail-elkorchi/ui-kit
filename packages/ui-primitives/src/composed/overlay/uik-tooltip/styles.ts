@@ -23,5 +23,14 @@ export const styles: CSSResultGroup = [
 
       --uik-component-popover-offset: var(--uik-component-tooltip-offset);
     }
+
+    @media (forced-colors: active) {
+      .panel {
+        color: CanvasText;
+        background-color: Canvas;
+        border-color: CanvasText;
+        box-shadow: none;
+      }
+    }
   `,
 ];

@@ -118,13 +118,22 @@ export class UikShellStatusBar extends LitElement {
     const metaContent = showMetaFallback
       ? html`<uik-badge variant="outline">${this.meta}</uik-badge>`
       : nothing;
+    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const statusBarFg = forcedColors
+      ? "CanvasText"
+      : "oklch(var(--uik-component-shell-status-bar-fg))";
+    const statusBarBg = forcedColors
+      ? "Canvas"
+      : "oklch(var(--uik-component-shell-status-bar-bg))";
+    const statusBarDivider = forcedColors
+      ? "CanvasText"
+      : "oklch(var(--uik-component-shell-divider-color))";
     const statusBarStyles = {
       height: "var(--uik-component-shell-status-bar-height)",
-      backgroundColor: "oklch(var(--uik-component-shell-status-bar-bg))",
-      color: "oklch(var(--uik-component-shell-status-bar-fg))",
+      backgroundColor: statusBarBg,
+      color: statusBarFg,
       paddingInline: "var(--uik-space-3)",
-      borderTop:
-        "var(--uik-border-width-1) solid oklch(var(--uik-component-shell-divider-color))",
+      borderTop: `var(--uik-border-width-1) solid ${statusBarDivider}`,
       fontSize: "var(--uik-typography-font-size-1)",
       lineHeight: "var(--uik-typography-line-height-2)",
       display: "flex",
@@ -140,7 +149,7 @@ export class UikShellStatusBar extends LitElement {
       gap: "var(--uik-space-3)",
     };
     const messageStyles = {
-      color: this.getToneColor(),
+      color: forcedColors ? "CanvasText" : this.getToneColor(),
       fontWeight: "var(--uik-typography-font-weight-medium)",
       display: "flex",
       alignItems: "center",
@@ -150,7 +159,7 @@ export class UikShellStatusBar extends LitElement {
       display: "flex",
       alignItems: "center",
       gap: "var(--uik-space-2)",
-      color: "oklch(var(--uik-text-muted))",
+      color: forcedColors ? "CanvasText" : "oklch(var(--uik-text-muted))",
     };
 
     return html`

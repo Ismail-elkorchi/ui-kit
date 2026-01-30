@@ -94,12 +94,19 @@ export class UikShellSidebar extends LitElement {
   }
 
   override render() {
+    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const dividerColor = forcedColors
+      ? "CanvasText"
+      : "var(--uik-component-shell-divider-color)";
     const sidebarStyles = {
       width: "var(--uik-component-shell-sidebar-width)",
-      backgroundColor: "oklch(var(--uik-component-shell-sidebar-bg))",
-      color: "oklch(var(--uik-component-shell-sidebar-fg))",
-      borderRight:
-        "var(--uik-border-width-1) solid oklch(var(--uik-component-shell-divider-color))",
+      backgroundColor: forcedColors
+        ? "Canvas"
+        : "oklch(var(--uik-component-shell-sidebar-bg))",
+      color: forcedColors
+        ? "CanvasText"
+        : "oklch(var(--uik-component-shell-sidebar-fg))",
+      borderRight: `var(--uik-border-width-1) solid ${dividerColor}`,
       display: "flex",
       flexDirection: "column",
       flexShrink: "0",
@@ -120,7 +127,7 @@ export class UikShellSidebar extends LitElement {
       fontWeight: "var(--uik-typography-font-weight-bold)",
       letterSpacing: "var(--uik-typography-letter-spacing-wide)",
       lineHeight: "var(--uik-typography-line-height-2)",
-      color: "oklch(var(--uik-text-muted))",
+      color: forcedColors ? "CanvasText" : "oklch(var(--uik-text-muted))",
       textTransform: "uppercase",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -129,7 +136,7 @@ export class UikShellSidebar extends LitElement {
     const subtitleStyles = {
       fontSize: "var(--uik-typography-font-size-1)",
       lineHeight: "var(--uik-typography-line-height-2)",
-      color: "oklch(var(--uik-text-muted))",
+      color: forcedColors ? "CanvasText" : "oklch(var(--uik-text-muted))",
       overflow: "hidden",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
@@ -155,14 +162,17 @@ export class UikShellSidebar extends LitElement {
       minHeight: "var(--uik-space-0)",
       boxSizing: "border-box",
       overflowY: this.isBodyScrollable ? "auto" : "visible",
-      scrollbarColor: this.isBodyScrollable
-        ? "oklch(var(--uik-component-shell-scrollbar-thumb)) oklch(var(--uik-component-shell-scrollbar-track))"
-        : "",
+      scrollbarColor:
+        this.isBodyScrollable && !forcedColors
+          ? "oklch(var(--uik-component-shell-scrollbar-thumb)) oklch(var(--uik-component-shell-scrollbar-track))"
+          : "",
       scrollbarWidth: this.isBodyScrollable ? "thin" : "",
     };
     const footerStyles = {
       padding: "var(--uik-space-3)",
-      backgroundColor: "oklch(var(--uik-surface-card))",
+      backgroundColor: forcedColors
+        ? "Canvas"
+        : "oklch(var(--uik-surface-card))",
     };
 
     const ariaLabelledby = this.getAttribute("aria-labelledby");
@@ -208,7 +218,7 @@ export class UikShellSidebar extends LitElement {
         </div>
         <uik-separator
           orientation="horizontal"
-          style="--uik-component-separator-color: var(--uik-component-shell-divider-color);"
+          style=${`--uik-component-separator-color: ${dividerColor};`}
         ></uik-separator>
         <div part="body-container" style=${styleMap(bodyContainerStyles)}>
           <div
@@ -219,7 +229,7 @@ export class UikShellSidebar extends LitElement {
           <div ?hidden=${!this.hasFooter}>
             <uik-separator
               orientation="horizontal"
-              style="--uik-component-separator-color: var(--uik-component-shell-divider-color);"
+              style=${`--uik-component-separator-color: ${dividerColor};`}
             ></uik-separator>
             <div
               part="footer"

@@ -60,4 +60,15 @@ export const styles = css`
     width: 100%;
     height: 100%;
   }
+
+  @media (forced-colors: active) {
+    .rail {
+      color: CanvasText;
+      background-color: Canvas;
+    }
+
+    .indicator {
+      background-color: Highlight;
+    }
+  }
 `;

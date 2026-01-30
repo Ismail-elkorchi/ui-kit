@@ -37,4 +37,12 @@ export const styles = css`
     border-color: oklch(var(--uik-component-surface-border-color-bordered));
     border-width: var(--uik-component-surface-border-width-bordered);
   }
+
+  @media (forced-colors: active) {
+    .surface {
+      background-color: Canvas;
+      border-color: CanvasText;
+      box-shadow: none;
+    }
+  }
 `;

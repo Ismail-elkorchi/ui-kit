@@ -61,4 +61,11 @@ export const styles = css`
       animation: none;
     }
   }
+
+  @media (forced-colors: active) {
+    .spinner {
+      border-color: CanvasText;
+      border-top-color: Highlight;
+    }
+  }
 `;

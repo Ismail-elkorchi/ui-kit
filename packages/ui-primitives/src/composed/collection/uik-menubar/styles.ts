@@ -20,6 +20,8 @@ export const styles = css`
 
   @media (forced-colors: active) {
     .menubar {
+      color: CanvasText;
+      background-color: Canvas;
       border-color: CanvasText;
     }
   }

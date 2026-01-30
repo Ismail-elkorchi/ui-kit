@@ -56,4 +56,13 @@ export const styles: CSSResultGroup = css`
   .panel[hidden] {
     display: none;
   }
+
+  @media (forced-colors: active) {
+    .panel {
+      color: CanvasText;
+      background-color: Canvas;
+      border-color: CanvasText;
+      box-shadow: none;
+    }
+  }
 `;

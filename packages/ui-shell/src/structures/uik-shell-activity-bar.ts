@@ -88,11 +88,21 @@ export class UikShellActivityBar extends LitElement {
       : hasLabelledby
         ? null
         : "Activity bar";
+    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const activityBarBg = forcedColors
+      ? "Canvas"
+      : "oklch(var(--uik-component-shell-activity-bar-bg))";
+    const activityBarFg = forcedColors
+      ? "CanvasText"
+      : "oklch(var(--uik-component-shell-activity-bar-fg))";
+    const indicatorBg = forcedColors
+      ? "Highlight"
+      : "var(--uik-component-shell-activity-bar-item-indicator-bg)";
 
     const containerStyles = {
       width: "var(--uik-component-shell-activity-bar-width)",
-      backgroundColor: "oklch(var(--uik-component-shell-activity-bar-bg))",
-      color: "oklch(var(--uik-component-shell-activity-bar-fg))",
+      backgroundColor: activityBarBg,
+      color: activityBarFg,
       paddingBlock: "var(--uik-space-2)",
       display: "flex",
       flexDirection: "column",
@@ -103,10 +113,12 @@ export class UikShellActivityBar extends LitElement {
     };
 
     const navRailStyles = {
-      "--uik-component-nav-rail-bg":
-        "var(--uik-component-shell-activity-bar-bg)",
-      "--uik-component-nav-rail-fg":
-        "var(--uik-component-shell-activity-bar-fg)",
+      "--uik-component-nav-rail-bg": forcedColors
+        ? "Canvas"
+        : "var(--uik-component-shell-activity-bar-bg)",
+      "--uik-component-nav-rail-fg": forcedColors
+        ? "CanvasText"
+        : "var(--uik-component-shell-activity-bar-fg)",
       "--uik-component-nav-rail-width":
         "var(--uik-component-shell-activity-bar-width)",
       "--uik-component-nav-rail-gap": "var(--uik-space-0)",
@@ -119,8 +131,7 @@ export class UikShellActivityBar extends LitElement {
         "var(--uik-component-shell-activity-bar-item-indicator-width)",
       "--uik-component-nav-rail-item-indicator-radius":
         "var(--uik-component-shell-activity-bar-item-indicator-radius)",
-      "--uik-component-nav-rail-item-indicator-bg":
-        "var(--uik-component-shell-activity-bar-item-indicator-bg)",
+      "--uik-component-nav-rail-item-indicator-bg": indicatorBg,
     };
 
     const spacerStyles = {

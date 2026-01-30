@@ -52,4 +52,23 @@ export const styles = css`
     gap: var(--uik-component-dialog-actions-gap);
     justify-content: flex-end;
   }
+
+  @media (forced-colors: active) {
+    dialog {
+      color: CanvasText;
+      background-color: Canvas;
+      border-color: CanvasText;
+      box-shadow: none;
+    }
+
+    dialog::backdrop {
+      background-color: CanvasText;
+      opacity: 0.25;
+    }
+
+    .title,
+    .description {
+      color: CanvasText;
+    }
+  }
 `;

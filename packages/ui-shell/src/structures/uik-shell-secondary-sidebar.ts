@@ -178,12 +178,17 @@ export class UikShellSecondarySidebar extends LitElement {
   override render() {
     if (!this.isOpen) return nothing;
 
+    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const dividerColor = forcedColors
+      ? "CanvasText"
+      : "var(--uik-component-shell-divider-color)";
     const sidebarStyles = {
       width: "var(--uik-component-shell-secondary-sidebar-width)",
-      backgroundColor: "oklch(var(--uik-component-shell-secondary-sidebar-bg))",
-      color: "oklch(var(--uik-text-default))",
-      borderLeft:
-        "var(--uik-border-width-1) solid oklch(var(--uik-component-shell-divider-color))",
+      backgroundColor: forcedColors
+        ? "Canvas"
+        : "oklch(var(--uik-component-shell-secondary-sidebar-bg))",
+      color: forcedColors ? "CanvasText" : "oklch(var(--uik-text-default))",
+      borderLeft: `var(--uik-border-width-1) solid ${dividerColor}`,
       display: "flex",
       flexDirection: "column",
       flexShrink: "0",
@@ -204,7 +209,7 @@ export class UikShellSecondarySidebar extends LitElement {
       fontWeight: "var(--uik-typography-font-weight-bold)",
       letterSpacing: "var(--uik-typography-letter-spacing-wide)",
       lineHeight: "var(--uik-typography-line-height-2)",
-      color: "oklch(var(--uik-text-muted))",
+      color: forcedColors ? "CanvasText" : "oklch(var(--uik-text-muted))",
       textTransform: "uppercase",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -224,13 +229,16 @@ export class UikShellSecondarySidebar extends LitElement {
       flex: "1 1 auto",
       minHeight: "var(--uik-space-0)",
       boxSizing: "border-box",
-      scrollbarColor:
-        "oklch(var(--uik-component-shell-scrollbar-thumb)) oklch(var(--uik-component-shell-scrollbar-track))",
+      scrollbarColor: forcedColors
+        ? ""
+        : "oklch(var(--uik-component-shell-scrollbar-thumb)) oklch(var(--uik-component-shell-scrollbar-track))",
       scrollbarWidth: "thin",
     };
     const footerStyles = {
       padding: "var(--uik-space-3)",
-      backgroundColor: "oklch(var(--uik-surface-card))",
+      backgroundColor: forcedColors
+        ? "Canvas"
+        : "oklch(var(--uik-surface-card))",
     };
 
     const ariaLabelledby = this.getAttribute("aria-labelledby");
@@ -287,7 +295,7 @@ export class UikShellSecondarySidebar extends LitElement {
         </div>
         <uik-separator
           orientation="horizontal"
-          style="--uik-component-separator-color: var(--uik-component-shell-divider-color);"
+          style=${`--uik-component-separator-color: ${dividerColor};`}
         ></uik-separator>
         <div part="body-container" style=${styleMap(bodyContainerStyles)}>
           <div
@@ -299,7 +307,7 @@ export class UikShellSecondarySidebar extends LitElement {
         <div ?hidden=${!this.hasFooter}>
           <uik-separator
             orientation="horizontal"
-            style="--uik-component-separator-color: var(--uik-component-shell-divider-color);"
+            style=${`--uik-component-separator-color: ${dividerColor};`}
           ></uik-separator>
           <div
             part="footer"
