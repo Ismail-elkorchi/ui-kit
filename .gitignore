@@ -1,3 +1,6 @@
+.ato/*
+!.ato/queue/
+!.ato/queue/items.jsonl
 .ato/cache/
 .ato/runs/
 .ato/queue/views/
