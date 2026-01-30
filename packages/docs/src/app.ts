@@ -379,6 +379,8 @@ const buildCommandPaletteCommands = (
   return items;
 };
 
+const basePageTitle = "UI Kit";
+
 const escapeHtml = (value: string) =>
   value
     .replace(/&/g, "&amp;")
@@ -493,6 +495,70 @@ const getBaseUrlFromVite = () => {
   const meta = import.meta as unknown as { env?: { BASE_URL?: unknown } };
   const baseUrl = meta.env?.BASE_URL;
   return typeof baseUrl === "string" ? baseUrl : "/";
+};
+
+const ensureMetaElement = (selector: string, create: () => HTMLElement) => {
+  const existing = document.head.querySelector<HTMLElement>(selector);
+  if (existing) return existing;
+  const element = create();
+  document.head.append(element);
+  return element;
+};
+
+const setMetaName = (name: string, content: string) => {
+  const selector = `meta[name="${name}"]`;
+  const element = ensureMetaElement(selector, () => {
+    const meta = document.createElement("meta");
+    meta.name = name;
+    return meta;
+  });
+  if (element instanceof HTMLMetaElement) {
+    element.content = content;
+  }
+};
+
+const setMetaProperty = (property: string, content: string) => {
+  const selector = `meta[property="${property}"]`;
+  const element = ensureMetaElement(selector, () => {
+    const meta = document.createElement("meta");
+    meta.setAttribute("property", property);
+    return meta;
+  });
+  if (element instanceof HTMLMetaElement) {
+    element.content = content;
+  }
+};
+
+const setCanonicalLink = (href: string) => {
+  const element = ensureMetaElement('link[rel="canonical"]', () => {
+    const link = document.createElement("link");
+    link.rel = "canonical";
+    return link;
+  });
+  if (element instanceof HTMLLinkElement) {
+    element.href = href;
+  }
+};
+
+const buildCanonicalUrl = (baseUrl: string, key: string) =>
+  `${window.location.origin}${baseUrl}${key}`;
+
+const updateSeoMetadata = (page: DocPage, canonicalUrl: string) => {
+  const pageTitle = getPageLabel(page);
+  const description =
+    page.summary.trim() || `UI Kit documentation — ${pageTitle}`;
+  const title = `${basePageTitle} — ${pageTitle}`;
+
+  document.title = title;
+  setMetaName("description", description);
+  setMetaProperty("og:title", title);
+  setMetaProperty("og:description", description);
+  setMetaProperty("og:type", "website");
+  setMetaProperty("og:url", canonicalUrl);
+  setMetaName("twitter:card", "summary");
+  setMetaName("twitter:title", title);
+  setMetaName("twitter:description", description);
+  setCanonicalLink(canonicalUrl);
 };
 
 const copyToClipboard = async (value: string) => {
@@ -1180,7 +1246,8 @@ export const mountDocsApp = (container: HTMLElement) => {
     statusBar.message = page.title;
     if (page.id !== "shell-patterns") statusBar.tone = "info";
     updateStatusMeta(statusBar);
-    document.title = `UIK Docs - ${page.title}`;
+    const canonicalUrl = buildCanonicalUrl(baseUrl, key);
+    updateSeoMetadata(page, canonicalUrl);
     void renderPageContent(location.view as "docs" | "lab", page);
   };
 

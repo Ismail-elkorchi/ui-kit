@@ -9,10 +9,13 @@ import { mountDocsApp } from "../app";
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-const waitForContent = async (attempts = 10) => {
+const waitForContent = async (attempts = 60) => {
   for (let i = 0; i < attempts; i += 1) {
     const content = document.querySelector<HTMLElement>("[data-docs-content]");
-    if (content?.innerHTML.trim()) return;
+    const isReady =
+      content?.getAttribute("aria-busy") === "false" &&
+      content.innerHTML.trim();
+    if (isReady) return;
     await nextFrame();
   }
   throw new Error("Docs content did not render.");
