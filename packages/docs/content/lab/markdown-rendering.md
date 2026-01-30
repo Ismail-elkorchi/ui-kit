@@ -12,10 +12,17 @@ Markdown content should render with tables, callouts, and token-first styling.
 ## Admonitions
 
 > [!NOTE]
-> Notes map to `uik-alert` with the info variant.
+> Notes map to `uik-alert` with the info variant and can include `inline code`.
+>
+> Use multiple paragraphs to describe the context and follow-up guidance.
+>
+> - This list stays inside the callout.
+> - Each item uses token-first list styling.
 
 > [!WARNING]
 > Warnings map to `uik-alert` with the warning variant.
+
+> A regular blockquote should stay as a blockquote, not an alert.
 
 ## Lists and code
 

@@ -35,6 +35,10 @@ describe("docs markdown rendering", () => {
 
     const table = content.querySelector("table");
     expect(table).toBeTruthy();
+    const tableWrap = table?.closest(".docs-table-wrap");
+    expect(tableWrap).toBeTruthy();
+    expect(table?.querySelector("thead")).toBeTruthy();
+    expect(table?.querySelector("tbody")).toBeTruthy();
     const headers = Array.from(table?.querySelectorAll("thead th") ?? []).map(
       (header) => header.textContent?.trim(),
     );
@@ -45,10 +49,21 @@ describe("docs markdown rendering", () => {
     expect(infoAlert).toBeTruthy();
     const infoTitle = infoAlert?.querySelector('[slot="title"]');
     expect(infoTitle?.textContent?.trim()).toBe("Note");
+    const infoParagraphs = infoAlert?.querySelectorAll("uik-text") ?? [];
+    expect(infoParagraphs.length).toBeGreaterThan(1);
+    expect(infoAlert?.querySelector("ul")).toBeTruthy();
+    const inlineCodes = Array.from(
+      infoAlert?.querySelectorAll("code") ?? [],
+    ).map((code) => code.textContent?.trim());
+    expect(inlineCodes).toContain("inline code");
 
     const warningAlert = content.querySelector('uik-alert[variant="warning"]');
     expect(warningAlert).toBeTruthy();
     const warningTitle = warningAlert?.querySelector('[slot="title"]');
     expect(warningTitle?.textContent?.trim()).toBe("Warning");
+
+    const blockquote = content.querySelector("blockquote.docs-blockquote");
+    expect(blockquote).toBeTruthy();
+    expect(blockquote?.closest("uik-alert")).toBeNull();
   });
 });

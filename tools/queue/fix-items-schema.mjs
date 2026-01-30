@@ -63,7 +63,7 @@ const updated = lines.map((line) => {
         `Review scope paths: ${scopeText}.`,
         "Implement changes in the scoped paths to achieve the outcome; remove legacy behavior (no dual paths); comply with package boundary rules.",
         `Validate acceptance criteria: ${acceptanceText}.`,
-        "Run verification: npm run format; npm run contracts:validate:build; ato gate run --mode full --json.",
+        "Run verification: npm run format; npm run contracts:validate:build; node tools/ato.mjs gate run --mode full --json.",
       ],
     };
   } else if (!item.spec.plan) {

@@ -409,6 +409,20 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   background-color: oklch(var(--uik-surface-muted));
 }
 
+@media (forced-colors: active) {
+  .docs-blockquote,
+  .docs-table-wrap,
+  .docs-admonition {
+    border-color: currentcolor;
+    background-color: Canvas;
+  }
+
+  .docs-table th,
+  .docs-table td {
+    border-bottom-color: currentcolor;
+  }
+}
+
 .docs-code-block {
   display: flex;
   flex-direction: column;
