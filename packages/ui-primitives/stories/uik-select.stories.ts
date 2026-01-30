@@ -14,6 +14,11 @@ type SelectArgs = {
   error: string;
 };
 
+const controlRowItems = [
+  { id: "alpha", label: "Alpha" },
+  { id: "beta", label: "Beta" },
+];
+
 const meta: Meta<SelectArgs> = {
   title: "Primitives/Select",
   component: "uik-select",
@@ -64,4 +69,22 @@ export const Default: Story = {
 export const Disabled: Story = {
   ...interactionStory,
   args: { disabled: true },
+};
+
+export const AlignedRow: Story = {
+  render: () => html`
+    <div style="display: grid; gap: var(--uik-space-4);">
+      <div style="display: flex; gap: var(--uik-space-4); align-items: center;">
+        <uik-input aria-label="Workspace" value="Workspace"></uik-input>
+        <uik-select aria-label="Plan">
+          <option value="alpha">Alpha</option>
+          <option value="beta">Beta</option>
+        </uik-select>
+        <uik-combobox
+          aria-label="Owner"
+          .items=${controlRowItems}
+        ></uik-combobox>
+      </div>
+    </div>
+  `,
 };

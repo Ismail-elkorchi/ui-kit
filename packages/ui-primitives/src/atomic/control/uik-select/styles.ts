@@ -37,12 +37,12 @@ export const styles = css`
   select {
     box-sizing: border-box;
     width: 100%;
-    height: var(--uik-size-control-md);
+    height: var(--uik-component-select-base-height);
     padding: var(--uik-component-select-base-padding-y)
       var(--uik-component-select-base-padding-x);
     font-family: var(--uik-typography-font-family-sans);
     font-size: var(--uik-component-select-base-font-size);
-    font-weight: var(--uik-typography-font-weight-regular);
+    font-weight: var(--uik-component-select-base-font-weight);
     line-height: var(--uik-component-select-base-line-height);
     color: oklch(var(--uik-component-select-base-fg));
     background-color: oklch(var(--uik-component-select-base-bg));

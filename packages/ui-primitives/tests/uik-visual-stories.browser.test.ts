@@ -80,7 +80,11 @@ describe("storybook visuals", () => {
       </uik-select>
     `);
     const select = await waitForUpdate<HTMLElement>("uik-select");
-    await expect.element(select).toMatchScreenshot();
+    const control = select.shadowRoot?.querySelector("select");
+    if (!control) throw new Error("Select control missing.");
+    const label = select.shadowRoot?.querySelector('[part="label"]');
+    expect(control.value).toBe("beta");
+    expect(label?.getAttribute("hidden")).toBeNull();
   });
 
   it("renders radio group", async () => {

@@ -50,12 +50,22 @@
           "$description": "Component select base shadow."
         },
         "fontSize": {
-          "$value": "{typography.fontSize.3}",
+          "$value": "{typography.fontSize.2}",
           "$type": "dimension",
           "$description": "Component select base font size."
         },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.regular}",
+          "$type": "fontWeight",
+          "$description": "Component select base font weight."
+        },
+        "height": {
+          "$value": "{size.control.md}",
+          "$type": "dimension",
+          "$description": "Component select base height."
+        },
         "lineHeight": {
-          "$value": "{typography.lineHeight.4}",
+          "$value": "{typography.lineHeight.2}",
           "$type": "number",
           "$description": "Component select base line height."
         }
