@@ -28,6 +28,7 @@ import "@ismail-elkorchi/ui-primitives/uik-surface";
 import "@ismail-elkorchi/ui-primitives/uik-text";
 import "@ismail-elkorchi/ui-primitives/uik-tree-view";
 import "@ismail-elkorchi/ui-primitives/uik-visually-hidden";
+import { createUikPreferencesController } from "@ismail-elkorchi/ui-tokens";
 import type {
   UikCommandCenterCommand,
   UikCommandCenterHandle,
@@ -56,14 +57,6 @@ import {
   type DocPageContent,
   type DocPage,
 } from "./content";
-
-const ensureDefaultAttribute = (
-  target: HTMLElement,
-  name: string,
-  fallback: string,
-) => {
-  if (!target.getAttribute(name)) target.setAttribute(name, fallback);
-};
 
 const normalizeBaseUrl = (value: string) => {
   if (!value) return "/";
@@ -839,11 +832,16 @@ const wirePortfolioPreviews = (container: HTMLElement) => {
 };
 
 export const mountDocsApp = (container: HTMLElement) => {
-  ensureDefaultAttribute(
-    document.documentElement,
-    "data-uik-density",
-    "comfortable",
-  );
+  const preferences = createUikPreferencesController({
+    root: document.documentElement,
+    storageKey: "uik-docs-preferences",
+    defaults: {
+      theme: "system",
+      density: "comfortable",
+    },
+    persist: true,
+  });
+  const initialPreferences = preferences.apply();
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
   const initialRoute = getRouteFromLocation(baseUrl);
   const initialView = initialRoute.view ?? "docs";
@@ -861,9 +859,11 @@ export const mountDocsApp = (container: HTMLElement) => {
     : "";
   const initialHeroLinks = initialPage ? renderHeroLinks(initialPage) : "";
   const initialOutline = initialPage ? renderToc(initialPage) : "";
-  const initialTheme = resolveTheme();
+  const initialTheme = initialPreferences.theme ?? resolveTheme();
   const initialDensity =
-    document.documentElement.getAttribute("data-uik-density") ?? "comfortable";
+    initialPreferences.density ??
+    document.documentElement.getAttribute("data-uik-density") ??
+    "comfortable";
   const initialStatusMeta = `Theme: ${initialTheme} | Density: ${initialDensity}`;
   const groupBadgeAttr = initialGroup ? "" : " hidden";
   const kindBadgeAttr = initialKind ? "" : " hidden";
@@ -1335,15 +1335,12 @@ export const mountDocsApp = (container: HTMLElement) => {
   });
 
   themeSelect?.addEventListener("change", () => {
-    document.documentElement.setAttribute("data-uik-theme", themeSelect.value);
+    preferences.setTheme(themeSelect.value);
     updateStatusMeta(statusBar);
   });
 
   densitySelect?.addEventListener("change", () => {
-    document.documentElement.setAttribute(
-      "data-uik-density",
-      densitySelect.value,
-    );
+    preferences.setDensity(densitySelect.value);
     updateStatusMeta(statusBar);
   });
 

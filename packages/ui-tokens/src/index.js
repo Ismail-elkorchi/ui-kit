@@ -26,6 +26,139 @@ function setDensity(element, density) {
   element.setAttribute(DENSITY_ATTRIBUTE, String(density));
 }
 
+function resolveSystemTheme() {
+  if (
+    typeof window === "undefined" ||
+    typeof window.matchMedia !== "function"
+  ) {
+    return "light";
+  }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+function resolveThemeValue(value, fallback) {
+  const candidate = value == null || value === "" ? fallback : value;
+  if (candidate == null || candidate === "") return null;
+  if (candidate === "system") return resolveSystemTheme();
+  return String(candidate);
+}
+
+function resolveDensityValue(value, fallback) {
+  const candidate = value == null || value === "" ? fallback : value;
+  if (candidate == null || candidate === "") return null;
+  return String(candidate);
+}
+
+function getSafeStorage(candidate) {
+  try {
+    const storage =
+      candidate ?? (typeof window !== "undefined" ? window.localStorage : null);
+    if (!storage) return null;
+    const testKey = "__uik_storage_test__";
+    storage.setItem(testKey, "1");
+    storage.removeItem(testKey);
+    return storage;
+  } catch {
+    return null;
+  }
+}
+
+function createUikPreferencesController(options = {}) {
+  const root =
+    options.root ??
+    (typeof document !== "undefined" ? document.documentElement : null);
+  const storageKey = options.storageKey ?? "uik-preferences";
+  const storage = getSafeStorage(options.storage);
+  const defaults = {
+    theme: options.defaults?.theme ?? "system",
+    density: options.defaults?.density ?? "comfortable",
+  };
+  const persist = options.persist ?? false;
+  let state = {
+    theme: resolveThemeValue(null, defaults.theme),
+    density: resolveDensityValue(null, defaults.density),
+  };
+
+  const applyToRoot = (next) => {
+    if (!root) return;
+    setTheme(root, next.theme);
+    setDensity(root, next.density);
+  };
+
+  const load = () => {
+    if (!storage) return null;
+    try {
+      const raw = storage.getItem(storageKey);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return null;
+      return {
+        theme: parsed.theme ?? null,
+        density: parsed.density ?? null,
+      };
+    } catch {
+      return null;
+    }
+  };
+
+  const save = (next = state) => {
+    if (!storage) return false;
+    try {
+      storage.setItem(
+        storageKey,
+        JSON.stringify({
+          theme: next.theme ?? null,
+          density: next.density ?? null,
+        }),
+      );
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const apply = (next) => {
+    const source = next ?? load() ?? defaults;
+    state = {
+      theme: resolveThemeValue(source.theme, defaults.theme),
+      density: resolveDensityValue(source.density, defaults.density),
+    };
+    applyToRoot(state);
+    if (persist) save(state);
+    return { ...state };
+  };
+
+  const setThemePreference = (theme) => {
+    state = {
+      ...state,
+      theme: resolveThemeValue(theme, defaults.theme),
+    };
+    applyToRoot(state);
+    if (persist) save(state);
+    return { ...state };
+  };
+
+  const setDensityPreference = (density) => {
+    state = {
+      ...state,
+      density: resolveDensityValue(density, defaults.density),
+    };
+    applyToRoot(state);
+    if (persist) save(state);
+    return { ...state };
+  };
+
+  return {
+    apply,
+    load,
+    save,
+    setTheme: setThemePreference,
+    setDensity: setDensityPreference,
+  };
+}
+
 function toKebab(segment) {
   return segment
     .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
@@ -121,6 +254,7 @@ export {
   BREAKPOINT_ATTRIBUTE,
   setTheme,
   setDensity,
+  createUikPreferencesController,
   getCssVarName,
   createBreakpointObserver,
 };
