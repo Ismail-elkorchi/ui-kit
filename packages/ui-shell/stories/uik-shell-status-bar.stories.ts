@@ -20,8 +20,8 @@ const meta: Meta<StatusBarArgs> = {
       description: {
         component: [
           "Props: message, tone, meta.",
-          "Slots: actions, meta.",
-          "Parts: status-bar, status-main, message, actions, meta.",
+          "Slots: context-actions, global-controls, meta.",
+          "Parts: status-bar, status-main, status-controls, message, context-actions, global-controls, meta.",
           "Custom properties: `--uik-component-shell-status-bar-bg`, `--uik-component-shell-status-bar-fg`, `--uik-component-shell-status-bar-height`, `--uik-component-shell-divider-color`.",
         ].join("\n"),
       },
@@ -46,7 +46,7 @@ const meta: Meta<StatusBarArgs> = {
         meta=${args.meta}
       >
         <span
-          slot="actions"
+          slot="context-actions"
           style="
             font-size: var(--uik-typography-font-size-1);
             line-height: var(--uik-typography-line-height-2);

@@ -99,11 +99,11 @@ html`
 
 ### Component notes
 
-- `uik-shell-layout`: named slots `activity-bar`, `primary-sidebar`, `main-content`, `secondary-sidebar`, `status-bar`. `isPrimarySidebarOpen` toggles the responsive drawer; emits `primary-sidebar-open` and `primary-sidebar-close`.
+- `uik-shell-layout`: named slots `activity-bar`, `primary-sidebar`, `main-content`, `secondary-sidebar`, `status-bar`. `isPrimarySidebarOpen` toggles the responsive drawer; emits `primary-sidebar-open` and `primary-sidebar-close`. Set `activeRouteKey` to sync active state to descendants tagged with `data-shell-active-target="view"` (sets `activeId`) and `data-shell-active-target="route"` (sets `currentId`).
 - `uik-shell-activity-bar`: accepts `.items` (id/label/icon/path) and emits `activity-bar-select`; optional `footer` slot; delegates roving focus to `uik-nav-rail` (set `aria-label` if you need a custom name).
 - `uik-shell-sidebar`: `slot="actions"` for header actions, default slot for body, optional `slot="footer"`; `isBodyPadded`/`isBodyScrollable` toggle spacing + scroll.
 - `uik-shell-secondary-sidebar`: controlled via `.isOpen`; optional `focus-return-target` (selector or element) to restore focus on close; Escape and the close button emit `secondary-sidebar-close` (`detail.reason` is `escape | toggle`).
-- `uik-shell-status-bar`: `.message` + `.tone` colorize the left side; `meta` string (outline badge) or `slot="meta"` for custom content; optional `slot="actions"`.
+- `uik-shell-status-bar`: `.message` + `.tone` colorize the left side; `meta` string (outline badge) or `slot="meta"` for custom content; optional `slot="context-actions"` and `slot="global-controls"`.
 - Use `@ismail-elkorchi/ui-primitives/uik-nav` or `@ismail-elkorchi/ui-primitives/uik-tree-view` for sidebar navigation content.
 
 ### Custom properties

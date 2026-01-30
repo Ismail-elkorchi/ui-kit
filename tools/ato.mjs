@@ -70,7 +70,7 @@ const readQueueItems = () => {
   lines.forEach((line, index) => {
     try {
       items.push(JSON.parse(line));
-    } catch (error) {
+    } catch {
       errors.push({
         message: "Invalid JSON in queue file.",
         line: index + 1,
@@ -88,6 +88,7 @@ const validateQueue = () => {
   const errors = [];
   const allowedStatuses = new Set([
     "queued",
+    "active",
     "in_progress",
     "blocked",
     "done",

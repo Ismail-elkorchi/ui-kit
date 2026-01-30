@@ -32,6 +32,19 @@ const resetPreferences = () => {
   document.documentElement.removeAttribute("data-uik-density");
 };
 
+const parseStoredPreferences = (value: string | null) => {
+  if (!value) return { theme: undefined, density: undefined };
+  const raw: unknown = JSON.parse(value);
+  if (!raw || typeof raw !== "object") {
+    return { theme: undefined, density: undefined };
+  }
+  const record = raw as Record<string, unknown>;
+  return {
+    theme: typeof record.theme === "string" ? record.theme : undefined,
+    density: typeof record.density === "string" ? record.density : undefined,
+  };
+};
+
 describe("docs theme and density preferences", () => {
   beforeEach(() => {
     resetPreferences();
@@ -50,6 +63,14 @@ describe("docs theme and density preferences", () => {
     const expectedTheme = prefersDark ? "dark" : "light";
 
     const { themeSelect, densitySelect } = await waitForControls();
+    const statusBar = document.querySelector("uik-shell-status-bar");
+    expect(statusBar).toBeTruthy();
+    expect(
+      themeSelect.closest('[data-shell-slot="global-controls"]'),
+    ).toBeTruthy();
+    expect(
+      densitySelect.closest('[data-shell-slot="global-controls"]'),
+    ).toBeTruthy();
     expect(root.getAttribute("data-uik-theme")).toBe(expectedTheme);
     expect(root.getAttribute("data-uik-density")).toBe("comfortable");
 
@@ -65,7 +86,7 @@ describe("docs theme and density preferences", () => {
 
     const stored = localStorage.getItem(storageKey);
     expect(stored).toBeTruthy();
-    const parsed = stored ? JSON.parse(stored) : {};
+    const parsed = parseStoredPreferences(stored);
     expect(parsed.theme).toBe(nextTheme);
     expect(parsed.density).toBe("compact");
 

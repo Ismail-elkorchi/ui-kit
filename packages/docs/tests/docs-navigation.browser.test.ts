@@ -56,5 +56,7 @@ describe("docs navigation", () => {
 
     const title = document.querySelector("[data-docs-title]");
     expect(title?.textContent).toContain("Tokens");
+    expect(layout?.activeRouteKey).toBe("docs/tokens");
+    expect(navTree?.currentId).toBe("docs/tokens");
   });
 });

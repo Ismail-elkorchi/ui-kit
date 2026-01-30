@@ -4817,6 +4817,18 @@
           "summary": "Shell region layout container with named slots.",
           "attributes": [
             {
+              "name": "active-route-key",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "activeRouteKey",
+              "type": "string",
+              "description": "string",
+              "default": ""
+            },
+            {
               "name": "isPrimarySidebarOpen",
               "type": "boolean",
               "description": "boolean",
@@ -4830,6 +4842,12 @@
             }
           ],
           "properties": [
+            {
+              "name": "activeRouteKey",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
             {
               "name": "isPrimarySidebarOpen",
               "type": "boolean",
@@ -5111,14 +5129,18 @@
           ],
           "events": [],
           "slots": [
-            { "name": "actions", "description": "" },
+            { "name": "context-actions", "description": "" },
+            { "name": "global-controls", "description": "" },
             { "name": "meta", "description": "" }
           ],
           "cssParts": [
-            { "name": "actions", "description": "" },
+            { "name": "context-actions", "description": "" },
+            { "name": "global-controls", "description": "" },
             { "name": "message", "description": "" },
             { "name": "meta", "description": "" },
-            { "name": "status-bar", "description": "" }
+            { "name": "status-bar", "description": "" },
+            { "name": "status-controls", "description": "" },
+            { "name": "status-main", "description": "" }
           ],
           "cssCustomProperties": [
             {

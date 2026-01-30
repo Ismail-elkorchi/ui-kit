@@ -17,18 +17,6 @@ import type {
   UikTreeView,
   UikTreeViewItem,
 } from "@ismail-elkorchi/ui-primitives";
-import "@ismail-elkorchi/ui-primitives/uik-badge";
-import "@ismail-elkorchi/ui-primitives/uik-box";
-import "@ismail-elkorchi/ui-primitives/uik-button";
-import "@ismail-elkorchi/ui-primitives/uik-command-palette";
-import "@ismail-elkorchi/ui-primitives/uik-heading";
-import "@ismail-elkorchi/ui-primitives/uik-link";
-import "@ismail-elkorchi/ui-primitives/uik-select";
-import "@ismail-elkorchi/ui-primitives/uik-surface";
-import "@ismail-elkorchi/ui-primitives/uik-text";
-import "@ismail-elkorchi/ui-primitives/uik-tree-view";
-import "@ismail-elkorchi/ui-primitives/uik-visually-hidden";
-import { createUikPreferencesController } from "@ismail-elkorchi/ui-tokens";
 import type {
   UikCommandCenterCommand,
   UikCommandCenterHandle,
@@ -41,6 +29,19 @@ import type {
   UikShellRoute,
 } from "@ismail-elkorchi/ui-shell";
 import { createUikShellRouter } from "@ismail-elkorchi/ui-shell/router";
+import { createUikPreferencesController } from "@ismail-elkorchi/ui-tokens";
+
+import "@ismail-elkorchi/ui-primitives/uik-badge";
+import "@ismail-elkorchi/ui-primitives/uik-box";
+import "@ismail-elkorchi/ui-primitives/uik-button";
+import "@ismail-elkorchi/ui-primitives/uik-command-palette";
+import "@ismail-elkorchi/ui-primitives/uik-heading";
+import "@ismail-elkorchi/ui-primitives/uik-link";
+import "@ismail-elkorchi/ui-primitives/uik-select";
+import "@ismail-elkorchi/ui-primitives/uik-surface";
+import "@ismail-elkorchi/ui-primitives/uik-text";
+import "@ismail-elkorchi/ui-primitives/uik-tree-view";
+import "@ismail-elkorchi/ui-primitives/uik-visually-hidden";
 import "@ismail-elkorchi/ui-shell/activity-bar";
 import "@ismail-elkorchi/ui-shell/layout";
 import "@ismail-elkorchi/ui-shell/secondary-sidebar";
@@ -879,6 +880,7 @@ export const mountDocsApp = (container: HTMLElement) => {
       <uik-shell-activity-bar
         slot="activity-bar"
         class="docs-activity-bar"
+        data-shell-active-target="view"
         aria-label="Primary navigation"></uik-shell-activity-bar>
       <uik-shell-sidebar
         slot="primary-sidebar"
@@ -890,6 +892,7 @@ export const mountDocsApp = (container: HTMLElement) => {
         <uik-tree-view
           class="docs-tree-nav"
           data-docs-nav-tree
+          data-shell-active-target="route"
           aria-label="Docs navigation"></uik-tree-view>
         <div slot="footer" class="docs-sidebar-footer">
           <uik-text as="p" size="sm" tone="muted">Tokens-first, standards-based UI.</uik-text>
@@ -911,36 +914,6 @@ export const mountDocsApp = (container: HTMLElement) => {
               initialSummary,
             )}</uik-text>
             <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
-            <div slot="panel">
-              <div class="docs-hero-control-grid">
-                <uik-select data-docs-control="theme">
-                  <span slot="label">Theme</span>
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                </uik-select>
-                <uik-select data-docs-control="density">
-                  <span slot="label">Density</span>
-                  <option value="comfortable">Comfortable</option>
-                  <option value="compact">Compact</option>
-                </uik-select>
-                <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
-                  <span slot="label">Page</span>
-                  ${mobileNavOptions}
-                </uik-select>
-              </div>
-              <div class="docs-hero-panel-actions">
-                <uik-button
-                  variant="ghost"
-                  size="sm"
-                  data-docs-action="nav-toggle"
-                  aria-controls="docs-sidebar"
-                  aria-expanded="false"
-                >
-                  Menu
-                </uik-button>
-                <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
-              </div>
-            </div>
           </uik-page-hero>
           <div class="docs-page-content" data-docs-content></div>
         </div>
@@ -953,7 +926,41 @@ export const mountDocsApp = (container: HTMLElement) => {
         aria-label="On this page">
         <div data-docs-outline>${initialOutline}</div>
       </uik-shell-secondary-sidebar>
-      <uik-shell-status-bar slot="status-bar" class="docs-status" message="${escapeHtml(initialTitle)}" tone="info" meta="${escapeHtml(initialStatusMeta)}"></uik-shell-status-bar>
+      <uik-shell-status-bar
+        slot="status-bar"
+        class="docs-status"
+        message="${escapeHtml(initialTitle)}"
+        tone="info"
+        meta="${escapeHtml(initialStatusMeta)}">
+        <div slot="context-actions" class="docs-context-actions">
+          <uik-button
+            variant="ghost"
+            size="sm"
+            data-docs-action="nav-toggle"
+            aria-controls="docs-sidebar"
+            aria-expanded="false"
+          >
+            Menu
+          </uik-button>
+          <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
+        </div>
+        <div slot="global-controls" class="docs-global-controls">
+          <uik-select data-docs-control="theme">
+            <span slot="label">Theme</span>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </uik-select>
+          <uik-select data-docs-control="density">
+            <span slot="label">Density</span>
+            <option value="comfortable">Comfortable</option>
+            <option value="compact">Compact</option>
+          </uik-select>
+          <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
+            <span slot="label">Page</span>
+            ${mobileNavOptions}
+          </uik-select>
+        </div>
+      </uik-shell-status-bar>
     </uik-shell-layout>
     <uik-command-palette
       class="docs-command-palette"
@@ -1069,8 +1076,13 @@ export const mountDocsApp = (container: HTMLElement) => {
     heroLinksElement.toggleAttribute("hidden", links.length === 0);
   };
 
-  const updateNavCurrent = (location: UikShellLocation) => {
-    navTree.currentId = resolveNavCurrentId(location);
+  const updateActiveRoute = (
+    location: UikShellLocation,
+    overrideKey?: string,
+  ) => {
+    const nextKey = overrideKey?.trim() ?? "";
+    layout.activeRouteKey =
+      nextKey.length > 0 ? nextKey : resolveNavCurrentId(location);
   };
 
   const syncCommandCenterOpenButton = () => {
@@ -1103,7 +1115,7 @@ export const mountDocsApp = (container: HTMLElement) => {
           const [view, subview] = command.value.split("/");
           router.navigate(view, subview);
           syncUrl(router.current);
-          updateNavCurrent(router.current);
+          updateActiveRoute(router.current);
         },
       });
       syncCommandCenterOpenButton();
@@ -1222,8 +1234,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     const page = pageMap.get(key);
     if (!page) return;
 
-    activityBar.activeId = location.view;
-    updateNavCurrent(location);
+    updateActiveRoute(location);
 
     if (titleElement) titleElement.textContent = page.title;
     if (summaryElement) summaryElement.textContent = page.summary;
@@ -1285,7 +1296,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   });
 
   window.addEventListener("hashchange", () => {
-    updateNavCurrent(router.current);
+    updateActiveRoute(router.current);
     void scrollToHashTarget();
   });
 
@@ -1293,7 +1304,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     const detail = (event as CustomEvent<{ id: string }>).detail;
     router.navigate(detail.id);
     syncUrl(router.current);
-    updateNavCurrent(router.current);
+    updateActiveRoute(router.current);
   });
 
   navTree.addEventListener("tree-view-activate", (event: Event) => {
@@ -1308,7 +1319,7 @@ export const mountDocsApp = (container: HTMLElement) => {
       ? `${baseUrl}${nextKey}#${hash}`
       : `${baseUrl}${nextKey}`;
     window.history.pushState({}, "", nextPath);
-    updateNavCurrent(router.current);
+    updateActiveRoute(router.current, detail.id);
     void scrollToHashTarget();
   });
 
@@ -1349,7 +1360,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (!view || !subview) return;
     router.navigate(view, subview);
     syncUrl(router.current);
-    updateNavCurrent(router.current);
+    updateActiveRoute(router.current);
   });
 
   window.addEventListener("popstate", () => {

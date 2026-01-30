@@ -183,7 +183,7 @@ const meta: Meta<LayoutArgs> = {
         meta="3 files selected"
       >
         <span
-          slot="actions"
+          slot="context-actions"
           style="
             font-size: var(--uik-typography-font-size-1);
             line-height: var(--uik-typography-line-height-2);

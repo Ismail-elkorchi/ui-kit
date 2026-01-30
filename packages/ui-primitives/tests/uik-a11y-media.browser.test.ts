@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { styles as dialogStyles } from "../src/atomic/overlay/uik-dialog/styles";
-import { styles as popoverStyles } from "../src/atomic/overlay/uik-popover/styles";
 import { styles as spinnerStyles } from "../src/atomic/feedback/uik-spinner/styles";
 import { styles as surfaceStyles } from "../src/atomic/layout/uik-surface/styles";
-import { styles as menubarStyles } from "../src/composed/collection/uik-menubar/styles";
+import { styles as dialogStyles } from "../src/atomic/overlay/uik-dialog/styles";
+import { styles as popoverStyles } from "../src/atomic/overlay/uik-popover/styles";
 import { styles as menuStyles } from "../src/composed/collection/uik-menu/styles";
+import { styles as menubarStyles } from "../src/composed/collection/uik-menubar/styles";
 import { styles as navRailStyles } from "../src/composed/collection/uik-nav-rail/styles";
 import { styles as tooltipStyles } from "../src/composed/overlay/uik-tooltip/styles";
 

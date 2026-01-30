@@ -16,11 +16,15 @@ type StatusBarTone = "info" | "success" | "danger" | "muted";
  * @attr message
  * @attr tone (info | success | danger | muted)
  * @attr meta
- * @slot actions
+ * @slot context-actions
+ * @slot global-controls
  * @slot meta
  * @part status-bar
+ * @part status-main
+ * @part status-controls
  * @part message
- * @part actions
+ * @part context-actions
+ * @part global-controls
  * @part meta
  * @a11y Use short status text; provide accessible names for actions.
  * @cssprop --uik-component-shell-status-bar-bg
@@ -46,7 +50,14 @@ export class UikShellStatusBar extends LitElement {
       this,
       "[data-shell-root]",
       [
-        { name: "actions", containerSelector: '[data-shell-slot="actions"]' },
+        {
+          name: "context-actions",
+          containerSelector: '[data-shell-slot="context-actions"]',
+        },
+        {
+          name: "global-controls",
+          containerSelector: '[data-shell-slot="global-controls"]',
+        },
         { name: "meta", containerSelector: '[data-shell-slot="meta"]' },
       ],
       (root) => {
@@ -148,6 +159,19 @@ export class UikShellStatusBar extends LitElement {
       alignItems: "center",
       gap: "var(--uik-space-3)",
     };
+    const actionsStyles = {
+      display: "flex",
+      alignItems: "center",
+      gap: "var(--uik-space-2)",
+      flexWrap: "wrap",
+    };
+    const controlsStyles = {
+      display: "flex",
+      alignItems: "center",
+      gap: "var(--uik-space-3)",
+      flexWrap: "wrap",
+      justifyContent: "flex-end",
+    };
     const messageStyles = {
       color: forcedColors ? "CanvasText" : this.getToneColor(),
       fontWeight: "var(--uik-typography-font-weight-medium)",
@@ -174,12 +198,27 @@ export class UikShellStatusBar extends LitElement {
           <span part="message" style=${styleMap(messageStyles)}
             >${this.message}</span
           >
-          <span part="actions" data-shell-slot="actions"></span>
+          <span
+            part="context-actions"
+            style=${styleMap(actionsStyles)}
+            data-shell-slot="context-actions"
+          ></span>
         </div>
-        <div part="meta" style=${styleMap(metaStyles)} data-shell-slot="meta">
-          ${showMetaFallback
-            ? html`<span data-shell-fallback="meta">${metaContent}</span>`
-            : nothing}
+        <div part="status-controls" style=${styleMap(controlsStyles)}>
+          <span
+            part="global-controls"
+            style=${styleMap(actionsStyles)}
+            data-shell-slot="global-controls"
+          ></span>
+          <span
+            part="meta"
+            style=${styleMap(metaStyles)}
+            data-shell-slot="meta"
+          >
+            ${showMetaFallback
+              ? html`<span data-shell-fallback="meta">${metaContent}</span>`
+              : nothing}
+          </span>
         </div>
       </div>
     `;

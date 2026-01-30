@@ -11,6 +11,7 @@ import {
  * Shell region layout container with named slots.
  * @attr isSecondarySidebarVisible (boolean)
  * @attr isPrimarySidebarOpen (boolean)
+ * @attr activeRouteKey (string)
  * @slot activity-bar
  * @slot primary-sidebar
  * @slot main-content
@@ -40,6 +41,8 @@ import {
 export class UikShellLayout extends LitElement {
   @property({ type: Boolean }) accessor isSecondarySidebarVisible = false;
   @property({ type: Boolean }) accessor isPrimarySidebarOpen = false;
+  @property({ type: String, attribute: "active-route-key" })
+  accessor activeRouteKey = "";
   @state() private accessor isNarrow = false;
   private slotController?: LightDomSlotController;
   private resizeObserver: ResizeObserver | null = null;
@@ -88,6 +91,9 @@ export class UikShellLayout extends LitElement {
           containerSelector: '[data-shell-slot="status-bar"]',
         },
       ],
+      () => {
+        this.syncActiveTargets();
+      },
     );
     this.slotController.connect();
     this.resizeObserver ??= new ResizeObserver((entries) => {
@@ -114,6 +120,7 @@ export class UikShellLayout extends LitElement {
   override firstUpdated() {
     this.slotController?.sync();
     this.updateNarrowState(this.getBoundingClientRect().width);
+    this.syncActiveTargets();
   }
 
   override createRenderRoot() {
@@ -134,6 +141,27 @@ export class UikShellLayout extends LitElement {
       this.closeSecondarySidebar();
     }
     this.isNarrow = next;
+  }
+
+  private syncActiveTargets() {
+    const normalized = this.activeRouteKey.trim();
+    const view = normalized
+      ? (normalized.split("/")[0]?.split("#")[0] ?? "")
+      : "";
+    this.querySelectorAll<HTMLElement>(
+      '[data-shell-active-target="view"]',
+    ).forEach((target) => {
+      if ("activeId" in target) {
+        (target as { activeId?: string }).activeId = view;
+      }
+    });
+    this.querySelectorAll<HTMLElement>(
+      '[data-shell-active-target="route"]',
+    ).forEach((target) => {
+      if ("currentId" in target) {
+        (target as { currentId?: string }).currentId = normalized;
+      }
+    });
   }
 
   private resolveCollapseBreakpoint(): number {
@@ -347,6 +375,10 @@ export class UikShellLayout extends LitElement {
       this.isPrimarySidebarOpen;
     const wasDrawerOpen = wasNarrow && wasPrimaryOpen;
     const nowDrawerOpen = this.drawerOpen;
+
+    if (changedProps.has("activeRouteKey")) {
+      this.syncActiveTargets();
+    }
 
     if (changedProps.has("isNarrow")) {
       this.toggleAttribute("data-shell-narrow", this.isNarrow);

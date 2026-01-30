@@ -34,13 +34,13 @@ describe("docs markdown rendering", () => {
     if (!content) throw new Error("Docs content root not found.");
 
     const table = content.querySelector("table");
-    expect(table).toBeTruthy();
-    const tableWrap = table?.closest(".docs-table-wrap");
+    if (!table) throw new Error("Docs table not found.");
+    const tableWrap = table.closest(".docs-table-wrap");
     expect(tableWrap).toBeTruthy();
-    expect(table?.querySelector("thead")).toBeTruthy();
-    expect(table?.querySelector("tbody")).toBeTruthy();
-    const headers = Array.from(table?.querySelectorAll("thead th") ?? []).map(
-      (header) => header.textContent?.trim(),
+    expect(table.querySelector("thead")).toBeTruthy();
+    expect(table.querySelector("tbody")).toBeTruthy();
+    const headers = Array.from(table.querySelectorAll("thead th")).map(
+      (header) => header.textContent.trim(),
     );
     expect(headers).toContain("Surface");
     expect(headers).toContain("Status");
@@ -48,19 +48,19 @@ describe("docs markdown rendering", () => {
     const infoAlert = content.querySelector('uik-alert[variant="info"]');
     expect(infoAlert).toBeTruthy();
     const infoTitle = infoAlert?.querySelector('[slot="title"]');
-    expect(infoTitle?.textContent?.trim()).toBe("Note");
+    expect(infoTitle?.textContent.trim()).toBe("Note");
     const infoParagraphs = infoAlert?.querySelectorAll("uik-text") ?? [];
     expect(infoParagraphs.length).toBeGreaterThan(1);
     expect(infoAlert?.querySelector("ul")).toBeTruthy();
     const inlineCodes = Array.from(
       infoAlert?.querySelectorAll("code") ?? [],
-    ).map((code) => code.textContent?.trim());
+    ).map((code) => code.textContent.trim());
     expect(inlineCodes).toContain("inline code");
 
     const warningAlert = content.querySelector('uik-alert[variant="warning"]');
     expect(warningAlert).toBeTruthy();
     const warningTitle = warningAlert?.querySelector('[slot="title"]');
-    expect(warningTitle?.textContent?.trim()).toBe("Warning");
+    expect(warningTitle?.textContent.trim()).toBe("Warning");
 
     const blockquote = content.querySelector("blockquote.docs-blockquote");
     expect(blockquote).toBeTruthy();

@@ -31,7 +31,8 @@
       "summary": "Shell region layout container with named slots.",
       "attributes": [
         "isSecondarySidebarVisible (boolean)",
-        "isPrimarySidebarOpen (boolean)"
+        "isPrimarySidebarOpen (boolean)",
+        "activeRouteKey (string)"
       ],
       "slots": [
         "activity-bar",
@@ -128,8 +129,16 @@
         "tone (info | success | danger | muted)",
         "meta"
       ],
-      "slots": ["actions", "meta"],
-      "parts": ["status-bar", "message", "actions", "meta"],
+      "slots": ["context-actions", "global-controls", "meta"],
+      "parts": [
+        "status-bar",
+        "status-main",
+        "status-controls",
+        "message",
+        "context-actions",
+        "global-controls",
+        "meta"
+      ],
       "events": [],
       "a11y": ["Use short status text; provide accessible names for actions."],
       "cssVars": [

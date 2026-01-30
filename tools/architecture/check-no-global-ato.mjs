@@ -14,7 +14,6 @@ const issues = [];
 Object.entries(scripts).forEach(([name, command]) => {
   const value = String(command);
   const canonicalPattern = /node\s+tools\/ato\.mjs\b/g;
-  const hasCanonical = canonicalPattern.test(value);
   const stripped = value.replace(canonicalPattern, "");
   const hasGlobalAto = /(^|[\s;&|()])ato(\s|$)/.test(stripped);
   const hasWrongAtoMjs = /(^|[\s;&|()])ato\.mjs(\s|$)/.test(stripped);
