@@ -226,7 +226,10 @@
       "id": "description-list",
       "tagName": "uik-description-list",
       "summary": "Definition list wrapper for label/value metadata.",
-      "attributes": ["density (comfortable | compact)"],
+      "attributes": [
+        "density (comfortable | compact)",
+        "layout (auto | columns | stacked)"
+      ],
       "slots": ["default (dt + dd pairs)"],
       "parts": ["base"],
       "events": [],

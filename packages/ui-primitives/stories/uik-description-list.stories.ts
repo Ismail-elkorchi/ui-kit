@@ -6,6 +6,7 @@ import { interactionStory } from "../../../.storybook/a11y";
 
 type DescriptionListArgs = {
   density: "comfortable" | "compact";
+  layout: "auto" | "columns" | "stacked";
 };
 
 const meta: Meta<DescriptionListArgs> = {
@@ -14,10 +15,12 @@ const meta: Meta<DescriptionListArgs> = {
   tags: ["autodocs"],
   args: {
     density: "comfortable",
+    layout: "auto",
   },
   render: (args) => html`
     <uik-description-list
       density=${args.density}
+      layout=${args.layout}
       style="max-width: var(--uik-layout-panel-width-md);"
     >
       <dt>Queue</dt>
@@ -40,5 +43,12 @@ export const Compact: StoryObj<DescriptionListArgs> = {
   ...interactionStory,
   args: {
     density: "compact",
+  },
+};
+
+export const Stacked: StoryObj<DescriptionListArgs> = {
+  ...interactionStory,
+  args: {
+    layout: "stacked",
   },
 };

@@ -1222,6 +1222,12 @@
               "type": "\"comfortable\" | \"compact\"",
               "description": "comfortable | compact",
               "default": "\"comfortable\""
+            },
+            {
+              "name": "layout",
+              "type": "\"auto\" | \"columns\" | \"stacked\"",
+              "description": "auto | columns | stacked",
+              "default": "\"auto\""
             }
           ],
           "properties": [
@@ -1230,6 +1236,12 @@
               "type": "\"comfortable\" | \"compact\"",
               "description": "",
               "default": "\"comfortable\""
+            },
+            {
+              "name": "layout",
+              "type": "\"auto\" | \"columns\" | \"stacked\"",
+              "description": "",
+              "default": "\"auto\""
             }
           ],
           "events": [],

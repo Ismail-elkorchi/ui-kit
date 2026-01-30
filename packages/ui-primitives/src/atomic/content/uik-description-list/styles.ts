@@ -19,6 +19,12 @@ export const styles = css`
     display: contents;
   }
 
+  :host([layout="stacked"]) .list,
+  :host([data-uik-layout-stacked]) .list {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: var(--uik-space-0);
+  }
+
   :host([density="compact"]) .list {
     gap: var(--uik-component-description-list-row-gap-compact)
       var(--uik-component-description-list-column-gap-compact);
