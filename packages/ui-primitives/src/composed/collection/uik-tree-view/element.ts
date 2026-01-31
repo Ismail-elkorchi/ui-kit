@@ -1,5 +1,5 @@
 import { LitElement, html, svg } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { styleMap } from "lit/directives/style-map.js";
 
@@ -48,13 +48,13 @@ export class UikTreeView extends LitElement {
   @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
   @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
 
-  @state() private accessor focusId = "";
+  private focusId = "";
   private typeaheadQuery = "";
   private typeaheadTimestamp = 0;
 
   static override readonly styles = styles;
 
-  override updated(changed: Map<string, unknown>) {
+  override willUpdate(changed: Map<string, unknown>) {
     if (changed.has("items") || changed.has("openIds")) {
       const items = this.getVisibleItems();
       if (!items.some((item) => item.id === this.focusId)) {
@@ -113,6 +113,7 @@ export class UikTreeView extends LitElement {
 
   private focusItem(id: string) {
     this.focusId = id;
+    this.requestUpdate();
     void this.updateComplete.then(() => {
       const element = this.renderRoot.querySelector<HTMLElement>(
         `[data-item-id="${id}"]`,
@@ -136,6 +137,7 @@ export class UikTreeView extends LitElement {
     const id = target.getAttribute("data-item-id");
     if (!id) return;
     this.focusId = id;
+    this.requestUpdate();
   };
 
   private onKeyDown = (event: KeyboardEvent) => {

@@ -21,10 +21,7 @@ const waitForContent = async (attempts = 60) => {
   throw new Error("Docs content did not render.");
 };
 
-const waitForNavItems = async (
-  navTree: UikTreeView | null,
-  attempts = 60,
-) => {
+const waitForNavItems = async (navTree: UikTreeView | null, attempts = 60) => {
   for (let i = 0; i < attempts; i += 1) {
     const hasItems =
       (navTree?.items && navTree.items.length > 0) ||

@@ -118,9 +118,7 @@ export class UikShellLayout extends LitElement {
   }
 
   override firstUpdated() {
-    this.slotController?.sync();
     this.updateNarrowState(this.getBoundingClientRect().width);
-    this.syncActiveTargets();
   }
 
   override createRenderRoot() {

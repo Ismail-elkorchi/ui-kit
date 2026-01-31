@@ -1,5 +1,5 @@
 import { LitElement, html, nothing, svg, type SVGTemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { styleMap } from "lit/directives/style-map.js";
 
@@ -53,11 +53,11 @@ export class UikNavRail extends LitElement {
   @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
   @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
 
-  @state() private accessor focusedId = "";
+  private focusedId = "";
 
   static override readonly styles = styles;
 
-  override updated(changed: Map<string, unknown>) {
+  override willUpdate(changed: Map<string, unknown>) {
     if (changed.has("items")) {
       const hasFocused = this.items.some(
         (item) => item.id === this.focusedId && !item.isDisabled,
@@ -141,6 +141,7 @@ export class UikNavRail extends LitElement {
     const { navRailId } = target.dataset;
     if (!navRailId) return;
     this.focusedId = navRailId;
+    this.requestUpdate();
   };
 
   private onItemKeydown = (event: KeyboardEvent) => {
@@ -179,6 +180,7 @@ export class UikNavRail extends LitElement {
 
     event.preventDefault();
     this.focusedId = nextItem.id;
+    this.requestUpdate();
     void this.updateComplete.then(() => {
       this.focusItemById(nextItem.id);
     });

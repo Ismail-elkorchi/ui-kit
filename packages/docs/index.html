@@ -19,9 +19,41 @@
       name="twitter:description"
       content="UI Kit documentation and component references."
     />
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+      }
+
+      .docs-app {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      .docs-brand {
+        display: flex;
+        align-items: center;
+        padding: var(--uik-space-4, 1rem) var(--uik-space-6, 1.5rem);
+        border-bottom: 1px solid oklch(var(--uik-border-subtle, 0.8 0 0));
+        background-color: oklch(var(--uik-surface-bg, 1 0 0));
+      }
+
+      .docs-brand-title {
+        margin: 0;
+        font-size: var(--uik-typography-font-size-9, 3rem);
+        line-height: var(--uik-typography-line-height-9, 3.25);
+        font-weight: var(--uik-typography-font-weight-semibold, 600);
+        letter-spacing: -0.01em;
+      }
+    </style>
     <link rel="stylesheet" href="/src/docs.css" />
   </head>
   <body>
+    <header class="docs-brand">
+      <h1 class="docs-brand-title">UI Kit Documentation</h1>
+    </header>
     <div id="app" class="docs-app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
