@@ -21,6 +21,20 @@ const waitForContent = async (attempts = 60) => {
   throw new Error("Docs content did not render.");
 };
 
+const waitForNavItems = async (
+  navTree: UikTreeView | null,
+  attempts = 60,
+) => {
+  for (let i = 0; i < attempts; i += 1) {
+    const hasItems =
+      (navTree?.items && navTree.items.length > 0) ||
+      navTree?.shadowRoot?.querySelector<HTMLElement>('[role="treeitem"]');
+    if (hasItems) return;
+    await nextFrame();
+  }
+  throw new Error("Docs navigation tree did not render.");
+};
+
 describe("docs navigation", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
@@ -39,6 +53,7 @@ describe("docs navigation", () => {
     }
     const navTree = document.querySelector<UikTreeView>("[data-docs-nav-tree]");
     await navTree?.updateComplete;
+    await waitForNavItems(navTree);
     await waitForContent();
 
     const firstItem =

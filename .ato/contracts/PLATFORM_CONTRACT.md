@@ -374,6 +374,7 @@ The project SHOULD maintain objective "proof" gates:
 - **Baseline support drift check**: baseline support outputs MUST be current; enforced by `tools/baseline/generate.mjs --check`, wired into root `npm run test`.
 - **Docs Lighthouse budgets**: enforced by `packages/docs/tools/check-docs-lighthouse.mjs` for `/lab/perf-shell` and `/lab/perf-primitives` with thresholds: performance ≥ 0.8, accessibility ≥ 0.95, best-practices ≥ 0.95, SEO ≥ 0.8, LCP ≤ 2500ms, CLS ≤ 0.02, TBT ≤ 300ms, INP ≤ 200ms (when available). Docs MUST NOT use route-specific hacks to satisfy budgets.
 - **Queue schema validation**: `.ato/queue/items.jsonl` MUST be schema-valid; enforced by `ato q validate`, wired into root `npm run test`.
+- **Cycle finish check**: `tools/ato/check-cycle-finish.mjs` validates `ato.mjs cycle finish --check` acceptance normalization; wired into root `npm run test`.
 
 ---
 

@@ -36,6 +36,17 @@ const waitForOptions = async (
   }
 };
 
+const waitForPaletteOpen = async (attempts = 10) => {
+  for (let i = 0; i < attempts; i += 1) {
+    const palette = document.querySelector<UikCommandPalette>(
+      "[data-docs-command-palette]",
+    );
+    if (palette?.open) return palette;
+    await nextFrame();
+  }
+  throw new Error("Command palette did not open.");
+};
+
 function formatViolations(violations: Result[]) {
   return violations
     .map((violation) => {
@@ -85,12 +96,7 @@ describe("command palette pattern", () => {
     expect(openButton).toBeTruthy();
     openButton?.focus();
     await userEvent.keyboard("{Control>}{KeyK}{/Control}");
-    await nextFrame();
-
-    const palette = document.querySelector<UikCommandPalette>(
-      "[data-docs-command-palette]",
-    );
-    expect(palette?.open).toBe(true);
+    const palette = await waitForPaletteOpen();
     await palette?.updateComplete;
     await nextFrame();
 
@@ -101,8 +107,8 @@ describe("command palette pattern", () => {
 
     openButton?.focus();
     await userEvent.keyboard("{Control>}{KeyK}{/Control}");
-    await nextFrame();
-    await palette?.updateComplete;
+    await waitForPaletteOpen();
+    await palette.updateComplete;
     await nextFrame();
 
     const input = palette?.shadowRoot?.querySelector<HTMLInputElement>("input");
