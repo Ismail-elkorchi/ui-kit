@@ -1,0 +1,5 @@
+{
+  "schema_version": "cycle-selection.v1",
+  "selection": { "selection": { "queue_id": "BL-0001" } },
+  "selection_evidence": { "cycle_id": "CY-0001", "cycle_index": 1 }
+}

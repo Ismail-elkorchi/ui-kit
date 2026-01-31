@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "pack_path": "pack.tar",
+  "pack_sha256": "fixture",
+  "manifest_path": "pack.manifest.json"
+}

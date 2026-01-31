@@ -40,6 +40,7 @@ const steps = [
   ["Baseline drift", "node", ["tools/baseline/generate.mjs", "--check"]],
   ["Contracts drift", npmBin, ["run", "contracts:validate"]],
   ["Queue validation", "node", ["tools/ato.mjs", "q", "validate", "--json"]],
+  ["Cycle finish check", "node", ["tools/ato/check-cycle-finish.mjs"]],
   ["Workspace tests", npmBin, ["run", "--workspaces", "--if-present", "test"]],
   ["Storybook tests", npmBin, ["run", "test-storybook"]],
 ];
