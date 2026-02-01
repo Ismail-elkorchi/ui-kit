@@ -51,12 +51,14 @@ export class UikTreeView extends LitElement {
   private focusId = "";
   private typeaheadQuery = "";
   private typeaheadTimestamp = 0;
+  private visibleItems: TreeItem<UikTreeViewItem>[] = [];
 
   static override readonly styles = styles;
 
   override willUpdate(changed: Map<string, unknown>) {
     if (changed.has("items") || changed.has("openIds")) {
-      const items = this.getVisibleItems();
+      this.visibleItems = buildTreeItems(this.items, this.getOpenSet());
+      const items = this.visibleItems;
       if (!items.some((item) => item.id === this.focusId)) {
         this.focusId = items[0]?.id ?? "";
       }
@@ -68,7 +70,11 @@ export class UikTreeView extends LitElement {
   }
 
   private getVisibleItems(): TreeItem<UikTreeViewItem>[] {
-    return buildTreeItems(this.items, this.getOpenSet());
+    if (this.visibleItems.length > 0 || this.items.length === 0) {
+      return this.visibleItems;
+    }
+    this.visibleItems = buildTreeItems(this.items, this.getOpenSet());
+    return this.visibleItems;
   }
 
   private resolveOpenIds(nextOpen: Set<string>) {
@@ -230,28 +236,82 @@ export class UikTreeView extends LitElement {
     this.typeaheadTimestamp = now;
     this.typeaheadQuery = withinWindow ? `${this.typeaheadQuery}${key}` : key;
     const query = this.typeaheadQuery.toLowerCase();
-    const nextIndex = this.findTypeaheadMatch(items, query, currentIndex);
-    if (nextIndex >= 0) {
-      const match = items[nextIndex];
+    const visibleMatch = this.findTypeaheadMatch(items, query, currentIndex);
+    if (visibleMatch >= 0) {
+      const match = items[visibleMatch];
       if (match) {
         this.focusItem(match.id);
       }
       return;
     }
+
+    const allItems = this.getAllItems();
+    const allStartIndex = allItems.findIndex((item) => item.id === this.focusId);
+    const allMatch = this.findTypeaheadMatch(
+      allItems,
+      query,
+      allStartIndex >= 0 ? allStartIndex : 0,
+    );
+    if (allMatch >= 0) {
+      const match = allItems[allMatch];
+      if (match) {
+        this.openAncestors(match, allItems);
+        this.focusItem(match.id);
+      }
+      return;
+    }
+
     if (query.length > 1) {
       this.typeaheadQuery = key;
-      const fallbackIndex = this.findTypeaheadMatch(
+      const fallbackVisible = this.findTypeaheadMatch(
         items,
         key.toLowerCase(),
         currentIndex,
       );
-      if (fallbackIndex >= 0) {
-        const match = items[fallbackIndex];
+      if (fallbackVisible >= 0) {
+        const match = items[fallbackVisible];
         if (match) {
+          this.focusItem(match.id);
+        }
+        return;
+      }
+
+      const fallbackAll = this.findTypeaheadMatch(
+        allItems,
+        key.toLowerCase(),
+        allStartIndex >= 0 ? allStartIndex : 0,
+      );
+      if (fallbackAll >= 0) {
+        const match = allItems[fallbackAll];
+        if (match) {
+          this.openAncestors(match, allItems);
           this.focusItem(match.id);
         }
       }
     }
+  }
+
+  private getAllItems(): TreeItem<UikTreeViewItem>[] {
+    const openIds = new Set(collectTreeIds(this.items));
+    return buildTreeItems(this.items, openIds);
+  }
+
+  private openAncestors(
+    match: TreeItem<UikTreeViewItem>,
+    items: TreeItem<UikTreeViewItem>[],
+  ) {
+    const openSet = this.getOpenSet();
+    const itemById = new Map(items.map((item) => [item.id, item]));
+    let parentId = match.parentId;
+    while (parentId) {
+      const parent = itemById.get(parentId);
+      if (!parent) break;
+      if (parent.isBranch) {
+        openSet.add(parent.id);
+      }
+      parentId = parent.parentId;
+    }
+    this.openIds = this.resolveOpenIds(openSet);
   }
 
   private findTypeaheadMatch(

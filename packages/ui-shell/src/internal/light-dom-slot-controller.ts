@@ -61,51 +61,42 @@ export class LightDomSlotController {
       this.host.querySelector<HTMLElement>(this.rootSelector);
     if (!root) return;
 
-    const result: SyncResult = { moved: {} };
+    const containers = new Map<string | null, HTMLElement>();
+    const moved: SyncResult["moved"] = {};
 
     for (const target of this.targets) {
       const container = root.querySelector<HTMLElement>(
         target.containerSelector,
       );
       if (!container) continue;
-
-      const movedCount = this.moveToContainer(root, container, target.name);
-      result.moved[target.name ?? "default"] = movedCount;
+      containers.set(target.name, container);
+      moved[target.name ?? "default"] = 0;
     }
 
-    this.onAfterSync?.(root, result);
-  }
+    if (containers.size === 0) return;
 
-  private moveToContainer(
-    root: HTMLElement,
-    container: HTMLElement,
-    slotName: string | null,
-  ) {
-    let moved = 0;
     for (const node of Array.from(this.host.childNodes)) {
       if (node === root) continue;
       if (node.nodeType === Node.ELEMENT_NODE) {
         const element = node as HTMLElement;
-        const childSlot = element.getAttribute("slot");
-        if (slotName === null) {
-          if (childSlot) continue;
-          container.append(element);
-          moved += 1;
-          continue;
-        }
-        if (childSlot === slotName) {
-          container.append(element);
-          moved += 1;
-        }
+        const slotName = element.getAttribute("slot") || null;
+        const container = containers.get(slotName);
+        if (!container) continue;
+        container.append(element);
+        const key = slotName ?? "default";
+        moved[key] = (moved[key] ?? 0) + 1;
         continue;
       }
-      if (slotName === null && node.nodeType === Node.TEXT_NODE) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const container = containers.get(null);
+        if (!container) continue;
         const text = node as Text;
         if (!text.textContent || text.textContent.trim() === "") continue;
         container.append(text);
-        moved += 1;
+        moved["default"] = (moved["default"] ?? 0) + 1;
       }
     }
-    return moved;
+
+    this.onAfterSync?.(root, { moved });
   }
 }

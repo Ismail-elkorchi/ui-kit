@@ -30,7 +30,7 @@ describe("docs outline drawer focus", () => {
   it("sets initial focus inside the drawer and restores focus on close", async () => {
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
-    mountDocsApp(root);
+    await mountDocsApp(root);
     await waitForContent();
 
     const outlineToggle = document.querySelector<UikButton>(

@@ -135,6 +135,10 @@ export class UikShellLayout extends LitElement {
     if (!Number.isFinite(breakpoint) || breakpoint <= 0) return;
     const next = width <= breakpoint;
     if (next === this.isNarrow) return;
+    if (!next && this.isPrimarySidebarOpen) {
+      this.pendingCloseReason ??= "programmatic";
+      this.isPrimarySidebarOpen = false;
+    }
     if (next) {
       this.closeSecondarySidebar();
     }
@@ -380,10 +384,6 @@ export class UikShellLayout extends LitElement {
 
     if (changedProps.has("isNarrow")) {
       this.toggleAttribute("data-shell-narrow", this.isNarrow);
-      if (!this.isNarrow && this.isPrimarySidebarOpen) {
-        this.pendingCloseReason ??= "programmatic";
-        this.isPrimarySidebarOpen = false;
-      }
       if (this.isNarrow) {
         this.moveFocusFromCollapsedRegions();
       }

@@ -33,11 +33,11 @@ const waitForNavItems = async (navTree: UikTreeView | null, attempts = 60) => {
 };
 
 describe("docs navigation", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     document.body.innerHTML = '<div id="app"></div>';
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
-    mountDocsApp(root);
+    await mountDocsApp(root);
   });
 
   it("navigates to the tokens page via keyboard", async () => {

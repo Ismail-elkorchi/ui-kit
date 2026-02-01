@@ -28,7 +28,7 @@ describe("docs markdown rendering", () => {
     window.history.replaceState({}, "", "/lab/markdown-rendering");
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
-    mountDocsApp(root);
+    await mountDocsApp(root);
     await waitForContent();
 
     const content = document.querySelector<HTMLElement>("[data-docs-content]");
@@ -72,7 +72,7 @@ describe("docs markdown rendering", () => {
     window.history.replaceState({}, "", "/lab/markdown-rendering");
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
-    mountDocsApp(root);
+    await mountDocsApp(root);
     await waitForContent();
 
     const content = document.querySelector<HTMLElement>("[data-docs-content]");
@@ -93,6 +93,17 @@ describe("docs markdown rendering", () => {
       .map((node) => node.dataset.language)
       .filter(Boolean);
     expect(codeLanguages.length).toBeGreaterThan(0);
+
+    const escapedBlock = codeContents.find((node) =>
+      node.textContent?.includes("</script>"),
+    );
+    expect(escapedBlock).toBeTruthy();
+    const escapedText = escapedBlock?.textContent ?? "";
+    expect(escapedText).toContain(
+      "const htmlSnippet = '<div data-note=\"<>&\"></div>';",
+    );
+    expect(escapedText).toContain('const scriptTag = "</script>";');
+    expect(escapedText).toContain("Render <, >, & safely");
 
     const inlineCodes = Array.from(content.querySelectorAll("code")).filter(
       (node) => !node.closest(".docs-code-block"),

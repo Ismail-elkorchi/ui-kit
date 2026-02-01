@@ -51,11 +51,11 @@ const expectMetadata = (pageTitle: string, summary?: string) => {
 };
 
 describe("docs seo metadata", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     document.body.innerHTML = '<div id="app"></div>';
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
-    mountDocsApp(root);
+    await mountDocsApp(root);
   });
 
   it("updates metadata on initial load and route changes", async () => {

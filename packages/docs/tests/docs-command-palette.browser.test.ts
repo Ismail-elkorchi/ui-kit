@@ -87,7 +87,7 @@ describe("command palette pattern", () => {
   it("opens, searches, selects, and restores focus", async () => {
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
-    mountDocsApp(root);
+    await mountDocsApp(root);
     await waitForContent();
 
     const openButton = document.querySelector<UikButton>(

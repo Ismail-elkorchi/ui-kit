@@ -43,7 +43,10 @@ const waitForContent = async (timeoutMs = 2000) => {
   const startedAt = Date.now();
   while (Date.now() - startedAt < timeoutMs) {
     const content = document.querySelector<HTMLElement>("[data-docs-content]");
-    if (content?.innerHTML.trim()) return;
+    const isReady =
+      content?.getAttribute("aria-busy") === "false" &&
+      content.innerHTML.trim();
+    if (isReady) return;
     await nextFrame();
   }
   throw new Error("Docs content did not render.");
@@ -65,7 +68,7 @@ describe("docs a11y", () => {
       window.history.replaceState({}, "", path);
       const root = document.getElementById("app");
       if (!root) throw new Error("Docs root not found.");
-      mountDocsApp(root);
+      await mountDocsApp(root);
       await waitForContent();
       await runA11y(document.body);
     });

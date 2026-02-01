@@ -54,3 +54,11 @@ queue.set("docs", { ready: true });
 ```html
 <button class="docs-button" aria-label="Run checks">Run checks</button>
 ```
+
+## Escaping and safety
+
+```ts
+const htmlSnippet = '<div data-note="<>&"></div>';
+const scriptTag = "</script>";
+const templateLiteral = `Render <, >, & safely`;
+```

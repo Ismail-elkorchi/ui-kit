@@ -46,13 +46,13 @@ const parseStoredPreferences = (value: string | null) => {
 };
 
 describe("docs theme and density preferences", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     resetPreferences();
     document.body.innerHTML = '<div id="app"></div>';
     window.history.replaceState({}, "", "/");
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
-    mountDocsApp(root);
+    await mountDocsApp(root);
   });
 
   it("applies defaults, updates attributes, and restores persisted values", async () => {
@@ -96,7 +96,7 @@ describe("docs theme and density preferences", () => {
 
     const rootEl = document.getElementById("app");
     if (!rootEl) throw new Error("Docs root not found.");
-    mountDocsApp(rootEl);
+    await mountDocsApp(rootEl);
 
     await waitForControls();
     expect(root.getAttribute("data-uik-theme")).toBe(nextTheme);

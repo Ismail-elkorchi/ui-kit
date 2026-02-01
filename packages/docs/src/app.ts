@@ -16,23 +16,6 @@ import type {
   UikShellStatusBar,
   UikShellRoute,
 } from "@ismail-elkorchi/ui-shell";
-import { createUikShellRouter } from "@ismail-elkorchi/ui-shell/router";
-import { createUikPreferencesController } from "@ismail-elkorchi/ui-tokens";
-
-import "@ismail-elkorchi/ui-primitives/uik-badge";
-import "@ismail-elkorchi/ui-primitives/uik-box";
-import "@ismail-elkorchi/ui-primitives/uik-button";
-import "@ismail-elkorchi/ui-primitives/uik-heading";
-import "@ismail-elkorchi/ui-primitives/uik-link";
-import "@ismail-elkorchi/ui-primitives/uik-select";
-import "@ismail-elkorchi/ui-primitives/uik-surface";
-import "@ismail-elkorchi/ui-primitives/uik-text";
-import "@ismail-elkorchi/ui-primitives/uik-tree-view";
-import "@ismail-elkorchi/ui-shell/activity-bar";
-import "@ismail-elkorchi/ui-shell/layout";
-import "@ismail-elkorchi/ui-shell/secondary-sidebar";
-import "@ismail-elkorchi/ui-shell/sidebar";
-import "@ismail-elkorchi/ui-shell/status-bar";
 
 import {
   buildPageMap,
@@ -112,6 +95,9 @@ const componentSectionShortcuts: Record<string, string[]> = {
 const componentTagPattern = /<\s*(uik-[a-z0-9-]+)/g;
 const componentLoaders = new Map<string, () => Promise<unknown>>([
   ["uik-alert", () => import("@ismail-elkorchi/ui-primitives/uik-alert")],
+  ["uik-badge", () => import("@ismail-elkorchi/ui-primitives/uik-badge")],
+  ["uik-box", () => import("@ismail-elkorchi/ui-primitives/uik-box")],
+  ["uik-button", () => import("@ismail-elkorchi/ui-primitives/uik-button")],
   ["uik-checkbox", () => import("@ismail-elkorchi/ui-primitives/uik-checkbox")],
   [
     "uik-code-block",
@@ -127,13 +113,26 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     "uik-empty-state",
     () => import("@ismail-elkorchi/ui-patterns/uik-empty-state"),
   ],
+  ["uik-heading", () => import("@ismail-elkorchi/ui-primitives/uik-heading")],
   ["uik-page-hero", () => import("@ismail-elkorchi/ui-patterns/uik-page-hero")],
   [
     "uik-section-card",
     () => import("@ismail-elkorchi/ui-patterns/uik-section-card"),
   ],
+  [
+    "uik-shell-activity-bar",
+    () => import("@ismail-elkorchi/ui-shell/activity-bar"),
+  ],
+  ["uik-shell-layout", () => import("@ismail-elkorchi/ui-shell/layout")],
+  [
+    "uik-shell-secondary-sidebar",
+    () => import("@ismail-elkorchi/ui-shell/secondary-sidebar"),
+  ],
+  ["uik-shell-sidebar", () => import("@ismail-elkorchi/ui-shell/sidebar")],
+  ["uik-shell-status-bar", () => import("@ismail-elkorchi/ui-shell/status-bar")],
   ["uik-icon", () => import("@ismail-elkorchi/ui-primitives/uik-icon")],
   ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
+  ["uik-link", () => import("@ismail-elkorchi/ui-primitives/uik-link")],
   ["uik-listbox", () => import("@ismail-elkorchi/ui-primitives/uik-listbox")],
   ["uik-menu", () => import("@ismail-elkorchi/ui-primitives/uik-menu")],
   [
@@ -158,8 +157,10 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     "uik-resizable-panels",
     () => import("@ismail-elkorchi/ui-primitives/uik-resizable-panels"),
   ],
+  ["uik-select", () => import("@ismail-elkorchi/ui-primitives/uik-select")],
   ["uik-spinner", () => import("@ismail-elkorchi/ui-primitives/uik-spinner")],
   ["uik-stack", () => import("@ismail-elkorchi/ui-primitives/uik-stack")],
+  ["uik-surface", () => import("@ismail-elkorchi/ui-primitives/uik-surface")],
   ["uik-switch", () => import("@ismail-elkorchi/ui-primitives/uik-switch")],
   ["uik-tab", () => import("@ismail-elkorchi/ui-primitives/uik-tab")],
   [
@@ -167,27 +168,15 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     () => import("@ismail-elkorchi/ui-primitives/uik-tab-panel"),
   ],
   ["uik-tabs", () => import("@ismail-elkorchi/ui-primitives/uik-tabs")],
+  ["uik-text", () => import("@ismail-elkorchi/ui-primitives/uik-text")],
   ["uik-textarea", () => import("@ismail-elkorchi/ui-primitives/uik-textarea")],
   ["uik-tooltip", () => import("@ismail-elkorchi/ui-primitives/uik-tooltip")],
+  [
+    "uik-tree-view",
+    () => import("@ismail-elkorchi/ui-primitives/uik-tree-view"),
+  ],
 ]);
-const preloadedComponents = new Set([
-  "uik-badge",
-  "uik-box",
-  "uik-button",
-  "uik-heading",
-  "uik-link",
-  "uik-select",
-  "uik-surface",
-  "uik-text",
-  "uik-tree-view",
-  "uik-page-hero",
-  "uik-section-card",
-  "uik-shell-activity-bar",
-  "uik-shell-layout",
-  "uik-shell-secondary-sidebar",
-  "uik-shell-sidebar",
-  "uik-shell-status-bar",
-]);
+const preloadedComponents = new Set();
 const prefetchedComponents = new Set([
   "uik-description-list",
   "uik-input",
@@ -197,6 +186,24 @@ const prefetchedComponents = new Set([
   "uik-stack",
   "uik-switch",
 ]);
+const baseComponentTags = [
+  "uik-shell-layout",
+  "uik-shell-activity-bar",
+  "uik-shell-sidebar",
+  "uik-shell-secondary-sidebar",
+  "uik-shell-status-bar",
+  "uik-badge",
+  "uik-box",
+  "uik-button",
+  "uik-heading",
+  "uik-link",
+  "uik-page-hero",
+  "uik-section-card",
+  "uik-select",
+  "uik-surface",
+  "uik-text",
+  "uik-tree-view",
+];
 const loadedComponents = new Set(preloadedComponents);
 const pendingComponents = new Map<string, Promise<unknown>>();
 
@@ -398,16 +405,33 @@ const renderHeroLinks = (page: DocPage) => {
     .join("");
 };
 
-const collectOpenIds = (items: UikNavItem[]) => {
-  const ids: string[] = [];
-  const walk = (item: UikNavItem) => {
+const collectOpenIds = (items: UikNavItem[], currentId?: string) => {
+  const openIds: string[] = [];
+  const addOpenId = (item: UikNavItem) => {
     if (item.children?.length) {
-      ids.push(item.id);
-      item.children.forEach(walk);
+      openIds.push(item.id);
     }
   };
-  items.forEach(walk);
-  return ids;
+  const findPath = (
+    nodes: UikNavItem[],
+    targetId: string,
+    path: UikNavItem[] = [],
+  ): UikNavItem[] | null => {
+    for (const node of nodes) {
+      const nextPath = [...path, node];
+      if (node.id === targetId) return nextPath;
+      if (node.children?.length) {
+        const result = findPath(node.children, targetId, nextPath);
+        if (result) return result;
+      }
+    }
+    return null;
+  };
+  if (!currentId) return openIds;
+  const path = findPath(items, currentId);
+  if (!path) return openIds;
+  path.forEach(addOpenId);
+  return openIds;
 };
 
 const locationKey = (location: UikShellLocation) =>
@@ -421,6 +445,8 @@ const resolveNavCurrentId = (location: UikShellLocation) => {
 
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+const componentLoadBatchSize = 1;
 
 const collectPageComponentTags = (page: DocPageContent) => {
   const tags = new Set<string>();
@@ -450,6 +476,27 @@ const loadComponent = (tag: string, loader: () => Promise<unknown>) => {
   return promise;
 };
 
+const loadComponents = async (tags: Iterable<string>) => {
+  const queue: Array<[string, () => Promise<unknown>]> = [];
+  for (const tag of tags) {
+    if (loadedComponents.has(tag)) continue;
+    const loader = componentLoaders.get(tag);
+    if (!loader) continue;
+    queue.push([tag, loader]);
+  }
+  for (let index = 0; index < queue.length; index += 1) {
+    const [tag, loader] = queue[index] ?? [];
+    if (!tag || !loader) continue;
+    await loadComponent(tag, loader);
+    const shouldYield =
+      index < queue.length - 1 &&
+      (index + 1) % componentLoadBatchSize === 0;
+    if (shouldYield) {
+      await nextFrame();
+    }
+  }
+};
+
 const prefetchComponents = () => {
   prefetchedComponents.forEach((tag) => {
     const loader = componentLoaders.get(tag);
@@ -460,41 +507,22 @@ const prefetchComponents = () => {
 
 const loadPageComponents = async (page: DocPageContent) => {
   const tags = collectPageComponentTags(page);
-  const imports: Promise<unknown>[] = [];
-  tags.forEach((tag) => {
-    if (loadedComponents.has(tag)) return;
-    const loader = componentLoaders.get(tag);
-    if (!loader) return;
-    imports.push(loadComponent(tag, loader));
-  });
-  await Promise.all(imports);
+  await loadComponents(tags);
 };
 
-const schedulePrefetchComponents = () => {
-  const run = () => prefetchComponents();
-  if ("requestIdleCallback" in window) {
-    (
-      window as Window & {
-        requestIdleCallback: (
-          callback: IdleRequestCallback,
-          options?: IdleRequestOptions,
-        ) => number;
-      }
-    ).requestIdleCallback(run);
-  } else {
-    globalThis.setTimeout(run, 0);
-  }
+const loadBaseComponents = () => {
+  return loadComponents(baseComponentTags);
 };
 
-const scheduleMobileNavOptions = (mobileNavSelect: UikSelect | null) => {
-  if (!mobileNavSelect) return;
-  const populate = () => {
-    if (!mobileNavSelect.isConnected) return;
-    if (mobileNavSelect.querySelector("option")) return;
-    mobileNavSelect.insertAdjacentHTML(
-      "beforeend",
-      buildMobileNavOptions(docsPages, labPages),
-    );
+const schedulePageComponents = (
+  page: DocPageContent,
+  onComplete?: () => void,
+) => {
+  const run = () => {
+    const promise = loadPageComponents(page);
+    if (onComplete) {
+      promise.finally(onComplete);
+    }
   };
   if ("requestIdleCallback" in window) {
     (
@@ -504,10 +532,60 @@ const scheduleMobileNavOptions = (mobileNavSelect: UikSelect | null) => {
           options?: IdleRequestOptions,
         ) => number;
       }
-    ).requestIdleCallback(populate);
+    ).requestIdleCallback(run, { timeout: 250 });
   } else {
-    globalThis.setTimeout(populate, 0);
+    globalThis.setTimeout(run, 0);
   }
+};
+
+const schedulePrefetchComponents = () => {
+  const schedule = () => {
+    const run = () => prefetchComponents();
+    if ("requestIdleCallback" in window) {
+      (
+        window as Window & {
+          requestIdleCallback: (
+            callback: IdleRequestCallback,
+            options?: IdleRequestOptions,
+          ) => number;
+        }
+      ).requestIdleCallback(run);
+    } else {
+      globalThis.setTimeout(run, 0);
+    }
+  };
+  const handleFirstInteraction = () => {
+    window.removeEventListener("pointerdown", handleFirstInteraction);
+    schedule();
+  };
+  window.addEventListener("pointerdown", handleFirstInteraction, {
+    passive: true,
+  });
+};
+
+const scheduleMobileNavOptions = (mobileNavSelect: UikSelect | null) => {
+  if (!mobileNavSelect) return;
+  const populate = () => {
+    if (!mobileNavSelect.isConnected) return;
+    if (mobileNavSelect.querySelector("option")) return;
+    const currentValue = mobileNavSelect.value;
+    mobileNavSelect.insertAdjacentHTML(
+      "beforeend",
+      buildMobileNavOptions(docsPages, labPages),
+    );
+    if (currentValue) {
+      mobileNavSelect.value = currentValue;
+    }
+  };
+  const handlePopulate = () => {
+    populate();
+    mobileNavSelect.removeEventListener("focus", handlePopulate);
+    mobileNavSelect.removeEventListener("pointerdown", handlePopulate);
+  };
+  mobileNavSelect.addEventListener("focus", handlePopulate);
+  mobileNavSelect.addEventListener("pointerdown", handlePopulate, {
+    passive: true,
+  });
 };
 
 const setOutlineOpen = (
@@ -632,7 +710,12 @@ const scrollToHashTarget = async () => {
   document.getElementById(id)?.scrollIntoView({ block: "start" });
 };
 
-export const mountDocsApp = (container: HTMLElement) => {
+export const mountDocsApp = async (container: HTMLElement) => {
+  const [{ createUikPreferencesController }, { createUikShellRouter }] =
+    await Promise.all([
+      import("@ismail-elkorchi/ui-tokens"),
+      import("@ismail-elkorchi/ui-shell/router"),
+    ]);
   const preferences = createUikPreferencesController({
     root: document.documentElement,
     storageKey: "uik-docs-preferences",
@@ -645,7 +728,7 @@ export const mountDocsApp = (container: HTMLElement) => {
   const initialPreferences = preferences.apply();
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
   const initialRoute = getRouteFromLocation(baseUrl);
-  const initialView = initialRoute.view ?? "docs";
+  const initialView = initialRoute.view === "lab" ? "lab" : "docs";
   const initialSubview = initialRoute.subview ?? docsPages[0]?.id;
   const initialPage =
     initialView === "lab"
@@ -670,6 +753,18 @@ export const mountDocsApp = (container: HTMLElement) => {
   const kindBadgeAttr = initialKind ? "" : " hidden";
   const packageBadgeAttr = initialPackage ? "" : " hidden";
   const heroLinksAttr = initialHeroLinks ? "" : " hidden";
+  const baseComponentsPromise = loadBaseComponents();
+  const initialPageContent = initialPage
+    ? await loadPageContent(initialView, initialPage.id)
+    : null;
+  const initialPageComponentsPromise = initialPageContent
+    ? loadPageComponents(initialPageContent)
+    : Promise.resolve();
+  await Promise.all([baseComponentsPromise, initialPageComponentsPromise]);
+  const initialPageSections = initialPageContent
+    ? renderPageSections(initialPageContent)
+    : "";
+  const initialContentBusy = "false";
 
   container.innerHTML = `
     <nav aria-label="Skip links">
@@ -714,7 +809,7 @@ export const mountDocsApp = (container: HTMLElement) => {
             )}</uik-text>
             <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
           </uik-page-hero>
-          <div class="docs-page-content" data-docs-content></div>
+          <div class="docs-page-content" data-docs-content aria-busy="${initialContentBusy}">${initialPageSections}</div>
         </div>
       </main>
       <uik-shell-secondary-sidebar
@@ -761,6 +856,7 @@ export const mountDocsApp = (container: HTMLElement) => {
       </uik-shell-status-bar>
     </uik-shell-layout>
   `;
+  await nextFrame();
 
   const pageMap = buildPageMap();
   const routes = buildRoutes(docsPages, labPages);
@@ -833,6 +929,11 @@ export const mountDocsApp = (container: HTMLElement) => {
   );
   let commandCenter: UikCommandCenterHandle | null = null;
   let contentRenderToken = 0;
+  const initialLocationKey = initialPage
+    ? locationKey({ view: initialView, subview: initialSubview })
+    : "";
+  let initialContentReady = Boolean(initialPageContent);
+  let initialPageComponentsScheduled = Boolean(initialPageContent);
   let prefetchScheduled = false;
   let mobileNavScheduled = false;
 
@@ -847,8 +948,9 @@ export const mountDocsApp = (container: HTMLElement) => {
   activityBar.items = buildActivityItems(routes);
   let activeDocPageId = initialView === "docs" ? initialSubview : null;
   let navItems = buildNavItems(baseUrl, docsPages, labPages, activeDocPageId);
+  const initialNavId = resolveNavCurrentId(router.current);
   navTree.items = navItems;
-  navTree.openIds = collectOpenIds(navItems);
+  navTree.openIds = collectOpenIds(navItems, initialNavId);
   setOutlineOpen(layout, secondarySidebar, true, { focus: false });
   let commandPaletteOpenButton: UikButton | null = null;
 
@@ -990,6 +1092,63 @@ export const mountDocsApp = (container: HTMLElement) => {
     }
   };
 
+  const finalizeContentRender = (page: DocPage, token?: number) => {
+    if (!contentElement) return;
+    if (!prefetchScheduled) {
+      prefetchScheduled = true;
+      schedulePrefetchComponents();
+    }
+    if (!mobileNavScheduled) {
+      mobileNavScheduled = true;
+      scheduleMobileNavOptions(mobileNavSelect);
+    }
+    const shouldPrefetchCommandCenter =
+      contentElement.querySelector(
+        '[data-docs-action="command-palette-open"]',
+      ) !== null;
+    if (shouldPrefetchCommandCenter && !commandCenterInit) {
+      void ensureCommandCenter();
+    }
+    commandPaletteOpenButton = null;
+    const needsPortfolio =
+      contentElement.querySelector("[data-docs-portfolio]") !== null;
+    const needsLabControls =
+      page.id === "shell-patterns" ||
+      page.id === "overlays" ||
+      page.id === "command-palette";
+    if (needsPortfolio || needsLabControls) {
+      installCommandCenterBootstrap();
+      void import("./lab-previews").then((module) => {
+        if (token !== undefined && token !== contentRenderToken) return;
+        if (!contentElement) return;
+        if (needsPortfolio) {
+          module.wirePortfolioPreviews(contentElement);
+        }
+        if (page.id === "shell-patterns") {
+          module.wireLabShellControls(
+            contentElement,
+            statusBar,
+            layout,
+            secondarySidebar,
+            setOutlineOpen,
+          );
+        }
+        if (page.id === "overlays") {
+          module.wireLabOverlayControls(contentElement);
+        }
+        if (page.id === "command-palette") {
+          commandPaletteOpenButton =
+            module.wireLabCommandPaletteControls(contentElement);
+        }
+        syncCommandCenterOpenButton();
+        installCommandCenterBootstrap();
+      });
+    } else {
+      syncCommandCenterOpenButton();
+      installCommandCenterBootstrap();
+    }
+  };
+
   const renderPageContent = async (view: "docs" | "lab", page: DocPage) => {
     const token = (contentRenderToken += 1);
     if (contentElement) {
@@ -1009,59 +1168,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (contentElement) {
       contentElement.innerHTML = renderPageSections(pageContent);
       contentElement.setAttribute("aria-busy", "false");
-      if (!prefetchScheduled) {
-        prefetchScheduled = true;
-        schedulePrefetchComponents();
-      }
-      if (!mobileNavScheduled) {
-        mobileNavScheduled = true;
-        scheduleMobileNavOptions(mobileNavSelect);
-      }
-      const shouldPrefetchCommandCenter =
-        contentElement.querySelector(
-          '[data-docs-action="command-palette-open"]',
-        ) !== null;
-      if (shouldPrefetchCommandCenter && !commandCenterInit) {
-        void ensureCommandCenter();
-      }
-      commandPaletteOpenButton = null;
-      const needsPortfolio =
-        contentElement.querySelector("[data-docs-portfolio]") !== null;
-      const needsLabControls =
-        page.id === "shell-patterns" ||
-        page.id === "overlays" ||
-        page.id === "command-palette";
-      if (needsPortfolio || needsLabControls) {
-        installCommandCenterBootstrap();
-        void import("./lab-previews").then((module) => {
-          if (token !== contentRenderToken) return;
-          if (!contentElement) return;
-          if (needsPortfolio) {
-            module.wirePortfolioPreviews(contentElement);
-          }
-          if (page.id === "shell-patterns") {
-            module.wireLabShellControls(
-              contentElement,
-              statusBar,
-              layout,
-              secondarySidebar,
-              setOutlineOpen,
-            );
-          }
-          if (page.id === "overlays") {
-            module.wireLabOverlayControls(contentElement);
-          }
-          if (page.id === "command-palette") {
-            commandPaletteOpenButton =
-              module.wireLabCommandPaletteControls(contentElement);
-          }
-          syncCommandCenterOpenButton();
-          installCommandCenterBootstrap();
-        });
-      } else {
-        syncCommandCenterOpenButton();
-        installCommandCenterBootstrap();
-      }
+      finalizeContentRender(page, token);
     }
 
     if (!shouldAwaitComponents) {
@@ -1076,6 +1183,7 @@ export const mountDocsApp = (container: HTMLElement) => {
     const key = locationKey(location);
     const page = pageMap.get(key);
     if (!page) return;
+    const isInitialContent = initialContentReady && key === initialLocationKey;
 
     updateActiveRoute(location);
     const nextDocPageId =
@@ -1087,7 +1195,7 @@ export const mountDocsApp = (container: HTMLElement) => {
       navItems = buildNavItems(baseUrl, docsPages, labPages, activeDocPageId);
       navTree.items = navItems;
     }
-    navTree.openIds = collectOpenIds(navItems);
+    navTree.openIds = collectOpenIds(navItems, resolveNavCurrentId(location));
 
     if (titleElement) titleElement.textContent = page.title;
     if (summaryElement) summaryElement.textContent = page.summary;
@@ -1099,8 +1207,10 @@ export const mountDocsApp = (container: HTMLElement) => {
     );
     updateHeroLinks(page);
     if (contentElement) {
-      contentElement.innerHTML = "";
-      contentElement.setAttribute("aria-busy", "true");
+      if (!isInitialContent) {
+        contentElement.innerHTML = "";
+        contentElement.setAttribute("aria-busy", "true");
+      }
     }
     if (outlineElement) outlineElement.innerHTML = renderToc(page);
     if (mobileNavSelect) {
@@ -1112,7 +1222,21 @@ export const mountDocsApp = (container: HTMLElement) => {
     updateStatusMeta(statusBar);
     const canonicalUrl = buildCanonicalUrl(baseUrl, key);
     updateSeoMetadata(page, canonicalUrl);
-    void renderPageContent(location.view as "docs" | "lab", page);
+    if (isInitialContent) {
+      initialContentReady = false;
+      finalizeContentRender(page, contentRenderToken);
+      if (initialPageContent && !initialPageComponentsScheduled) {
+        initialPageComponentsScheduled = true;
+        schedulePageComponents(initialPageContent, () => {
+          if (contentElement) {
+            contentElement.setAttribute("aria-busy", "false");
+          }
+        });
+      }
+      void scrollToHashTarget();
+    } else {
+      void renderPageContent(location.view as "docs" | "lab", page);
+    }
   };
 
   router.subscribe(applyLocation);

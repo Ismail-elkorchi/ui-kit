@@ -144,9 +144,16 @@ export class UikRadioGroup extends LitElement {
     const selected = this.value;
 
     radios.forEach((radio) => {
-      radio.name = this.name;
-      radio.groupDisabled = this.disabled;
-      radio.checked = selected !== "" && radio.value === selected;
+      const shouldBeChecked = selected !== "" && radio.value === selected;
+      if (radio.name !== this.name) {
+        radio.name = this.name;
+      }
+      if (radio.groupDisabled !== this.disabled) {
+        radio.groupDisabled = this.disabled;
+      }
+      if (radio.checked !== shouldBeChecked) {
+        radio.checked = shouldBeChecked;
+      }
     });
 
     const enabledRadios = radios.filter(
@@ -157,7 +164,10 @@ export class UikRadioGroup extends LitElement {
     const current =
       enabledRadios.find((radio) => radio.checked) ?? enabledRadios[0];
     enabledRadios.forEach((radio) => {
-      radio.tabIndexValue = radio === current ? 0 : -1;
+      const nextTabIndex = radio === current ? 0 : -1;
+      if (radio.tabIndexValue !== nextTabIndex) {
+        radio.tabIndexValue = nextTabIndex;
+      }
     });
   }
 
