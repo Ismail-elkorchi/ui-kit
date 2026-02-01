@@ -9,7 +9,9 @@ const startApp = () => {
   void mountDocsApp(appRoot);
 };
 if ("requestAnimationFrame" in window) {
-  requestAnimationFrame(() => startApp());
+  requestAnimationFrame(() => {
+    globalThis.setTimeout(startApp, 0);
+  });
 } else {
   globalThis.setTimeout(startApp, 0);
 }
