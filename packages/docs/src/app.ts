@@ -754,6 +754,15 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const kindBadgeAttr = initialKind ? "" : " hidden";
   const packageBadgeAttr = initialPackage ? "" : " hidden";
   const heroLinksAttr = initialHeroLinks ? "" : " hidden";
+  const initialPageContentPromise = initialPage
+    ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
+    : null;
+  const initialPageComponentsPromise = initialPageContentPromise
+    ? initialPageContentPromise.then((pageContent) =>
+        loadPageComponents(pageContent),
+      )
+    : null;
+  const baseComponentsPromise = loadBaseComponents();
   const initialPageContent = null;
   const initialPageSections = "";
   const initialContentBusy = initialPage ? "true" : "false";
@@ -848,7 +857,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
       </uik-shell-status-bar>
     </uik-shell-layout>
   `;
-  const baseComponentsPromise = loadBaseComponents();
   await nextFrame();
 
   const [{ createUikPreferencesController }, { createUikShellRouter }] =
@@ -1162,11 +1170,22 @@ export const mountDocsApp = async (container: HTMLElement) => {
       contentElement.setAttribute("aria-busy", "true");
       contentElement.innerHTML = "";
     }
-    const pageContent = await loadPageContent(view, page.id);
+    const isInitialPage = Boolean(
+      initialPage &&
+        view === initialView &&
+        page.id === initialPage.id &&
+        initialPageContentPromise,
+    );
+    const pageContent = isInitialPage
+      ? await initialPageContentPromise
+      : await loadPageContent(view, page.id);
     if (token !== contentRenderToken) return;
 
     const shouldAwaitComponents = page.id !== "command-palette";
-    const loadPromise = loadPageComponents(pageContent);
+    const loadPromise =
+      isInitialPage && initialPageComponentsPromise
+        ? initialPageComponentsPromise
+        : loadPageComponents(pageContent);
     if (shouldAwaitComponents) {
       await loadPromise;
     }
