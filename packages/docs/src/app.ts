@@ -727,21 +727,8 @@ const scrollToHashTarget = async () => {
 };
 
 export const mountDocsApp = async (container: HTMLElement) => {
-  const [{ createUikPreferencesController }, { createUikShellRouter }] =
-    await Promise.all([
-      import("@ismail-elkorchi/ui-tokens"),
-      import("@ismail-elkorchi/ui-shell/router"),
-    ]);
-  const preferences = createUikPreferencesController({
-    root: document.documentElement,
-    storageKey: "uik-docs-preferences",
-    defaults: {
-      theme: "system",
-      density: "comfortable",
-    },
-    persist: true,
-  });
-  const initialPreferences = preferences.apply();
+  const tokensPromise = import("@ismail-elkorchi/ui-tokens");
+  const routerPromise = import("@ismail-elkorchi/ui-shell/router");
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
   const initialRoute = getRouteFromLocation(baseUrl);
   const initialView = initialRoute.view === "lab" ? "lab" : "docs";
@@ -759,17 +746,14 @@ export const mountDocsApp = async (container: HTMLElement) => {
     : "";
   const initialHeroLinks = initialPage ? renderHeroLinks(initialPage) : "";
   const initialOutline = initialPage ? renderToc(initialPage) : "";
-  const initialTheme = initialPreferences.theme ?? resolveTheme();
+  const initialTheme = resolveTheme();
   const initialDensity =
-    initialPreferences.density ??
-    document.documentElement.getAttribute("data-uik-density") ??
-    "comfortable";
+    document.documentElement.getAttribute("data-uik-density") ?? "comfortable";
   const initialStatusMeta = `Theme: ${initialTheme} | Density: ${initialDensity}`;
   const groupBadgeAttr = initialGroup ? "" : " hidden";
   const kindBadgeAttr = initialKind ? "" : " hidden";
   const packageBadgeAttr = initialPackage ? "" : " hidden";
   const heroLinksAttr = initialHeroLinks ? "" : " hidden";
-  const baseComponentsPromise = loadBaseComponents();
   const initialPageContent = null;
   const initialPageSections = "";
   const initialContentBusy = initialPage ? "true" : "false";
@@ -864,7 +848,21 @@ export const mountDocsApp = async (container: HTMLElement) => {
       </uik-shell-status-bar>
     </uik-shell-layout>
   `;
+  const baseComponentsPromise = loadBaseComponents();
   await nextFrame();
+
+  const [{ createUikPreferencesController }, { createUikShellRouter }] =
+    await Promise.all([tokensPromise, routerPromise]);
+  const preferences = createUikPreferencesController({
+    root: document.documentElement,
+    storageKey: "uik-docs-preferences",
+    defaults: {
+      theme: "system",
+      density: "comfortable",
+    },
+    persist: true,
+  });
+  preferences.apply();
   await baseComponentsPromise;
 
   const pageMap = buildPageMap();
