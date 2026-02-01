@@ -142,7 +142,9 @@ body {
   background-image:
     radial-gradient(
       circle at top,
-      oklch(var(--uik-component-docs-hero-accent-primary) / var(--uik-opacity-30)),
+      oklch(
+        var(--uik-component-docs-hero-accent-primary) / var(--uik-opacity-30)
+      ),
       oklch(var(--uik-component-docs-hero-surface-base) / var(--uik-opacity-0))
     ),
     linear-gradient(
