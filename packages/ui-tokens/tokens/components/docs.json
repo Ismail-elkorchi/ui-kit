@@ -1,0 +1,450 @@
+{
+  "component": {
+    "docs": {
+      "brand": {
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Docs brand background."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Docs brand border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Docs brand border width."
+        },
+        "paddingX": {
+          "$value": "{space.6}",
+          "$type": "dimension",
+          "$description": "Docs brand horizontal padding."
+        },
+        "paddingY": {
+          "$value": "{space.4}",
+          "$type": "dimension",
+          "$description": "Docs brand vertical padding."
+        },
+        "title": {
+          "fontSize": {
+            "$value": "{typography.fontSize.9}",
+            "$type": "dimension",
+            "$description": "Docs brand title font size."
+          },
+          "lineHeight": {
+            "$value": "{typography.lineHeight.9}",
+            "$type": "number",
+            "$description": "Docs brand title line height."
+          },
+          "fontWeight": {
+            "$value": "{typography.fontWeight.semibold}",
+            "$type": "fontWeight",
+            "$description": "Docs brand title font weight."
+          },
+          "letterSpacing": {
+            "$value": "{typography.letterSpacing.tight}",
+            "$type": "dimension",
+            "$description": "Docs brand title letter spacing."
+          }
+        }
+      },
+      "skipLink": {
+        "bg": {
+          "$value": "{surface.card}",
+          "$type": "color",
+          "$description": "Docs skip link background."
+        },
+        "fg": {
+          "$value": "{text.strong}",
+          "$type": "color",
+          "$description": "Docs skip link foreground."
+        },
+        "border": {
+          "$value": "{border.default}",
+          "$type": "color",
+          "$description": "Docs skip link border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Docs skip link border width."
+        },
+        "radius": {
+          "$value": "{radius.3}",
+          "$type": "dimension",
+          "$description": "Docs skip link radius."
+        },
+        "shadow": {
+          "$value": "{shadow.2}",
+          "$type": "shadow",
+          "$description": "Docs skip link shadow."
+        },
+        "paddingX": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Docs skip link horizontal padding."
+        },
+        "paddingY": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Docs skip link vertical padding."
+        }
+      },
+      "hero": {
+        "accent": {
+          "primary": {
+            "$value": "{color.accent.1}",
+            "$type": "color",
+            "$description": "Docs hero accent primary."
+          }
+        },
+        "surface": {
+          "base": {
+            "$value": "{surface.card}",
+            "$type": "color",
+            "$description": "Docs hero base surface."
+          },
+          "elevated": {
+            "$value": "{surface.elevated.1}",
+            "$type": "color",
+            "$description": "Docs hero elevated surface."
+          }
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Docs hero border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Docs hero border width."
+        }
+      },
+      "heroLink": {
+        "bg": {
+          "$value": "{surface.card}",
+          "$type": "color",
+          "$description": "Docs hero link background."
+        },
+        "fg": {
+          "$value": "{text.strong}",
+          "$type": "color",
+          "$description": "Docs hero link foreground."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Docs hero link border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Docs hero link border width."
+        },
+        "radius": {
+          "$value": "{radius.4}",
+          "$type": "dimension",
+          "$description": "Docs hero link radius."
+        },
+        "shadow": {
+          "$value": "{shadow.1}",
+          "$type": "shadow",
+          "$description": "Docs hero link shadow."
+        },
+        "paddingX": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Docs hero link horizontal padding."
+        },
+        "paddingY": {
+          "$value": "{space.1}",
+          "$type": "dimension",
+          "$description": "Docs hero link vertical padding."
+        },
+        "hover": {
+          "bg": {
+            "$value": "{surface.elevated.1}",
+            "$type": "color",
+            "$description": "Docs hero link hover background."
+          },
+          "fg": {
+            "$value": "{text.default}",
+            "$type": "color",
+            "$description": "Docs hero link hover foreground."
+          },
+          "border": {
+            "$value": "{border.default}",
+            "$type": "color",
+            "$description": "Docs hero link hover border."
+          }
+        }
+      },
+      "headingAnchor": {
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Docs heading anchor foreground."
+        },
+        "radius": {
+          "$value": "{radius.2}",
+          "$type": "dimension",
+          "$description": "Docs heading anchor radius."
+        }
+      },
+      "list": {
+        "marker": {
+          "fg": {
+            "$value": "{text.muted}",
+            "$type": "color",
+            "$description": "Docs list marker color."
+          }
+        }
+      },
+      "blockquote": {
+        "bg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Docs blockquote background."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Docs blockquote foreground."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Docs blockquote border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.2}",
+          "$type": "dimension",
+          "$description": "Docs blockquote border width."
+        },
+        "radius": {
+          "$value": "{radius.3}",
+          "$type": "dimension",
+          "$description": "Docs blockquote radius."
+        },
+        "paddingX": {
+          "$value": "{space.4}",
+          "$type": "dimension",
+          "$description": "Docs blockquote horizontal padding."
+        },
+        "paddingY": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Docs blockquote vertical padding."
+        }
+      },
+      "table": {
+        "bg": {
+          "$value": "{surface.card}",
+          "$type": "color",
+          "$description": "Docs table wrapper background."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Docs table foreground."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Docs table border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Docs table border width."
+        },
+        "radius": {
+          "$value": "{radius.3}",
+          "$type": "dimension",
+          "$description": "Docs table radius."
+        },
+        "headBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Docs table head background."
+        },
+        "headFg": {
+          "$value": "{text.strong}",
+          "$type": "color",
+          "$description": "Docs table head foreground."
+        },
+        "rowHoverBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Docs table row hover background."
+        },
+        "cellBorder": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Docs table cell border."
+        },
+        "cellPaddingX": {
+          "$value": "{space.4}",
+          "$type": "dimension",
+          "$description": "Docs table cell padding x."
+        },
+        "cellPaddingY": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Docs table cell padding y."
+        }
+      },
+      "inlineCode": {
+        "bg": {
+          "$value": "{component.codeBlock.bg}",
+          "$type": "color",
+          "$description": "Docs inline code background."
+        },
+        "fg": {
+          "$value": "{text.strong}",
+          "$type": "color",
+          "$description": "Docs inline code foreground."
+        },
+        "border": {
+          "$value": "{component.codeBlock.border}",
+          "$type": "color",
+          "$description": "Docs inline code border."
+        },
+        "borderWidth": {
+          "$value": "{component.codeBlock.borderWidth}",
+          "$type": "dimension",
+          "$description": "Docs inline code border width."
+        },
+        "radius": {
+          "$value": "{radius.2}",
+          "$type": "dimension",
+          "$description": "Docs inline code radius."
+        },
+        "paddingX": {
+          "$value": "{space.1}",
+          "$type": "dimension",
+          "$description": "Docs inline code horizontal padding."
+        },
+        "paddingY": {
+          "$value": "{space.0}",
+          "$type": "dimension",
+          "$description": "Docs inline code vertical padding."
+        },
+        "fontFamily": {
+          "$value": "{component.codeBlock.fontFamily}",
+          "$type": "fontFamily",
+          "$description": "Docs inline code font family."
+        },
+        "fontSize": {
+          "$value": "{component.codeBlock.fontSize}",
+          "$type": "dimension",
+          "$description": "Docs inline code font size."
+        },
+        "fontWeight": {
+          "$value": "{component.codeBlock.fontWeight}",
+          "$type": "fontWeight",
+          "$description": "Docs inline code font weight."
+        },
+        "lineHeight": {
+          "$value": "{component.codeBlock.lineHeight}",
+          "$type": "number",
+          "$description": "Docs inline code line height."
+        }
+      },
+      "card": {
+        "bg": {
+          "$value": "{surface.card}",
+          "$type": "color",
+          "$description": "Docs card background."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Docs card border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Docs card border width."
+        },
+        "radius": {
+          "$value": "{radius.4}",
+          "$type": "dimension",
+          "$description": "Docs card radius."
+        },
+        "shadow": {
+          "$value": "{shadow.1}",
+          "$type": "shadow",
+          "$description": "Docs card shadow."
+        },
+        "padding": {
+          "$value": "{space.5}",
+          "$type": "dimension",
+          "$description": "Docs card padding."
+        }
+      },
+      "panel": {
+        "bg": {
+          "$value": "{component.docs.card.bg}",
+          "$type": "color",
+          "$description": "Docs panel background."
+        },
+        "border": {
+          "$value": "{component.docs.card.border}",
+          "$type": "color",
+          "$description": "Docs panel border."
+        },
+        "borderWidth": {
+          "$value": "{component.docs.card.borderWidth}",
+          "$type": "dimension",
+          "$description": "Docs panel border width."
+        },
+        "radius": {
+          "$value": "{component.docs.card.radius}",
+          "$type": "dimension",
+          "$description": "Docs panel radius."
+        },
+        "shadow": {
+          "$value": "{component.docs.card.shadow}",
+          "$type": "shadow",
+          "$description": "Docs panel shadow."
+        },
+        "padding": {
+          "$value": "{space.4}",
+          "$type": "dimension",
+          "$description": "Docs panel padding."
+        }
+      },
+      "portfolioPreview": {
+        "bg": {
+          "$value": "{surface.elevated.1}",
+          "$type": "color",
+          "$description": "Docs portfolio preview background."
+        },
+        "bgAccent": {
+          "$value": "{surface.card}",
+          "$type": "color",
+          "$description": "Docs portfolio preview accent background."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Docs portfolio preview border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Docs portfolio preview border width."
+        },
+        "shellBg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Docs portfolio preview shell background."
+        }
+      }
+    }
+  }
+}

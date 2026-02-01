@@ -37,6 +37,11 @@ const steps = [
     "node",
     ["packages/docs/tools/generate-docs-content.mjs", "--api", "--check"],
   ],
+  [
+    "Docs token usage",
+    "node",
+    ["tools/tokens/check-docs-token-usage.mjs"],
+  ],
   ["Baseline drift", "node", ["tools/baseline/generate.mjs", "--check"]],
   ["Contracts drift", npmBin, ["run", "contracts:validate"]],
   ["Queue validation", "node", ["tools/ato.mjs", "q", "validate", "--json"]],

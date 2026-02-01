@@ -94,6 +94,9 @@
           "$ref": "components/combobox.json"
         },
         {
+          "$ref": "components/code-block.json"
+        },
+        {
           "$ref": "components/command-palette.json"
         },
         {
@@ -101,6 +104,9 @@
         },
         {
           "$ref": "components/dialog.json"
+        },
+        {
+          "$ref": "components/docs.json"
         },
         {
           "$ref": "components/input.json"
