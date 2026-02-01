@@ -17,6 +17,23 @@ import type {
   UikShellRoute,
 } from "@ismail-elkorchi/ui-shell";
 
+import "@ismail-elkorchi/ui-shell/activity-bar";
+import "@ismail-elkorchi/ui-shell/layout";
+import "@ismail-elkorchi/ui-shell/secondary-sidebar";
+import "@ismail-elkorchi/ui-shell/sidebar";
+import "@ismail-elkorchi/ui-shell/status-bar";
+import "@ismail-elkorchi/ui-patterns/uik-page-hero";
+import "@ismail-elkorchi/ui-patterns/uik-section-card";
+import "@ismail-elkorchi/ui-primitives/uik-badge";
+import "@ismail-elkorchi/ui-primitives/uik-box";
+import "@ismail-elkorchi/ui-primitives/uik-button";
+import "@ismail-elkorchi/ui-primitives/uik-heading";
+import "@ismail-elkorchi/ui-primitives/uik-link";
+import "@ismail-elkorchi/ui-primitives/uik-select";
+import "@ismail-elkorchi/ui-primitives/uik-surface";
+import "@ismail-elkorchi/ui-primitives/uik-text";
+import "@ismail-elkorchi/ui-primitives/uik-tree-view";
+
 import {
   buildPageMap,
   docsPages,
@@ -179,7 +196,6 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     () => import("@ismail-elkorchi/ui-primitives/uik-tree-view"),
   ],
 ]);
-const preloadedComponents = new Set();
 const prefetchedComponents = new Set([
   "uik-description-list",
   "uik-input",
@@ -207,6 +223,7 @@ const baseComponentTags = [
   "uik-text",
   "uik-tree-view",
 ];
+const preloadedComponents = new Set(baseComponentTags);
 const loadedComponents = new Set(preloadedComponents);
 const pendingComponents = new Map<string, Promise<unknown>>();
 
