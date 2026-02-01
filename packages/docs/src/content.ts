@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 import docsManifest from "./generated/docs-manifest.json";
+import perfPrimitivesContent from "./generated/pages/lab/perf-primitives.json";
+import perfShellContent from "./generated/pages/lab/perf-shell.json";
 
 const escapeHtml = (value: string) =>
   value
@@ -47,6 +49,10 @@ const content = docsManifest as DocsManifest;
 const pageModules = import.meta.glob<{ default: DocPageContent }>(
   "./generated/pages/**/*.json",
 );
+const criticalContent = new Map<string, DocPageContent>([
+  ["lab/perf-shell", perfShellContent],
+  ["lab/perf-primitives", perfPrimitivesContent],
+]);
 
 export const docsPages = content.docsPages;
 export const labPages = content.labPages;
@@ -66,6 +72,9 @@ export const loadPageContent = async (
   view: "docs" | "lab",
   id: string,
 ): Promise<DocPageContent> => {
+  const cacheKey = `${view}/${id}`;
+  const cached = criticalContent.get(cacheKey);
+  if (cached) return cached;
   const key = `./generated/pages/${view}/${id}.json`;
   const loader = pageModules[key];
   if (!loader) {
