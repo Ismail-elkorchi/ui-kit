@@ -82,6 +82,7 @@ type Story = StoryObj<CommandPaletteArgs>;
 
 export const Default: Story = {
   ...interactionStory,
+  tags: ["visual"],
 };
 
 export const Loading: Story = {

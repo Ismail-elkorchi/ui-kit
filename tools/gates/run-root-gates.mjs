@@ -43,6 +43,7 @@ const steps = [
   ["Cycle finish check", "node", ["tools/ato/check-cycle-finish.mjs"]],
   ["Workspace tests", npmBin, ["run", "--workspaces", "--if-present", "test"]],
   ["Storybook tests", npmBin, ["run", "test-storybook"]],
+  ["Visual regression", npmBin, ["run", "test-visual"]],
 ];
 
 steps.forEach(([label, command, args]) => {

@@ -5,6 +5,7 @@ import { html } from "lit";
 import { interactionStory } from "../../../.storybook/a11y";
 
 type PopoverArgs = {
+  open: boolean;
   placement:
     | "bottom-start"
     | "bottom"
@@ -17,15 +18,16 @@ type PopoverArgs = {
 const meta: Meta<PopoverArgs> = {
   title: "Primitives/Popover",
   component: "uik-popover",
-  tags: ["autodocs"],
+  tags: ["autodocs", "visual"],
   parameters: {
     layout: "centered",
   },
   args: {
+    open: true,
     placement: "bottom-start",
   },
   render: (args) => html`
-    <uik-popover placement=${args.placement}>
+    <uik-popover placement=${args.placement} ?open=${args.open}>
       <uik-button slot="trigger">Open popover</uik-button>
       <uik-text size="sm">Popover content anchored to the trigger.</uik-text>
     </uik-popover>

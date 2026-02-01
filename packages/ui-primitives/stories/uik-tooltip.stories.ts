@@ -4,15 +4,22 @@ import { html } from "lit";
 
 import { interactionStory } from "../../../.storybook/a11y";
 
-const meta: Meta = {
+type TooltipArgs = {
+  open: boolean;
+};
+
+const meta: Meta<TooltipArgs> = {
   title: "Primitives/Tooltip",
   component: "uik-tooltip",
-  tags: ["autodocs"],
+  tags: ["autodocs", "visual"],
   parameters: {
     layout: "centered",
   },
-  render: () => html`
-    <uik-tooltip>
+  args: {
+    open: true,
+  },
+  render: (args) => html`
+    <uik-tooltip ?open=${args.open}>
       <uik-button slot="trigger" variant="secondary">Hover me</uik-button>
       Helpful tooltip text.
     </uik-tooltip>
@@ -21,7 +28,7 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj;
+type Story = StoryObj<TooltipArgs>;
 
 export const Default: Story = {
   ...interactionStory,

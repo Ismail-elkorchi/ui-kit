@@ -72,6 +72,7 @@ export const Disabled: Story = {
 };
 
 export const AlignedRow: Story = {
+  tags: ["visual"],
   render: () => html`
     <div style="display: grid; gap: var(--uik-space-4);">
       <div style="display: flex; gap: var(--uik-space-4); align-items: center;">

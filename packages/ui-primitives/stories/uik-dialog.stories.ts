@@ -12,7 +12,7 @@ type DialogArgs = {
 const meta: Meta<DialogArgs> = {
   title: "Primitives/Dialog",
   component: "uik-dialog",
-  tags: ["autodocs"],
+  tags: ["autodocs", "visual"],
   parameters: {
     layout: "centered",
   },

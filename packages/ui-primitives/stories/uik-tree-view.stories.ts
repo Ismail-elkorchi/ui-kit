@@ -31,7 +31,7 @@ const items = [
 const meta: Meta<TreeViewArgs> = {
   title: "Primitives/Tree View",
   component: "uik-tree-view",
-  tags: ["autodocs"],
+  tags: ["autodocs", "visual"],
   args: {
     openIds: ["apps", "packages"],
     currentId: "apps/main.ts",

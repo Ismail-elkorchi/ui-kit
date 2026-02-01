@@ -25,7 +25,7 @@ type LayoutArgs = {
 const meta: Meta<LayoutArgs> = {
   title: "Shell/Layout",
   component: "uik-shell-layout",
-  tags: ["autodocs"],
+  tags: ["autodocs", "visual"],
   parameters: {
     layout: "fullscreen",
     uikA11y: { skipMainWrapper: true },
