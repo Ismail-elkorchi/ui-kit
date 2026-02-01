@@ -767,13 +767,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const packageBadgeAttr = initialPackage ? "" : " hidden";
   const heroLinksAttr = initialHeroLinks ? "" : " hidden";
   const baseComponentsPromise = loadBaseComponents();
-  const initialPageContent = initialPage
-    ? await loadPageContent(initialView, initialPage.id)
-    : null;
-  const initialPageSections = initialPageContent
-    ? renderPageSections(initialPageContent)
-    : "";
-  const initialContentBusy = initialPageContent ? "true" : "false";
+  const initialPageContent = null;
+  const initialPageSections = "";
+  const initialContentBusy = initialPage ? "true" : "false";
 
   container.innerHTML = `
     <nav aria-label="Skip links">
