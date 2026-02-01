@@ -762,10 +762,15 @@ export const mountDocsApp = async (container: HTMLElement) => {
         loadPageComponents(pageContent),
       )
     : null;
+  const initialPageContent = initialPageContentPromise
+    ? await initialPageContentPromise
+    : null;
   const baseComponentsPromise = loadBaseComponents();
-  const initialPageContent = null;
-  const initialPageSections = "";
-  const initialContentBusy = initialPage ? "true" : "false";
+  const initialPageSections = initialPageContent
+    ? renderPageSections(initialPageContent)
+    : "";
+  const initialContentBusy =
+    initialPageContent || initialPage ? "true" : "false";
 
   container.innerHTML = `
     <nav aria-label="Skip links">
@@ -1253,7 +1258,10 @@ export const mountDocsApp = async (container: HTMLElement) => {
       finalizeContentRender(page, contentRenderToken);
       if (initialPageContent && !initialPageComponentsScheduled) {
         initialPageComponentsScheduled = true;
-        schedulePageComponents(initialPageContent, () => {
+        const loadPromise =
+          initialPageComponentsPromise ??
+          loadPageComponents(initialPageContent);
+        loadPromise.finally(() => {
           if (contentElement) {
             contentElement.setAttribute("aria-busy", "false");
           }
