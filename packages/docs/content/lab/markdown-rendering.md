@@ -28,7 +28,29 @@ Markdown content should render with tables, callouts, and token-first styling.
 
 - Use `uik-alert` for callouts.
 - Keep tables readable with token-first borders.
+- Inline `const inlined = true` should stay inline.
 
 ```bash
 npm run format
+```
+
+```ts
+export const formats = ["md", "json"] as const;
+export type Format = (typeof formats)[number];
+```
+
+```js
+const queue = new Map();
+queue.set("docs", { ready: true });
+```
+
+```css
+:root {
+  color: oklch(var(--uik-text-default));
+  border-radius: var(--uik-radius-3);
+}
+```
+
+```html
+<button class="docs-button" aria-label="Run checks">Run checks</button>
 ```

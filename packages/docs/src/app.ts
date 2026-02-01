@@ -833,13 +833,12 @@ export const mountDocsApp = (container: HTMLElement) => {
   );
   let commandCenter: UikCommandCenterHandle | null = null;
   let contentRenderToken = 0;
+  let prefetchScheduled = false;
+  let mobileNavScheduled = false;
 
   if (!layout || !activityBar || !navTree || !statusBar || !secondarySidebar) {
     throw new Error("Docs layout could not be initialized.");
   }
-
-  schedulePrefetchComponents();
-  scheduleMobileNavOptions(mobileNavSelect);
 
   if (outlineToggle) {
     secondarySidebar.focusReturnTarget = outlineToggle;
@@ -958,9 +957,6 @@ export const mountDocsApp = (container: HTMLElement) => {
         commandCenter?.open();
       });
     };
-    if (!commandCenterInit) {
-      void ensureCommandCenter();
-    }
     if (!commandCenterBootstrapActive) {
       window.addEventListener("keydown", (event: KeyboardEvent) => {
         if (event.defaultPrevented) return;
@@ -1013,6 +1009,21 @@ export const mountDocsApp = (container: HTMLElement) => {
     if (contentElement) {
       contentElement.innerHTML = renderPageSections(pageContent);
       contentElement.setAttribute("aria-busy", "false");
+      if (!prefetchScheduled) {
+        prefetchScheduled = true;
+        schedulePrefetchComponents();
+      }
+      if (!mobileNavScheduled) {
+        mobileNavScheduled = true;
+        scheduleMobileNavOptions(mobileNavSelect);
+      }
+      const shouldPrefetchCommandCenter =
+        contentElement.querySelector(
+          '[data-docs-action="command-palette-open"]',
+        ) !== null;
+      if (shouldPrefetchCommandCenter && !commandCenterInit) {
+        void ensureCommandCenter();
+      }
       commandPaletteOpenButton = null;
       const needsPortfolio =
         contentElement.querySelector("[data-docs-portfolio]") !== null;

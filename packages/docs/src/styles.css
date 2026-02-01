@@ -382,9 +382,20 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
 @media (forced-colors: active) {
   .docs-blockquote,
   .docs-table-wrap,
-  .docs-admonition {
+  .docs-admonition,
+  .docs-code,
+  .docs-section-body code {
     background-color: Canvas;
     border-color: currentcolor;
+  }
+
+  .docs-code,
+  .docs-section-body code {
+    color: CanvasText;
+  }
+
+  .docs-code .docs-code-token {
+    color: CanvasText;
   }
 
   .docs-table th,
@@ -417,7 +428,7 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   border-radius: var(--uik-radius-3);
 }
 
-.docs-code code {
+.docs-code .docs-code-content {
   padding: var(--uik-space-0);
   color: inherit;
   background-color: transparent;
@@ -425,50 +436,58 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   border-radius: var(--uik-radius-0);
 }
 
-.docs-code .token.comment,
-.docs-code .token.prolog,
-.docs-code .token.doctype,
-.docs-code .token.cdata {
+.docs-code .docs-code-token {
+  color: oklch(var(--uik-text-default));
+}
+
+.docs-code .tok-comment {
   color: oklch(var(--uik-text-muted));
 }
 
-.docs-code .token.punctuation {
+.docs-code .tok-punctuation,
+.docs-code .tok-namespace {
   color: oklch(var(--uik-text-muted));
 }
 
-.docs-code .token.namespace,
-.docs-code .token.keyword,
-.docs-code .token.boolean,
-.docs-code .token.constant {
+.docs-code .tok-keyword,
+.docs-code .tok-boolean,
+.docs-code .tok-constant {
   color: oklch(var(--uik-text-info));
 }
 
-.docs-code .token.selector,
-.docs-code .token.tag,
-.docs-code .token.function,
-.docs-code .token.class-name {
+.docs-code .tok-function,
+.docs-code .tok-type,
+.docs-code .tok-tag {
   color: oklch(var(--uik-text-strong));
 }
 
-.docs-code .token.number,
-.docs-code .token.property,
-.docs-code .token.symbol,
-.docs-code .token.builtin,
-.docs-code .token.operator {
+.docs-code .tok-number,
+.docs-code .tok-operator,
+.docs-code .tok-property {
   color: oklch(var(--uik-text-warning));
 }
 
-.docs-code .token.string,
-.docs-code .token.attr-name,
-.docs-code .token.attr-value,
-.docs-code .token.regex,
-.docs-code .token.char {
+.docs-code .tok-string,
+.docs-code .tok-attr-name,
+.docs-code .tok-attr-value,
+.docs-code .tok-regex {
   color: oklch(var(--uik-text-success));
 }
 
-.docs-code .token.important,
-.docs-code .token.deleted {
-  color: oklch(var(--uik-text-danger));
+.docs-code .tok-variable {
+  color: oklch(var(--uik-text-muted));
+}
+
+.docs-code .docs-code-token.is-italic {
+  font-style: italic;
+}
+
+.docs-code .docs-code-token.is-bold {
+  font-weight: var(--uik-typography-font-weight-semibold);
+}
+
+.docs-code .docs-code-token.is-underline {
+  text-decoration: underline;
 }
 
 .docs-section-body code {
@@ -841,7 +860,7 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
     background-color: Canvas;
   }
 
-  .docs-code .token {
+  .docs-code .docs-code-token {
     color: CanvasText;
   }
 }

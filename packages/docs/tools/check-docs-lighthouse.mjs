@@ -124,7 +124,12 @@ const runLighthouse = async (baseUrl, route, chrome) => {
     extends: "lighthouse:default",
     settings: {
       formFactor: "desktop",
-      throttlingMethod: "devtools",
+      throttlingMethod: "simulate",
+      throttling: {
+        rttMs: 40,
+        throughputKbps: 10240,
+        cpuSlowdownMultiplier: 4,
+      },
       screenEmulation: {
         mobile: false,
         width: 1365,

@@ -7,8 +7,7 @@ import Ajv from "ajv";
 import { marked } from "marked";
 import MiniSearch from "minisearch";
 import prettier from "prettier";
-import Prism from "prismjs";
-import loadLanguages from "prismjs/components/index.js";
+import { getHighlighter } from "shiki";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "../../..");
@@ -28,17 +27,18 @@ const searchIndexPath = path.join(
   "src/generated/docs-search-index.json",
 );
 
+const codeHighlightTheme = "github-light";
 const supportedLanguages = new Map([
   ["bash", "bash"],
   ["css", "css"],
-  ["html", "markup"],
+  ["html", "html"],
   ["js", "javascript"],
   ["json", "json"],
   ["sh", "bash"],
+  ["shell", "bash"],
   ["ts", "typescript"],
 ]);
-
-loadLanguages(["bash", "css", "javascript", "json", "markup", "typescript"]);
+const highlightLanguages = Array.from(new Set(supportedLanguages.values()));
 
 const escapeHtml = (value) =>
   value
@@ -89,6 +89,139 @@ const normalizeLanguage = (value) => {
   return supportedLanguages.get(key) ?? "";
 };
 
+const createHighlighter = async () =>
+  getHighlighter({
+    themes: [codeHighlightTheme],
+    langs: highlightLanguages,
+  });
+
+const extractTokenScopes = (token) => {
+  const scopes = [];
+  const explanation = token?.explanation ?? [];
+  for (const entry of explanation) {
+    if (Array.isArray(entry?.scopes)) {
+      entry.scopes.forEach((scopeEntry) => {
+        if (typeof scopeEntry === "string") {
+          scopes.push(scopeEntry);
+        } else if (typeof scopeEntry?.scopeName === "string") {
+          scopes.push(scopeEntry.scopeName);
+        }
+      });
+    } else if (typeof entry?.scope === "string") {
+      scopes.push(entry.scope);
+    }
+  }
+  return scopes.map((scope) => scope.toLowerCase());
+};
+
+const resolveTokenCategory = (scopes) => {
+  const hasScope = (value) => scopes.some((scope) => scope.includes(value));
+  if (hasScope("comment")) return "comment";
+  if (hasScope("string.regexp") || hasScope("regexp")) return "regex";
+  if (hasScope("string")) return "string";
+  if (
+    hasScope("keyword") ||
+    hasScope("storage") ||
+    hasScope("modifier") ||
+    hasScope("type.modifier")
+  ) {
+    return "keyword";
+  }
+  if (hasScope("constant.numeric") || hasScope("number")) return "number";
+  if (hasScope("constant.language.boolean") || hasScope("boolean")) {
+    return "boolean";
+  }
+  if (hasScope("entity.name.function") || hasScope("support.function")) {
+    return "function";
+  }
+  if (
+    hasScope("entity.name.type") ||
+    hasScope("entity.name.class") ||
+    hasScope("support.type")
+  ) {
+    return "type";
+  }
+  if (hasScope("entity.name.tag")) return "tag";
+  if (hasScope("entity.other.attribute-name") || hasScope("attribute-name")) {
+    return "attr-name";
+  }
+  if (hasScope("attribute-value")) return "attr-value";
+  if (
+    hasScope("variable.other.property") ||
+    hasScope("variable.other.member") ||
+    hasScope("property")
+  ) {
+    return "property";
+  }
+  if (hasScope("operator")) return "operator";
+  if (hasScope("punctuation")) return "punctuation";
+  if (hasScope("namespace")) return "namespace";
+  if (hasScope("variable")) return "variable";
+  if (hasScope("constant")) return "constant";
+  return "";
+};
+
+const buildTokenClasses = (token) => {
+  const scopes = extractTokenScopes(token);
+  const category = resolveTokenCategory(scopes);
+  const fontStyle = token?.fontStyle ?? 0;
+  if (!category && !fontStyle) return "";
+  const classes = ["docs-code-token"];
+  if (category) classes.push(`tok-${category}`);
+  if (fontStyle & 1) classes.push("is-italic");
+  if (fontStyle & 2) classes.push("is-bold");
+  if (fontStyle & 4) classes.push("is-underline");
+  return classes.join(" ");
+};
+
+const renderHighlightedCode = (code, language, highlighter) => {
+  if (!language || !highlighter) return escapeHtml(code);
+  let tokens;
+  try {
+    if (typeof highlighter.codeToTokens === "function") {
+      const result = highlighter.codeToTokens(code, {
+        lang: language,
+        theme: codeHighlightTheme,
+        includeExplanation: true,
+      });
+      tokens = Array.isArray(result) ? result : result?.tokens;
+    } else if (typeof highlighter.codeToThemedTokens === "function") {
+      tokens = highlighter.codeToThemedTokens(code, {
+        lang: language,
+        theme: codeHighlightTheme,
+        includeExplanation: true,
+      });
+    } else {
+      return escapeHtml(code);
+    }
+  } catch {
+    return escapeHtml(code);
+  }
+  if (!Array.isArray(tokens)) return escapeHtml(code);
+  return tokens
+    .map((line) => {
+      const segments = [];
+      for (const token of line) {
+        const className = buildTokenClasses(token);
+        const content = escapeHtml(String(token.content ?? ""));
+        const last = segments[segments.length - 1];
+        if (last && last.className === className) {
+          last.content += content;
+        } else {
+          segments.push({ className, content });
+        }
+      }
+      return segments
+        .map((segment) =>
+          segment.className
+            ? `<span class="${segment.className}">${segment.content}</span>`
+            : segment.content,
+        )
+        .join("");
+    })
+    .join("\n");
+};
+
 const admonitionConfig = new Map([
   ["NOTE", { variant: "info", label: "Note" }],
   ["TIP", { variant: "success", label: "Tip" }],
@@ -132,13 +265,6 @@ const renderAdmonition = (token, parser) => {
   `.trim();
 };
 
-const highlightCodeBlock = (code, language) => {
-  if (!language) return escapeHtml(code);
-  const grammar = Prism.languages[language];
-  if (!grammar) return escapeHtml(code);
-  return Prism.highlight(code, grammar, language);
-};
-
 const createSlugger = () => {
   const counts = new Map();
   return {
@@ -163,8 +289,9 @@ marked.use({
   ],
 });
 
-const createRenderer = (slugger) => {
+const createRenderer = (slugger, highlighter) => {
   const renderer = new marked.Renderer();
+  renderer.highlighter = highlighter;
   renderer.paragraph = (text) =>
     `<uik-text as="p" class="docs-paragraph">${text}</uik-text>`;
   renderer.blockquote = (quote) =>
@@ -190,7 +317,14 @@ const createRenderer = (slugger) => {
     const rawLanguage = (infostring ?? "").trim().split(/\s+/)[0] ?? "";
     const language = normalizeLanguage(rawLanguage);
     const langClass = language ? `language-${escapeHtml(language)}` : "";
-    const highlighted = highlightCodeBlock(code, language);
+    const codeClass = ["docs-code-content", langClass]
+      .filter(Boolean)
+      .join(" ");
+    const highlighted = renderHighlightedCode(
+      code,
+      language,
+      renderer.highlighter,
+    );
     return `
       <div class="docs-code-block">
         <div class="docs-code-actions">
@@ -203,7 +337,7 @@ const createRenderer = (slugger) => {
             Copy
           </uik-button>
         </div>
-        <pre class="docs-code"><code class="${langClass}">${highlighted}</code></pre>
+        <pre class="docs-code"><code class="${codeClass}" data-language="${escapeHtml(language)}">${highlighted}</code></pre>
       </div>
     `.trim();
   };
@@ -622,7 +756,7 @@ const extractHeadingsFromMarkdown = (markdown) => {
     }));
 };
 
-const buildSectionsAndTocFromRawSections = (rawSections) => {
+const buildSectionsAndTocFromRawSections = (rawSections, highlighter) => {
   const tocSlugger = createSlugger();
   const htmlSlugger = createSlugger();
 
@@ -651,7 +785,7 @@ const buildSectionsAndTocFromRawSections = (rawSections) => {
     toc.push(...headings);
   }
 
-  const renderer = createRenderer(htmlSlugger);
+  const renderer = createRenderer(htmlSlugger, highlighter);
   const renderedSections = sections.map((section) => ({
     id: section.id,
     title: section.title,
@@ -668,9 +802,14 @@ const buildSectionsAndTocFromRawSections = (rawSections) => {
   return { sections: renderedSections, toc };
 };
 
-const buildMarkdownPageSections = (markdown, introTitle = "Overview") =>
+const buildMarkdownPageSections = (
+  markdown,
+  introTitle = "Overview",
+  highlighter,
+) =>
   buildSectionsAndTocFromRawSections(
     parseMarkdownSections(markdown, introTitle),
+    highlighter,
   );
 
 const renderComponentPortfolio = (components) => {
@@ -1192,7 +1331,7 @@ const renderComponentCards = (components) => {
     .join("\n");
 };
 
-const buildComponentsPage = async (entry, apiLookup) => {
+const buildComponentsPage = async (entry, apiLookup, highlighter) => {
   const readme = await readRepoFile(entry.readme);
   const componentsTitle = entry.componentsTitle ?? "Components and contracts";
   const componentsSourceTitle = entry.componentsSourceTitle ?? componentsTitle;
@@ -1238,7 +1377,10 @@ const buildComponentsPage = async (entry, apiLookup) => {
     });
   }
 
-  const { sections, toc } = buildSectionsAndTocFromRawSections(nextSections);
+  const { sections, toc } = buildSectionsAndTocFromRawSections(
+    nextSections,
+    highlighter,
+  );
 
   return {
     id: entry.id,
@@ -1254,9 +1396,13 @@ const buildComponentsPage = async (entry, apiLookup) => {
   };
 };
 
-const buildMarkdownPage = async (entry) => {
+const buildMarkdownPage = async (entry, highlighter) => {
   const markdown = await readRepoFile(entry.source);
-  const { sections, toc } = buildMarkdownPageSections(markdown, "Overview");
+  const { sections, toc } = buildMarkdownPageSections(
+    markdown,
+    "Overview",
+    highlighter,
+  );
   return {
     id: entry.id,
     title: entry.title,
@@ -1271,13 +1417,13 @@ const buildMarkdownPage = async (entry) => {
   };
 };
 
-const buildPages = async (entries, apiLookup) => {
+const buildPages = async (entries, apiLookup, highlighter) => {
   const pages = [];
   for (const entry of entries) {
     if (entry.type === "components") {
-      pages.push(await buildComponentsPage(entry, apiLookup));
+      pages.push(await buildComponentsPage(entry, apiLookup, highlighter));
     } else {
-      pages.push(await buildMarkdownPage(entry));
+      pages.push(await buildMarkdownPage(entry, highlighter));
     }
   }
   return pages;
@@ -1391,10 +1537,15 @@ const run = async () => {
     return;
   }
 
+  const highlighter = await createHighlighter();
   const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
   const apiLookup = new Map(apiModel.packages.map((pkg) => [pkg.id, pkg]));
-  const docsPages = await buildPages(manifest.docs ?? [], apiLookup);
-  const labPages = await buildPages(manifest.lab ?? [], apiLookup);
+  const docsPages = await buildPages(
+    manifest.docs ?? [],
+    apiLookup,
+    highlighter,
+  );
+  const labPages = await buildPages(manifest.lab ?? [], apiLookup, highlighter);
   const output = {
     docsPages: docsPages.map(toPageMeta),
     labPages: labPages.map(toPageMeta),
