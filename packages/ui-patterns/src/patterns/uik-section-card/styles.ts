@@ -11,13 +11,13 @@ export const styles = css`
 
   .content {
     display: grid;
-    gap: var(--uik-space-3);
+    gap: var(--uik-component-section-card-gap-md);
   }
 
   .header {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--uik-space-3);
+    gap: var(--uik-component-section-card-gap-md);
     align-items: center;
     justify-content: space-between;
   }
@@ -25,21 +25,21 @@ export const styles = css`
   .title {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-space-2);
+    gap: var(--uik-component-section-card-gap-sm);
     min-width: 0;
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--uik-space-2);
+    gap: var(--uik-component-section-card-gap-sm);
     align-items: center;
   }
 
   .body {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-space-3);
+    gap: var(--uik-component-section-card-gap-md);
     min-width: 0;
   }
 `;

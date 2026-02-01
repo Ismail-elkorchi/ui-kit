@@ -1,0 +1,23 @@
+{
+  "component": {
+    "emptyState": {
+      "gap": {
+        "sm": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Component empty state gap sm."
+        },
+        "md": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Component empty state gap md."
+        }
+      },
+      "padding": {
+        "$value": "{space.6}",
+        "$type": "dimension",
+        "$description": "Component empty state padding."
+      }
+    }
+  }
+}

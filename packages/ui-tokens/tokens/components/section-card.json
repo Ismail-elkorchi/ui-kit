@@ -1,0 +1,18 @@
+{
+  "component": {
+    "sectionCard": {
+      "gap": {
+        "sm": {
+          "$value": "{space.2}",
+          "$type": "dimension",
+          "$description": "Component section card gap sm."
+        },
+        "md": {
+          "$value": "{space.3}",
+          "$type": "dimension",
+          "$description": "Component section card gap md."
+        }
+      }
+    }
+  }
+}

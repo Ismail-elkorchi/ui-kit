@@ -15,7 +15,7 @@ export const styles = css`
 
   .layout {
     display: grid;
-    gap: var(--uik-space-5);
+    gap: var(--uik-component-page-hero-gap-xl);
     align-items: start;
   }
 
@@ -29,40 +29,40 @@ export const styles = css`
   .body {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-space-4);
+    gap: var(--uik-component-page-hero-gap-lg);
     min-width: 0;
   }
 
   .eyebrow {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--uik-space-2);
+    gap: var(--uik-component-page-hero-gap-sm);
     align-items: center;
   }
 
   .title {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-space-2);
+    gap: var(--uik-component-page-hero-gap-sm);
   }
 
   .summary {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-space-2);
-    max-inline-size: var(--uik-layout-panel-width-lg);
+    gap: var(--uik-component-page-hero-gap-sm);
+    max-inline-size: var(--uik-component-page-hero-summary-max-width);
   }
 
   .links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--uik-space-2);
+    gap: var(--uik-component-page-hero-gap-sm);
   }
 
   .panel {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-space-3);
+    gap: var(--uik-component-page-hero-gap-md);
   }
 
   .panel-surface {
@@ -72,6 +72,6 @@ export const styles = css`
   .panel-content {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-space-3);
+    gap: var(--uik-component-page-hero-gap-md);
   }
 `;

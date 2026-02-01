@@ -11,9 +11,9 @@ export const styles = css`
 
   .content {
     display: grid;
-    gap: var(--uik-space-3);
+    gap: var(--uik-component-empty-state-gap-md);
     place-items: center;
-    padding: var(--uik-space-6);
+    padding: var(--uik-component-empty-state-padding);
     text-align: center;
   }
 
@@ -24,7 +24,7 @@ export const styles = css`
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--uik-space-2);
+    gap: var(--uik-component-empty-state-gap-sm);
     align-items: center;
     justify-content: center;
   }

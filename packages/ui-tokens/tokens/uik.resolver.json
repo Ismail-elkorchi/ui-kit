@@ -106,7 +106,7 @@
           "$ref": "components/dialog.json"
         },
         {
-          "$ref": "components/docs.json"
+          "$ref": "components/empty-state.json"
         },
         {
           "$ref": "components/input.json"
@@ -115,7 +115,13 @@
           "$ref": "components/listbox.json"
         },
         {
+          "$ref": "components/page-hero.json"
+        },
+        {
           "$ref": "components/popover.json"
+        },
+        {
+          "$ref": "components/section-card.json"
         },
         {
           "$ref": "components/separator.json"
