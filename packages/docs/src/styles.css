@@ -12,6 +12,18 @@
   box-sizing: border-box;
 }
 
+:where(
+  uik-shell-layout,
+  uik-shell-activity-bar,
+  uik-shell-sidebar,
+  uik-shell-secondary-sidebar,
+  uik-shell-status-bar,
+  uik-page-hero,
+  uik-tree-view
+) {
+  display: block;
+}
+
 body {
   min-height: 100%;
   margin: var(--uik-space-0);
