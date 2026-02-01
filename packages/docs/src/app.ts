@@ -22,9 +22,6 @@ import "@ismail-elkorchi/ui-shell/layout";
 import "@ismail-elkorchi/ui-shell/secondary-sidebar";
 import "@ismail-elkorchi/ui-shell/sidebar";
 import "@ismail-elkorchi/ui-shell/status-bar";
-import "@ismail-elkorchi/ui-patterns/uik-page-hero";
-import "@ismail-elkorchi/ui-primitives/uik-heading";
-import "@ismail-elkorchi/ui-primitives/uik-text";
 
 import {
   buildPageMap,
@@ -1177,9 +1174,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
     const isInitialPage = Boolean(
       initialPage &&
-        view === initialView &&
-        page.id === initialPage.id &&
-        initialPageContentPromise,
+      view === initialView &&
+      page.id === initialPage.id &&
+      initialPageContentPromise,
     );
     const pageContent = isInitialPage
       ? await initialPageContentPromise
