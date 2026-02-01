@@ -28,7 +28,7 @@ import {
  * @part status-bar
  * @event primary-sidebar-open
  * @event primary-sidebar-close (detail: {reason})
- * @a11y Use semantic elements inside slots for landmarks.
+ * @a11y Provides top-level landmarks (main/complementary/contentinfo); label slotted regions via aria-label/aria-labelledby or heading on the slotted elements.
  * @cssprop --uik-component-shell-divider-color
  * @cssprop --uik-component-shell-scrollbar-*
  * @cssprop --uik-component-shell-collapse-breakpoint
@@ -419,16 +419,37 @@ export class UikShellLayout extends LitElement {
   }
 
   override render() {
-    const ariaLabelledby = this.getAttribute("aria-labelledby");
-    const ariaLabel = this.getAttribute("aria-label");
-    const hasLabelledby = Boolean(ariaLabelledby);
-    const hasLabel =
-      typeof ariaLabel === "string" && ariaLabel.trim().length > 0;
-    const resolvedLabel = hasLabel
-      ? ariaLabel
-      : hasLabelledby
-        ? null
-        : "Shell layout";
+    const resolveSlotLabel = (
+      slotName: string,
+      fallback: string,
+    ): { label: string | null; labelledby: string | null } => {
+      const element = this.querySelector<HTMLElement>(`[slot="${slotName}"]`);
+      if (element) {
+        const ariaLabel = element.getAttribute("aria-label");
+        if (ariaLabel && ariaLabel.trim()) {
+          return { label: ariaLabel, labelledby: null };
+        }
+        const ariaLabelledby = element.getAttribute("aria-labelledby");
+        if (ariaLabelledby && ariaLabelledby.trim()) {
+          return { label: null, labelledby: ariaLabelledby };
+        }
+        const heading = element.getAttribute("heading");
+        if (heading && heading.trim()) {
+          return { label: heading, labelledby: null };
+        }
+      }
+      return { label: fallback, labelledby: null };
+    };
+    const primaryLabel = resolveSlotLabel("primary-sidebar", "Sidebar");
+    const activityLabel = resolveSlotLabel("activity-bar", "Activity bar");
+    const drawerLabel =
+      primaryLabel.label || primaryLabel.labelledby
+        ? primaryLabel
+        : activityLabel;
+    const secondaryLabel = resolveSlotLabel(
+      "secondary-sidebar",
+      "Secondary sidebar",
+    );
 
     const layoutStyles = {
       backgroundColor: "oklch(var(--uik-surface-bg))",
@@ -509,16 +530,15 @@ export class UikShellLayout extends LitElement {
         part="layout"
         style=${styleMap(layoutStyles)}
         data-layout-layer="shell"
-        role="region"
-        aria-label=${resolvedLabel ?? nothing}
-        aria-labelledby=${ariaLabelledby ?? nothing}
       >
         <div part="row" style=${styleMap(rowStyles)}>
-          <div
+          <aside
             part="drawer"
             style=${styleMap(drawerStyles)}
             data-shell-drawer
-            aria-hidden=${this.isNarrow && !this.drawerOpen ? "true" : "false"}
+            aria-label=${drawerLabel.label ?? nothing}
+            aria-labelledby=${drawerLabel.labelledby ?? nothing}
+            aria-hidden=${this.isNarrow && !this.drawerOpen ? "true" : nothing}
             ?inert=${this.isNarrow && !this.drawerOpen}
           >
             <div
@@ -543,43 +563,42 @@ export class UikShellLayout extends LitElement {
                 style=${styleMap(slotColumnStyles)}
               ></div>
             </div>
-          </div>
-          <div
+          </aside>
+          <main
             part="main-content"
             style=${styleMap(mainStyles)}
             data-region="main-content"
-            role="presentation"
           >
             <div
               data-shell-slot="main-content"
               style=${styleMap(mainSlotStyles)}
             ></div>
-          </div>
-          <div
+          </main>
+          <aside
             part="secondary-sidebar"
             style=${styleMap(secondaryStyles)}
             data-region="secondary-sidebar"
-            role="presentation"
-            aria-hidden=${secondaryHidden ? "true" : "false"}
+            aria-label=${secondaryLabel.label ?? nothing}
+            aria-labelledby=${secondaryLabel.labelledby ?? nothing}
+            aria-hidden=${secondaryHidden ? "true" : nothing}
             ?inert=${secondaryHidden}
           >
             <div
               data-shell-slot="secondary-sidebar"
               style=${styleMap(slotColumnStyles)}
             ></div>
-          </div>
+          </aside>
         </div>
-        <div
+        <footer
           part="status-bar"
           style=${styleMap(statusBarStyles)}
           data-region="status-bar"
-          role="presentation"
         >
           <div
             data-shell-slot="status-bar"
             style=${styleMap(statusSlotStyles)}
           ></div>
-        </div>
+        </footer>
       </div>
     `;
   }

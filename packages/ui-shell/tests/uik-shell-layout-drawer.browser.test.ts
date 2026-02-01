@@ -23,9 +23,9 @@ const setupLayout = async (width = 360) => {
     <uik-shell-sidebar slot="primary-sidebar">
       <button type="button" data-drawer-button>Nav</button>
     </uik-shell-sidebar>
-    <main slot="main-content">
+    <div slot="main-content">
       <button type="button" data-opener>Open</button>
-    </main>
+    </div>
   `;
   document.body.append(layout);
   await layout.updateComplete;

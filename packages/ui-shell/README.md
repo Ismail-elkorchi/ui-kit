@@ -12,11 +12,11 @@ Token-driven shell components (activity bar, sidebars, status bar, and an option
 
 ## Landmarks & labels (Accessibility contract)
 
-- `uik-shell-layout` renders a `role="region"` container; override its label via `aria-label` or `aria-labelledby` on the host.
-- `uik-shell-activity-bar` renders an `<aside>` landmark and forwards `aria-label`/`aria-labelledby` to the internal nav rail; default label is "Activity bar".
-- `uik-shell-sidebar` and `uik-shell-secondary-sidebar` render `<aside>` landmarks; default labels come from the `heading` or fall back to "Sidebar"/"Secondary sidebar".
+- `uik-shell-layout` provides top-level landmarks: a `<main>` wrapper for `main-content`, `<aside>` regions for drawer + secondary sidebar, and a `<footer>` wrapper for the status bar.
+- `uik-shell-layout` derives complementary labels from the slotted elements (`aria-label`, `aria-labelledby`, or `heading`).
+- `uik-shell-activity-bar`, `uik-shell-sidebar`, and `uik-shell-secondary-sidebar` are structural containers (no landmark role); set labels on the host element when used with the layout.
 - `uik-shell-status-bar` uses `role="status"` with `aria-live="polite"` for status messages.
-- Provide a semantic `<main>` element in the `main-content` slot and label additional landmarks as needed in host markup.
+- Avoid nesting another `<main>` inside the `main-content` slot; place your content in a neutral container.
 
 ## Focus + roving focus
 
@@ -66,12 +66,12 @@ html`
         <!-- put your tree view or navigation here -->
       </div>
     </uik-shell-sidebar>
-    <main
+    <div
       slot="main-content"
       style="flex: 1 1 auto; min-height: var(--uik-space-0);"
     >
       Your editor or subviews
-    </main>
+    </div>
     <uik-shell-secondary-sidebar
       slot="secondary-sidebar"
       .isOpen=${true}

@@ -27,9 +27,9 @@ const setupLayout = async (width = 720) => {
       <button type="button" data-drawer-button>Nav</button>
       <uik-tree-view data-shell-active-target="route"></uik-tree-view>
     </uik-shell-sidebar>
-    <main slot="main-content">
+    <div slot="main-content">
       <button type="button" data-opener>Open</button>
-    </main>
+    </div>
     <uik-shell-status-bar slot="status-bar">
       <button type="button" slot="context-actions" data-test="context">
         Context

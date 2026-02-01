@@ -25,7 +25,7 @@ import {
  * @part actions
  * @part body
  * @part footer
- * @a11y Sidebar is an <aside>; ensure internal landmarks and labels.
+ * @a11y Structural container for navigation content; provide labels on the host when used with layout landmarks.
  * @cssprop --uik-component-shell-sidebar-bg
  * @cssprop --uik-component-shell-sidebar-fg
  * @cssprop --uik-component-shell-sidebar-width
@@ -175,23 +175,10 @@ export class UikShellSidebar extends LitElement {
         : "oklch(var(--uik-surface-card))",
     };
 
-    const ariaLabelledby = this.getAttribute("aria-labelledby");
-    const ariaLabel = this.getAttribute("aria-label");
-    const hasLabelledby = Boolean(ariaLabelledby);
-    const hasLabel =
-      typeof ariaLabel === "string" && ariaLabel.trim().length > 0;
-    const resolvedLabel = hasLabel
-      ? ariaLabel
-      : hasLabelledby
-        ? null
-        : this.heading || "Sidebar";
-
     return html`
-      <aside
+      <div
         part="sidebar"
         data-region="primary-sidebar"
-        aria-label=${resolvedLabel ?? nothing}
-        aria-labelledby=${ariaLabelledby ?? nothing}
         style=${styleMap(sidebarStyles)}
       >
         <div part="header" style=${styleMap(headerStyles)}>
@@ -238,7 +225,7 @@ export class UikShellSidebar extends LitElement {
             ></div>
           </div>
         </div>
-      </aside>
+      </div>
     `;
   }
 }

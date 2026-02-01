@@ -87,7 +87,7 @@ const meta: Meta<LayoutArgs> = {
     `;
 
     const mainContent = html`
-      <main
+      <div
         slot="main-content"
         style="
           display: flex;
@@ -145,7 +145,7 @@ const meta: Meta<LayoutArgs> = {
             Start editing to see live changes.
           </div>
         </div>
-      </main>
+      </div>
     `;
 
     const secondarySidebar = html`

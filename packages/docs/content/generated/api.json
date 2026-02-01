@@ -4805,7 +4805,7 @@
             }
           ],
           "a11y": [
-            "Delegates roving focus behavior to uik-nav-rail; set aria-label if needed."
+            "Delegates roving focus behavior to uik-nav-rail; provide aria-label/aria-labelledby on the host to name the rail (and any parent shell landmark)."
           ],
           "notes": []
         },
@@ -4910,7 +4910,9 @@
             { "name": "--uik-component-shell-drawer-z", "description": "" },
             { "name": "--uik-component-shell-scrollbar-*", "description": "" }
           ],
-          "a11y": ["Use semantic elements inside slots for landmarks."],
+          "a11y": [
+            "Provides top-level landmarks (main/complementary/contentinfo); label slotted regions via aria-label/aria-labelledby or heading on the slotted elements."
+          ],
           "notes": []
         },
         {
@@ -4994,7 +4996,7 @@
             }
           ],
           "a11y": [
-            "Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading."
+            "Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading and host label when used in layout landmarks."
           ],
           "notes": []
         },
@@ -5077,7 +5079,7 @@
             { "name": "--uik-component-shell-sidebar-width", "description": "" }
           ],
           "a11y": [
-            "Sidebar is an <aside>; ensure internal landmarks and labels."
+            "Structural container for navigation content; provide labels on the host when used with layout landmarks."
           ],
           "notes": []
         },

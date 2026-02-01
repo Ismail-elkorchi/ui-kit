@@ -27,7 +27,7 @@ type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
  * @part body
  * @part footer
  * @event secondary-sidebar-close (detail: {reason})
- * @a11y Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading.
+ * @a11y Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading and host label when used in layout landmarks.
  * @cssprop --uik-component-shell-secondary-sidebar-bg
  * @cssprop --uik-component-shell-secondary-sidebar-width
  */
@@ -241,23 +241,10 @@ export class UikShellSecondarySidebar extends LitElement {
         : "oklch(var(--uik-surface-card))",
     };
 
-    const ariaLabelledby = this.getAttribute("aria-labelledby");
-    const ariaLabel = this.getAttribute("aria-label");
-    const hasLabelledby = Boolean(ariaLabelledby);
-    const hasLabel =
-      typeof ariaLabel === "string" && ariaLabel.trim().length > 0;
-    const resolvedLabel = hasLabel
-      ? ariaLabel
-      : hasLabelledby
-        ? null
-        : this.heading || "Secondary sidebar";
-
     return html`
-      <aside
+      <div
         part="secondary-sidebar"
         data-region="secondary-sidebar"
-        aria-label=${resolvedLabel ?? nothing}
-        aria-labelledby=${ariaLabelledby ?? nothing}
         style=${styleMap(sidebarStyles)}
       >
         <div part="header" style=${styleMap(headerStyles)}>
@@ -315,7 +302,7 @@ export class UikShellSecondarySidebar extends LitElement {
             data-shell-slot="footer"
           ></div>
         </div>
-      </aside>
+      </div>
     `;
   }
 }

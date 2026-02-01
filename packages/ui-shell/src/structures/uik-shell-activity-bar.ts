@@ -23,7 +23,7 @@ export type {
  * @part spacer
  * @part footer
  * @event activity-bar-select (detail: {id})
- * @a11y Delegates roving focus behavior to uik-nav-rail; set aria-label if needed.
+ * @a11y Delegates roving focus behavior to uik-nav-rail; provide aria-label/aria-labelledby on the host to name the rail (and any parent shell landmark).
  * @cssprop --uik-component-shell-activity-bar-bg
  * @cssprop --uik-component-shell-activity-bar-fg
  * @cssprop --uik-component-shell-activity-bar-width
@@ -147,11 +147,9 @@ export class UikShellActivityBar extends LitElement {
     };
 
     return html`
-      <aside
+      <div
         part="activity-bar"
         data-region="activity-bar"
-        aria-label=${resolvedLabel ?? nothing}
-        aria-labelledby=${ariaLabelledby ?? nothing}
         style=${styleMap(containerStyles)}
       >
         <uik-nav-rail
@@ -168,7 +166,7 @@ export class UikShellActivityBar extends LitElement {
           style=${styleMap(footerStyles)}
           data-shell-slot="footer"
         ></div>
-      </aside>
+      </div>
     `;
   }
 }

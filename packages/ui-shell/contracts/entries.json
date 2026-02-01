@@ -11,7 +11,7 @@
       "parts": ["activity-bar", "spacer", "footer"],
       "events": ["activity-bar-select (detail: {id})"],
       "a11y": [
-        "Delegates roving focus behavior to uik-nav-rail; set aria-label if needed."
+        "Delegates roving focus behavior to uik-nav-rail; provide aria-label/aria-labelledby on the host to name the rail (and any parent shell landmark)."
       ],
       "cssVars": [
         "--uik-component-shell-activity-bar-bg",
@@ -56,7 +56,9 @@
         "primary-sidebar-open",
         "primary-sidebar-close (detail: {reason})"
       ],
-      "a11y": ["Use semantic elements inside slots for landmarks."],
+      "a11y": [
+        "Provides top-level landmarks (main/complementary/contentinfo); label slotted regions via aria-label/aria-labelledby or heading on the slotted elements."
+      ],
       "cssVars": [
         "--uik-component-shell-divider-color",
         "--uik-component-shell-scrollbar-*",
@@ -88,7 +90,7 @@
       ],
       "events": ["secondary-sidebar-close (detail: {reason})"],
       "a11y": [
-        "Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading."
+        "Escape closes and returns focus (configured target or last active); close button is labeled; provide meaningful heading and host label when used in layout landmarks."
       ],
       "cssVars": [
         "--uik-component-shell-secondary-sidebar-bg",
@@ -112,7 +114,9 @@
         "footer"
       ],
       "events": [],
-      "a11y": ["Sidebar is an <aside>; ensure internal landmarks and labels."],
+      "a11y": [
+        "Structural container for navigation content; provide labels on the host when used with layout landmarks."
+      ],
       "cssVars": [
         "--uik-component-shell-sidebar-bg",
         "--uik-component-shell-sidebar-fg",

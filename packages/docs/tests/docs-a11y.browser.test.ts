@@ -19,13 +19,51 @@ function formatViolations(violations: Result[]) {
     .join("\n\n");
 }
 
+const landmarkSelector =
+  "main,[role='main'],nav,[role='navigation'],aside,[role='complementary'],[role='region'],[role='search'],[role='banner'],[role='contentinfo']";
+
+const findLandmarkAncestor = (element: Element) => {
+  let current = element.parentElement;
+  while (current) {
+    if (current.matches(landmarkSelector)) {
+      return current;
+    }
+    current = current.parentElement;
+  }
+  return null;
+};
+
+const assertLandmarkStructure = () => {
+  const mains = Array.from(document.querySelectorAll("main,[role='main']"));
+  if (mains.length !== 1) {
+    throw new Error(
+      `Expected exactly one main landmark; found ${mains.length}.`,
+    );
+  }
+
+  const topLevelGroups: Array<{ label: string; selector: string }> = [
+    { label: "banner", selector: "[role='banner']" },
+    { label: "main", selector: "main,[role='main']" },
+    { label: "complementary", selector: "aside,[role='complementary']" },
+    { label: "contentinfo", selector: "[role='contentinfo']" },
+  ];
+
+  topLevelGroups.forEach(({ label, selector }) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      const ancestor = findLandmarkAncestor(element);
+      if (ancestor) {
+        throw new Error(
+          `Expected ${label} landmark to be top-level; found inside ${ancestor.tagName.toLowerCase()}.`,
+        );
+      }
+    });
+  });
+};
+
 async function runA11y(container: HTMLElement) {
   const results = await axe.run(container, {
     rules: {
       "color-contrast": { enabled: true },
-      "landmark-complementary-is-top-level": { enabled: false },
-      "landmark-contentinfo-is-top-level": { enabled: false },
-      "landmark-main-is-top-level": { enabled: false },
     },
   });
 
@@ -70,6 +108,7 @@ describe("docs a11y", () => {
       if (!root) throw new Error("Docs root not found.");
       await mountDocsApp(root);
       await waitForContent();
+      assertLandmarkStructure();
       await runA11y(document.body);
     });
   });

@@ -24,9 +24,6 @@ async function runA11y(container: HTMLElement) {
   const results = await axe.run(container, {
     rules: {
       "color-contrast": { enabled: true },
-      "landmark-complementary-is-top-level": { enabled: false },
-      "landmark-contentinfo-is-top-level": { enabled: false },
-      "landmark-main-is-top-level": { enabled: false },
     },
   });
 

@@ -759,14 +759,11 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContent = initialPage
     ? await loadPageContent(initialView, initialPage.id)
     : null;
-  const initialPageComponentsPromise = initialPageContent
-    ? loadPageComponents(initialPageContent)
-    : Promise.resolve();
-  await Promise.all([baseComponentsPromise, initialPageComponentsPromise]);
+  await baseComponentsPromise;
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
-  const initialContentBusy = "false";
+  const initialContentBusy = initialPageContent ? "true" : "false";
 
   container.innerHTML = `
     <nav aria-label="Skip links">
@@ -794,7 +791,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
           <uik-text as="p" size="sm" tone="muted">Tokens-first, standards-based UI.</uik-text>
         </div>
       </uik-shell-sidebar>
-      <main slot="main-content" id="docs-main" class="docs-main">
+      <div slot="main-content" id="docs-main" class="docs-main">
           <div class="docs-page" data-docs-page>
           <uik-page-hero class="docs-hero">
             <div slot="eyebrow" class="docs-hero-top">
@@ -813,7 +810,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
           </uik-page-hero>
           <div class="docs-page-content" data-docs-content aria-busy="${initialContentBusy}">${initialPageSections}</div>
         </div>
-      </main>
+      </div>
       <uik-shell-secondary-sidebar
         slot="secondary-sidebar"
         class="docs-outline"
@@ -935,7 +932,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? locationKey({ view: initialView, subview: initialSubview })
     : "";
   let initialContentReady = Boolean(initialPageContent);
-  let initialPageComponentsScheduled = Boolean(initialPageContent);
+  let initialPageComponentsScheduled = false;
   let prefetchScheduled = false;
   let mobileNavScheduled = false;
 
