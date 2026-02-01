@@ -50,13 +50,15 @@
         letter-spacing: var(--uik-typography-letter-spacing-tight);
       }
     </style>
-    <link rel="stylesheet" href="/src/docs.css" />
+    <link rel="preload" as="style" href="/src/docs.css" />
+    <link rel="stylesheet" href="/src/docs.css" fetchpriority="high" />
   </head>
   <body>
     <header class="docs-brand">
       <h1 class="docs-brand-title">UI Kit Documentation</h1>
     </header>
     <div id="app" class="docs-app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <link rel="modulepreload" href="/src/main.ts" />
+    <script type="module" src="/src/main.ts" fetchpriority="high"></script>
   </body>
 </html>
