@@ -449,7 +449,7 @@ const resolveNavCurrentId = (location: UikShellLocation) => {
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-const componentLoadBatchSize = 1;
+const componentLoadBatchSize = 4;
 
 const collectPageComponentTags = (page: DocPageContent) => {
   const tags = new Set<string>();
@@ -487,13 +487,15 @@ const loadComponents = async (tags: Iterable<string>) => {
     if (!loader) continue;
     queue.push([tag, loader]);
   }
-  for (let index = 0; index < queue.length; index += 1) {
-    const [tag, loader] = queue[index] ?? [];
-    if (!tag || !loader) continue;
-    await loadComponent(tag, loader);
-    const shouldYield =
-      index < queue.length - 1 && (index + 1) % componentLoadBatchSize === 0;
-    if (shouldYield) {
+  for (let index = 0; index < queue.length; index += componentLoadBatchSize) {
+    const batch = queue.slice(index, index + componentLoadBatchSize);
+    await Promise.all(
+      batch.map(([tag, loader]) => {
+        if (!tag || !loader) return Promise.resolve();
+        return loadComponent(tag, loader);
+      }),
+    );
+    if (index + componentLoadBatchSize < queue.length) {
       await nextFrame();
     }
   }
