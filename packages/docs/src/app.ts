@@ -449,8 +449,6 @@ const resolveNavCurrentId = (location: UikShellLocation) => {
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-const componentLoadBatchSize = 4;
-
 const collectPageComponentTags = (page: DocPageContent) => {
   const tags = new Set<string>();
   for (const section of page.sections) {
@@ -487,18 +485,12 @@ const loadComponents = async (tags: Iterable<string>) => {
     if (!loader) continue;
     queue.push([tag, loader]);
   }
-  for (let index = 0; index < queue.length; index += componentLoadBatchSize) {
-    const batch = queue.slice(index, index + componentLoadBatchSize);
-    await Promise.all(
-      batch.map(([tag, loader]) => {
-        if (!tag || !loader) return Promise.resolve();
-        return loadComponent(tag, loader);
-      }),
-    );
-    if (index + componentLoadBatchSize < queue.length) {
-      await nextFrame();
-    }
-  }
+  await Promise.all(
+    queue.map(([tag, loader]) => {
+      if (!tag || !loader) return Promise.resolve();
+      return loadComponent(tag, loader);
+    }),
+  );
 };
 
 const prefetchComponents = () => {
@@ -761,6 +753,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContent = initialPage
     ? await loadPageContent(initialView, initialPage.id)
     : null;
+  await baseComponentsPromise;
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
@@ -857,7 +850,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     </uik-shell-layout>
   `;
   await nextFrame();
-  await baseComponentsPromise;
 
   const pageMap = buildPageMap();
   const routes = buildRoutes(docsPages, labPages);
