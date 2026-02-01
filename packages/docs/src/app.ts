@@ -762,15 +762,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
         loadPageComponents(pageContent),
       )
     : null;
-  const initialPageContent = initialPageContentPromise
-    ? await initialPageContentPromise
-    : null;
   const baseComponentsPromise = loadBaseComponents();
-  const initialPageSections = initialPageContent
-    ? renderPageSections(initialPageContent)
-    : "";
-  const initialContentBusy =
-    initialPageContent || initialPage ? "true" : "false";
+  const initialPageSections = "";
+  const initialContentBusy = initialPage ? "true" : "false";
 
   container.innerHTML = `
     <nav aria-label="Skip links">
@@ -949,11 +943,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   );
   let commandCenter: UikCommandCenterHandle | null = null;
   let contentRenderToken = 0;
-  const initialLocationKey = initialPage
-    ? locationKey({ view: initialView, subview: initialSubview })
-    : "";
-  let initialContentReady = Boolean(initialPageContent);
-  let initialPageComponentsScheduled = false;
   let prefetchScheduled = false;
   let mobileNavScheduled = false;
 
@@ -1177,9 +1166,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
     const isInitialPage = Boolean(
       initialPage &&
-        view === initialView &&
-        page.id === initialPage.id &&
-        initialPageContentPromise,
+      view === initialView &&
+      page.id === initialPage.id &&
+      initialPageContentPromise,
     );
     const pageContent = isInitialPage
       ? await initialPageContentPromise
@@ -1214,8 +1203,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     const key = locationKey(location);
     const page = pageMap.get(key);
     if (!page) return;
-    const isInitialContent = initialContentReady && key === initialLocationKey;
-
     updateActiveRoute(location);
     const nextDocPageId =
       location.view === "docs"
@@ -1253,24 +1240,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     updateStatusMeta(statusBar);
     const canonicalUrl = buildCanonicalUrl(baseUrl, key);
     updateSeoMetadata(page, canonicalUrl);
-    if (isInitialContent) {
-      initialContentReady = false;
-      finalizeContentRender(page, contentRenderToken);
-      if (initialPageContent && !initialPageComponentsScheduled) {
-        initialPageComponentsScheduled = true;
-        const loadPromise =
-          initialPageComponentsPromise ??
-          loadPageComponents(initialPageContent);
-        loadPromise.finally(() => {
-          if (contentElement) {
-            contentElement.setAttribute("aria-busy", "false");
-          }
-        });
-      }
-      void scrollToHashTarget();
-    } else {
-      void renderPageContent(location.view as "docs" | "lab", page);
-    }
+    void renderPageContent(location.view as "docs" | "lab", page);
   };
 
   router.subscribe(applyLocation);
