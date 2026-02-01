@@ -7,20 +7,10 @@
           "$type": "dimension",
           "$description": "Component page hero gap sm."
         },
-        "md": {
-          "$value": "{space.3}",
-          "$type": "dimension",
-          "$description": "Component page hero gap md."
-        },
         "lg": {
           "$value": "{space.4}",
           "$type": "dimension",
           "$description": "Component page hero gap lg."
-        },
-        "xl": {
-          "$value": "{space.5}",
-          "$type": "dimension",
-          "$description": "Component page hero gap xl."
         }
       },
       "summary": {

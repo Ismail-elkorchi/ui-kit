@@ -15,7 +15,7 @@ export const styles = css`
 
   .layout {
     display: grid;
-    gap: var(--uik-component-page-hero-gap-xl);
+    gap: var(--uik-component-page-hero-gap-lg);
     align-items: start;
   }
 
@@ -62,7 +62,7 @@ export const styles = css`
   .panel {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-component-page-hero-gap-md);
+    gap: var(--uik-component-page-hero-gap-lg);
   }
 
   .panel-surface {
@@ -72,6 +72,6 @@ export const styles = css`
   .panel-content {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-component-page-hero-gap-md);
+    gap: var(--uik-component-page-hero-gap-lg);
   }
 `;
