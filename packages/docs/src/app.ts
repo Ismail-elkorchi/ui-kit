@@ -761,7 +761,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContent = initialPage
     ? await loadPageContent(initialView, initialPage.id)
     : null;
-  await baseComponentsPromise;
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
@@ -858,6 +857,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     </uik-shell-layout>
   `;
   await nextFrame();
+  await baseComponentsPromise;
 
   const pageMap = buildPageMap();
   const routes = buildRoutes(docsPages, labPages);
