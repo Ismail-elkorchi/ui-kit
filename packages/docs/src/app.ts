@@ -23,16 +23,8 @@ import "@ismail-elkorchi/ui-shell/secondary-sidebar";
 import "@ismail-elkorchi/ui-shell/sidebar";
 import "@ismail-elkorchi/ui-shell/status-bar";
 import "@ismail-elkorchi/ui-patterns/uik-page-hero";
-import "@ismail-elkorchi/ui-patterns/uik-section-card";
-import "@ismail-elkorchi/ui-primitives/uik-badge";
-import "@ismail-elkorchi/ui-primitives/uik-box";
-import "@ismail-elkorchi/ui-primitives/uik-button";
 import "@ismail-elkorchi/ui-primitives/uik-heading";
-import "@ismail-elkorchi/ui-primitives/uik-link";
-import "@ismail-elkorchi/ui-primitives/uik-select";
-import "@ismail-elkorchi/ui-primitives/uik-surface";
 import "@ismail-elkorchi/ui-primitives/uik-text";
-import "@ismail-elkorchi/ui-primitives/uik-tree-view";
 
 import {
   buildPageMap,
@@ -223,7 +215,18 @@ const baseComponentTags = [
   "uik-text",
   "uik-tree-view",
 ];
-const preloadedComponents = new Set(baseComponentTags);
+const preloadedComponents = new Set([
+  "uik-shell-layout",
+  "uik-shell-activity-bar",
+  "uik-shell-sidebar",
+  "uik-shell-secondary-sidebar",
+  "uik-shell-status-bar",
+  "uik-page-hero",
+  "uik-heading",
+  "uik-text",
+  "uik-box",
+  "uik-surface",
+]);
 const loadedComponents = new Set(preloadedComponents);
 const pendingComponents = new Map<string, Promise<unknown>>();
 
