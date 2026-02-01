@@ -246,7 +246,9 @@ export class UikTreeView extends LitElement {
     }
 
     const allItems = this.getAllItems();
-    const allStartIndex = allItems.findIndex((item) => item.id === this.focusId);
+    const allStartIndex = allItems.findIndex(
+      (item) => item.id === this.focusId,
+    );
     const allMatch = this.findTypeaheadMatch(
       allItems,
       query,

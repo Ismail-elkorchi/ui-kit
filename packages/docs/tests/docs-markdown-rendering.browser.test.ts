@@ -103,7 +103,9 @@ describe("docs markdown rendering", () => {
       "const htmlSnippet = '<div data-note=\"<>&\"></div>';",
     );
     expect(escapedText).toContain('const scriptTag = "</script>";');
-    expect(escapedText).toContain("Render <, >, & safely");
+    expect(escapedText).toContain("`Render <, >, & safely`");
+    expect(escapedBlock?.querySelector("script")).toBeNull();
+    expect(escapedBlock?.querySelector("div")).toBeNull();
 
     const inlineCodes = Array.from(content.querySelectorAll("code")).filter(
       (node) => !node.closest(".docs-code-block"),

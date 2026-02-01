@@ -129,7 +129,10 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     () => import("@ismail-elkorchi/ui-shell/secondary-sidebar"),
   ],
   ["uik-shell-sidebar", () => import("@ismail-elkorchi/ui-shell/sidebar")],
-  ["uik-shell-status-bar", () => import("@ismail-elkorchi/ui-shell/status-bar")],
+  [
+    "uik-shell-status-bar",
+    () => import("@ismail-elkorchi/ui-shell/status-bar"),
+  ],
   ["uik-icon", () => import("@ismail-elkorchi/ui-primitives/uik-icon")],
   ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
   ["uik-link", () => import("@ismail-elkorchi/ui-primitives/uik-link")],
@@ -489,8 +492,7 @@ const loadComponents = async (tags: Iterable<string>) => {
     if (!tag || !loader) continue;
     await loadComponent(tag, loader);
     const shouldYield =
-      index < queue.length - 1 &&
-      (index + 1) % componentLoadBatchSize === 0;
+      index < queue.length - 1 && (index + 1) % componentLoadBatchSize === 0;
     if (shouldYield) {
       await nextFrame();
     }
