@@ -5215,6 +5215,52 @@
           "notes": []
         },
         {
+          "id": "example",
+          "tagName": "uik-example",
+          "name": "<uik-example>",
+          "kind": "component",
+          "summary": "Preview + code example pattern.",
+          "attributes": [
+            {
+              "name": "title",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "title",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "code",
+              "description": "Code snippet (use uik-code-block)."
+            },
+            { "name": "preview", "description": "Live example markup." },
+            { "name": "title", "description": "Optional header title." }
+          ],
+          "cssParts": [
+            { "name": "base", "description": "Surface wrapper." },
+            { "name": "code", "description": "Code container." },
+            { "name": "header", "description": "Header container." },
+            { "name": "preview", "description": "Preview container." },
+            {
+              "name": "tabs",
+              "description": "Tabs wrapper (when tabs render)."
+            },
+            { "name": "title", "description": "Title container." }
+          ],
+          "cssCustomProperties": [],
+          "a11y": [],
+          "notes": []
+        },
+        {
           "id": "page-hero",
           "tagName": "uik-page-hero",
           "name": "<uik-page-hero>",

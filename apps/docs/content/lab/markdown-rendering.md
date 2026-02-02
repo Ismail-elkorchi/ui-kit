@@ -55,6 +55,15 @@ queue.set("docs", { ready: true });
 <button class="docs-button" aria-label="Run checks">Run checks</button>
 ```
 
+## Example fences
+
+```example-html
+<uik-stack direction="horizontal" gap="2" align="center">
+  <uik-button variant="secondary">Preview</uik-button>
+  <uik-input placeholder="Type" aria-label="Example input"></uik-input>
+</uik-stack>
+```
+
 ## Escaping and safety
 
 ```ts

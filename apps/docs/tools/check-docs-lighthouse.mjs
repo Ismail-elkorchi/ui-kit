@@ -46,16 +46,6 @@ const routes = [
   {
     id: "seo-getting-started",
     path: "/docs/getting-started",
-    checks: buildChecks({
-      performance: false,
-      accessibility: false,
-      bestPractices: false,
-      lcp: false,
-      cls: false,
-      tbt: false,
-      inp: false,
-      seo: true,
-    }),
   },
 ];
 

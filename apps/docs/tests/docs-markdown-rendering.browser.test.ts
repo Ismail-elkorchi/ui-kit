@@ -180,4 +180,88 @@ describe("docs markdown rendering", () => {
     );
     expect(hasForcedColorsRule).toBe(true);
   });
+
+  it("renders example fences with preview and copyable code", async () => {
+    window.history.replaceState({}, "", "/lab/markdown-rendering");
+    const root = document.getElementById("app");
+    if (!root) throw new Error("Docs root not found.");
+    await mountDocsApp(root);
+    await waitForContent();
+
+    const content = document.querySelector<HTMLElement>("[data-docs-content]");
+    if (!content) throw new Error("Docs content root not found.");
+
+    await customElements.whenDefined("uik-example");
+    const example = content.querySelector<HTMLElement>("uik-example");
+    if (!example) throw new Error("Expected example fence to render.");
+
+    const previewSlot = example.querySelector<HTMLElement>('[slot="preview"]');
+    expect(previewSlot).toBeTruthy();
+
+    const codeBlock = example.querySelector<HTMLElement>(
+      'uik-code-block[slot="code"]',
+    );
+    expect(codeBlock).toBeTruthy();
+
+    const tabs = example.shadowRoot?.querySelector<HTMLElement>("uik-tabs");
+    expect(tabs).toBeTruthy();
+    const codeTab = tabs?.querySelector<HTMLElement>('uik-tab[value="code"]');
+    codeTab?.click();
+    await (tabs as unknown as { updateComplete: Promise<void> }).updateComplete;
+
+    const codePanel = tabs?.querySelector<HTMLElement>(
+      'uik-tab-panel[value="code"]',
+    );
+    expect(codePanel?.hasAttribute("hidden")).toBe(false);
+
+    const copyButton =
+      codeBlock?.shadowRoot?.querySelector<HTMLButtonElement>("button.copy");
+    expect(copyButton).toBeTruthy();
+
+    const originalClipboard = navigator.clipboard;
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+
+    try {
+      copyButton?.click();
+      await (codeBlock as unknown as { updateComplete: Promise<void> })
+        .updateComplete;
+      expect(writeText).toHaveBeenCalled();
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(navigator, "clipboard", {
+          value: originalClipboard,
+          configurable: true,
+        });
+      } else {
+        delete (navigator as typeof navigator & { clipboard?: Clipboard })
+          .clipboard;
+      }
+    }
+
+    const tokenBorderWidth = getComputedStyle(example)
+      .getPropertyValue("--uik-component-example-border-width")
+      .trim();
+    expect(tokenBorderWidth).not.toBe("");
+
+    const styleSheets = example.shadowRoot?.adoptedStyleSheets ?? [];
+    const sheetText = styleSheets
+      .map((sheet) => {
+        try {
+          return Array.from(sheet.cssRules)
+            .map((rule) => rule.cssText)
+            .join("\n");
+        } catch {
+          return "";
+        }
+      })
+      .join("\n");
+    const inlineStyles =
+      example.shadowRoot?.querySelector("style")?.textContent ?? "";
+    const combinedStyles = `${sheetText}\n${inlineStyles}`;
+    expect(combinedStyles).toContain("@media (forced-colors: active)");
+  });
 });

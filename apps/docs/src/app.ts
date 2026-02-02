@@ -114,7 +114,7 @@ const buildActivityItems = (
   });
 };
 
-const docsGroupOrder = ["Guides", "Foundations", "Components"];
+const docsGroupOrder = ["Guides", "Foundations", "Components", "Examples"];
 const componentSectionShortcuts: Record<string, string[]> = {
   primitives: ["Portfolio", "Usage", "Contracts"],
   shell: ["Portfolio", "Layout layer", "Contracts"],
@@ -141,6 +141,7 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     "uik-empty-state",
     () => import("@ismail-elkorchi/ui-patterns/uik-empty-state"),
   ],
+  ["uik-example", () => import("@ismail-elkorchi/ui-patterns/uik-example")],
   ["uik-heading", () => import("@ismail-elkorchi/ui-primitives/uik-heading")],
   ["uik-page-hero", () => import("@ismail-elkorchi/ui-patterns/uik-page-hero")],
   [

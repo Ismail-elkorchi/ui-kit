@@ -25,3 +25,14 @@ import "@ismail-elkorchi/ui-patterns/register";
   </div>
 </uik-empty-state>
 ```
+
+```html
+<uik-example title="Preview + Code">
+  <div slot="preview">
+    <uik-button variant="secondary">Preview</uik-button>
+  </div>
+  <uik-code-block slot="code" copyable>
+    &lt;uik-button variant="secondary"&gt;Preview&lt;/uik-button&gt;
+  </uik-code-block>
+</uik-example>
+```

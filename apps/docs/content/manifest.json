@@ -122,6 +122,16 @@
       "kind": "Guide",
       "source": "apps/docs/content/patterns.md",
       "format": "markdown"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Production-ready UI examples with preview + code for common flows.",
+      "navLabel": "Examples",
+      "group": "Examples",
+      "kind": "Guide",
+      "source": "apps/docs/content/examples.md",
+      "format": "markdown"
     }
   ],
   "lab": [

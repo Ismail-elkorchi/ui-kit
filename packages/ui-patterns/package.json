@@ -41,6 +41,11 @@
       "import": "./dist/src/patterns/uik-empty-state/index.js",
       "default": "./dist/src/patterns/uik-empty-state/index.js"
     },
+    "./uik-example": {
+      "types": "./dist/src/patterns/uik-example/index.d.ts",
+      "import": "./dist/src/patterns/uik-example/index.js",
+      "default": "./dist/src/patterns/uik-example/index.js"
+    },
     "./uik-page-hero": {
       "types": "./dist/src/patterns/uik-page-hero/index.d.ts",
       "import": "./dist/src/patterns/uik-page-hero/index.js",

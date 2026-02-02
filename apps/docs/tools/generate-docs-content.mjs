@@ -230,6 +230,42 @@ const renderHighlightedCode = (code, language, highlighter) => {
     .join("\n");
 };
 
+const normalizeSnippet = (value) => stripBlankLines(String(value ?? "")).trim();
+
+const containsScriptTag = (value) => /<\s*script\b/i.test(value);
+
+const buildCodeBlockMarkup = ({ code, language, highlighter, slot }) => {
+  const langValue = String(language ?? "");
+  const langClass = langValue ? `language-${escapeHtml(langValue)}` : "";
+  const codeClass = ["docs-code-content", langClass].filter(Boolean).join(" ");
+  const highlighted = renderHighlightedCode(code, langValue, highlighter);
+  const slotAttr = slot ? ` slot=\"${slot}\"` : "";
+  return stripBlankLines(`
+    <uik-code-block${slotAttr} class=\"docs-code-block\" copyable>
+      <span class=\"${codeClass}\" data-language=\"${escapeHtml(
+        langValue,
+      )}\">${highlighted}</span>
+    </uik-code-block>
+  `);
+};
+
+const buildExampleMarkup = ({ previewHtml, code, language, highlighter }) => {
+  const preview = stripBlankLines(String(previewHtml ?? "")).trim();
+  const snippet = normalizeSnippet(code);
+  const codeBlock = buildCodeBlockMarkup({
+    code: snippet,
+    language,
+    highlighter,
+    slot: "code",
+  });
+  return stripBlankLines(`
+<uik-example>
+  <div slot=\"preview\">${preview}</div>
+  ${codeBlock}
+</uik-example>
+  `);
+};
+
 const admonitionConfig = new Map([
   ["NOTE", { variant: "info", label: "Note" }],
   ["TIP", { variant: "success", label: "Tip" }],
@@ -323,21 +359,25 @@ const createRenderer = (slugger, highlighter) => {
     `<li><uik-text as="p" class="docs-paragraph">${text}</uik-text></li>`;
   renderer.code = (code, infostring) => {
     const rawLanguage = (infostring ?? "").trim().split(/\s+/)[0] ?? "";
-    const language = normalizeLanguage(rawLanguage);
-    const langClass = language ? `language-${escapeHtml(language)}` : "";
-    const codeClass = ["docs-code-content", langClass]
-      .filter(Boolean)
-      .join(" ");
-    const highlighted = renderHighlightedCode(
+    const isExample = rawLanguage === "example-html";
+    const language = normalizeLanguage(isExample ? "html" : rawLanguage);
+    if (isExample) {
+      if (containsScriptTag(code)) {
+        throw new Error("example-html fences may not include <script> tags.");
+      }
+      const snippet = normalizeSnippet(code);
+      return buildExampleMarkup({
+        previewHtml: snippet,
+        code: snippet,
+        language,
+        highlighter: renderer.highlighter,
+      });
+    }
+    return buildCodeBlockMarkup({
       code,
       language,
-      renderer.highlighter,
-    );
-    return `
-      <uik-code-block class="docs-code-block" copyable>
-        <span class="${codeClass}" data-language="${escapeHtml(language)}">${highlighted}</span>
-      </uik-code-block>
-    `.trim();
+      highlighter: renderer.highlighter,
+    });
   };
   renderer.codespan = (text) => `<code>${escapeHtml(text)}</code>`;
   renderer.heading = (text, level, raw) => {
@@ -703,7 +743,12 @@ const componentGroupDefinitions = [
     id: "patterns",
     label: "Patterns",
     description: "Composed UI blocks built from primitives.",
-    tags: ["uik-empty-state", "uik-page-hero", "uik-section-card"],
+    tags: [
+      "uik-empty-state",
+      "uik-example",
+      "uik-page-hero",
+      "uik-section-card",
+    ],
   },
   {
     id: "utilities",
@@ -921,6 +966,25 @@ const componentPreviewTemplates = {
 <button type="button">New message</button>
 </div>
 </uik-empty-state>`,
+  }),
+  "uik-example": () => ({
+    layout: "start",
+    size: "lg",
+    html: `<uik-example title="Example">
+<div slot="preview">
+<uik-stack direction="horizontal" gap="2" align="center">
+<uik-button variant="solid">Create</uik-button>
+<uik-input placeholder="Workspace name" aria-label="Workspace name"></uik-input>
+</uik-stack>
+</div>
+<uik-code-block slot="code" copyable>&lt;uik-button&gt;Create&lt;/uik-button&gt;</uik-code-block>
+</uik-example>`,
+    snippetHtml: `<uik-example>
+<div slot="preview">
+<uik-button variant="solid">Create</uik-button>
+</div>
+<uik-code-block slot="code" copyable>&lt;uik-button&gt;Create&lt;/uik-button&gt;</uik-code-block>
+</uik-example>`,
   }),
   "uik-heading": () => ({
     layout: "start",
@@ -1533,7 +1597,7 @@ const renderComponentsIndex = (packages) => {
   return `<div class="docs-portfolio">${sections.join("\n")}</div>`;
 };
 
-const buildComponentUsageSnippet = (component, packageMeta) => {
+const buildComponentUsageMarkup = (component, packageMeta) => {
   const preview = resolveComponentPreview(component);
   const markupSource =
     preview?.snippetHtml ??
@@ -1543,13 +1607,13 @@ const buildComponentUsageSnippet = (component, packageMeta) => {
   const importPath = packageMeta?.id
     ? `@ismail-elkorchi/${packageMeta.id}/register`
     : "@ismail-elkorchi/ui-primitives/register";
-  return stripBlankLines(`\`\`\`html
+  return stripBlankLines(`
 <script type="module">
   import "${importPath}";
 </script>
 
 ${markup}
-\`\`\``);
+  `);
 };
 
 const buildComponentDetailPage = (component, packageMeta, highlighter) => {
@@ -1557,17 +1621,15 @@ const buildComponentDetailPage = (component, packageMeta, highlighter) => {
   const overview =
     component.summary?.trim() ||
     `Reference for ${component.tagName ?? component.name ?? "component"}.`;
-  const previewMarkup = preview
-    ? stripBlankLines(`
-<div class="docs-card docs-component-preview-card" data-component-preview="${escapeHtml(
-        component.tagName ?? "",
-      )}">
-  <div class="docs-portfolio-preview" data-preview-layout="${preview.layout ?? "center"}" data-preview-size="${preview.size ?? "md"}">
-    ${preview.previewHtml}
-  </div>
-</div>`)
+  const usageMarkup = buildComponentUsageMarkup(component, packageMeta);
+  const exampleMarkup = preview
+    ? buildExampleMarkup({
+        previewHtml: preview.previewHtml,
+        code: usageMarkup,
+        language: "html",
+        highlighter,
+      })
     : "";
-  const usageSnippet = buildComponentUsageSnippet(component, packageMeta);
   const apiMarkup = stripBlankLines(
     `<div class="docs-components" data-component-api="${escapeHtml(
       component.tagName ?? "",
@@ -1578,10 +1640,7 @@ ${renderComponentCards([component])}
 
   const rawSections = [
     { title: "Overview", bodyMarkdown: overview },
-    ...(previewMarkup
-      ? [{ title: "Preview", bodyMarkdown: previewMarkup }]
-      : []),
-    { title: "Usage", bodyMarkdown: usageSnippet },
+    ...(exampleMarkup ? [{ title: "Usage", bodyMarkdown: exampleMarkup }] : []),
     { title: "API", bodyMarkdown: apiMarkup },
   ];
 
