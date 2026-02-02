@@ -827,12 +827,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
       <div slot="main-content" id="docs-main" class="docs-main">
           <div class="docs-page" data-docs-page>
           <header class="docs-fixture-header" data-docs-fixture${fixtureHiddenAttr}>
-            <uik-heading level="1" class="docs-heading docs-fixture-title" data-docs-fixture-title>${escapeHtml(
+            <h1 class="docs-fixture-title" data-docs-fixture-title>${escapeHtml(
               initialTitle,
-            )}</uik-heading>
-            <uik-text as="p" data-docs-fixture-summary class="docs-summary docs-fixture-summary">${escapeHtml(
+            )}</h1>
+            <p class="docs-summary docs-fixture-summary" data-docs-fixture-summary>${escapeHtml(
               initialSummary,
-            )}</uik-text>
+            )}</p>
           </header>
           <uik-page-hero class="docs-hero"${heroHiddenAttr}>
             <div slot="eyebrow" class="docs-hero-top">
