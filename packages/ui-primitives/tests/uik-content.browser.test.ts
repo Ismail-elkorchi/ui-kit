@@ -222,8 +222,9 @@ describe("uik content primitives", () => {
           configurable: true,
         });
       } else {
-        delete (document as Document & { execCommand?: Document["execCommand"] })
-          .execCommand;
+        delete (
+          document as Document & { execCommand?: Document["execCommand"] }
+        ).execCommand;
       }
     }
   });
