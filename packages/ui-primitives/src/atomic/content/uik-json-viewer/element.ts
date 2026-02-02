@@ -132,7 +132,7 @@ const formatValuePreview = (node: JsonViewerNode) => {
  */
 @customElement("uik-json-viewer")
 export class UikJsonViewer extends LitElement {
-  @property({ attribute: false }) accessor value: unknown = null;
+  @property({ attribute: false }) accessor value: unknown = undefined;
   @property({ type: String }) accessor json = "";
   @property({ type: Number, attribute: "expanded-depth" })
   accessor expandedDepth = 2;
