@@ -1,0 +1,94 @@
+{
+  "$id": "https://uik.local/schemas/docs-manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UIK Docs Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "string"
+    },
+    "docs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/page"
+      }
+    },
+    "lab": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/page"
+      }
+    }
+  },
+  "required": ["schemaVersion", "docs", "lab"],
+  "$defs": {
+    "visibility": {
+      "type": "string",
+      "enum": ["public", "internal"]
+    },
+    "pageBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "summary": { "type": "string" },
+        "navLabel": { "type": "string" },
+        "group": { "type": "string" },
+        "kind": { "type": "string" },
+        "package": { "type": "string" },
+        "type": { "type": "string", "enum": ["markdown", "components"] },
+        "format": { "type": "string", "enum": ["markdown"] },
+        "visibility": { "$ref": "#/$defs/visibility" },
+        "source": { "type": "string" },
+        "readme": { "type": "string" },
+        "contracts": { "type": "string" },
+        "cem": { "type": "string" },
+        "componentsTitle": { "type": "string" },
+        "componentsSourceTitle": { "type": "string" },
+        "portfolioTitle": { "type": "string" }
+      },
+      "required": ["id", "title", "summary", "group", "kind"]
+    },
+    "markdownPage": {
+      "allOf": [
+        { "$ref": "#/$defs/pageBase" },
+        {
+          "type": "object",
+          "properties": {
+            "format": { "const": "markdown" },
+            "source": { "type": "string" },
+            "type": { "enum": ["markdown"] }
+          },
+          "required": ["format", "source"]
+        }
+      ]
+    },
+    "componentsPage": {
+      "allOf": [
+        { "$ref": "#/$defs/pageBase" },
+        {
+          "type": "object",
+          "properties": {
+            "type": { "const": "components" },
+            "package": { "type": "string" },
+            "readme": { "type": "string" },
+            "contracts": { "type": "string" },
+            "cem": { "type": "string" }
+          },
+          "required": ["type", "package", "readme", "contracts", "cem"]
+        }
+      ]
+    },
+    "page": {
+      "oneOf": [
+        { "$ref": "#/$defs/markdownPage" },
+        { "$ref": "#/$defs/componentsPage" }
+      ]
+    }
+  }
+}

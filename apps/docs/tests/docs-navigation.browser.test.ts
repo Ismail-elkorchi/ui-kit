@@ -32,6 +32,13 @@ const waitForNavItems = async (navTree: UikTreeView | null, attempts = 60) => {
   throw new Error("Docs navigation tree did not render.");
 };
 
+type NavItem = { id: string; label?: string; children?: NavItem[] };
+const flattenNavIds = (items: NavItem[] = []) =>
+  items.flatMap((item) => [
+    item.id,
+    ...flattenNavIds((item.children ?? []) as NavItem[]),
+  ]);
+
 describe("docs navigation", () => {
   beforeEach(async () => {
     document.body.innerHTML = '<div id="app"></div>';
@@ -70,5 +77,17 @@ describe("docs navigation", () => {
     expect(title?.textContent).toContain("Tokens");
     expect(layout?.activeRouteKey).toBe("docs/tokens");
     expect(navTree?.currentId).toBe("docs/tokens");
+  });
+
+  it("hides internal fixtures from navigation", async () => {
+    await customElements.whenDefined("uik-tree-view");
+    const navTree = document.querySelector<UikTreeView>("[data-docs-nav-tree]");
+    await navTree?.updateComplete;
+    await waitForNavItems(navTree);
+
+    const navIds = flattenNavIds((navTree?.items ?? []) as NavItem[]);
+    expect(navIds).not.toContain("lab/perf-shell");
+    expect(navIds).not.toContain("lab/perf-primitives");
+    expect(navIds).not.toContain("lab/markdown-rendering");
   });
 });

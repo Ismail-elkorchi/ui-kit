@@ -27,6 +27,8 @@ import {
   buildPageMap,
   docsPages,
   labPages,
+  publicDocsPages,
+  publicLabPages,
   loadPageContent,
   renderPageSections,
   renderToc,
@@ -55,22 +57,32 @@ const getRouteFromLocation = (baseUrl: string) => {
 const buildRoutes = (
   docsPageList: DocPage[] = docsPages,
   labPageList: DocPage[] = labPages,
+  publicDocsList: DocPage[] = publicDocsPages,
+  publicLabList: DocPage[] = publicLabPages,
 ): UikShellRoute[] => {
   const docsSubviewIds = docsPageList.map((page) => page.id);
   const labSubviewIds = labPageList.map((page) => page.id);
+  const docsDefault = publicDocsList[0]?.id ?? docsSubviewIds[0];
+  const labDefault = publicLabList[0]?.id ?? labSubviewIds[0];
 
   const createRoute = (
     id: string,
     label: string,
     subviews: string[],
+    defaultSubview?: string,
   ): UikShellRoute => {
     if (subviews.length === 0) return { id, label };
-    return { id, label, subviews, defaultSubview: subviews[0] };
+    return {
+      id,
+      label,
+      subviews,
+      defaultSubview: defaultSubview ?? subviews[0],
+    };
   };
 
   return [
-    createRoute("docs", "Docs", docsSubviewIds),
-    createRoute("lab", "Lab", labSubviewIds),
+    createRoute("docs", "Docs", docsSubviewIds, docsDefault),
+    createRoute("lab", "Examples", labSubviewIds, labDefault),
   ];
 };
 
@@ -79,7 +91,7 @@ const buildActivityItems = (
 ): UikShellActivityBarItem[] => {
   const icons = {
     docs: "M4 5a2 2 0 012-2h10a2 2 0 012 2v14a1 1 0 01-1 1h-2a2 2 0 00-2 2H6a2 2 0 01-2-2V5z",
-    lab: "M9 2h6l3 7-6 13-6-13 3-7z",
+    lab: "M3 3h6v6H3V3zm0 8h6v6H3v-6zm8-8h6v6h-6V3zm0 8h6v6h-6v-6z",
   } as const;
 
   return routes.map((route) => {
@@ -309,8 +321,8 @@ const buildDocsGroupItems = (
 
 const buildNavItems = (
   baseUrl: string,
-  docsPageList: DocPage[] = docsPages,
-  labPageList: DocPage[] = labPages,
+  docsPageList: DocPage[] = publicDocsPages,
+  labPageList: DocPage[] = publicLabPages,
   activeDocPageId?: string | null,
 ): UikNavItem[] => {
   const base = normalizeBaseUrl(baseUrl);
@@ -324,7 +336,7 @@ const buildNavItems = (
     },
     {
       id: "lab",
-      label: "Lab",
+      label: "Examples",
       children: labPageList.map((page) => ({
         id: `lab/${page.id}`,
         label: getPageLabel(page),
@@ -335,8 +347,8 @@ const buildNavItems = (
 };
 
 const buildMobileNavOptions = (
-  docsPageList: DocPage[] = docsPages,
-  labPageList: DocPage[] = labPages,
+  docsPageList: DocPage[] = publicDocsPages,
+  labPageList: DocPage[] = publicLabPages,
 ) => {
   const grouped = new Map<string, DocPage[]>();
   docsPageList.forEach((page) => {
@@ -371,15 +383,15 @@ const buildMobileNavOptions = (
 
   return `
     ${docsOptions}
-    <optgroup label="Lab">${labOptions}</optgroup>
+    <optgroup label="Examples">${labOptions}</optgroup>
   `;
 };
 
 type CommandPaletteCommand = UikCommandCenterCommand & { value: string };
 
 const buildCommandPaletteCommands = (
-  docsPageList: DocPage[] = docsPages,
-  labPageList: DocPage[] = labPages,
+  docsPageList: DocPage[] = publicDocsPages,
+  labPageList: DocPage[] = publicLabPages,
 ): CommandPaletteCommand[] => {
   const items: CommandPaletteCommand[] = [];
   const addItems = (view: string, pages: DocPage[], fallback: string) => {
@@ -398,7 +410,7 @@ const buildCommandPaletteCommands = (
   };
 
   addItems("docs", docsPageList, "Docs");
-  addItems("lab", labPageList, "Lab");
+  addItems("lab", labPageList, "Examples");
   return items;
 };
 
@@ -584,7 +596,7 @@ const scheduleMobileNavOptions = (mobileNavSelect: UikSelect | null) => {
     const currentValue = mobileNavSelect.value;
     mobileNavSelect.insertAdjacentHTML(
       "beforeend",
-      buildMobileNavOptions(docsPages, labPages),
+      buildMobileNavOptions(publicDocsPages, publicLabPages),
     );
     if (currentValue) {
       mobileNavSelect.value = currentValue;
@@ -729,7 +741,11 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
   const initialRoute = getRouteFromLocation(baseUrl);
   const initialView = initialRoute.view === "lab" ? "lab" : "docs";
-  const initialSubview = initialRoute.subview ?? docsPages[0]?.id;
+  const defaultDocsSubview = publicDocsPages[0]?.id ?? docsPages[0]?.id;
+  const defaultLabSubview = publicLabPages[0]?.id ?? labPages[0]?.id;
+  const initialSubview =
+    initialRoute.subview ??
+    (initialView === "lab" ? defaultLabSubview : defaultDocsSubview);
   const initialPage =
     initialView === "lab"
       ? labPages.find((page) => page.id === initialSubview)
@@ -876,7 +892,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
   await baseComponentsPromise;
 
   const pageMap = buildPageMap();
-  const routes = buildRoutes(docsPages, labPages);
+  const routes = buildRoutes(
+    docsPages,
+    labPages,
+    publicDocsPages,
+    publicLabPages,
+  );
   const router = createUikShellRouter({
     routes,
     initialView,
@@ -964,7 +985,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
   activityBar.items = buildActivityItems(routes);
   let activeDocPageId = initialView === "docs" ? initialSubview : null;
-  let navItems = buildNavItems(baseUrl, docsPages, labPages, activeDocPageId);
+  let navItems = buildNavItems(
+    baseUrl,
+    publicDocsPages,
+    publicLabPages,
+    activeDocPageId,
+  );
   const initialNavId = resolveNavCurrentId(router.current);
   navTree.items = navItems;
   navTree.openIds = collectOpenIds(navItems, initialNavId);
@@ -1030,10 +1056,10 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ) as UikCommandPalette;
     palette.className = "docs-command-palette";
     palette.setAttribute("data-docs-command-palette", "");
-    palette.setAttribute("placeholder", "Search docs and lab pages");
+    palette.setAttribute("placeholder", "Search docs and examples");
     palette.innerHTML = `
       <span slot="title">Command palette</span>
-      <span slot="description">Type to search docs and lab pages.</span>
+      <span slot="description">Type to search docs and examples.</span>
       <uik-visually-hidden slot="label">Search commands</uik-visually-hidden>
       <uik-text slot="footer" as="p" size="sm" tone="muted">
         Use Up/Down to navigate, Enter to select, Esc to close.
@@ -1220,7 +1246,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
         : null;
     if (nextDocPageId !== activeDocPageId) {
       activeDocPageId = nextDocPageId;
-      navItems = buildNavItems(baseUrl, docsPages, labPages, activeDocPageId);
+      navItems = buildNavItems(
+        baseUrl,
+        publicDocsPages,
+        publicLabPages,
+        activeDocPageId,
+      );
       navTree.items = navItems;
     }
     navTree.openIds = collectOpenIds(navItems, resolveNavCurrentId(location));

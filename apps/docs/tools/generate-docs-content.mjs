@@ -14,6 +14,7 @@ const repoRoot = path.resolve(scriptDir, "../../..");
 const docsRoot = path.join(repoRoot, "apps/docs");
 const contentRoot = path.join(docsRoot, "content");
 const manifestPath = path.join(contentRoot, "manifest.json");
+const manifestSchemaPath = path.join(contentRoot, "manifest.schema.json");
 const generatedContentDir = path.join(contentRoot, "generated");
 const apiSchemaPath = path.join(generatedContentDir, "api.schema.json");
 const apiOutputPath = path.join(generatedContentDir, "api.json");
@@ -81,6 +82,9 @@ const formatJson = async (data) =>
   prettier.format(JSON.stringify(data), {
     parser: "json",
   });
+
+const normalizeVisibility = (value) =>
+  value === "internal" ? "internal" : "public";
 
 const normalizeLanguage = (value) => {
   const key = String(value ?? "")
@@ -1391,6 +1395,7 @@ const buildComponentsPage = async (entry, apiLookup, highlighter) => {
     kind: entry.kind ?? undefined,
     package: entry.package ?? undefined,
     type: entry.type ?? "components",
+    visibility: normalizeVisibility(entry.visibility),
     sections,
     toc,
   };
@@ -1412,6 +1417,7 @@ const buildMarkdownPage = async (entry, highlighter) => {
     kind: entry.kind ?? undefined,
     package: entry.package ?? undefined,
     type: entry.type ?? "markdown",
+    visibility: normalizeVisibility(entry.visibility),
     sections,
     toc,
   };
@@ -1438,6 +1444,7 @@ const toPageMeta = (page) => ({
   kind: page.kind ?? undefined,
   package: page.package ?? undefined,
   type: page.type ?? undefined,
+  visibility: page.visibility ?? "public",
   toc: page.toc ?? [],
 });
 
@@ -1503,6 +1510,16 @@ const validateApiModel = async (apiModel) => {
   }
 };
 
+const validateManifest = async (manifest) => {
+  const schema = JSON.parse(await fs.readFile(manifestSchemaPath, "utf8"));
+  const ajv = new Ajv({ allErrors: true, allowUnionTypes: true });
+  const valid = ajv.validate(schema, manifest);
+  if (!valid) {
+    const details = ajv.errorsText(ajv.errors, { separator: "\n" });
+    throw new Error(`Docs manifest schema validation failed:\n${details}`);
+  }
+};
+
 const writeOrCheck = async (filePath, content, check, mismatches) => {
   if (!check) {
     await fs.mkdir(path.dirname(filePath), { recursive: true });
@@ -1539,6 +1556,7 @@ const run = async () => {
 
   const highlighter = await createHighlighter();
   const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
+  await validateManifest(manifest);
   const apiLookup = new Map(apiModel.packages.map((pkg) => [pkg.id, pkg]));
   const docsPages = await buildPages(
     manifest.docs ?? [],
@@ -1550,7 +1568,11 @@ const run = async () => {
     docsPages: docsPages.map(toPageMeta),
     labPages: labPages.map(toPageMeta),
   };
-  const searchIndex = buildSearchIndex(docsPages, labPages);
+  const isPublicPage = (page) => page.visibility !== "internal";
+  const searchIndex = buildSearchIndex(
+    docsPages.filter(isPublicPage),
+    labPages.filter(isPublicPage),
+  );
 
   const manifestPayload = await formatJson(output);
   const searchPayload = await formatJson(searchIndex);

@@ -32,6 +32,7 @@ export interface DocPage {
   kind?: string;
   package?: string;
   type?: string;
+  visibility?: "public" | "internal";
   toc: DocTocItem[];
 }
 
@@ -56,6 +57,10 @@ const criticalContent = new Map<string, DocPageContent>([
 
 export const docsPages = content.docsPages;
 export const labPages = content.labPages;
+export const isPublicPage = (page: DocPage) =>
+  (page.visibility ?? "public") !== "internal";
+export const publicDocsPages = docsPages.filter(isPublicPage);
+export const publicLabPages = labPages.filter(isPublicPage);
 
 export const buildPageMap = () => {
   const map = new Map<string, DocPage>();

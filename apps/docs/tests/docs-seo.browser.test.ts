@@ -2,7 +2,7 @@ import "@ismail-elkorchi/ui-tokens/base.css";
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { mountDocsApp } from "../app";
-import { docsPages, labPages } from "../src/content";
+import { labPages, publicDocsPages, publicLabPages } from "../src/content";
 
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
@@ -59,7 +59,7 @@ describe("docs seo metadata", () => {
   });
 
   it("updates metadata on initial load and route changes", async () => {
-    const initialPage = docsPages[0];
+    const initialPage = publicDocsPages[0];
     if (!initialPage) throw new Error("No docs pages configured.");
 
     await waitForContent();
@@ -71,8 +71,9 @@ describe("docs seo metadata", () => {
     );
 
     const nextLab =
-      labPages.find((page) => page.id === "empty-state") ?? labPages[0];
-    if (!nextLab) throw new Error("No lab pages configured.");
+      publicLabPages.find((page) => page.id === "empty-state") ??
+      publicLabPages[0];
+    if (!nextLab) throw new Error("No examples pages configured.");
 
     window.history.pushState({}, "", `/lab/${nextLab.id}`);
     window.dispatchEvent(new PopStateEvent("popstate"));
@@ -81,5 +82,25 @@ describe("docs seo metadata", () => {
     await nextFrame();
 
     expectMetadata(nextLab.navLabel ?? nextLab.title, nextLab.summary);
+  });
+
+  it("renders metadata for internal routes", async () => {
+    const internalPage = labPages.find(
+      (page) => page.visibility === "internal",
+    );
+    if (!internalPage) {
+      throw new Error("No internal pages configured.");
+    }
+
+    window.history.pushState({}, "", `/lab/${internalPage.id}`);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+
+    await waitForContent();
+    await nextFrame();
+
+    expectMetadata(
+      internalPage.navLabel ?? internalPage.title,
+      internalPage.summary,
+    );
   });
 });
