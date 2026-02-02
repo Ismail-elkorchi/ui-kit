@@ -773,7 +773,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const fixtureHiddenAttr = initialIsInternal ? "" : " hidden";
   const outlineHiddenAttr = initialIsInternal ? " hidden" : "";
   const outlineOpenAttr = initialIsInternal ? "" : " isOpen";
-  const secondaryVisibleAttr = initialIsInternal ? "" : " isSecondarySidebarVisible";
+  const secondaryVisibleAttr = initialIsInternal
+    ? ""
+    : " isSecondarySidebarVisible";
   const initialPageContentPromise = initialPage
     ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
     : null;
