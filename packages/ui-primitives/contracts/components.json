@@ -351,6 +351,40 @@
       ]
     },
     {
+      "id": "json-diff",
+      "tagName": "uik-json-diff",
+      "summary": "Token-driven JSON diff preview for apply flows.",
+      "attributes": [
+        "json-before (string)",
+        "json-after (string)",
+        "aria-label",
+        "aria-labelledby"
+      ],
+      "slots": [],
+      "parts": [
+        "base",
+        "header",
+        "summary",
+        "list",
+        "item",
+        "toggle",
+        "kind",
+        "path",
+        "actions",
+        "action-button",
+        "detail",
+        "detail-block",
+        "detail-label",
+        "error",
+        "status"
+      ],
+      "events": ["json-diff-copy (detail: {kind, path, value})"],
+      "a11y": [
+        "Roving focus list. Arrow keys move, Left/Right collapse/expand, Enter/Space toggles."
+      ],
+      "cssVars": ["--uik-component-json-diff-*"]
+    },
+    {
       "id": "json-viewer",
       "tagName": "uik-json-viewer",
       "summary": "Token-driven JSON viewer for structured data.",
