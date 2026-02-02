@@ -19,44 +19,9 @@ const docsRoot = path.join(repoRoot, "apps/docs");
 const artifactsRoot = path.join(repoRoot, ".ato/runs/artifacts");
 const viteBin = path.join(repoRoot, "node_modules/.bin/vite");
 
-const defaultChecks = {
-  performance: true,
-  accessibility: true,
-  bestPractices: true,
-  seo: true,
-  lcp: true,
-  cls: true,
-  tbt: true,
-  inp: true,
-};
-
-const buildChecks = (overrides = {}) => ({ ...defaultChecks, ...overrides });
-
 const routes = [
-  {
-    id: "perf-shell",
-    path: "/lab/perf-shell",
-    checks: buildChecks({ seo: false }),
-  },
-  {
-    id: "perf-primitives",
-    path: "/lab/perf-primitives",
-    checks: buildChecks({ seo: false }),
-  },
-  {
-    id: "seo-getting-started",
-    path: "/docs/getting-started",
-    checks: buildChecks({
-      performance: false,
-      accessibility: false,
-      bestPractices: false,
-      lcp: false,
-      cls: false,
-      tbt: false,
-      inp: false,
-      seo: true,
-    }),
-  },
+  { id: "perf-shell", path: "/lab/perf-shell" },
+  { id: "perf-primitives", path: "/lab/perf-primitives" },
 ];
 
 const thresholds = {
@@ -205,63 +170,52 @@ const runLighthouse = async (baseUrl, route, chrome) => {
   return { url, metrics, reportJson: jsonReport, reportHtml: htmlReport };
 };
 
-const evaluateThresholds = (routeId, metrics, checks = defaultChecks) => {
+const evaluateThresholds = (routeId, metrics) => {
   const failures = [];
-  const enabled = (key) => checks[key] !== false;
-  if (enabled("performance") && metrics.performance < thresholds.performance) {
+  if (metrics.performance < thresholds.performance) {
     failures.push(
       `${routeId}: performance ${formatScore(metrics.performance)} < ${formatScore(
         thresholds.performance,
       )}`,
     );
   }
-  if (
-    enabled("accessibility") &&
-    metrics.accessibility < thresholds.accessibility
-  ) {
+  if (metrics.accessibility < thresholds.accessibility) {
     failures.push(
       `${routeId}: accessibility ${formatScore(
         metrics.accessibility,
       )} < ${formatScore(thresholds.accessibility)}`,
     );
   }
-  if (
-    enabled("bestPractices") &&
-    metrics.bestPractices < thresholds.bestPractices
-  ) {
+  if (metrics.bestPractices < thresholds.bestPractices) {
     failures.push(
       `${routeId}: best-practices ${formatScore(
         metrics.bestPractices,
       )} < ${formatScore(thresholds.bestPractices)}`,
     );
   }
-  if (enabled("seo") && metrics.seo < thresholds.seo) {
+  if (metrics.seo < thresholds.seo) {
     failures.push(
       `${routeId}: seo ${formatScore(metrics.seo)} < ${formatScore(
         thresholds.seo,
       )}`,
     );
   }
-  if (enabled("lcp") && metrics.lcpMs > thresholds.lcpMs) {
+  if (metrics.lcpMs > thresholds.lcpMs) {
     failures.push(
       `${routeId}: LCP ${metrics.lcpMs.toFixed(0)}ms > ${thresholds.lcpMs}ms`,
     );
   }
-  if (enabled("cls") && metrics.cls > thresholds.cls) {
+  if (metrics.cls > thresholds.cls) {
     failures.push(
       `${routeId}: CLS ${metrics.cls.toFixed(3)} > ${thresholds.cls}`,
     );
   }
-  if (enabled("tbt") && metrics.tbtMs > thresholds.tbtMs) {
+  if (metrics.tbtMs > thresholds.tbtMs) {
     failures.push(
       `${routeId}: TBT ${metrics.tbtMs.toFixed(0)}ms > ${thresholds.tbtMs}ms`,
     );
   }
-  if (
-    enabled("inp") &&
-    metrics.inpMs !== null &&
-    metrics.inpMs > thresholds.inpMs
-  ) {
+  if (metrics.inpMs !== null && metrics.inpMs > thresholds.inpMs) {
     failures.push(
       `${routeId}: INP ${metrics.inpMs.toFixed(0)}ms > ${thresholds.inpMs}ms`,
     );
@@ -319,7 +273,7 @@ const run = async () => {
         chrome,
       );
       await writeReports(outputDir, route.id, reportJson, reportHtml);
-      failures.push(...evaluateThresholds(route.id, metrics, route.checks));
+      failures.push(...evaluateThresholds(route.id, metrics));
       process.stdout.write(
         `Lighthouse ${route.id}: perf ${formatScore(metrics.performance)}, a11y ${formatScore(
           metrics.accessibility,
