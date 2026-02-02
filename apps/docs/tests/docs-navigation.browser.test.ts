@@ -67,7 +67,7 @@ describe("docs navigation", () => {
     await userEvent.keyboard("t");
 
     const active = navTree?.shadowRoot?.activeElement as HTMLElement | null;
-    expect(active?.getAttribute("data-item-id")).toBe("docs/tokens");
+    expect(active?.getAttribute("data-item-id")).toBe("docs/tokens-setup");
 
     await userEvent.keyboard("{Enter}");
     await nextFrame();
@@ -75,8 +75,8 @@ describe("docs navigation", () => {
 
     const title = document.querySelector("[data-docs-title]");
     expect(title?.textContent).toContain("Tokens");
-    expect(layout?.activeRouteKey).toBe("docs/tokens");
-    expect(navTree?.currentId).toBe("docs/tokens");
+    expect(layout?.activeRouteKey).toBe("docs/tokens-setup");
+    expect(navTree?.currentId).toBe("docs/tokens-setup");
   });
 
   it("hides internal fixtures from navigation", async () => {
