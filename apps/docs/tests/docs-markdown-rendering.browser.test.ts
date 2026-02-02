@@ -98,7 +98,13 @@ describe("docs markdown rendering", () => {
       .getPropertyValue("--uik-component-code-block-border-width")
       .trim();
     expect(tokenBorderWidth).not.toBe("");
-    expect(getComputedStyle(wrapper).borderTopWidth).toBe(tokenBorderWidth);
+    const probe = document.createElement("div");
+    probe.style.borderTopWidth = tokenBorderWidth;
+    probe.style.borderTopStyle = "solid";
+    document.body.appendChild(probe);
+    const resolvedBorderWidth = getComputedStyle(probe).borderTopWidth;
+    probe.remove();
+    expect(getComputedStyle(wrapper).borderTopWidth).toBe(resolvedBorderWidth);
 
     const originalClipboard = navigator.clipboard;
     const writeText = vi.fn().mockResolvedValue(undefined);
