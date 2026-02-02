@@ -40,7 +40,11 @@ const escapePathKey = (value: string) =>
 
 const buildPath = (parent: string, key: string, isIndex: boolean) => {
   if (parent === "$") {
-    return isIndex ? `$[${key}]` : isIdentifier(key) ? `$.${key}` : `$['${escapePathKey(key)}']`;
+    return isIndex
+      ? `$[${key}]`
+      : isIdentifier(key)
+        ? `$.${key}`
+        : `$['${escapePathKey(key)}']`;
   }
   if (isIndex) return `${parent}[${key}]`;
   return isIdentifier(key)
@@ -151,7 +155,11 @@ export class UikJsonViewer extends LitElement {
   static override readonly styles = styles;
 
   override willUpdate(changed: Map<string, unknown>) {
-    if (changed.has("value") || changed.has("json") || changed.has("expandedDepth")) {
+    if (
+      changed.has("value") ||
+      changed.has("json") ||
+      changed.has("expandedDepth")
+    ) {
       const { nodes, error } = this.buildTree();
       this.parseError = error;
       this.tree = nodes;
@@ -186,7 +194,11 @@ export class UikJsonViewer extends LitElement {
     return { nodes: [this.buildNode("$", this.value, "$")], error: "" };
   }
 
-  private buildNode(label: string, value: unknown, path: string): JsonViewerNode {
+  private buildNode(
+    label: string,
+    value: unknown,
+    path: string,
+  ): JsonViewerNode {
     const valueType = resolveValueType(value);
     let children: JsonViewerNode[] | undefined;
     let size = 0;
@@ -205,7 +217,11 @@ export class UikJsonViewer extends LitElement {
       size = value.length;
       if (size > 0) {
         children = value.map((childValue, index) =>
-          this.buildNode(String(index), childValue, buildPath(path, String(index), true)),
+          this.buildNode(
+            String(index),
+            childValue,
+            buildPath(path, String(index), true),
+          ),
         );
       }
     }
@@ -326,7 +342,11 @@ export class UikJsonViewer extends LitElement {
     return this.fallbackCopy(value);
   }
 
-  private emitCopy(kind: JsonViewerCopyKind, entry: JsonViewerNode, value: string) {
+  private emitCopy(
+    kind: JsonViewerCopyKind,
+    entry: JsonViewerNode,
+    value: string,
+  ) {
     const detail: JsonViewerCopyDetail = {
       kind,
       path: entry.path,
@@ -523,9 +543,7 @@ export class UikJsonViewer extends LitElement {
     if (this.parseError) {
       return html`
         <div part="base" class="wrapper">
-          <div part="error" class="error" role="alert">
-            ${this.parseError}
-          </div>
+          <div part="error" class="error" role="alert">${this.parseError}</div>
         </div>
       `;
     }

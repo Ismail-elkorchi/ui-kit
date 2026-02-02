@@ -44,7 +44,9 @@ async function runA11y(container: HTMLElement) {
   });
 
   if (results.violations.length > 0) {
-    throw new Error(`A11y violations:\n${formatViolations(results.violations)}`);
+    throw new Error(
+      `A11y violations:\n${formatViolations(results.violations)}`,
+    );
   }
 }
 
@@ -62,9 +64,8 @@ describe("uik-json-viewer", () => {
     await viewer.updateComplete;
     await nextFrame();
 
-    let rootItem = viewer.shadowRoot?.querySelector<HTMLElement>(
-      '[data-item-id="$"]',
-    );
+    let rootItem =
+      viewer.shadowRoot?.querySelector<HTMLElement>('[data-item-id="$"]');
     if (!rootItem) throw new Error("Expected root item.");
 
     await userEvent.click(rootItem);
@@ -73,9 +74,8 @@ describe("uik-json-viewer", () => {
     await pressKey("ArrowRight");
     await viewer.updateComplete;
 
-    rootItem = viewer.shadowRoot?.querySelector<HTMLElement>(
-      '[data-item-id="$"]',
-    );
+    rootItem =
+      viewer.shadowRoot?.querySelector<HTMLElement>('[data-item-id="$"]');
     expect(rootItem?.getAttribute("aria-expanded")).toBe("true");
     expect(
       viewer.shadowRoot?.querySelector('[data-item-id="$.nested"]'),
@@ -84,9 +84,8 @@ describe("uik-json-viewer", () => {
     await pressKey("ArrowLeft");
     await viewer.updateComplete;
 
-    rootItem = viewer.shadowRoot?.querySelector<HTMLElement>(
-      '[data-item-id="$"]',
-    );
+    rootItem =
+      viewer.shadowRoot?.querySelector<HTMLElement>('[data-item-id="$"]');
     expect(rootItem?.getAttribute("aria-expanded")).toBe("false");
   });
 
@@ -169,9 +168,8 @@ describe("uik-json-viewer", () => {
     await viewer.updateComplete;
     await nextFrame();
 
-    const container = viewer.shadowRoot?.querySelector<HTMLElement>(
-      '[part="base"]',
-    );
+    const container =
+      viewer.shadowRoot?.querySelector<HTMLElement>('[part="base"]');
     if (!container) throw new Error("Expected json viewer container.");
 
     await runA11y(container);

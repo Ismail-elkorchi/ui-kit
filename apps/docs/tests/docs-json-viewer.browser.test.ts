@@ -40,14 +40,10 @@ describe("docs json viewer page", () => {
     const example = content.querySelector<HTMLElement>("uik-example");
     if (!example) throw new Error("Expected json viewer example.");
 
-    const previewSlot = example.querySelector<HTMLElement>(
-      '[slot="preview"]',
-    );
+    const previewSlot = example.querySelector<HTMLElement>('[slot="preview"]');
     expect(previewSlot).toBeTruthy();
 
-    const viewer = previewSlot?.querySelector<HTMLElement>(
-      "uik-json-viewer",
-    );
+    const viewer = previewSlot?.querySelector<HTMLElement>("uik-json-viewer");
     if (!viewer) throw new Error("Expected uik-json-viewer in preview.");
 
     const copyButton = viewer.shadowRoot?.querySelector<HTMLButtonElement>(
