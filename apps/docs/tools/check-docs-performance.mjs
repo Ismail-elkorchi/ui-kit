@@ -8,7 +8,7 @@ import { chromium } from "playwright";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "../../..");
-const docsRoot = path.join(repoRoot, "packages/docs");
+const docsRoot = path.join(repoRoot, "apps/docs");
 const distDir = path.join(docsRoot, "dist");
 const manifestPath = path.join(distDir, ".vite/manifest.json");
 const viteBin = path.join(repoRoot, "node_modules/.bin/vite");

@@ -3,6 +3,7 @@ import path from "node:path";
 
 const repoRoot = process.cwd();
 const packagesRoot = path.join(repoRoot, "packages");
+const appsRoot = path.join(repoRoot, "apps");
 const shellSrcRoot = path.join(packagesRoot, "ui-shell", "src");
 const shellStructuresRoot = path.join(shellSrcRoot, "structures");
 
@@ -51,7 +52,8 @@ const ensureShellElementBoundaries = (issues) => {
 };
 
 const readPackageJson = (pkgPath) => {
-  const filePath = path.join(packagesRoot, pkgPath, "package.json");
+  const baseRoot = pkgPath === "docs" ? appsRoot : packagesRoot;
+  const filePath = path.join(baseRoot, pkgPath, "package.json");
   if (!isFile(filePath)) {
     throw new Error(`Missing package.json at ${normalizePath(filePath)}`);
   }
@@ -101,7 +103,7 @@ const ensureDependencyDag = (issues) => {
 };
 
 const ensureDocsImports = (issues) => {
-  const docsRoot = path.join(packagesRoot, "docs");
+  const docsRoot = path.join(appsRoot, "docs");
   const files = collectFiles(docsRoot, [".ts", ".js", ".mjs"]);
   const internalImportPattern = /@ismail-elkorchi\/[^\s"']+\/src\//g;
   const relativeImportPattern = /from\s+["']\.\.\/\.\.\/[^"']+/g;

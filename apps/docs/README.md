@@ -10,17 +10,17 @@ Markdown content is rendered at build time using `marked`. Raw HTML is allowed b
 
 ```bash
 npm install
-npm run --workspace packages/docs dev
+npm run --workspace apps/docs dev
 ```
 
 ## Build
 
 ```bash
-npm run --workspace packages/docs build
+npm run --workspace apps/docs build
 ```
 
 ## Preview
 
 ```bash
-npm run --workspace packages/docs preview
+npm run --workspace apps/docs preview
 ```

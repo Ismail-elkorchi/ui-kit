@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "../..");
 const sourcePath = path.join(repoRoot, "tools/baseline/support-matrix.json");
-const docsRoot = path.join(repoRoot, "packages/docs");
+const docsRoot = path.join(repoRoot, "apps/docs");
 const docsContentPath = path.join(docsRoot, "content/baseline-support.md");
 const docsPublicPath = path.join(docsRoot, "public/baseline-support.json");
 

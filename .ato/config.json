@@ -42,7 +42,7 @@
         "scopes": {
           "docs": [
             {
-              "cmd": ["npm", "-w", "packages/docs", "run", "test"],
+              "cmd": ["npm", "-w", "apps/docs", "run", "test"],
               "id": "docs-test"
             }
           ],
@@ -85,7 +85,7 @@
         "scope": "ui-shell"
       },
       {
-        "prefix": "packages/docs/",
+        "prefix": "apps/docs/",
         "scope": "docs"
       }
     ]

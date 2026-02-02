@@ -1,6 +1,6 @@
 # UIK Package Router: docs
 
-Scope: `packages/docs/**`
+Scope: `apps/docs/**`
 
 ## Purpose
 
@@ -15,9 +15,9 @@ Scope: `packages/docs/**`
 
 ## Fast Context
 
-- App wiring: `packages/docs/src/main.ts`, `packages/docs/src/app.ts`
-- Docs content: `packages/docs/src/content.ts`
-- Docs styling: `packages/docs/src/styles.css` (token-first)
+- App wiring: `apps/docs/src/main.ts`, `apps/docs/src/app.ts`
+- Docs content: `apps/docs/src/content.ts`
+- Docs styling: `apps/docs/src/styles.css` (token-first)
 
 ## Local Invariants
 

@@ -11,7 +11,7 @@ import { getHighlighter } from "shiki";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "../../..");
-const docsRoot = path.join(repoRoot, "packages/docs");
+const docsRoot = path.join(repoRoot, "apps/docs");
 const contentRoot = path.join(docsRoot, "content");
 const manifestPath = path.join(contentRoot, "manifest.json");
 const generatedContentDir = path.join(contentRoot, "generated");

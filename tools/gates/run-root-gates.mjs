@@ -35,7 +35,7 @@ const steps = [
   [
     "Docs API drift",
     "node",
-    ["packages/docs/tools/generate-docs-content.mjs", "--api", "--check"],
+    ["apps/docs/tools/generate-docs-content.mjs", "--api", "--check"],
   ],
   ["Docs token usage", "node", ["tools/tokens/check-docs-token-usage.mjs"]],
   ["Baseline drift", "node", ["tools/baseline/generate.mjs", "--check"]],

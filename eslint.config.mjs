@@ -19,7 +19,7 @@ const allSources = [...tsFiles, ...jsFiles];
 const tsconfigProjects = ["./tsconfig.eslint.json"];
 const packageDirs = [
   import.meta.dirname,
-  path.join(import.meta.dirname, "packages/docs"),
+  path.join(import.meta.dirname, "apps/docs"),
   path.join(import.meta.dirname, "packages/ui-shell"),
   path.join(import.meta.dirname, "packages/ui-primitives"),
   path.join(import.meta.dirname, "packages/ui-patterns"),
@@ -337,10 +337,10 @@ export default defineConfig([
 
   {
     files: [
-      "packages/docs/**/*.ts",
-      "packages/docs/**/*.tsx",
-      "packages/docs/**/*.mts",
-      "packages/docs/**/*.cts",
+      "apps/docs/**/*.ts",
+      "apps/docs/**/*.tsx",
+      "apps/docs/**/*.mts",
+      "apps/docs/**/*.cts",
     ],
     rules: {
       "import/no-internal-modules": [

@@ -5,8 +5,8 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "..", "..");
 
-const stylesPath = path.join(repoRoot, "packages", "docs", "src", "styles.css");
-const indexPath = path.join(repoRoot, "packages", "docs", "index.html");
+const stylesPath = path.join(repoRoot, "apps", "docs", "src", "styles.css");
+const indexPath = path.join(repoRoot, "apps", "docs", "index.html");
 
 const hexColor = /#([0-9a-fA-F]{3,8})\b/;
 const rgbColor = /\brgba?\(/;

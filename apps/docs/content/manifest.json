@@ -7,7 +7,7 @@
       "navLabel": "Getting Started",
       "group": "Guides",
       "kind": "Guide",
-      "source": "packages/docs/content/getting-started.md",
+      "source": "apps/docs/content/getting-started.md",
       "format": "markdown"
     },
     {
@@ -28,7 +28,7 @@
       "navLabel": "Baseline Support",
       "group": "Foundations",
       "kind": "Governance",
-      "source": "packages/docs/content/baseline-support.md",
+      "source": "apps/docs/content/baseline-support.md",
       "format": "markdown"
     },
     {
@@ -69,7 +69,7 @@
       "navLabel": "Patterns",
       "group": "Components",
       "kind": "Guide",
-      "source": "packages/docs/content/patterns.md",
+      "source": "apps/docs/content/patterns.md",
       "format": "markdown"
     }
   ],
@@ -81,7 +81,7 @@
       "navLabel": "Shell Patterns",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/shell-patterns.md",
+      "source": "apps/docs/content/lab/shell-patterns.md",
       "format": "markdown"
     },
     {
@@ -91,7 +91,7 @@
       "navLabel": "Empty State",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/empty-state.md",
+      "source": "apps/docs/content/lab/empty-state.md",
       "format": "markdown"
     },
     {
@@ -101,7 +101,7 @@
       "navLabel": "Section Card",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/section-card.md",
+      "source": "apps/docs/content/lab/section-card.md",
       "format": "markdown"
     },
     {
@@ -111,7 +111,7 @@
       "navLabel": "Page Hero",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/page-hero.md",
+      "source": "apps/docs/content/lab/page-hero.md",
       "format": "markdown"
     },
     {
@@ -121,7 +121,7 @@
       "navLabel": "Command Palette",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/command-palette.md",
+      "source": "apps/docs/content/lab/command-palette.md",
       "format": "markdown"
     },
     {
@@ -131,7 +131,7 @@
       "navLabel": "Overlays and Feedback",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/overlays.md",
+      "source": "apps/docs/content/lab/overlays.md",
       "format": "markdown"
     },
     {
@@ -141,7 +141,7 @@
       "navLabel": "Menus and Menubars",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/menus.md",
+      "source": "apps/docs/content/lab/menus.md",
       "format": "markdown"
     },
     {
@@ -151,7 +151,7 @@
       "navLabel": "Markdown Rendering",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/markdown-rendering.md",
+      "source": "apps/docs/content/lab/markdown-rendering.md",
       "format": "markdown"
     },
     {
@@ -161,7 +161,7 @@
       "navLabel": "Perf: Shell",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/perf-shell.md",
+      "source": "apps/docs/content/lab/perf-shell.md",
       "format": "markdown"
     },
     {
@@ -171,7 +171,7 @@
       "navLabel": "Perf: Primitives",
       "group": "Lab",
       "kind": "Lab",
-      "source": "packages/docs/content/lab/perf-primitives.md",
+      "source": "apps/docs/content/lab/perf-primitives.md",
       "format": "markdown"
     }
   ]
