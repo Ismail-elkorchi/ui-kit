@@ -97,6 +97,9 @@
           "$ref": "components/code-block.json"
         },
         {
+          "$ref": "components/json-viewer.json"
+        },
+        {
           "$ref": "components/command-palette.json"
         },
         {
