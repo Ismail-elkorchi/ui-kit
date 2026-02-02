@@ -1270,8 +1270,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (token !== contentRenderToken) return;
 
     const isInternal = !isPublicPage(page);
-    const shouldAwaitComponents =
-      !isInternal && page.id !== "command-palette";
+    const shouldAwaitComponents = !isInternal && page.id !== "command-palette";
     const loadPromise = !isInternal
       ? isInitialPage && initialPageComponentsPromise
         ? initialPageComponentsPromise
