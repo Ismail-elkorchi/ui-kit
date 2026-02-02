@@ -38,4 +38,4 @@ docs/tokens-primitives-audit.data.json
 tmp
 
 # Generated docs content (do not track)
-packages/docs/src/generated/
+apps/docs/src/generated/
