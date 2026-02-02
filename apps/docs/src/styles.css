@@ -390,18 +390,16 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   .docs-blockquote,
   .docs-table-wrap,
   .docs-admonition,
-  .docs-code,
   .docs-section-body code {
     background-color: Canvas;
     border-color: currentcolor;
   }
 
-  .docs-code,
   .docs-section-body code {
     color: CanvasText;
   }
 
-  .docs-code .docs-code-token {
+  .docs-code-block .docs-code-token {
     color: CanvasText;
   }
 
@@ -411,91 +409,57 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   }
 }
 
-.docs-code-block {
-  display: flex;
-  flex-direction: column;
-  gap: var(--uik-space-2);
-}
-
-.docs-code-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.docs-code {
-  padding: var(--uik-component-code-block-padding-y)
-    var(--uik-component-code-block-padding-x);
-  margin: var(--uik-space-0);
-  overflow: auto;
-  font-family: var(--uik-component-code-block-font-family);
-  font-size: var(--uik-component-code-block-font-size);
-  line-height: var(--uik-component-code-block-line-height);
-  color: oklch(var(--uik-component-code-block-fg));
-  background-color: oklch(var(--uik-component-code-block-bg));
-  border: var(--uik-component-code-block-border-width) solid
-    oklch(var(--uik-component-code-block-border));
-  border-radius: var(--uik-component-code-block-radius);
-}
-
-.docs-code .docs-code-content {
-  padding: var(--uik-space-0);
-  color: inherit;
-  background-color: transparent;
-  border: none;
-  border-radius: var(--uik-radius-0);
-}
-
-.docs-code .docs-code-token {
+.docs-code-block .docs-code-token {
   color: oklch(var(--uik-text-default));
 }
 
-.docs-code .tok-comment {
+.docs-code-block .tok-comment {
   color: oklch(var(--uik-text-muted));
 }
 
-.docs-code .tok-punctuation,
-.docs-code .tok-namespace {
+.docs-code-block .tok-punctuation,
+.docs-code-block .tok-namespace {
   color: oklch(var(--uik-text-muted));
 }
 
-.docs-code .tok-keyword,
-.docs-code .tok-boolean,
-.docs-code .tok-constant {
+.docs-code-block .tok-keyword,
+.docs-code-block .tok-boolean,
+.docs-code-block .tok-constant {
   color: oklch(var(--uik-text-info));
 }
 
-.docs-code .tok-function,
-.docs-code .tok-type,
-.docs-code .tok-tag {
+.docs-code-block .tok-function,
+.docs-code-block .tok-type,
+.docs-code-block .tok-tag {
   color: oklch(var(--uik-text-strong));
 }
 
-.docs-code .tok-number,
-.docs-code .tok-operator,
-.docs-code .tok-property {
+.docs-code-block .tok-number,
+.docs-code-block .tok-operator,
+.docs-code-block .tok-property {
   color: oklch(var(--uik-text-warning));
 }
 
-.docs-code .tok-string,
-.docs-code .tok-attr-name,
-.docs-code .tok-attr-value,
-.docs-code .tok-regex {
+.docs-code-block .tok-string,
+.docs-code-block .tok-attr-name,
+.docs-code-block .tok-attr-value,
+.docs-code-block .tok-regex {
   color: oklch(var(--uik-text-success));
 }
 
-.docs-code .tok-variable {
+.docs-code-block .tok-variable {
   color: oklch(var(--uik-text-muted));
 }
 
-.docs-code .docs-code-token.is-italic {
+.docs-code-block .docs-code-token.is-italic {
   font-style: italic;
 }
 
-.docs-code .docs-code-token.is-bold {
+.docs-code-block .docs-code-token.is-bold {
   font-weight: var(--uik-typography-font-weight-semibold);
 }
 
-.docs-code .docs-code-token.is-underline {
+.docs-code-block .docs-code-token.is-underline {
   text-decoration: underline;
 }
 
