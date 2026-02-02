@@ -751,6 +751,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     initialView === "lab"
       ? labPages.find((page) => page.id === initialSubview)
       : docsPages.find((page) => page.id === initialSubview);
+  const shouldDeferPageComponents = (page?: DocPage | null) =>
+    Boolean(page && page.visibility === "internal" && page.id === "perf-shell");
+  const initialShouldDeferComponents = shouldDeferPageComponents(initialPage);
   const initialTitle = initialPage?.title ?? "";
   const initialSummary = initialPage?.summary ?? "";
   const initialGroup = initialPage?.group ?? "";
@@ -780,7 +783,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
     : null;
   const initialPageComponentsPromise =
-    initialPageContentPromise && !initialIsInternal
+    initialPageContentPromise && !initialShouldDeferComponents
       ? initialPageContentPromise.then((pageContent) =>
           loadPageComponents(pageContent),
         )
@@ -1270,8 +1273,10 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (token !== contentRenderToken) return;
 
     const isInternal = !isPublicPage(page);
-    const shouldAwaitComponents = !isInternal && page.id !== "command-palette";
-    const loadPromise = !isInternal
+    const shouldDeferComponents = shouldDeferPageComponents(page);
+    const shouldAwaitComponents =
+      !shouldDeferComponents && page.id !== "command-palette";
+    const loadPromise = !shouldDeferComponents
       ? isInitialPage && initialPageComponentsPromise
         ? initialPageComponentsPromise
         : loadPageComponents(pageContent)
@@ -1288,7 +1293,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
 
     if (!shouldAwaitComponents) {
-      if (isInternal) {
+      if (shouldDeferComponents) {
         schedulePageComponents(pageContent);
       } else if (loadPromise) {
         await loadPromise;
@@ -1304,6 +1309,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     const page = pageMap.get(key);
     if (!page) return;
     const isInternal = !isPublicPage(page);
+    const shouldDeferComponents = shouldDeferPageComponents(page);
     const isInitialContent = initialContentReady && key === initialLocationKey;
 
     updateActiveRoute(location);
@@ -1353,12 +1359,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (isInitialContent) {
       initialContentReady = false;
       finalizeContentRender(page, contentRenderToken);
-      if (contentElement && isInternal) {
+      if (contentElement && shouldDeferComponents) {
         contentElement.setAttribute("aria-busy", "false");
       }
       if (initialPageContent && !initialPageComponentsScheduled) {
         initialPageComponentsScheduled = true;
-        if (isInternal) {
+        if (shouldDeferComponents) {
           schedulePageComponents(initialPageContent);
         } else {
           const loadPromise =
