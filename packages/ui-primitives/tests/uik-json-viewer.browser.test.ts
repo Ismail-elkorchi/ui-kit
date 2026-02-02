@@ -68,7 +68,8 @@ describe("uik-json-viewer", () => {
       viewer.shadowRoot?.querySelector<HTMLElement>('[data-item-id="$"]');
     if (!rootItem) throw new Error("Expected root item.");
 
-    await userEvent.click(rootItem);
+    rootItem.focus();
+    await viewer.updateComplete;
     expect(rootItem.getAttribute("aria-expanded")).toBe("false");
 
     await pressKey("ArrowRight");
