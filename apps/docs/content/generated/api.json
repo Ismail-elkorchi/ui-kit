@@ -1801,6 +1801,123 @@
           "notes": []
         },
         {
+          "id": "json-viewer",
+          "tagName": "uik-json-viewer",
+          "name": "<uik-json-viewer>",
+          "kind": "component",
+          "summary": "Token-driven JSON viewer for structured data.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "expanded-depth",
+              "type": "number",
+              "description": "number",
+              "default": "2"
+            },
+            {
+              "name": "json",
+              "type": "string",
+              "description": "string",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "expandedDepth",
+              "type": "number",
+              "description": "",
+              "default": "2"
+            },
+            {
+              "name": "json",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "openIds",
+              "type": "string[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "parseError",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "statusMessage",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "tree",
+              "type": "JsonViewerNode[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "value",
+              "type": "unknown",
+              "description": "unknown",
+              "default": "undefined"
+            }
+          ],
+          "events": [
+            {
+              "name": "json-viewer-copy",
+              "description": "detail: {kind, path, value}"
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            { "name": "action-button", "description": "" },
+            { "name": "actions", "description": "" },
+            { "name": "base", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "item", "description": "" },
+            { "name": "key", "description": "" },
+            { "name": "status", "description": "" },
+            { "name": "toggle", "description": "" },
+            { "name": "type", "description": "" },
+            { "name": "value", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-json-viewer-*", "description": "" }
+          ],
+          "a11y": [
+            "Tree role with roving focus. Arrow keys move, Left/Right collapse/expand, Enter/Space toggles."
+          ],
+          "notes": [
+            "Copy shortcuts: Ctrl/Cmd+C copies value, Ctrl/Cmd+Shift+C copies path."
+          ]
+        },
+        {
           "id": "link",
           "tagName": "uik-link",
           "name": "<uik-link>",
