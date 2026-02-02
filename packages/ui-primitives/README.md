@@ -135,12 +135,12 @@ validation must be handled by the host.
 
 ### `<uik-code-block>`
 
-- **Attributes/props**: `copy` (boolean), `inline` (boolean), `copy-label`, `aria-label`, `aria-labelledby`.
+- **Attributes/props**: `copyable` (boolean), `inline` (boolean), `copy-label`, `aria-label`, `aria-labelledby`.
 - **Slots**: default slot for code content, `copy-label` for the copy button.
-- **Parts**: `base`, `content`, `copy-button`, `inline`.
+- **Parts**: `base`, `content`, `copy-button`, `copy-status`, `inline`.
 - **Events**: `code-block-copy` (`detail: {value, success}`).
 - **Usage**: use `inline` for short values or commands; default mode renders a scrollable block.
-- **A11y**: provide `aria-label`/`aria-labelledby` when the block needs a name; copy button uses `copy-label`.
+- **A11y**: provide `aria-label`/`aria-labelledby` when the block needs a name; copy button uses `copy-label`, status feedback is announced via `aria-live`.
 - **Custom properties**: `--uik-component-code-block-*`, `--uik-component-code-block-copy-*`.
 
 ### `<uik-description-list>`
