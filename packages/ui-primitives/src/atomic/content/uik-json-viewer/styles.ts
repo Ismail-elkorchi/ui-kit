@@ -9,7 +9,7 @@ export const styles = css`
     display: block;
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
-    color: oklch(var(--uik-component-json-viewer-fg));
+    color: oklch(var(--uik-text-default));
     background-color: oklch(var(--uik-component-json-viewer-bg));
     border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
     border-radius: var(--uik-radius-2);
@@ -32,7 +32,7 @@ export const styles = css`
     gap: var(--uik-layout-control-gap-2);
     min-height: var(--uik-size-control-sm);
     padding-block: var(--uik-space-0);
-    color: oklch(var(--uik-component-json-viewer-fg));
+    color: oklch(var(--uik-text-default));
     background-color: oklch(var(--uik-component-json-viewer-bg));
     border: var(--uik-border-width-0) solid transparent;
     border-radius: var(--uik-radius-2);
@@ -132,7 +132,7 @@ export const styles = css`
     gap: var(--uik-space-1);
     padding: var(--uik-layout-control-padding-y-1)
       var(--uik-layout-control-padding-x-1);
-    color: oklch(var(--uik-component-json-viewer-fg));
+    color: oklch(var(--uik-text-default));
     background-color: oklch(var(--uik-component-json-viewer-bg));
     border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
     border-radius: var(--uik-radius-2);
@@ -165,13 +165,19 @@ export const styles = css`
   @media (forced-colors: active) {
     :host {
       --uik-component-json-viewer-bg: Canvas;
-      --uik-component-json-viewer-fg: CanvasText;
     }
 
     .wrapper,
     .action-button,
     .error {
       border-color: CanvasText;
+    }
+
+    .wrapper,
+    .item,
+    .action-button,
+    .error {
+      color: CanvasText;
     }
 
     .action-button {

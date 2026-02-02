@@ -5,11 +5,6 @@
         "$value": "{surface.bg}",
         "$type": "color",
         "$description": "Component json viewer background."
-      },
-      "fg": {
-        "$value": "{text.default}",
-        "$type": "color",
-        "$description": "Component json viewer foreground."
       }
     }
   }
