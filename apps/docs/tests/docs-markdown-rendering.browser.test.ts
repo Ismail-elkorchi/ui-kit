@@ -1,5 +1,5 @@
 import "@ismail-elkorchi/ui-tokens/base.css";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import "../src/docs.css";
 import { mountDocsApp } from "../app";
@@ -79,12 +79,42 @@ describe("docs markdown rendering", () => {
     if (!content) throw new Error("Docs content root not found.");
 
     const codeBlocks = Array.from(
-      content.querySelectorAll<HTMLElement>(".docs-code-block"),
+      content.querySelectorAll<HTMLElement>("uik-code-block"),
     );
     expect(codeBlocks.length).toBeGreaterThanOrEqual(4);
 
     const codeTokens = content.querySelectorAll(".docs-code-token");
     expect(codeTokens.length).toBeGreaterThan(0);
+
+    const [firstBlock] = codeBlocks;
+    if (!firstBlock) throw new Error("Expected at least one code block.");
+    const copyButton =
+      firstBlock.shadowRoot?.querySelector<HTMLButtonElement>("button.copy");
+    expect(copyButton).toBeTruthy();
+
+    const originalClipboard = navigator.clipboard;
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+
+    try {
+      copyButton?.click();
+      await (firstBlock as unknown as { updateComplete: Promise<void> })
+        .updateComplete;
+      expect(writeText).toHaveBeenCalled();
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(navigator, "clipboard", {
+          value: originalClipboard,
+          configurable: true,
+        });
+      } else {
+        delete (navigator as typeof navigator & { clipboard?: Clipboard })
+          .clipboard;
+      }
+    }
 
     const codeContents = Array.from(
       content.querySelectorAll<HTMLElement>(".docs-code-content"),
@@ -108,11 +138,11 @@ describe("docs markdown rendering", () => {
     expect(escapedBlock?.querySelector("div")).toBeNull();
 
     const inlineCodes = Array.from(content.querySelectorAll("code")).filter(
-      (node) => !node.closest(".docs-code-block"),
+      (node) => !node.closest("uik-code-block"),
     );
     expect(inlineCodes.length).toBeGreaterThan(0);
     inlineCodes.forEach((node) => {
-      expect(node.closest(".docs-code")).toBeNull();
+      expect(node.closest("uik-code-block")).toBeNull();
       expect(node.querySelector(".docs-code-token")).toBeNull();
     });
 
@@ -129,7 +159,7 @@ describe("docs markdown rendering", () => {
           const mediaRule = rule;
           if (!mediaRule.conditionText.includes("forced-colors")) return false;
           return Array.from(mediaRule.cssRules).some((innerRule) =>
-            innerRule.cssText.includes(".docs-code"),
+            innerRule.cssText.includes(".docs-code-block"),
           );
         });
       },
