@@ -779,11 +779,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContentPromise = initialPage
     ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
     : null;
-  const initialPageComponentsPromise = initialPageContentPromise
-    ? initialPageContentPromise.then((pageContent) =>
-        loadPageComponents(pageContent),
-      )
-    : null;
+  const initialPageComponentsPromise =
+    initialPageContentPromise && !initialIsInternal
+      ? initialPageContentPromise.then((pageContent) =>
+          loadPageComponents(pageContent),
+        )
+      : null;
   const initialPageContent = initialPageContentPromise
     ? await initialPageContentPromise
     : null;
@@ -1268,12 +1269,15 @@ export const mountDocsApp = async (container: HTMLElement) => {
       : await loadPageContent(view, page.id);
     if (token !== contentRenderToken) return;
 
-    const shouldAwaitComponents = page.id !== "command-palette";
-    const loadPromise =
-      isInitialPage && initialPageComponentsPromise
+    const isInternal = !isPublicPage(page);
+    const shouldAwaitComponents =
+      !isInternal && page.id !== "command-palette";
+    const loadPromise = !isInternal
+      ? isInitialPage && initialPageComponentsPromise
         ? initialPageComponentsPromise
-        : loadPageComponents(pageContent);
-    if (shouldAwaitComponents) {
+        : loadPageComponents(pageContent)
+      : null;
+    if (shouldAwaitComponents && loadPromise) {
       await loadPromise;
     }
     if (token !== contentRenderToken) return;
@@ -1285,7 +1289,11 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
 
     if (!shouldAwaitComponents) {
-      await loadPromise;
+      if (isInternal) {
+        schedulePageComponents(pageContent);
+      } else if (loadPromise) {
+        await loadPromise;
+      }
     }
     if (token !== contentRenderToken) return;
 
@@ -1296,6 +1304,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     const key = locationKey(location);
     const page = pageMap.get(key);
     if (!page) return;
+    const isInternal = !isPublicPage(page);
     const isInitialContent = initialContentReady && key === initialLocationKey;
 
     updateActiveRoute(location);
@@ -1345,16 +1354,23 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (isInitialContent) {
       initialContentReady = false;
       finalizeContentRender(page, contentRenderToken);
+      if (contentElement && isInternal) {
+        contentElement.setAttribute("aria-busy", "false");
+      }
       if (initialPageContent && !initialPageComponentsScheduled) {
         initialPageComponentsScheduled = true;
-        const loadPromise =
-          initialPageComponentsPromise ??
-          loadPageComponents(initialPageContent);
-        loadPromise.finally(() => {
-          if (contentElement) {
-            contentElement.setAttribute("aria-busy", "false");
-          }
-        });
+        if (isInternal) {
+          schedulePageComponents(initialPageContent);
+        } else {
+          const loadPromise =
+            initialPageComponentsPromise ??
+            loadPageComponents(initialPageContent);
+          loadPromise.finally(() => {
+            if (contentElement) {
+              contentElement.setAttribute("aria-busy", "false");
+            }
+          });
+        }
       }
       void scrollToHashTarget();
     } else {
