@@ -91,12 +91,14 @@ describe("docs markdown rendering", () => {
     const copyButton =
       firstBlock.shadowRoot?.querySelector<HTMLButtonElement>("button.copy");
     expect(copyButton).toBeTruthy();
-    const styleText = Array.from(
-      firstBlock.shadowRoot?.querySelectorAll("style") ?? [],
-    )
-      .map((style) => style.textContent ?? "")
-      .join("\n");
-    expect(styleText).toContain("--uik-component-code-block-border");
+    const wrapper =
+      firstBlock.shadowRoot?.querySelector<HTMLElement>(".wrapper");
+    if (!wrapper) throw new Error("Code block wrapper not found.");
+    const tokenBorderWidth = getComputedStyle(firstBlock)
+      .getPropertyValue("--uik-component-code-block-border-width")
+      .trim();
+    expect(tokenBorderWidth).not.toBe("");
+    expect(getComputedStyle(wrapper).borderTopWidth).toBe(tokenBorderWidth);
 
     const originalClipboard = navigator.clipboard;
     const writeText = vi.fn().mockResolvedValue(undefined);
