@@ -5,7 +5,7 @@ import { html } from "lit";
 import { interactionStory } from "../../../.storybook/a11y";
 
 type CodeBlockArgs = {
-  copy: boolean;
+  copyable: boolean;
   inline: boolean;
 };
 
@@ -14,13 +14,14 @@ const sample = `{
   "status": "done",
   "owner": "codex"
 }`;
+const longSample = `${sample}\n\nconst longLine = "This is a deliberately long line to exercise horizontal scrolling in the code block component for docs and storybook visuals.";`;
 
 const meta: Meta<CodeBlockArgs> = {
   title: "Primitives/Code Block",
   component: "uik-code-block",
   tags: ["autodocs"],
   args: {
-    copy: true,
+    copyable: true,
     inline: false,
   },
   render: (args) =>
@@ -33,7 +34,7 @@ const meta: Meta<CodeBlockArgs> = {
         `
       : html`
           <uik-code-block
-            ?copy=${args.copy}
+            ?copyable=${args.copyable}
             style="max-width: var(--uik-layout-panel-width-lg);"
             aria-label="Queue payload"
           >
@@ -53,4 +54,17 @@ export const Inline: StoryObj<CodeBlockArgs> = {
   args: {
     inline: true,
   },
+};
+
+export const CopyableVisual: StoryObj<CodeBlockArgs> = {
+  tags: ["visual"],
+  render: () => html`
+    <uik-code-block
+      copyable
+      style="max-width: var(--uik-layout-panel-width-lg);"
+      aria-label="Code block copy example"
+    >
+      ${longSample}
+    </uik-code-block>
+  `,
 };
