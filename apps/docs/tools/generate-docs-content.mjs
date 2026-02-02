@@ -334,19 +334,9 @@ const createRenderer = (slugger, highlighter) => {
       renderer.highlighter,
     );
     return `
-      <div class="docs-code-block">
-        <div class="docs-code-actions">
-          <uik-button
-            variant="ghost"
-            size="sm"
-            class="docs-code-copy"
-            data-docs-action="copy-code"
-            aria-label="Copy code block">
-            Copy
-          </uik-button>
-        </div>
-        <pre class="docs-code"><code class="${codeClass}" data-language="${escapeHtml(language)}">${highlighted}</code></pre>
-      </div>
+      <uik-code-block class="docs-code-block" copyable>
+        <span class="${codeClass}" data-language="${escapeHtml(language)}">${highlighted}</span>
+      </uik-code-block>
     `.trim();
   };
   renderer.codespan = (text) => `<code>${escapeHtml(text)}</code>`;
@@ -857,7 +847,7 @@ const componentPreviewTemplates = {
   "uik-code-block": () => ({
     layout: "start",
     size: "md",
-    html: `<uik-code-block copy>npm run build</uik-code-block>`,
+    html: `<uik-code-block copyable>npm run build</uik-code-block>`,
   }),
   "uik-combobox": () => ({
     layout: "start",
