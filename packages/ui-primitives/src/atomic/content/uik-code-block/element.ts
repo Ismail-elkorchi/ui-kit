@@ -1,8 +1,9 @@
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles.js";
+import "../uik-visually-hidden/index.js";
 
 export interface UikCodeBlockCopyDetail {
   value: string;
@@ -11,7 +12,7 @@ export interface UikCodeBlockCopyDetail {
 
 /**
  * Read-only code block with optional copy action.
- * @attr copy (boolean)
+ * @attr copyable (boolean)
  * @attr inline (boolean)
  * @attr copy-label
  * @slot default
@@ -51,13 +52,16 @@ export interface UikCodeBlockCopyDetail {
 @customElement("uik-code-block")
 export class UikCodeBlock extends LitElement {
   @property({ type: Boolean, reflect: true, useDefault: true })
-  accessor copy = false;
+  accessor copyable = false;
   @property({ type: Boolean, reflect: true, useDefault: true })
   accessor inline = false;
   @property({ type: String, attribute: "copy-label" })
   accessor copyLabel = "Copy";
   @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
   @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
+  @state() accessor statusMessage = "";
+
+  private statusTimeout: number | undefined;
 
   static override readonly styles = styles;
 
@@ -68,17 +72,58 @@ export class UikCodeBlock extends LitElement {
     return nodes.map((node) => node.textContent ?? "").join("");
   }
 
+  private fallbackCopy(value: string): boolean {
+    if (!document.execCommand) return false;
+    const textarea = document.createElement("textarea");
+    textarea.value = value;
+    textarea.setAttribute("readonly", "true");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    textarea.style.pointerEvents = "none";
+    textarea.style.insetInlineStart = "0";
+    textarea.style.insetBlockStart = "0";
+    document.body.append(textarea);
+    textarea.select();
+
+    const selection = document.getSelection();
+    const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+    const success = document.execCommand("copy");
+    textarea.remove();
+    if (range && selection) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    return success;
+  }
+
+  private async copyText(value: string): Promise<boolean> {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(value);
+        return true;
+      } catch {
+        // fall back to execCommand path
+      }
+    }
+    return this.fallbackCopy(value);
+  }
+
+  private setStatus(message: string) {
+    this.statusMessage = message;
+    if (this.statusTimeout) {
+      window.clearTimeout(this.statusTimeout);
+    }
+    this.statusTimeout = window.setTimeout(() => {
+      this.statusMessage = "";
+    }, 1400);
+  }
+
   private onCopy = async () => {
     const value = this.getCodeText();
     if (!value) return;
 
-    let success = false;
-    try {
-      await navigator.clipboard.writeText(value);
-      success = true;
-    } catch {
-      success = false;
-    }
+    const success = await this.copyText(value);
+    this.setStatus(success ? "Copied" : "Copy failed");
 
     const detail: UikCodeBlockCopyDetail = { value, success };
     this.dispatchEvent(
@@ -119,7 +164,7 @@ export class UikCodeBlock extends LitElement {
           <code class="code"><slot></slot></code>
         </pre>
         ${this.copy
-          ? html`
+            ? html`
               <button
                 part="copy-button"
                 class="copy"
@@ -128,11 +173,25 @@ export class UikCodeBlock extends LitElement {
                 @click=${this.onCopy}
               >
                 <slot name="copy-label">${this.copyLabel}</slot>
+                <uik-visually-hidden
+                  part="copy-status"
+                  aria-live="polite"
+                  role="status"
+                >
+                  ${this.statusMessage}
+                </uik-visually-hidden>
               </button>
             `
           : null}
       </div>
     `;
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this.statusTimeout) {
+      window.clearTimeout(this.statusTimeout);
+    }
   }
 }
 
