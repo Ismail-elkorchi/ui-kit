@@ -3,7 +3,10 @@ import axe from "axe-core";
 import type { Result } from "axe-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { JsonDiffCopyDetail, UikJsonDiff } from "../src/atomic/content/uik-json-diff";
+import type {
+  JsonDiffCopyDetail,
+  UikJsonDiff,
+} from "../src/atomic/content/uik-json-diff";
 import "../src/atomic/content/uik-json-diff";
 import { pressKey } from "./apg/keyboard";
 
@@ -65,12 +68,12 @@ describe("uik-json-diff", () => {
     await diff.updateComplete;
     await nextFrame();
 
-    const items = diff.shadowRoot?.querySelectorAll<HTMLElement>("[part=\"item\"]");
+    const items =
+      diff.shadowRoot?.querySelectorAll<HTMLElement>('[part="item"]');
     expect(items?.length).toBeGreaterThan(0);
 
-    const firstItem = diff.shadowRoot?.querySelector<HTMLElement>(
-      "[data-index=\"0\"]",
-    );
+    const firstItem =
+      diff.shadowRoot?.querySelector<HTMLElement>('[data-index="0"]');
     if (!firstItem) throw new Error("Expected first diff item.");
 
     firstItem.focus();
@@ -79,13 +82,16 @@ describe("uik-json-diff", () => {
     await pressKey("ArrowDown");
     await diff.updateComplete;
 
-    const focused = diff.shadowRoot?.querySelector<HTMLElement>("[data-index=\"1\"]");
+    const focused =
+      diff.shadowRoot?.querySelector<HTMLElement>('[data-index="1"]');
     expect(focused?.getAttribute("tabindex")).toBe("0");
 
     await pressKey("ArrowRight");
     await diff.updateComplete;
 
-    const detail = diff.shadowRoot?.querySelector<HTMLElement>(".detail:not([hidden])");
+    const detail = diff.shadowRoot?.querySelector<HTMLElement>(
+      ".detail:not([hidden])",
+    );
     expect(detail).not.toBeNull();
   });
 
@@ -152,7 +158,7 @@ describe("uik-json-diff", () => {
     await nextFrame();
 
     const container =
-      diff.shadowRoot?.querySelector<HTMLElement>("[part=\"base\"]");
+      diff.shadowRoot?.querySelector<HTMLElement>('[part="base"]');
     if (!container) throw new Error("Expected json diff container.");
 
     await runA11y(container);

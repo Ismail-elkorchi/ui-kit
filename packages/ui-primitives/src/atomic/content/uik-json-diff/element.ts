@@ -130,10 +130,7 @@ const diffValues = (
   if (beforeType === "object" && afterType === "object") {
     const beforeObj = before as Record<string, unknown>;
     const afterObj = after as Record<string, unknown>;
-    const keys = new Set([
-      ...Object.keys(beforeObj),
-      ...Object.keys(afterObj),
-    ]);
+    const keys = new Set([...Object.keys(beforeObj), ...Object.keys(afterObj)]);
     [...keys]
       .sort((a, b) => a.localeCompare(b))
       .forEach((key) => {
@@ -234,8 +231,7 @@ export class UikJsonDiff extends LitElement {
     "";
   @property({ type: String, attribute: "json-after" }) accessor jsonAfter = "";
   @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
-  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue =
-    "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
 
   @state() accessor parseError = "";
   @state() accessor statusMessage = "";
@@ -274,7 +270,8 @@ export class UikJsonDiff extends LitElement {
       if (!rawBefore || !rawAfter) {
         return {
           changes: [],
-          error: "Invalid JSON diff: both json-before and json-after are required.",
+          error:
+            "Invalid JSON diff: both json-before and json-after are required.",
         };
       }
       try {
@@ -576,9 +573,7 @@ export class UikJsonDiff extends LitElement {
     if (this.parseError) {
       return html`
         <div part="base" class="wrapper">
-          <div part="error" class="error" role="alert">${
-            this.parseError
-          }</div>
+          <div part="error" class="error" role="alert">${this.parseError}</div>
         </div>
       `;
     }
@@ -611,9 +606,7 @@ export class UikJsonDiff extends LitElement {
           )}
           aria-labelledby=${ifDefined(ariaLabelledby)}
         >
-          ${this.changes.map((change, index) =>
-            this.renderItem(change, index),
-          )}
+          ${this.changes.map((change, index) => this.renderItem(change, index))}
         </div>
       </div>
     `;
