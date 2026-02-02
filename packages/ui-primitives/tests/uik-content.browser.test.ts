@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { UikBadge } from "../src/atomic/content/uik-badge";
 import type { UikCodeBlock } from "../src/atomic/content/uik-code-block";
@@ -168,5 +168,63 @@ describe("uik content primitives", () => {
     await codeBlock.updateComplete;
     const inline = codeBlock.shadowRoot?.querySelector("code.inline");
     expect(inline).not.toBeNull();
+  });
+
+  it("copies code block content and announces status", async () => {
+    const codeBlock = document.createElement("uik-code-block") as UikCodeBlock;
+    codeBlock.copyable = true;
+    codeBlock.textContent = "const status = 'ok';";
+    document.body.append(codeBlock);
+
+    await codeBlock.updateComplete;
+
+    const copyButton =
+      codeBlock.shadowRoot?.querySelector<HTMLButtonElement>("button.copy");
+    expect(copyButton).not.toBeNull();
+
+    const originalClipboard = navigator.clipboard;
+    const originalExecCommand = document.execCommand;
+    const writeText = vi.fn().mockRejectedValue(new Error("blocked"));
+    const execCommand = vi.fn(() => true);
+
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+    Object.defineProperty(document, "execCommand", {
+      value: execCommand,
+      configurable: true,
+    });
+
+    try {
+      copyButton?.click();
+      await codeBlock.updateComplete;
+
+      expect(execCommand).toHaveBeenCalledWith("copy");
+
+      const status = codeBlock.shadowRoot?.querySelector(
+        '[part="copy-status"]',
+      );
+      expect(status?.textContent).toContain("Copied");
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(navigator, "clipboard", {
+          value: originalClipboard,
+          configurable: true,
+        });
+      } else {
+        delete (navigator as typeof navigator & { clipboard?: Clipboard })
+          .clipboard;
+      }
+      if (originalExecCommand) {
+        Object.defineProperty(document, "execCommand", {
+          value: originalExecCommand,
+          configurable: true,
+        });
+      } else {
+        delete (document as Document & { execCommand?: Document["execCommand"] })
+          .execCommand;
+      }
+    }
   });
 });
