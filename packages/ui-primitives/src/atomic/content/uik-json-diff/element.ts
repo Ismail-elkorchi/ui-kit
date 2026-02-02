@@ -225,8 +225,8 @@ const buildDiff = (before: unknown, after: unknown) => {
  */
 @customElement("uik-json-diff")
 export class UikJsonDiff extends LitElement {
-  @property({ attribute: false }) accessor before: unknown = undefined;
-  @property({ attribute: false }) accessor after: unknown = undefined;
+  @property({ attribute: false }) accessor beforeValue: unknown = undefined;
+  @property({ attribute: false }) accessor afterValue: unknown = undefined;
   @property({ type: String, attribute: "json-before" }) accessor jsonBefore =
     "";
   @property({ type: String, attribute: "json-after" }) accessor jsonAfter = "";
@@ -243,10 +243,28 @@ export class UikJsonDiff extends LitElement {
 
   static override readonly styles = styles;
 
+  constructor() {
+    super();
+    Object.defineProperty(this, "before", {
+      configurable: true,
+      get: () => this.beforeValue,
+      set: (value) => {
+        this.beforeValue = value;
+      },
+    });
+    Object.defineProperty(this, "after", {
+      configurable: true,
+      get: () => this.afterValue,
+      set: (value) => {
+        this.afterValue = value;
+      },
+    });
+  }
+
   override willUpdate(changed: Map<string, unknown>) {
     if (
-      changed.has("before") ||
-      changed.has("after") ||
+      changed.has("beforeValue") ||
+      changed.has("afterValue") ||
       changed.has("jsonBefore") ||
       changed.has("jsonAfter")
     ) {
@@ -287,11 +305,14 @@ export class UikJsonDiff extends LitElement {
       }
     }
 
-    if (this.before === undefined && this.after === undefined) {
+    if (this.beforeValue === undefined && this.afterValue === undefined) {
       return { changes: [], error: "" };
     }
 
-    return { changes: buildDiff(this.before, this.after), error: "" };
+    return {
+      changes: buildDiff(this.beforeValue, this.afterValue),
+      error: "",
+    };
   }
 
   private getOpenSet(): Set<string> {
