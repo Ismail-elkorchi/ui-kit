@@ -124,6 +124,16 @@
       "format": "markdown"
     },
     {
+      "id": "json-viewer",
+      "title": "JSON Viewer",
+      "summary": "Render structured JSON with keyboard navigation, copy actions, and token-driven styling.",
+      "navLabel": "JSON Viewer",
+      "group": "Components",
+      "kind": "Guide",
+      "source": "apps/docs/content/json-viewer.md",
+      "format": "markdown"
+    },
+    {
       "id": "examples",
       "title": "Examples",
       "summary": "Production-ready UI examples with preview + code for common flows.",

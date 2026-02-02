@@ -136,6 +136,10 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     "uik-description-list",
     () => import("@ismail-elkorchi/ui-primitives/uik-description-list"),
   ],
+  [
+    "uik-json-viewer",
+    () => import("@ismail-elkorchi/ui-primitives/uik-json-viewer"),
+  ],
   ["uik-dialog", () => import("@ismail-elkorchi/ui-primitives/uik-dialog")],
   [
     "uik-empty-state",

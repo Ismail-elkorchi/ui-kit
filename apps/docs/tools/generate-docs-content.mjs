@@ -234,6 +234,25 @@ const normalizeSnippet = (value) => stripBlankLines(String(value ?? "")).trim();
 
 const containsScriptTag = (value) => /<\s*script\b/i.test(value);
 
+const normalizeJsonFence = (value) => {
+  const snippet = normalizeSnippet(value);
+  if (!snippet) {
+    throw new Error("json-viewer fences must contain valid JSON.");
+  }
+  try {
+    const parsed = JSON.parse(snippet);
+    return JSON.stringify(parsed, null, 2);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`json-viewer fences must contain valid JSON. ${message}`);
+  }
+};
+
+const buildJsonViewerMarkup = (json) => {
+  const safeJson = escapeHtml(json);
+  return `<uik-json-viewer json="${safeJson}"></uik-json-viewer>`;
+};
+
 const buildCodeBlockMarkup = ({ code, language, highlighter, slot }) => {
   const langValue = String(language ?? "");
   const langClass = langValue ? `language-${escapeHtml(langValue)}` : "";
@@ -359,8 +378,20 @@ const createRenderer = (slugger, highlighter) => {
     `<li><uik-text as="p" class="docs-paragraph">${text}</uik-text></li>`;
   renderer.code = (code, infostring) => {
     const rawLanguage = (infostring ?? "").trim().split(/\s+/)[0] ?? "";
+    const isJsonViewer = rawLanguage === "json-viewer";
     const isExample = rawLanguage === "example-html";
-    const language = normalizeLanguage(isExample ? "html" : rawLanguage);
+    const language = normalizeLanguage(
+      isJsonViewer ? "json" : isExample ? "html" : rawLanguage,
+    );
+    if (isJsonViewer) {
+      const normalizedJson = normalizeJsonFence(code);
+      return buildExampleMarkup({
+        previewHtml: buildJsonViewerMarkup(normalizedJson),
+        code: normalizedJson,
+        language,
+        highlighter: renderer.highlighter,
+      });
+    }
     if (isExample) {
       if (containsScriptTag(code)) {
         throw new Error("example-html fences may not include <script> tags.");
@@ -893,6 +924,12 @@ const componentPreviewTemplates = {
     layout: "start",
     size: "md",
     html: `<uik-code-block copyable>npm run build</uik-code-block>`,
+  }),
+  "uik-json-viewer": () => ({
+    layout: "start",
+    size: "lg",
+    html: `<uik-json-viewer json='{\"status\":\"ok\",\"count\":2,\"tags\":[\"alpha\",\"bravo\"]}'></uik-json-viewer>`,
+    snippetHtml: `<uik-json-viewer json='{\"status\":\"ok\",\"count\":2,\"tags\":[\"alpha\",\"bravo\"]}'></uik-json-viewer>`,
   }),
   "uik-combobox": () => ({
     layout: "start",
