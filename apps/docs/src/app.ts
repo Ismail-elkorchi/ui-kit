@@ -26,6 +26,7 @@ import "@ismail-elkorchi/ui-shell/status-bar";
 import {
   buildPageMap,
   docsPages,
+  isPublicPage,
   labPages,
   publicDocsPages,
   publicLabPages,
@@ -759,6 +760,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     : "";
   const initialHeroLinks = initialPage ? renderHeroLinks(initialPage) : "";
   const initialOutline = initialPage ? renderToc(initialPage) : "";
+  const initialIsInternal = initialPage ? !isPublicPage(initialPage) : false;
   const initialTheme = resolveTheme();
   const initialDensity =
     document.documentElement.getAttribute("data-uik-density") ?? "comfortable";
@@ -767,6 +769,11 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const kindBadgeAttr = initialKind ? "" : " hidden";
   const packageBadgeAttr = initialPackage ? "" : " hidden";
   const heroLinksAttr = initialHeroLinks ? "" : " hidden";
+  const heroHiddenAttr = initialIsInternal ? " hidden" : "";
+  const fixtureHiddenAttr = initialIsInternal ? "" : " hidden";
+  const outlineHiddenAttr = initialIsInternal ? " hidden" : "";
+  const outlineOpenAttr = initialIsInternal ? "" : " isOpen";
+  const secondaryVisibleAttr = initialIsInternal ? "" : " isSecondarySidebarVisible";
   const initialPageContentPromise = initialPage
     ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
     : null;
@@ -789,7 +796,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     <nav aria-label="Skip links">
       <a class="docs-skip-link" href="#docs-main">Skip to content</a>
     </nav>
-    <uik-shell-layout class="docs-shell" isSecondarySidebarVisible>
+    <uik-shell-layout class="docs-shell"${secondaryVisibleAttr}>
       <uik-shell-activity-bar
         slot="activity-bar"
         class="docs-activity-bar"
@@ -813,7 +820,15 @@ export const mountDocsApp = async (container: HTMLElement) => {
       </uik-shell-sidebar>
       <div slot="main-content" id="docs-main" class="docs-main">
           <div class="docs-page" data-docs-page>
-          <uik-page-hero class="docs-hero">
+          <header class="docs-fixture-header" data-docs-fixture${fixtureHiddenAttr}>
+            <uik-heading level="1" class="docs-heading docs-fixture-title" data-docs-fixture-title>${escapeHtml(
+              initialTitle,
+            )}</uik-heading>
+            <uik-text as="p" data-docs-fixture-summary class="docs-summary docs-fixture-summary">${escapeHtml(
+              initialSummary,
+            )}</uik-text>
+          </header>
+          <uik-page-hero class="docs-hero"${heroHiddenAttr}>
             <div slot="eyebrow" class="docs-hero-top">
               <uik-badge variant="secondary">UIK Docs</uik-badge>
               <uik-badge variant="outline" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</uik-badge>
@@ -831,10 +846,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
           <div class="docs-page-content" data-docs-content aria-busy="${initialContentBusy}">${initialPageSections}</div>
         </div>
       </div>
-      <uik-shell-secondary-sidebar
+      <uik-shell-secondary-sidebar${outlineOpenAttr}${outlineHiddenAttr}
         slot="secondary-sidebar"
         class="docs-outline"
-        isOpen
         heading="On this page"
         aria-label="On this page">
         <div data-docs-outline>${initialOutline}</div>
@@ -915,6 +929,16 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const secondarySidebar = container.querySelector<UikShellSecondarySidebar>(
     "uik-shell-secondary-sidebar",
   );
+  const heroElement = container.querySelector<HTMLElement>(".docs-hero");
+  const fixtureHeader = container.querySelector<HTMLElement>(
+    "[data-docs-fixture]",
+  );
+  const fixtureTitle = container.querySelector<HTMLElement>(
+    "[data-docs-fixture-title]",
+  );
+  const fixtureSummary = container.querySelector<HTMLElement>(
+    "[data-docs-fixture-summary]",
+  );
   const titleElement =
     container.querySelector<HTMLElement>("[data-docs-title]");
   const summaryElement = container.querySelector<HTMLElement>(
@@ -979,6 +1003,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     throw new Error("Docs layout could not be initialized.");
   }
 
+  let outlineRestoreState = secondarySidebar.isOpen;
+  let hadInternalOverride = false;
+
   if (outlineToggle) {
     secondarySidebar.focusReturnTarget = outlineToggle;
   }
@@ -1002,6 +1029,36 @@ export const mountDocsApp = async (container: HTMLElement) => {
     const nextValue = value?.trim() ?? "";
     element.textContent = nextValue;
     element.toggleAttribute("hidden", nextValue.length === 0);
+  };
+
+  const setFixtureContent = (page: DocPage) => {
+    if (fixtureTitle) fixtureTitle.textContent = page.title;
+    if (fixtureSummary) {
+      const nextSummary = page.summary?.trim() ?? "";
+      fixtureSummary.textContent = nextSummary;
+      fixtureSummary.toggleAttribute("hidden", nextSummary.length === 0);
+    }
+  };
+
+  const updateFixtureLayout = (page: DocPage) => {
+    const isInternal = !isPublicPage(page);
+    heroElement?.toggleAttribute("hidden", isInternal);
+    fixtureHeader?.toggleAttribute("hidden", !isInternal);
+    secondarySidebar.toggleAttribute("hidden", isInternal);
+    if (outlineToggle) outlineToggle.toggleAttribute("hidden", isInternal);
+
+    if (isInternal) {
+      if (!hadInternalOverride) {
+        outlineRestoreState = secondarySidebar.isOpen;
+        hadInternalOverride = true;
+      }
+      setOutlineOpen(layout, secondarySidebar, false, { focus: false });
+    } else if (hadInternalOverride) {
+      setOutlineOpen(layout, secondarySidebar, outlineRestoreState, {
+        focus: false,
+      });
+      hadInternalOverride = false;
+    }
   };
 
   const updateHeroLinks = (page: DocPage) => {
@@ -1258,6 +1315,8 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
     if (titleElement) titleElement.textContent = page.title;
     if (summaryElement) summaryElement.textContent = page.summary;
+    setFixtureContent(page);
+    updateFixtureLayout(page);
     setBadgeContent(groupBadge, page.group);
     setBadgeContent(kindBadge, page.kind);
     setBadgeContent(
