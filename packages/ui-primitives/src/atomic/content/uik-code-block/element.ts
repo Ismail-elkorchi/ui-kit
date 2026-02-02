@@ -164,8 +164,8 @@ export class UikCodeBlock extends LitElement {
         >
           <code class="code"><slot></slot></code>
         </pre>
-        ${this.copy
-            ? html`
+        ${this.copyable
+          ? html`
               <button
                 part="copy-button"
                 class="copy"
