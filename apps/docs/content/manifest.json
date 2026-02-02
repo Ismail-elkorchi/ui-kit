@@ -134,6 +134,16 @@
       "format": "markdown"
     },
     {
+      "id": "diff-preview",
+      "title": "Diff Preview",
+      "summary": "Review JSON changes with deterministic diff semantics, copy actions, and token-driven styling.",
+      "navLabel": "Diff Preview",
+      "group": "Guides",
+      "kind": "Guide",
+      "source": "apps/docs/content/diff-preview.md",
+      "format": "markdown"
+    },
+    {
       "id": "examples",
       "title": "Examples",
       "summary": "Production-ready UI examples with preview + code for common flows.",

@@ -1,0 +1,11 @@
+{
+  "component": {
+    "jsonDiff": {
+      "bg": {
+        "$value": "{surface.bg}",
+        "$type": "color",
+        "$description": "Component json diff background."
+      }
+    }
+  }
+}

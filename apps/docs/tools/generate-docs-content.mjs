@@ -248,9 +248,31 @@ const normalizeJsonFence = (value) => {
   }
 };
 
+const normalizeJsonDiffFence = (value, label) => {
+  const snippet = normalizeSnippet(value);
+  if (!snippet) {
+    throw new Error(`json-diff fences must include valid JSON for ${label}.`);
+  }
+  try {
+    const parsed = JSON.parse(snippet);
+    return JSON.stringify(parsed, null, 2);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(
+      `json-diff fences must include valid JSON for ${label}. ${message}`,
+    );
+  }
+};
+
 const buildJsonViewerMarkup = (json) => {
   const safeJson = escapeHtml(json);
   return `<uik-json-viewer json="${safeJson}"></uik-json-viewer>`;
+};
+
+const buildJsonDiffMarkup = (beforeJson, afterJson) => {
+  const safeBefore = escapeHtml(beforeJson);
+  const safeAfter = escapeHtml(afterJson);
+  return `<uik-json-diff json-before="${safeBefore}" json-after="${safeAfter}"></uik-json-diff>`;
 };
 
 const buildCodeBlockMarkup = ({ code, language, highlighter, slot }) => {
@@ -379,15 +401,35 @@ const createRenderer = (slugger, highlighter) => {
   renderer.code = (code, infostring) => {
     const rawLanguage = (infostring ?? "").trim().split(/\s+/)[0] ?? "";
     const isJsonViewer = rawLanguage === "json-viewer";
+    const isJsonDiff = rawLanguage === "json-diff";
     const isExample = rawLanguage === "example-html";
     const language = normalizeLanguage(
-      isJsonViewer ? "json" : isExample ? "html" : rawLanguage,
+      isJsonViewer || isJsonDiff ? "json" : isExample ? "html" : rawLanguage,
     );
     if (isJsonViewer) {
       const normalizedJson = normalizeJsonFence(code);
       return buildExampleMarkup({
         previewHtml: buildJsonViewerMarkup(normalizedJson),
         code: normalizedJson,
+        language,
+        highlighter: renderer.highlighter,
+      });
+    }
+    if (isJsonDiff) {
+      const blocks = String(code ?? "").split(/^---$/m);
+      if (blocks.length < 2) {
+        throw new Error(
+          "json-diff fences must include two JSON blocks separated by a line with ---",
+        );
+      }
+      const beforeJson = normalizeJsonDiffFence(blocks[0], "before");
+      const afterJson = normalizeJsonDiffFence(
+        blocks.slice(1).join("---"),
+        "after",
+      );
+      return buildExampleMarkup({
+        previewHtml: buildJsonDiffMarkup(beforeJson, afterJson),
+        code: `${beforeJson}\n\n---\n\n${afterJson}`,
         language,
         highlighter: renderer.highlighter,
       });
@@ -930,6 +972,12 @@ const componentPreviewTemplates = {
     size: "lg",
     html: `<uik-json-viewer json='{\"status\":\"ok\",\"count\":2,\"tags\":[\"alpha\",\"bravo\"]}'></uik-json-viewer>`,
     snippetHtml: `<uik-json-viewer json='{\"status\":\"ok\",\"count\":2,\"tags\":[\"alpha\",\"bravo\"]}'></uik-json-viewer>`,
+  }),
+  "uik-json-diff": () => ({
+    layout: "start",
+    size: "lg",
+    html: `<uik-json-diff json-before='{\"status\":\"queued\",\"count\":2}' json-after='{\"status\":\"done\",\"count\":3,\"extra\":true}'></uik-json-diff>`,
+    snippetHtml: `<uik-json-diff json-before='{\"status\":\"queued\",\"count\":2}' json-after='{\"status\":\"done\",\"count\":3,\"extra\":true}'></uik-json-diff>`,
   }),
   "uik-combobox": () => ({
     layout: "start",
