@@ -727,10 +727,6 @@ const updateSeoMetadata = (
   setCanonicalLink(canonicalUrl);
 };
 
-const copyToClipboard = async (value: string) => {
-  await navigator.clipboard.writeText(value);
-};
-
 const scrollToHashTarget = async () => {
   const raw = window.location.hash;
   if (!raw || raw === "#") return;
@@ -1394,36 +1390,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     void applyLocation(location);
   });
   syncUrl(router.current, "replace");
-
-  const onCodeCopyClick = async (event: Event) => {
-    const target = event.target as HTMLElement | null;
-    const copyButton = target?.closest<HTMLElement>(
-      '[data-docs-action="copy-code"]',
-    );
-    if (!copyButton) return;
-
-    const code = copyButton
-      .closest(".docs-code-block")
-      ?.querySelector("pre code");
-    const text = code?.textContent ?? "";
-    if (!text) return;
-
-    const previous = copyButton.textContent || "Copy";
-    try {
-      await copyToClipboard(text);
-      copyButton.textContent = "Copied";
-    } catch {
-      copyButton.textContent = "Failed";
-    } finally {
-      window.setTimeout(() => {
-        copyButton.textContent = previous;
-      }, 1200);
-    }
-  };
-
-  contentElement?.addEventListener("click", (event) => {
-    void onCodeCopyClick(event);
-  });
 
   window.addEventListener("hashchange", () => {
     updateActiveRoute(router.current);
