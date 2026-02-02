@@ -1801,6 +1801,150 @@
           "notes": []
         },
         {
+          "id": "json-diff",
+          "tagName": "uik-json-diff",
+          "name": "<uik-json-diff>",
+          "kind": "component",
+          "summary": "Token-driven JSON diff preview for apply flows.",
+          "attributes": [
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "json-after",
+              "type": "string",
+              "description": "string",
+              "default": "\"\""
+            },
+            {
+              "name": "json-before",
+              "type": "string",
+              "description": "string",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "after",
+              "type": "",
+              "description": "unknown",
+              "default": ""
+            },
+            {
+              "name": "afterValue",
+              "type": "unknown",
+              "description": "",
+              "default": "undefined"
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "before",
+              "type": "",
+              "description": "unknown",
+              "default": ""
+            },
+            {
+              "name": "beforeValue",
+              "type": "unknown",
+              "description": "",
+              "default": "undefined"
+            },
+            {
+              "name": "changes",
+              "type": "JsonDiffChange[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "focusIndex",
+              "type": "number",
+              "description": "",
+              "default": "0"
+            },
+            {
+              "name": "jsonAfter",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "jsonBefore",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "openIds",
+              "type": "string[]",
+              "description": "",
+              "default": "[]"
+            },
+            {
+              "name": "parseError",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "statusMessage",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "json-diff-copy",
+              "description": "detail: {kind, path, value}"
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            { "name": "action-button", "description": "" },
+            { "name": "actions", "description": "" },
+            { "name": "base", "description": "" },
+            { "name": "detail", "description": "" },
+            { "name": "detail-block", "description": "" },
+            { "name": "detail-label", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "header", "description": "" },
+            { "name": "item", "description": "" },
+            { "name": "kind", "description": "" },
+            { "name": "list", "description": "" },
+            { "name": "path", "description": "" },
+            { "name": "status", "description": "" },
+            { "name": "summary", "description": "" },
+            { "name": "toggle", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-json-diff-*", "description": "" }
+          ],
+          "a11y": [
+            "Roving focus list. Arrow keys move, Left/Right collapse/expand, Enter/Space toggles."
+          ],
+          "notes": []
+        },
+        {
           "id": "json-viewer",
           "tagName": "uik-json-viewer",
           "name": "<uik-json-viewer>",
