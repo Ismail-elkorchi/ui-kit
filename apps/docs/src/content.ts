@@ -1,7 +1,5 @@
 /// <reference types="vite/client" />
 import docsManifest from "./generated/docs-manifest.json";
-import perfPrimitivesContent from "./generated/pages/lab/perf-primitives.json";
-import perfShellContent from "./generated/pages/lab/perf-shell.json";
 
 const escapeHtml = (value: string) =>
   value
@@ -33,6 +31,7 @@ export interface DocPage {
   package?: string;
   type?: string;
   visibility?: "public" | "internal";
+  navHidden?: boolean;
   toc: DocTocItem[];
 }
 
@@ -43,6 +42,7 @@ export interface DocPageContent {
 interface DocsManifest {
   docsPages: DocPage[];
   labPages: DocPage[];
+  componentPageIds?: string[];
 }
 
 const content = docsManifest as DocsManifest;
@@ -50,21 +50,53 @@ const content = docsManifest as DocsManifest;
 const pageModules = import.meta.glob<{ default: DocPageContent }>(
   "./generated/pages/**/*.json",
 );
-const criticalContent = new Map<string, DocPageContent>([
-  ["lab/perf-shell", perfShellContent],
-  ["lab/perf-primitives", perfPrimitivesContent],
-]);
 
 export const docsPages = content.docsPages;
 export const labPages = content.labPages;
+export const componentPageIds = content.componentPageIds ?? [];
 export const isPublicPage = (page: DocPage) =>
   (page.visibility ?? "public") !== "internal";
 export const publicDocsPages = docsPages.filter(isPublicPage);
 export const publicLabPages = labPages.filter(isPublicPage);
+export const isNavVisiblePage = (page: DocPage) => !page.navHidden;
+export const publicDocsNavPages = publicDocsPages.filter(isNavVisiblePage);
+
+let componentPages: DocPage[] = [];
+let componentPagesPromise: Promise<DocPage[]> | null = null;
+
+const resolveComponentPagesPayload = (payload: unknown): DocPage[] => {
+  if (!payload) return [];
+  if (Array.isArray(payload)) return payload as DocPage[];
+  if (
+    typeof payload === "object" &&
+    Array.isArray((payload as { componentPages?: DocPage[] }).componentPages)
+  ) {
+    return (payload as { componentPages?: DocPage[] }).componentPages ?? [];
+  }
+  return [];
+};
+
+export const ensureComponentPages = async () => {
+  if (componentPagesPromise) return componentPagesPromise;
+  componentPagesPromise = import("./generated/docs-components.json").then(
+    (module) => {
+      const payload = (module as { default?: unknown }).default ?? module;
+      componentPages = resolveComponentPagesPayload(payload);
+      return componentPages;
+    },
+  );
+  return componentPagesPromise;
+};
+
+export const getAllDocsPages = () => [...docsPages, ...componentPages];
+export const getPublicDocsPages = () => getAllDocsPages().filter(isPublicPage);
 
 export const buildPageMap = () => {
   const map = new Map<string, DocPage>();
   for (const page of docsPages) {
+    map.set(`docs/${page.id}`, page);
+  }
+  for (const page of componentPages) {
     map.set(`docs/${page.id}`, page);
   }
   for (const page of labPages) {
@@ -77,9 +109,6 @@ export const loadPageContent = async (
   view: "docs" | "lab",
   id: string,
 ): Promise<DocPageContent> => {
-  const cacheKey = `${view}/${id}`;
-  const cached = criticalContent.get(cacheKey);
-  if (cached) return cached;
   const key = `./generated/pages/${view}/${id}.json`;
   const loader = pageModules[key];
   if (!loader) {

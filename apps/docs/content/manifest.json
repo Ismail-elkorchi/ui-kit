@@ -74,6 +74,15 @@
       "format": "markdown"
     },
     {
+      "id": "components",
+      "title": "Components",
+      "summary": "Browse UIK primitives, patterns, and shell components in one place.",
+      "navLabel": "Components",
+      "group": "Components",
+      "kind": "Reference",
+      "type": "components-index"
+    },
+    {
       "id": "primitives",
       "title": "Primitives Reference",
       "summary": "Shadow DOM building blocks that read tokens and expose explicit contracts.",

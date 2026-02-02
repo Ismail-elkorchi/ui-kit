@@ -89,5 +89,6 @@ describe("docs navigation", () => {
     expect(navIds).not.toContain("lab/perf-shell");
     expect(navIds).not.toContain("lab/perf-primitives");
     expect(navIds).not.toContain("lab/markdown-rendering");
+    expect(navIds).not.toContain("docs/components/uik-alert");
   });
 });

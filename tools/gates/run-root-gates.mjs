@@ -38,6 +38,11 @@ const steps = [
     ["apps/docs/tools/generate-docs-content.mjs", "--api", "--check"],
   ],
   ["Docs import validation", "node", ["tools/docs/validate-docs-imports.mjs"]],
+  [
+    "Docs perf route guard",
+    "node",
+    ["tools/docs/check-no-perf-route-special-casing.mjs"],
+  ],
   ["Docs token usage", "node", ["tools/tokens/check-docs-token-usage.mjs"]],
   ["Baseline drift", "node", ["tools/baseline/generate.mjs", "--check"]],
   ["Contracts drift", npmBin, ["run", "contracts:validate"]],

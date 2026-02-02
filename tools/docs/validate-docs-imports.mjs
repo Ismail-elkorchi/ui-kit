@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..", "..");
 const docsContentRoot = path.join(repoRoot, "apps/docs/content");
+const apiModelPath = path.join(docsContentRoot, "generated", "api.json");
 const packagesRoot = path.join(repoRoot, "packages");
 
 const specifierPattern = /@ismail-elkorchi\/[a-z0-9-]+(?:\/[a-z0-9-./]+)?/gi;
@@ -54,6 +55,16 @@ const collectSpecifiers = async (files) => {
   return occurrences;
 };
 
+const collectApiSpecifiers = async () => {
+  const apiModel = JSON.parse(await fs.readFile(apiModelPath, "utf8"));
+  const specifiers = new Set();
+  for (const pkg of apiModel.packages ?? []) {
+    if (!pkg?.id) continue;
+    specifiers.add(`@ismail-elkorchi/${pkg.id}/register`);
+  }
+  return Array.from(specifiers);
+};
+
 const normalizeSpecifier = (specifier) => specifier.replace(/\s+/g, "");
 
 const resolveExports = (exportsField) => {
@@ -100,6 +111,10 @@ const run = async () => {
   const files = await collectMarkdownFiles(docsContentRoot);
   const exportsByName = await loadPackageExports();
   const occurrences = await collectSpecifiers(files);
+  const apiSpecifiers = await collectApiSpecifiers();
+  for (const specifier of apiSpecifiers) {
+    occurrences.push({ file: apiModelPath, specifier });
+  }
   const issues = [];
 
   for (const { file, specifier } of occurrences) {

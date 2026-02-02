@@ -571,6 +571,15 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   overflow: hidden;
 }
 
+.docs-card.docs-component-preview-card {
+  padding: var(--uik-space-0);
+  overflow: hidden;
+}
+
+.docs-component-preview-card .docs-portfolio-preview {
+  border-bottom: none;
+}
+
 .docs-portfolio-preview {
   display: flex;
   flex-direction: column;

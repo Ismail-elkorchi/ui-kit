@@ -25,10 +25,14 @@ import "@ismail-elkorchi/ui-shell/status-bar";
 
 import {
   buildPageMap,
+  componentPageIds,
   docsPages,
+  ensureComponentPages,
+  getAllDocsPages,
+  getPublicDocsPages,
   isPublicPage,
   labPages,
-  publicDocsPages,
+  publicDocsNavPages,
   publicLabPages,
   loadPageContent,
   renderPageSections,
@@ -51,19 +55,24 @@ const getRouteFromLocation = (baseUrl: string) => {
     : pathname.replace(/^\/+/, "");
   const segments = relative.split("/").filter(Boolean);
   const view = segments[0];
-  const subview = segments[1];
+  const subview = segments.length > 1 ? segments.slice(1).join("/") : undefined;
   return { view, subview };
 };
 
 const buildRoutes = (
   docsPageList: DocPage[] = docsPages,
   labPageList: DocPage[] = labPages,
-  publicDocsList: DocPage[] = publicDocsPages,
+  publicDocsList: DocPage[] = publicDocsNavPages,
   publicLabList: DocPage[] = publicLabPages,
+  componentSubviewIds: string[] = componentPageIds,
 ): UikShellRoute[] => {
-  const docsSubviewIds = docsPageList.map((page) => page.id);
+  const docsSubviewIds = [
+    ...docsPageList.map((page) => page.id),
+    ...componentSubviewIds,
+  ];
+  const uniqueDocsSubviewIds = Array.from(new Set(docsSubviewIds));
   const labSubviewIds = labPageList.map((page) => page.id);
-  const docsDefault = publicDocsList[0]?.id ?? docsSubviewIds[0];
+  const docsDefault = publicDocsList[0]?.id ?? uniqueDocsSubviewIds[0];
   const labDefault = publicLabList[0]?.id ?? labSubviewIds[0];
 
   const createRoute = (
@@ -82,7 +91,7 @@ const buildRoutes = (
   };
 
   return [
-    createRoute("docs", "Docs", docsSubviewIds, docsDefault),
+    createRoute("docs", "Docs", uniqueDocsSubviewIds, docsDefault),
     createRoute("lab", "Examples", labSubviewIds, labDefault),
   ];
 };
@@ -322,7 +331,7 @@ const buildDocsGroupItems = (
 
 const buildNavItems = (
   baseUrl: string,
-  docsPageList: DocPage[] = publicDocsPages,
+  docsPageList: DocPage[] = publicDocsNavPages,
   labPageList: DocPage[] = publicLabPages,
   activeDocPageId?: string | null,
 ): UikNavItem[] => {
@@ -348,7 +357,7 @@ const buildNavItems = (
 };
 
 const buildMobileNavOptions = (
-  docsPageList: DocPage[] = publicDocsPages,
+  docsPageList: DocPage[] = publicDocsNavPages,
   labPageList: DocPage[] = publicLabPages,
 ) => {
   const grouped = new Map<string, DocPage[]>();
@@ -391,7 +400,7 @@ const buildMobileNavOptions = (
 type CommandPaletteCommand = UikCommandCenterCommand & { value: string };
 
 const buildCommandPaletteCommands = (
-  docsPageList: DocPage[] = publicDocsPages,
+  docsPageList: DocPage[] = getPublicDocsPages(),
   labPageList: DocPage[] = publicLabPages,
 ): CommandPaletteCommand[] => {
   const items: CommandPaletteCommand[] = [];
@@ -470,8 +479,22 @@ const collectOpenIds = (items: UikNavItem[], currentId?: string) => {
 const locationKey = (location: UikShellLocation) =>
   location.subview ? `${location.view}/${location.subview}` : location.view;
 
+const splitViewAndSubview = (value: string) => {
+  const [view, ...rest] = value.split("/");
+  const subview = rest.join("/");
+  return { view, subview };
+};
+
+const normalizeNavSubview = (view: string, subview?: string) => {
+  if (view === "docs" && subview?.startsWith("components/")) {
+    return "components";
+  }
+  return subview;
+};
+
 const resolveNavCurrentId = (location: UikShellLocation) => {
-  const key = locationKey(location);
+  const subview = normalizeNavSubview(location.view, location.subview);
+  const key = subview ? `${location.view}/${subview}` : location.view;
   const hash = window.location.hash;
   return hash ? `${key}${hash}` : key;
 };
@@ -540,30 +563,6 @@ const loadBaseComponents = () => {
   return loadComponents(baseComponentTags);
 };
 
-const schedulePageComponents = (
-  page: DocPageContent,
-  onComplete?: () => void,
-) => {
-  const run = () => {
-    const promise = loadPageComponents(page);
-    if (onComplete) {
-      promise.finally(onComplete);
-    }
-  };
-  if ("requestIdleCallback" in window) {
-    (
-      window as Window & {
-        requestIdleCallback: (
-          callback: IdleRequestCallback,
-          options?: IdleRequestOptions,
-        ) => number;
-      }
-    ).requestIdleCallback(run, { timeout: 250 });
-  } else {
-    globalThis.setTimeout(run, 0);
-  }
-};
-
 const schedulePrefetchComponents = () => {
   const schedule = () => {
     const run = () => prefetchComponents();
@@ -597,7 +596,7 @@ const scheduleMobileNavOptions = (mobileNavSelect: UikSelect | null) => {
     const currentValue = mobileNavSelect.value;
     mobileNavSelect.insertAdjacentHTML(
       "beforeend",
-      buildMobileNavOptions(publicDocsPages, publicLabPages),
+      buildMobileNavOptions(publicDocsNavPages, publicLabPages),
     );
     if (currentValue) {
       mobileNavSelect.value = currentValue;
@@ -705,7 +704,11 @@ const setCanonicalLink = (href: string) => {
 const buildCanonicalUrl = (baseUrl: string, key: string) =>
   `${window.location.origin}${baseUrl}${key}`;
 
-const updateSeoMetadata = (page: DocPage, canonicalUrl: string) => {
+const updateSeoMetadata = (
+  page: DocPage,
+  canonicalUrl: string,
+  isInternal: boolean,
+) => {
   const pageTitle = getPageLabel(page);
   const description =
     page.summary.trim() || `UI Kit documentation — ${pageTitle}`;
@@ -720,6 +723,7 @@ const updateSeoMetadata = (page: DocPage, canonicalUrl: string) => {
   setMetaName("twitter:card", "summary");
   setMetaName("twitter:title", title);
   setMetaName("twitter:description", description);
+  setMetaName("robots", isInternal ? "noindex,nofollow" : "index,follow");
   setCanonicalLink(canonicalUrl);
 };
 
@@ -742,18 +746,23 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
   const initialRoute = getRouteFromLocation(baseUrl);
   const initialView = initialRoute.view === "lab" ? "lab" : "docs";
-  const defaultDocsSubview = publicDocsPages[0]?.id ?? docsPages[0]?.id;
+  const defaultDocsSubview = publicDocsNavPages[0]?.id ?? docsPages[0]?.id;
   const defaultLabSubview = publicLabPages[0]?.id ?? labPages[0]?.id;
   const initialSubview =
     initialRoute.subview ??
     (initialView === "lab" ? defaultLabSubview : defaultDocsSubview);
+  const needsComponentPages =
+    initialView === "docs" &&
+    Boolean(initialSubview) &&
+    componentPageIds.includes(initialSubview);
+  if (needsComponentPages) {
+    await ensureComponentPages();
+  }
+  const docsPageList = getAllDocsPages();
   const initialPage =
     initialView === "lab"
       ? labPages.find((page) => page.id === initialSubview)
-      : docsPages.find((page) => page.id === initialSubview);
-  const shouldDeferPageComponents = (page?: DocPage | null) =>
-    Boolean(page && page.visibility === "internal" && page.id === "perf-shell");
-  const initialShouldDeferComponents = shouldDeferPageComponents(initialPage);
+      : docsPageList.find((page) => page.id === initialSubview);
   const initialTitle = initialPage?.title ?? "";
   const initialSummary = initialPage?.summary ?? "";
   const initialGroup = initialPage?.group ?? "";
@@ -782,12 +791,11 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContentPromise = initialPage
     ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
     : null;
-  const initialPageComponentsPromise =
-    initialPageContentPromise && !initialShouldDeferComponents
-      ? initialPageContentPromise.then((pageContent) =>
-          loadPageComponents(pageContent),
-        )
-      : null;
+  const initialPageComponentsPromise = initialPageContentPromise
+    ? initialPageContentPromise.then((pageContent) =>
+        loadPageComponents(pageContent),
+      )
+    : null;
   const initialPageContent = initialPageContentPromise
     ? await initialPageContentPromise
     : null;
@@ -911,12 +919,13 @@ export const mountDocsApp = async (container: HTMLElement) => {
   preferences.apply();
   await baseComponentsPromise;
 
-  const pageMap = buildPageMap();
+  let pageMap = buildPageMap();
   const routes = buildRoutes(
     docsPages,
     labPages,
-    publicDocsPages,
+    publicDocsNavPages,
     publicLabPages,
+    componentPageIds,
   );
   const router = createUikShellRouter({
     routes,
@@ -1020,7 +1029,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   let activeDocPageId = initialView === "docs" ? initialSubview : null;
   let navItems = buildNavItems(
     baseUrl,
-    publicDocsPages,
+    publicDocsNavPages,
     publicLabPages,
     activeDocPageId,
   );
@@ -1137,6 +1146,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     commandCenterInit = (async () => {
       const palette = await ensureCommandPaletteElement();
       if (!palette) return;
+      await ensureComponentPages();
       const { createUikCommandCenter } =
         await import("@ismail-elkorchi/ui-shell/command-center");
       commandCenter = createUikCommandCenter({
@@ -1144,7 +1154,8 @@ export const mountDocsApp = async (container: HTMLElement) => {
         commands: buildCommandPaletteCommands(),
         onSelect: (command) => {
           if (!command.value) return;
-          const [view, subview] = command.value.split("/");
+          const { view, subview } = splitViewAndSubview(command.value);
+          if (!view || !subview) return;
           router.navigate(view, subview);
           syncUrl(router.current);
           updateActiveRoute(router.current);
@@ -1272,16 +1283,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
       : await loadPageContent(view, page.id);
     if (token !== contentRenderToken) return;
 
-    const isInternal = !isPublicPage(page);
-    const shouldDeferComponents = shouldDeferPageComponents(page);
-    const shouldAwaitComponents =
-      !shouldDeferComponents && page.id !== "command-palette";
-    const loadPromise = !shouldDeferComponents
-      ? isInitialPage && initialPageComponentsPromise
+    const shouldAwaitComponents = page.id !== "command-palette";
+    const loadPromise =
+      isInitialPage && initialPageComponentsPromise
         ? initialPageComponentsPromise
-        : loadPageComponents(pageContent)
-      : null;
-    if (shouldAwaitComponents && loadPromise) {
+        : loadPageComponents(pageContent);
+    if (shouldAwaitComponents) {
       await loadPromise;
     }
     if (token !== contentRenderToken) return;
@@ -1293,35 +1300,42 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
 
     if (!shouldAwaitComponents) {
-      if (shouldDeferComponents) {
-        schedulePageComponents(pageContent);
-      } else if (loadPromise) {
-        await loadPromise;
-      }
+      void loadPromise;
     }
     if (token !== contentRenderToken) return;
 
     void scrollToHashTarget();
   };
 
-  const applyLocation = (location: UikShellLocation) => {
+  const applyLocation = async (location: UikShellLocation) => {
     const key = locationKey(location);
-    const page = pageMap.get(key);
+    let page = pageMap.get(key);
+    if (
+      !page &&
+      location.view === "docs" &&
+      location.subview &&
+      componentPageIds.includes(location.subview)
+    ) {
+      await ensureComponentPages();
+      pageMap = buildPageMap();
+      page = pageMap.get(key);
+    }
     if (!page) return;
     const isInternal = !isPublicPage(page);
-    const shouldDeferComponents = shouldDeferPageComponents(page);
     const isInitialContent = initialContentReady && key === initialLocationKey;
 
     updateActiveRoute(location);
     const nextDocPageId =
       location.view === "docs"
-        ? (location.subview ?? docsPages[0]?.id ?? null)
+        ? (normalizeNavSubview(location.view, location.subview) ??
+          docsPages[0]?.id ??
+          null)
         : null;
     if (nextDocPageId !== activeDocPageId) {
       activeDocPageId = nextDocPageId;
       navItems = buildNavItems(
         baseUrl,
-        publicDocsPages,
+        publicDocsNavPages,
         publicLabPages,
         activeDocPageId,
       );
@@ -1355,27 +1369,20 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (page.id !== "shell-patterns") statusBar.tone = "info";
     updateStatusMeta(statusBar);
     const canonicalUrl = buildCanonicalUrl(baseUrl, key);
-    updateSeoMetadata(page, canonicalUrl);
+    updateSeoMetadata(page, canonicalUrl, isInternal);
     if (isInitialContent) {
       initialContentReady = false;
       finalizeContentRender(page, contentRenderToken);
-      if (contentElement && shouldDeferComponents) {
-        contentElement.setAttribute("aria-busy", "false");
-      }
       if (initialPageContent && !initialPageComponentsScheduled) {
         initialPageComponentsScheduled = true;
-        if (shouldDeferComponents) {
-          schedulePageComponents(initialPageContent);
-        } else {
-          const loadPromise =
-            initialPageComponentsPromise ??
-            loadPageComponents(initialPageContent);
-          loadPromise.finally(() => {
-            if (contentElement) {
-              contentElement.setAttribute("aria-busy", "false");
-            }
-          });
-        }
+        const loadPromise =
+          initialPageComponentsPromise ??
+          loadPageComponents(initialPageContent);
+        loadPromise.finally(() => {
+          if (contentElement) {
+            contentElement.setAttribute("aria-busy", "false");
+          }
+        });
       }
       void scrollToHashTarget();
     } else {
@@ -1383,7 +1390,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
   };
 
-  router.subscribe(applyLocation);
+  router.subscribe((location) => {
+    void applyLocation(location);
+  });
   syncUrl(router.current, "replace");
 
   const onCodeCopyClick = async (event: Event) => {
@@ -1430,10 +1439,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
   navTree.addEventListener("tree-view-activate", (event: Event) => {
     const detail = (event as CustomEvent<{ id: string }>).detail;
-    const [view, subviewWithHash] = detail.id.split("/");
-    if (!view || !subviewWithHash) return;
-    const [subview, hash] = subviewWithHash.split("#");
-    if (!subview) return;
+    const [path, hash] = detail.id.split("#");
+    const { view, subview } = splitViewAndSubview(path);
+    if (!view || !subview) return;
     router.navigate(view, subview);
     const nextKey = `${view}/${subview}`;
     const nextPath = hash
@@ -1477,7 +1485,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   });
 
   mobileNavSelect?.addEventListener("change", () => {
-    const [view, subview] = mobileNavSelect.value.split("/");
+    const { view, subview } = splitViewAndSubview(mobileNavSelect.value);
     if (!view || !subview) return;
     router.navigate(view, subview);
     syncUrl(router.current);

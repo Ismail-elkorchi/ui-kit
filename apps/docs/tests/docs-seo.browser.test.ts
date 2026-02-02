@@ -30,7 +30,11 @@ const buildDescription = (pageTitle: string, summary?: string) => {
   return `UI Kit documentation — ${pageTitle}`;
 };
 
-const expectMetadata = (pageTitle: string, summary?: string) => {
+const expectMetadata = (
+  pageTitle: string,
+  summary?: string,
+  robotsContent = "index,follow",
+) => {
   const description = buildDescription(pageTitle, summary);
   const expectedTitle = `UI Kit — ${pageTitle}`;
   expect(document.title).toBe(expectedTitle);
@@ -42,6 +46,7 @@ const expectMetadata = (pageTitle: string, summary?: string) => {
   );
   expect(getMetaContent('meta[name="twitter:title"]')).toBe(expectedTitle);
   expect(getMetaContent('meta[name="twitter:description"]')).toBe(description);
+  expect(getMetaContent('meta[name="robots"]')).toBe(robotsContent);
   const canonical = document.head.querySelector<HTMLLinkElement>(
     'link[rel="canonical"]',
   );
@@ -68,6 +73,7 @@ describe("docs seo metadata", () => {
     expectMetadata(
       initialPage.navLabel ?? initialPage.title,
       initialPage.summary,
+      "index,follow",
     );
 
     const nextLab =
@@ -81,7 +87,11 @@ describe("docs seo metadata", () => {
     await waitForContent();
     await nextFrame();
 
-    expectMetadata(nextLab.navLabel ?? nextLab.title, nextLab.summary);
+    expectMetadata(
+      nextLab.navLabel ?? nextLab.title,
+      nextLab.summary,
+      "index,follow",
+    );
   });
 
   it("renders metadata for internal routes", async () => {
@@ -101,6 +111,7 @@ describe("docs seo metadata", () => {
     expectMetadata(
       internalPage.navLabel ?? internalPage.title,
       internalPage.summary,
+      "noindex,nofollow",
     );
   });
 });

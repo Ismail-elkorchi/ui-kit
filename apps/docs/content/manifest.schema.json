@@ -41,9 +41,13 @@
         "group": { "type": "string" },
         "kind": { "type": "string" },
         "package": { "type": "string" },
-        "type": { "type": "string", "enum": ["markdown", "components"] },
+        "type": {
+          "type": "string",
+          "enum": ["markdown", "components", "components-index"]
+        },
         "format": { "type": "string", "enum": ["markdown"] },
         "visibility": { "$ref": "#/$defs/visibility" },
+        "navHidden": { "type": "boolean" },
         "source": { "type": "string" },
         "readme": { "type": "string" },
         "contracts": { "type": "string" },
@@ -84,10 +88,23 @@
         }
       ]
     },
+    "componentsIndexPage": {
+      "allOf": [
+        { "$ref": "#/$defs/pageBase" },
+        {
+          "type": "object",
+          "properties": {
+            "type": { "const": "components-index" }
+          },
+          "required": ["type"]
+        }
+      ]
+    },
     "page": {
       "oneOf": [
         { "$ref": "#/$defs/markdownPage" },
-        { "$ref": "#/$defs/componentsPage" }
+        { "$ref": "#/$defs/componentsPage" },
+        { "$ref": "#/$defs/componentsIndexPage" }
       ]
     }
   }

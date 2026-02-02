@@ -22,6 +22,10 @@ const manifestOutputPath = path.join(
   docsRoot,
   "src/generated/docs-manifest.json",
 );
+const componentsManifestPath = path.join(
+  docsRoot,
+  "src/generated/docs-components.json",
+);
 const pagesOutputDir = path.join(docsRoot, "src/generated/pages");
 const searchIndexPath = path.join(
   docsRoot,
@@ -706,6 +710,12 @@ const componentGroupDefinitions = [
     tags: ["uik-dialog", "uik-popover", "uik-tooltip"],
   },
   {
+    id: "patterns",
+    label: "Patterns",
+    description: "Composed UI blocks built from primitives.",
+    tags: ["uik-empty-state", "uik-page-hero", "uik-section-card"],
+  },
+  {
     id: "utilities",
     label: "Utilities",
     description: "Accessibility and low-level helpers.",
@@ -732,7 +742,7 @@ const resolveComponentGroup = (tagName) => {
   return componentGroupMeta.get(groupId) ?? componentGroupMeta.get("utilities");
 };
 
-const buildComponentsFromApi = (components) =>
+const buildComponentsFromApi = (components, packageMeta) =>
   (components ?? []).map((component) => {
     const tagName = component.tagName ?? "";
     const groupMeta = resolveComponentGroup(tagName);
@@ -741,6 +751,8 @@ const buildComponentsFromApi = (components) =>
       group: groupMeta?.id ?? "utilities",
       groupLabel: groupMeta?.label ?? "Utilities",
       groupDescription: groupMeta?.description ?? "",
+      packageId: packageMeta?.id ?? "",
+      packageLabel: packageMeta?.name ?? "",
     };
   });
 
@@ -816,49 +828,51 @@ const buildMarkdownPageSections = (
     highlighter,
   );
 
-const renderComponentPortfolio = (components) => {
-  const templates = {
-    "uik-alert": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-alert variant="info"><span slot="title">Heads up</span>Tokens are loaded.</uik-alert>`,
-    }),
-    "uik-badge": () => ({
-      layout: "center",
-      size: "sm",
-      html: `<uik-badge variant="secondary">Beta</uik-badge>`,
-    }),
-    "uik-box": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-box padding="4"><uik-text as="p">Box content</uik-text></uik-box>`,
-    }),
-    "uik-button": () => ({
-      layout: "center",
-      size: "sm",
-      html: `<uik-button variant="solid">Primary</uik-button>`,
-    }),
-    "uik-checkbox": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-checkbox checked><span slot="label">Remember me</span></uik-checkbox>`,
-    }),
-    "uik-code-block": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-code-block copy>npm run build</uik-code-block>`,
-    }),
-    "uik-combobox": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-combobox open placeholder="Search" aria-label="Assignee" data-docs-portfolio="combobox">
+const componentPreviewTemplates = {
+  "uik-alert": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-alert variant="info"><span slot="title">Heads up</span>Tokens are loaded.</uik-alert>`,
+  }),
+  "uik-badge": () => ({
+    layout: "center",
+    size: "sm",
+    html: `<uik-badge variant="secondary">Beta</uik-badge>`,
+  }),
+  "uik-box": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-box padding="4"><uik-text as="p">Box content</uik-text></uik-box>`,
+  }),
+  "uik-button": () => ({
+    layout: "center",
+    size: "sm",
+    html: `<uik-button variant="solid">Primary</uik-button>`,
+  }),
+  "uik-checkbox": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-checkbox checked><span slot="label">Remember me</span></uik-checkbox>`,
+  }),
+  "uik-code-block": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-code-block copy>npm run build</uik-code-block>`,
+  }),
+  "uik-combobox": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-combobox open placeholder="Search" aria-label="Assignee" data-docs-portfolio="combobox">
 <span slot="label">Assignee</span>
 </uik-combobox>`,
-    }),
-    "uik-command-palette": () => ({
-      layout: "start",
-      size: "md",
-      html: `<div class="docs-portfolio-command-palette">
+    snippetHtml: `<uik-combobox open placeholder="Search" aria-label="Assignee">
+<span slot="label">Assignee</span>
+</uik-combobox>`,
+  }),
+  "uik-command-palette": () => ({
+    layout: "start",
+    size: "md",
+    html: `<div class="docs-portfolio-command-palette">
 <uik-button variant="outline" size="sm" data-docs-portfolio="command-palette-open">Open palette</uik-button>
 <uik-command-palette data-docs-portfolio="command-palette" placeholder="Search commands">
 <span slot="title">Command palette</span>
@@ -866,21 +880,26 @@ const renderComponentPortfolio = (components) => {
 <uik-visually-hidden slot="label">Search commands</uik-visually-hidden>
 </uik-command-palette>
 </div>`,
-    }),
-    "uik-description-list": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-description-list density="compact">
+    snippetHtml: `<uik-command-palette placeholder="Search commands">
+<span slot="title">Command palette</span>
+<span slot="description">Type to filter commands.</span>
+<uik-visually-hidden slot="label">Search commands</uik-visually-hidden>
+</uik-command-palette>`,
+  }),
+  "uik-description-list": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-description-list density="compact">
 <dt>Status</dt><dd>Active</dd>
 <dt>Owner</dt><dd>Design</dd>
 </uik-description-list>`,
-    }),
-    "uik-dialog": (component) => {
-      const dialogId = `docs-portfolio-dialog-${component.id}`;
-      return {
-        layout: "center",
-        size: "md",
-        html: `<div class="docs-portfolio-dialog">
+  }),
+  "uik-dialog": (component) => {
+    const dialogId = `docs-portfolio-dialog-${component.id}`;
+    return {
+      layout: "center",
+      size: "md",
+      html: `<div class="docs-portfolio-dialog">
 <uik-button variant="outline" size="sm" data-docs-dialog-trigger="${dialogId}">Preview dialog</uik-button>
 <uik-dialog id="${dialogId}" style="--uik-component-dialog-max-width: var(--uik-layout-panel-width-sm);">
 <span slot="title">Release notes</span>
@@ -891,58 +910,78 @@ const renderComponentPortfolio = (components) => {
 </div>
 </uik-dialog>
 </div>`,
-      };
-    },
-    "uik-heading": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-heading level="3">Section heading</uik-heading>`,
-    }),
-    "uik-icon": () => ({
-      layout: "center",
-      size: "sm",
-      html: `<uik-icon tone="info"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2"></path><circle cx="12" cy="12" r="9" stroke-width="2"></circle></svg></uik-icon>`,
-    }),
-    "uik-input": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-input placeholder="Search docs"></uik-input>`,
-    }),
-    "uik-link": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-link href="#">Explore link</uik-link>`,
-    }),
-    "uik-listbox": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-listbox value="tokens" aria-label="Docs navigation">
+      snippetHtml: `<uik-dialog open>
+<span slot="title">Release notes</span>
+<uik-text as="p">Updates are ready to install.</uik-text>
+<div slot="actions">
+<uik-button variant="ghost" size="sm">Close</uik-button>
+<uik-button size="sm">Install</uik-button>
+</div>
+</uik-dialog>`,
+    };
+  },
+  "uik-empty-state": () => ({
+    layout: "center",
+    size: "md",
+    html: `<uik-empty-state>
+<span slot="title">No messages</span>
+<span slot="description">You are all caught up.</span>
+<p>Try refreshing later.</p>
+<div slot="actions">
+<button type="button">New message</button>
+</div>
+</uik-empty-state>`,
+  }),
+  "uik-heading": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-heading level="3">Section heading</uik-heading>`,
+  }),
+  "uik-icon": () => ({
+    layout: "center",
+    size: "sm",
+    html: `<uik-icon tone="info"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2"></path><circle cx="12" cy="12" r="9" stroke-width="2"></circle></svg></uik-icon>`,
+  }),
+  "uik-input": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-input placeholder="Search docs"></uik-input>`,
+  }),
+  "uik-link": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-link href="#">Explore link</uik-link>`,
+  }),
+  "uik-listbox": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-listbox value="tokens" aria-label="Docs navigation">
 <uik-option value="overview">Overview</uik-option>
 <uik-option value="tokens">Tokens</uik-option>
 <uik-option value="components">Components</uik-option>
 </uik-listbox>`,
-    }),
-    "uik-menu": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-menu>
+  }),
+  "uik-menu": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-menu>
 <uik-button slot="trigger" variant="outline" size="sm">Menu</uik-button>
 <uik-menu-item id="docs-menu-item-1">Account</uik-menu-item>
 <uik-menu-item id="docs-menu-item-2">Settings</uik-menu-item>
 <uik-menu-item id="docs-menu-item-3">Sign out</uik-menu-item>
 </uik-menu>`,
-    }),
-    "uik-menu-item": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<div role="menu" aria-label="Menu item preview">
+  }),
+  "uik-menu-item": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<div role="menu" aria-label="Menu item preview">
 <uik-menu-item active>Active item</uik-menu-item>
 </div>`,
-    }),
-    "uik-menubar": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-menubar>
+  }),
+  "uik-menubar": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-menubar>
 <uik-menu>
 <uik-button slot="trigger" variant="ghost" size="sm">File</uik-button>
 <uik-menu-item id="docs-menubar-new">New</uik-menu-item>
@@ -954,219 +993,296 @@ const renderComponentPortfolio = (components) => {
 <uik-menu-item id="docs-menubar-paste">Paste</uik-menu-item>
 </uik-menu>
 </uik-menubar>`,
-    }),
-    "uik-nav": () => ({
-      layout: "start",
-      size: "lg",
-      html: `<uik-nav data-docs-portfolio="nav"></uik-nav>`,
-    }),
-    "uik-nav-rail": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-nav-rail orientation="horizontal" data-docs-portfolio="nav-rail"></uik-nav-rail>`,
-    }),
-    "uik-option": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-listbox aria-label="Options">
+  }),
+  "uik-nav": () => ({
+    layout: "start",
+    size: "lg",
+    html: `<uik-nav data-docs-portfolio="nav"></uik-nav>`,
+    snippetHtml: `<uik-nav></uik-nav>`,
+  }),
+  "uik-nav-rail": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-nav-rail orientation="horizontal" data-docs-portfolio="nav-rail"></uik-nav-rail>`,
+    snippetHtml: `<uik-nav-rail orientation="horizontal"></uik-nav-rail>`,
+  }),
+  "uik-option": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-listbox aria-label="Options">
 <uik-option selected>Active item</uik-option>
 <uik-option>Inactive item</uik-option>
 </uik-listbox>`,
-    }),
-    "uik-pagination": () => ({
-      layout: "center",
-      size: "sm",
-      html: `<uik-pagination page="2" page-count="5" total="42"></uik-pagination>`,
-    }),
-    "uik-popover": () => ({
-      layout: "overlay",
-      size: "md",
-      html: `<uik-popover open placement="bottom">
+  }),
+  "uik-page-hero": () => ({
+    layout: "start",
+    size: "lg",
+    html: `<uik-page-hero>
+<span slot="eyebrow">v0.2.0</span>
+<span slot="title">UI Kit</span>
+<span slot="summary">Build consistent interfaces with tokens and primitives.</span>
+<div slot="links">
+<a href="#">API Reference</a>
+</div>
+<div slot="panel">
+<button type="button">Get started</button>
+</div>
+</uik-page-hero>`,
+  }),
+  "uik-pagination": () => ({
+    layout: "center",
+    size: "sm",
+    html: `<uik-pagination page="2" page-count="5" total="42"></uik-pagination>`,
+  }),
+  "uik-popover": () => ({
+    layout: "overlay",
+    size: "md",
+    html: `<uik-popover open placement="bottom">
 <uik-button slot="trigger" variant="outline" size="sm">Popover</uik-button>
 <uik-text as="p" size="sm">Team settings</uik-text>
 </uik-popover>`,
-    }),
-    "uik-progress": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-progress value="64" max="100"></uik-progress>`,
-    }),
-    "uik-radio": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-radio checked><span slot="label">Option A</span></uik-radio>`,
-    }),
-    "uik-radio-group": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-radio-group value="daily">
+  }),
+  "uik-progress": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-progress value="64" max="100"></uik-progress>`,
+  }),
+  "uik-radio": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-radio checked><span slot="label">Option A</span></uik-radio>`,
+  }),
+  "uik-radio-group": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-radio-group value="daily">
 <span slot="label">Frequency</span>
 <uik-radio value="daily" checked><span slot="label">Daily</span></uik-radio>
 <uik-radio value="weekly"><span slot="label">Weekly</span></uik-radio>
 </uik-radio-group>`,
-    }),
-    "uik-resizable-panels": () => ({
-      layout: "fill",
-      size: "lg",
-      html: `<uik-resizable-panels>
+  }),
+  "uik-resizable-panels": () => ({
+    layout: "fill",
+    size: "lg",
+    html: `<uik-resizable-panels>
 <uik-box slot="start" padding="3"><uik-text as="p" size="sm">Start panel</uik-text></uik-box>
 <uik-box slot="end" padding="3"><uik-text as="p" size="sm">End panel</uik-text></uik-box>
 </uik-resizable-panels>`,
-    }),
-    "uik-select": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-select value="triage">
+  }),
+  "uik-select": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-select value="triage">
 <span slot="label">Status</span>
 <option value="triage">Triage</option>
 <option value="active">Active</option>
 <option value="blocked">Blocked</option>
 </uik-select>`,
-    }),
-    "uik-separator": () => ({
-      layout: "center",
-      size: "sm",
-      html: `<uik-separator></uik-separator>`,
-    }),
-    "uik-spinner": () => ({
-      layout: "center",
-      size: "sm",
-      html: `<uik-spinner tone="primary" size="sm"></uik-spinner>`,
-    }),
-    "uik-stack": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-stack direction="horizontal" gap="2" align="center">
+  }),
+  "uik-separator": () => ({
+    layout: "center",
+    size: "sm",
+    html: `<uik-separator></uik-separator>`,
+  }),
+  "uik-section-card": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-section-card>
+<span slot="title">Account</span>
+<div>Update your profile details.</div>
+<div slot="actions">
+<button type="button">Save</button>
+</div>
+</uik-section-card>`,
+  }),
+  "uik-spinner": () => ({
+    layout: "center",
+    size: "sm",
+    html: `<uik-spinner tone="primary" size="sm"></uik-spinner>`,
+  }),
+  "uik-stack": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-stack direction="horizontal" gap="2" align="center">
 <uik-badge>One</uik-badge>
 <uik-badge variant="secondary">Two</uik-badge>
 <uik-badge variant="outline">Three</uik-badge>
 </uik-stack>`,
-    }),
-    "uik-surface": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-surface variant="elevated" bordered>
+  }),
+  "uik-surface": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-surface variant="elevated" bordered>
 <uik-box padding="4"><uik-text as="p">Surface content</uik-text></uik-box>
 </uik-surface>`,
-    }),
-    "uik-switch": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-switch checked><span slot="label">Notifications</span></uik-switch>`,
-    }),
-    "uik-tab": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-tabs>
+  }),
+  "uik-switch": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-switch checked><span slot="label">Notifications</span></uik-switch>`,
+  }),
+  "uik-tab": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-tabs>
 <uik-tab value="overview">Overview</uik-tab>
 <uik-tab-panel value="overview"><uik-text as="p" size="sm">Panel content</uik-text></uik-tab-panel>
 </uik-tabs>`,
-    }),
-    "uik-tab-panel": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-tabs>
+  }),
+  "uik-tab-panel": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-tabs>
 <uik-tab value="activity">Activity</uik-tab>
 <uik-tab-panel value="activity"><uik-text as="p" size="sm">Panel content</uik-text></uik-tab-panel>
 </uik-tabs>`,
-    }),
-    "uik-tabs": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-tabs>
+  }),
+  "uik-tabs": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-tabs>
 <uik-tab value="overview">Overview</uik-tab>
 <uik-tab value="details">Details</uik-tab>
 <uik-tab-panel value="overview"><uik-text as="p" size="sm">Overview panel</uik-text></uik-tab-panel>
 <uik-tab-panel value="details"><uik-text as="p" size="sm">Details panel</uik-text></uik-tab-panel>
 </uik-tabs>`,
-    }),
-    "uik-text": () => ({
-      layout: "start",
-      size: "sm",
-      html: `<uik-text as="p" tone="muted">Tokenized text</uik-text>`,
-    }),
-    "uik-textarea": () => ({
-      layout: "start",
-      size: "md",
-      html: `<uik-textarea rows="2" placeholder="Notes"></uik-textarea>`,
-    }),
-    "uik-tooltip": () => ({
-      layout: "overlay",
-      size: "md",
-      html: `<uik-tooltip open placement="bottom">
+  }),
+  "uik-text": () => ({
+    layout: "start",
+    size: "sm",
+    html: `<uik-text as="p" tone="muted">Tokenized text</uik-text>`,
+  }),
+  "uik-textarea": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-textarea rows="2" placeholder="Notes"></uik-textarea>`,
+  }),
+  "uik-tooltip": () => ({
+    layout: "overlay",
+    size: "md",
+    html: `<uik-tooltip open placement="bottom">
 <uik-button slot="trigger" variant="outline" size="sm">Tooltip</uik-button>
 Tooltip text
 </uik-tooltip>`,
-    }),
-    "uik-tree-view": () => ({
+  }),
+  "uik-tree-view": () => ({
+    layout: "start",
+    size: "lg",
+    html: `<uik-tree-view data-docs-portfolio="tree-view"></uik-tree-view>`,
+    snippetHtml: `<uik-tree-view></uik-tree-view>`,
+  }),
+  "uik-visually-hidden": (component) => {
+    const hiddenId = `docs-portfolio-hidden-${component.id}`;
+    return {
       layout: "start",
-      size: "lg",
-      html: `<uik-tree-view data-docs-portfolio="tree-view"></uik-tree-view>`,
-    }),
-    "uik-visually-hidden": (component) => {
-      const hiddenId = `docs-portfolio-hidden-${component.id}`;
-      return {
-        layout: "start",
-        size: "sm",
-        html: `<div class="docs-portfolio-hidden">
+      size: "sm",
+      html: `<div class="docs-portfolio-hidden">
 <uik-button variant="outline" size="sm" aria-describedby="${hiddenId}">Hidden label</uik-button>
 <uik-visually-hidden id="${hiddenId}">Screen reader hint</uik-visually-hidden>
 </div>`,
-      };
-    },
-    "uik-shell-activity-bar": () => ({
-      layout: "fill",
-      size: "lg",
-      html: `<uik-shell-activity-bar data-docs-portfolio="shell-activity-bar">
-<uik-text slot="footer" as="p" size="sm" tone="muted">v0.2.0</uik-text>
+      snippetHtml: `<uik-visually-hidden>Screen reader hint</uik-visually-hidden>`,
+    };
+  },
+  "uik-shell-activity-bar": () => ({
+    layout: "fill",
+    size: "lg",
+    html: `<uik-shell-activity-bar data-docs-portfolio="shell-activity-bar">
+<span slot="footer">v0.2.0</span>
 </uik-shell-activity-bar>`,
-    }),
-    "uik-shell-layout": () => ({
-      layout: "shell",
-      size: "xl",
-      html: `<uik-shell-layout isSecondarySidebarVisible class="docs-portfolio-shell-layout">
+    snippetHtml: `<uik-shell-activity-bar>
+<span slot="footer">v0.2.0</span>
+</uik-shell-activity-bar>`,
+  }),
+  "uik-shell-layout": () => ({
+    layout: "shell",
+    size: "xl",
+    html: `<uik-shell-layout isSecondarySidebarVisible class="docs-portfolio-shell-layout">
 <uik-shell-activity-bar slot="activity-bar" data-docs-portfolio="shell-activity-bar"></uik-shell-activity-bar>
 <uik-shell-sidebar slot="primary-sidebar" heading="Workspace" subtitle="Design">
-<uik-text as="p" size="sm" tone="muted">Primary sidebar</uik-text>
+<p>Primary sidebar</p>
 </uik-shell-sidebar>
 <div slot="main-content" class="docs-portfolio-shell-main">
-<uik-text as="p">Main content</uik-text>
+<p>Main content</p>
 </div>
 <uik-shell-secondary-sidebar slot="secondary-sidebar" isOpen heading="Details">
-<uik-text as="p" size="sm" tone="muted">Secondary sidebar</uik-text>
+<p>Secondary sidebar</p>
 </uik-shell-secondary-sidebar>
 <uik-shell-status-bar slot="status-bar" message="Ready" tone="info" meta="Connected"></uik-shell-status-bar>
 </uik-shell-layout>`,
-    }),
-    "uik-shell-secondary-sidebar": () => ({
-      layout: "fill",
-      size: "lg",
-      html: `<uik-shell-secondary-sidebar isOpen heading="Details">
-<uik-text as="p" size="sm" tone="muted">Secondary sidebar</uik-text>
-<uik-text slot="footer" as="p" size="sm" tone="muted">Footer actions</uik-text>
+    snippetHtml: `<uik-shell-layout isSecondarySidebarVisible>
+<uik-shell-activity-bar slot="activity-bar"></uik-shell-activity-bar>
+<uik-shell-sidebar slot="primary-sidebar" heading="Workspace" subtitle="Design">
+<p>Primary sidebar</p>
+</uik-shell-sidebar>
+<div slot="main-content">
+<p>Main content</p>
+</div>
+<uik-shell-secondary-sidebar slot="secondary-sidebar" isOpen heading="Details">
+<p>Secondary sidebar</p>
+</uik-shell-secondary-sidebar>
+<uik-shell-status-bar slot="status-bar" message="Ready" tone="info" meta="Connected"></uik-shell-status-bar>
+</uik-shell-layout>`,
+  }),
+  "uik-shell-secondary-sidebar": () => ({
+    layout: "fill",
+    size: "lg",
+    html: `<uik-shell-secondary-sidebar isOpen heading="Details">
+<p>Secondary sidebar</p>
+<span slot="footer">Footer actions</span>
 </uik-shell-secondary-sidebar>`,
-    }),
-    "uik-shell-sidebar": () => ({
-      layout: "fill",
-      size: "lg",
-      html: `<uik-shell-sidebar heading="Navigation" subtitle="Workspace">
-<uik-text as="p" size="sm" tone="muted">Primary sidebar</uik-text>
-<uik-text slot="footer" as="p" size="sm" tone="muted">Footer links</uik-text>
+  }),
+  "uik-shell-sidebar": () => ({
+    layout: "fill",
+    size: "lg",
+    html: `<uik-shell-sidebar heading="Navigation" subtitle="Workspace">
+<p>Primary sidebar</p>
+<span slot="footer">Footer links</span>
 </uik-shell-sidebar>`,
-    }),
-    "uik-shell-status-bar": () => ({
-      layout: "fill",
-      size: "sm",
-      html: `<uik-shell-status-bar message="Deploying" tone="success" meta="2m left"></uik-shell-status-bar>`,
-    }),
-  };
+  }),
+  "uik-shell-status-bar": () => ({
+    layout: "fill",
+    size: "sm",
+    html: `<uik-shell-status-bar message="Deploying" tone="success" meta="2m left"></uik-shell-status-bar>`,
+  }),
+};
 
-  const renderPreview = (component) => {
-    if (!component.tagName) return null;
-    const template = templates[component.tagName];
-    if (!template) return null;
-    return typeof template === "function" ? template(component) : template;
+const resolveComponentPreview = (component) => {
+  if (!component?.tagName) return null;
+  const template = componentPreviewTemplates[component.tagName];
+  const result = template
+    ? typeof template === "function"
+      ? template(component)
+      : template
+    : null;
+  const previewHtml = result?.previewHtml ?? result?.html ?? "";
+  const snippetHtml = result?.snippetHtml ?? previewHtml;
+  if (previewHtml) {
+    return {
+      layout: result?.layout ?? "center",
+      size: result?.size ?? "md",
+      previewHtml,
+      snippetHtml,
+    };
+  }
+  const fallbackBody = component.summary
+    ? escapeHtml(component.summary)
+    : "Example";
+  const fallbackHtml = `<${component.tagName}>${fallbackBody}</${component.tagName}>`;
+  return {
+    layout: "center",
+    size: "md",
+    previewHtml: fallbackHtml,
+    snippetHtml: fallbackHtml,
   };
+};
+
+const buildComponentPageId = (component) =>
+  component?.tagName ? `components/${component.tagName}` : "components";
+const buildComponentPageHref = (component) =>
+  `/docs/${buildComponentPageId(component)}`;
+
+const renderComponentPortfolio = (components) => {
+  const renderPreview = (component) => resolveComponentPreview(component);
 
   const groups = componentGroupOrder
     .map((groupId) => {
@@ -1198,7 +1314,7 @@ Tooltip text
       component.id,
     )}" data-component-group="${escapeHtml(component.group ?? "utilities")}">
 <div class="docs-portfolio-preview" data-preview-layout="${layout}" data-preview-size="${size}">
-${preview.html}
+${preview.previewHtml}
 </div>
 <div class="docs-portfolio-meta">
 <uik-heading level="3"><code>${escapeHtml(displayName)}</code></uik-heading>
@@ -1301,7 +1417,7 @@ const renderComponentCards = (components) => {
       return `
         <article class="docs-card docs-component" id="component-${component.id}" data-component-group="${escapeHtml(
           component.group ?? "utilities",
-        )}">
+        )}" data-component-tag="${escapeHtml(component.tagName ?? "")}">
           <header class="docs-component-header">
             <div class="docs-component-title">
               <uik-heading level="3"><code>${escapeHtml(component.name)}</code></uik-heading>
@@ -1319,13 +1435,13 @@ const renderComponentCards = (components) => {
           </header>
           <uik-separator class="docs-component-separator"></uik-separator>
           <uik-description-list class="docs-component-description" density="compact">
-            ${buildRow("API", component.attributes ?? [])}
+            ${buildRow("Attributes", component.attributes ?? [])}
             ${buildRow("Properties", component.properties ?? [])}
             ${buildRow("Slots", component.slots ?? [])}
-            ${buildRow("Parts", component.parts ?? [])}
+            ${buildRow("Parts", component.cssParts ?? [])}
             ${buildRow("Events", component.events ?? [])}
             ${buildRow("A11y", component.a11y ?? [])}
-            ${buildRow("CSS Vars", component.cssCustomProperties ?? [])}
+            ${buildRow("Tokens", component.cssCustomProperties ?? [])}
             ${notesRow}
           </uik-description-list>
         </article>
@@ -1333,6 +1449,210 @@ const renderComponentCards = (components) => {
     })
     .map(stripBlankLines)
     .join("\n");
+};
+
+const componentPackageDescriptions = new Map([
+  [
+    "ui-primitives",
+    "Foundational components for layout, typography, forms, and feedback.",
+  ],
+  [
+    "ui-patterns",
+    "Composed patterns that bundle primitives into common UI blocks.",
+  ],
+  [
+    "ui-shell",
+    "Shell layout primitives that structure application chrome and panels.",
+  ],
+]);
+const componentPackageOrder = ["ui-primitives", "ui-patterns", "ui-shell"];
+const sortPackagesByOrder = (packages = []) => {
+  const order = new Map(componentPackageOrder.map((id, index) => [id, index]));
+  return [...packages].sort((a, b) => {
+    const rankA = order.get(a.id) ?? Number.POSITIVE_INFINITY;
+    const rankB = order.get(b.id) ?? Number.POSITIVE_INFINITY;
+    if (rankA !== rankB) return rankA - rankB;
+    return String(a.id ?? "").localeCompare(String(b.id ?? ""));
+  });
+};
+
+const renderComponentIndexCard = (component) => {
+  const preview = resolveComponentPreview(component);
+  if (!preview) return "";
+  const summary = component.summary ? escapeHtml(component.summary) : "";
+  const displayName = component.tagName
+    ? `<${component.tagName}>`
+    : component.name;
+  const layout = preview.layout ?? "center";
+  const size = preview.size ?? "md";
+  return stripBlankLines(`
+<article class="docs-card docs-portfolio-card" data-component-tag="${escapeHtml(
+    component.tagName ?? "",
+  )}" data-component-package="${escapeHtml(component.packageId ?? "")}">
+<div class="docs-portfolio-preview" data-preview-layout="${layout}" data-preview-size="${size}">
+${preview.previewHtml}
+</div>
+<div class="docs-portfolio-meta">
+<uik-heading level="3"><code>${escapeHtml(displayName)}</code></uik-heading>
+${summary ? `<uik-text as="p" class="docs-paragraph">${summary}</uik-text>` : ""}
+<uik-link href="${buildComponentPageHref(component)}" class="docs-portfolio-link">View details</uik-link>
+</div>
+</article>`);
+};
+
+const renderComponentIndexGroup = (packageMeta, components) => {
+  const cards = components.map(renderComponentIndexCard).filter(Boolean);
+  if (!cards.length) return "";
+  const description = componentPackageDescriptions.get(packageMeta.id) ?? "";
+  const countLabel = `${components.length} component${
+    components.length === 1 ? "" : "s"
+  }`;
+  return stripBlankLines(`
+<section class="docs-portfolio-group" data-portfolio-group="${escapeHtml(
+    packageMeta.id ?? "",
+  )}">
+<header class="docs-portfolio-group-header">
+  <div class="docs-portfolio-group-title">
+    <uik-heading level="3">${escapeHtml(
+      packageMeta.name ?? packageMeta.id ?? "Components",
+    )}</uik-heading>
+    ${
+      description
+        ? `<uik-text as="p" class="docs-paragraph">${escapeHtml(
+            description,
+          )}</uik-text>`
+        : ""
+    }
+  </div>
+  <uik-badge variant="outline">${countLabel}</uik-badge>
+</header>
+<div class="docs-portfolio-grid">
+${cards.join("\n")}
+</div>
+</section>`);
+};
+
+const renderComponentsIndex = (packages) => {
+  const sections = sortPackagesByOrder(packages)
+    .map((pkg) => {
+      const components = buildComponentsFromApi(pkg.components ?? [], pkg);
+      return renderComponentIndexGroup(pkg, components);
+    })
+    .filter(Boolean);
+  if (!sections.length) return "";
+  return `<div class="docs-portfolio">${sections.join("\n")}</div>`;
+};
+
+const buildComponentUsageSnippet = (component, packageMeta) => {
+  const preview = resolveComponentPreview(component);
+  const markupSource =
+    preview?.snippetHtml ??
+    preview?.previewHtml ??
+    (component.tagName ? `<${component.tagName}></${component.tagName}>` : "");
+  const markup = stripBlankLines(markupSource).trim();
+  const importPath = packageMeta?.id
+    ? `@ismail-elkorchi/${packageMeta.id}/register`
+    : "@ismail-elkorchi/ui-primitives/register";
+  return stripBlankLines(`\`\`\`html
+<script type="module">
+  import "${importPath}";
+</script>
+
+${markup}
+\`\`\``);
+};
+
+const buildComponentDetailPage = (component, packageMeta, highlighter) => {
+  const preview = resolveComponentPreview(component);
+  const overview =
+    component.summary?.trim() ||
+    `Reference for ${component.tagName ?? component.name ?? "component"}.`;
+  const previewMarkup = preview
+    ? stripBlankLines(`
+<div class="docs-card docs-component-preview-card" data-component-preview="${escapeHtml(
+        component.tagName ?? "",
+      )}">
+  <div class="docs-portfolio-preview" data-preview-layout="${preview.layout ?? "center"}" data-preview-size="${preview.size ?? "md"}">
+    ${preview.previewHtml}
+  </div>
+</div>`)
+    : "";
+  const usageSnippet = buildComponentUsageSnippet(component, packageMeta);
+  const apiMarkup = stripBlankLines(
+    `<div class="docs-components" data-component-api="${escapeHtml(
+      component.tagName ?? "",
+    )}">
+${renderComponentCards([component])}
+</div>`,
+  );
+
+  const rawSections = [
+    { title: "Overview", bodyMarkdown: overview },
+    ...(previewMarkup
+      ? [{ title: "Preview", bodyMarkdown: previewMarkup }]
+      : []),
+    { title: "Usage", bodyMarkdown: usageSnippet },
+    { title: "API", bodyMarkdown: apiMarkup },
+  ];
+
+  const { sections, toc } = buildSectionsAndTocFromRawSections(
+    rawSections,
+    highlighter,
+  );
+
+  return {
+    id: buildComponentPageId(component),
+    title: component.name ?? component.tagName ?? "Component",
+    summary: component.summary ?? "",
+    navLabel: component.name ?? component.tagName ?? undefined,
+    group: packageMeta?.name ?? "Components",
+    kind: "Component",
+    package: packageMeta?.id ?? undefined,
+    type: "component",
+    visibility: "public",
+    navHidden: true,
+    sections,
+    toc,
+  };
+};
+
+const buildComponentDetailPages = (apiPackages, highlighter) => {
+  const pages = [];
+  for (const pkg of sortPackagesByOrder(apiPackages)) {
+    const components = buildComponentsFromApi(pkg.components ?? [], pkg);
+    for (const component of components) {
+      pages.push(buildComponentDetailPage(component, pkg, highlighter));
+    }
+  }
+  return pages;
+};
+
+const buildComponentsIndexPage = async (entry, apiPackages, highlighter) => {
+  const intro = entry.summary?.trim() || "Browse UIK components by package.";
+  const indexMarkup = renderComponentsIndex(apiPackages ?? []);
+  const rawSections = [
+    { title: "Overview", bodyMarkdown: intro },
+    ...(indexMarkup
+      ? [{ title: "Components", bodyMarkdown: indexMarkup }]
+      : []),
+  ];
+  const { sections, toc } = buildSectionsAndTocFromRawSections(
+    rawSections,
+    highlighter,
+  );
+  return {
+    id: entry.id,
+    title: entry.title,
+    summary: entry.summary,
+    navLabel: entry.navLabel ?? entry.title,
+    group: entry.group ?? undefined,
+    kind: entry.kind ?? undefined,
+    package: entry.package ?? undefined,
+    type: entry.type ?? "components-index",
+    visibility: normalizeVisibility(entry.visibility),
+    sections,
+    toc,
+  };
 };
 
 const buildComponentsPage = async (entry, apiLookup, highlighter) => {
@@ -1350,7 +1670,10 @@ const buildComponentsPage = async (entry, apiLookup, highlighter) => {
   );
 
   const apiPackage = apiLookup?.get(entry.package ?? "");
-  const components = buildComponentsFromApi(apiPackage?.components ?? []);
+  const components = buildComponentsFromApi(
+    apiPackage?.components ?? [],
+    apiPackage,
+  );
 
   const nextSections = [...rawSections];
 
@@ -1423,11 +1746,15 @@ const buildMarkdownPage = async (entry, highlighter) => {
   };
 };
 
-const buildPages = async (entries, apiLookup, highlighter) => {
+const buildPages = async (entries, apiLookup, apiPackages, highlighter) => {
   const pages = [];
   for (const entry of entries) {
     if (entry.type === "components") {
       pages.push(await buildComponentsPage(entry, apiLookup, highlighter));
+    } else if (entry.type === "components-index") {
+      pages.push(
+        await buildComponentsIndexPage(entry, apiPackages, highlighter),
+      );
     } else {
       pages.push(await buildMarkdownPage(entry, highlighter));
     }
@@ -1445,15 +1772,17 @@ const toPageMeta = (page) => ({
   package: page.package ?? undefined,
   type: page.type ?? undefined,
   visibility: page.visibility ?? "public",
+  navHidden: page.navHidden ?? undefined,
   toc: page.toc ?? [],
 });
 
 const writePageContent = async (kind, page) => {
   const output = { sections: page.sections ?? [] };
   const outputDir = path.join(pagesOutputDir, kind);
-  await fs.mkdir(outputDir, { recursive: true });
   const payload = await formatJson(output);
-  await fs.writeFile(path.join(outputDir, `${page.id}.json`), payload);
+  const outputPath = path.join(outputDir, `${page.id}.json`);
+  await fs.mkdir(path.dirname(outputPath), { recursive: true });
+  await fs.writeFile(outputPath, payload);
 };
 
 const buildSearchDocuments = (pages, kind) =>
@@ -1557,34 +1886,65 @@ const run = async () => {
   const highlighter = await createHighlighter();
   const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
   await validateManifest(manifest);
-  const apiLookup = new Map(apiModel.packages.map((pkg) => [pkg.id, pkg]));
+  const apiPackages = apiModel.packages ?? [];
+  const apiLookup = new Map(apiPackages.map((pkg) => [pkg.id, pkg]));
   const docsPages = await buildPages(
     manifest.docs ?? [],
     apiLookup,
+    apiPackages,
     highlighter,
   );
-  const labPages = await buildPages(manifest.lab ?? [], apiLookup, highlighter);
+  const labPages = await buildPages(
+    manifest.lab ?? [],
+    apiLookup,
+    apiPackages,
+    highlighter,
+  );
+  const componentDetailPages = buildComponentDetailPages(
+    apiPackages,
+    highlighter,
+  );
+  const componentPageMeta = componentDetailPages.map(toPageMeta);
+  const componentPageIds = componentPageMeta.map((page) => page.id);
   const output = {
     docsPages: docsPages.map(toPageMeta),
     labPages: labPages.map(toPageMeta),
+    componentPageIds,
+  };
+  const componentOutput = {
+    componentPages: componentPageMeta,
   };
   const isPublicPage = (page) => page.visibility !== "internal";
+  const docsPagesForSearch = [...docsPages, ...componentDetailPages];
   const searchIndex = buildSearchIndex(
-    docsPages.filter(isPublicPage),
+    docsPagesForSearch.filter(isPublicPage),
     labPages.filter(isPublicPage),
   );
 
   const manifestPayload = await formatJson(output);
+  const componentsPayload = await formatJson(componentOutput);
   const searchPayload = await formatJson(searchIndex);
 
   await writeOrCheck(manifestOutputPath, manifestPayload, check, mismatches);
+  await writeOrCheck(
+    componentsManifestPath,
+    componentsPayload,
+    check,
+    mismatches,
+  );
   if (!check) {
     await Promise.all([
       ...docsPages.map((page) => writePageContent("docs", page)),
+      ...componentDetailPages.map((page) => writePageContent("docs", page)),
       ...labPages.map((page) => writePageContent("lab", page)),
     ]);
   } else {
     for (const page of docsPages) {
+      const outputPath = path.join(pagesOutputDir, "docs", `${page.id}.json`);
+      const payload = await formatJson({ sections: page.sections ?? [] });
+      await writeOrCheck(outputPath, payload, true, mismatches);
+    }
+    for (const page of componentDetailPages) {
       const outputPath = path.join(pagesOutputDir, "docs", `${page.id}.json`);
       const payload = await formatJson({ sections: page.sections ?? [] });
       await writeOrCheck(outputPath, payload, true, mismatches);
