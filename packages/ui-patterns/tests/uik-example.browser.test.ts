@@ -50,10 +50,10 @@ describe("uik-example", () => {
 
     await example.updateComplete;
 
-    const header = example.shadowRoot?.querySelector([(part = header)]);
+    const header = example.shadowRoot?.querySelector('[part="header"]');
     const tabs = example.shadowRoot?.querySelector("uik-tabs");
-    const preview = example.shadowRoot?.querySelector([(part = preview)]);
-    const code = example.shadowRoot?.querySelector([(part = code)]);
+    const preview = example.shadowRoot?.querySelector('[part="preview"]');
+    const code = example.shadowRoot?.querySelector('[part="code"]');
 
     expect(header?.hasAttribute("hidden")).toBe(false);
     expect(tabs).toBeTruthy();
