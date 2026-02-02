@@ -11,7 +11,7 @@ export const styles = css`
       var(--uik-layout-control-padding-x-2);
     color: oklch(var(--uik-component-json-viewer-fg));
     background-color: oklch(var(--uik-component-json-viewer-bg));
-    border: var(--uik-component-json-viewer-border-width) solid
+    border: var(--uik-border-width-1) solid
       oklch(var(--uik-component-json-viewer-border));
     border-radius: var(--uik-component-json-viewer-radius);
     font-family: var(--uik-typography-font-family-mono);
@@ -135,7 +135,7 @@ export const styles = css`
       var(--uik-layout-control-padding-x-1);
     color: oklch(var(--uik-component-json-viewer-fg));
     background-color: oklch(var(--uik-component-json-viewer-bg));
-    border: var(--uik-component-json-viewer-border-width) solid
+    border: var(--uik-border-width-1) solid
       oklch(var(--uik-component-json-viewer-border));
     border-radius: var(--uik-component-json-viewer-radius);
     font-size: var(--uik-typography-font-size-1);
@@ -158,10 +158,9 @@ export const styles = css`
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
     border-radius: var(--uik-component-json-viewer-radius);
-    background-color: oklch(var(--uik-component-json-viewer-error-bg));
-    border: var(--uik-component-json-viewer-border-width) solid
-      oklch(var(--uik-component-json-viewer-error-border));
-    color: oklch(var(--uik-component-json-viewer-error-fg));
+    background-color: oklch(var(--uik-color-danger-1));
+    border: var(--uik-border-width-1) solid oklch(var(--uik-border-danger));
+    color: oklch(var(--uik-text-danger));
     font-weight: var(--uik-typography-font-weight-medium);
   }
 
@@ -170,9 +169,6 @@ export const styles = css`
       --uik-component-json-viewer-bg: Canvas;
       --uik-component-json-viewer-fg: CanvasText;
       --uik-component-json-viewer-border: CanvasText;
-      --uik-component-json-viewer-error-bg: Canvas;
-      --uik-component-json-viewer-error-fg: CanvasText;
-      --uik-component-json-viewer-error-border: CanvasText;
     }
 
     .action-button {
@@ -186,6 +182,12 @@ export const styles = css`
       outline: var(--uik-border-width-1) solid currentcolor;
       outline-offset: var(--uik-space-1);
       box-shadow: none;
+    }
+
+    .error {
+      color: CanvasText;
+      background-color: Canvas;
+      border-color: CanvasText;
     }
   }
 `;

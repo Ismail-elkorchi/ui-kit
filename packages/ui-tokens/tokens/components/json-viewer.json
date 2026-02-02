@@ -16,32 +16,10 @@
         "$type": "color",
         "$description": "Component json viewer border."
       },
-      "borderWidth": {
-        "$value": "{border.width.1}",
-        "$type": "dimension",
-        "$description": "Component json viewer border width."
-      },
       "radius": {
         "$value": "{radius.2}",
         "$type": "dimension",
         "$description": "Component json viewer radius."
-      },
-      "error": {
-        "bg": {
-          "$value": "{color.danger.1}",
-          "$type": "color",
-          "$description": "Component json viewer error background."
-        },
-        "fg": {
-          "$value": "{text.danger}",
-          "$type": "color",
-          "$description": "Component json viewer error foreground."
-        },
-        "border": {
-          "$value": "{border.danger}",
-          "$type": "color",
-          "$description": "Component json viewer error border."
-        }
       }
     }
   }
