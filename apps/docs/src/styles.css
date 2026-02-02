@@ -28,17 +28,11 @@ body {
   min-height: 100%;
   margin: var(--uik-space-0);
   background-color: oklch(var(--uik-surface-bg));
-  background-image:
-    radial-gradient(
-      circle at top left,
-      oklch(var(--uik-color-accent-2) / var(--uik-opacity-30)),
-      oklch(var(--uik-surface-bg) / var(--uik-opacity-0))
-    ),
-    radial-gradient(
-      circle at bottom right,
-      oklch(var(--uik-color-accent-5) / var(--uik-opacity-20)),
-      oklch(var(--uik-surface-bg) / var(--uik-opacity-0))
-    );
+  background-image: radial-gradient(
+    circle at top left,
+    oklch(var(--uik-color-accent-2) / var(--uik-opacity-30)),
+    oklch(var(--uik-surface-bg) / var(--uik-opacity-0))
+  );
   background-attachment: fixed;
 }
 
