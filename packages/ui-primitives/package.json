@@ -71,6 +71,11 @@
       "import": "./dist/src/atomic/content/uik-description-list/index.js",
       "default": "./dist/src/atomic/content/uik-description-list/index.js"
     },
+    "./uik-json-viewer": {
+      "types": "./dist/src/atomic/content/uik-json-viewer/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-json-viewer/index.js",
+      "default": "./dist/src/atomic/content/uik-json-viewer/index.js"
+    },
     "./uik-dialog": {
       "types": "./dist/src/atomic/overlay/uik-dialog/index.d.ts",
       "import": "./dist/src/atomic/overlay/uik-dialog/index.js",

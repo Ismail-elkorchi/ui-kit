@@ -2,6 +2,7 @@ export { UikAlert } from "./src/atomic/feedback/uik-alert/index.js";
 export { UikBadge } from "./src/atomic/content/uik-badge/index.js";
 export { UikCodeBlock } from "./src/atomic/content/uik-code-block/index.js";
 export { UikDescriptionList } from "./src/atomic/content/uik-description-list/index.js";
+export { UikJsonViewer } from "./src/atomic/content/uik-json-viewer/index.js";
 export { UikBox } from "./src/atomic/layout/uik-box/index.js";
 export { UikButton } from "./src/atomic/control/uik-button/index.js";
 export { UikCheckbox } from "./src/atomic/control/uik-checkbox/index.js";
@@ -40,6 +41,10 @@ export { UikRadioGroup } from "./src/composed/collection/uik-radio-group/index.j
 export { UikTooltip } from "./src/composed/overlay/uik-tooltip/index.js";
 export { UikCommandPalette } from "./src/composed/overlay/uik-command-palette/index.js";
 export type { UikCodeBlockCopyDetail } from "./src/atomic/content/uik-code-block/index.js";
+export type {
+  JsonViewerCopyDetail,
+  JsonViewerCopyKind,
+} from "./src/atomic/content/uik-json-viewer/index.js";
 export type {
   UikNavItem,
   UikNavSelectDetail,
