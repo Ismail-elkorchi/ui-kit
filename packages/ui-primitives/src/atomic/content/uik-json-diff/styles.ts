@@ -146,6 +146,7 @@ export const styles = css`
   .detail {
     display: grid;
     gap: var(--uik-layout-control-gap-2);
+    grid-column: 1 / -1;
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
     border-radius: var(--uik-radius-2);

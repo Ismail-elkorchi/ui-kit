@@ -569,20 +569,24 @@ export class UikJsonDiff extends LitElement {
               `
             : null}
         </span>
-      </div>
-      <div
-        part="detail"
-        class="detail"
-        id=${detailId}
-        role="group"
-        ?hidden=${!isOpen}
-      >
-        ${hasBefore
-          ? this.renderValueBlock("Before", beforeValue, "detail-block-before")
-          : null}
-        ${hasAfter
-          ? this.renderValueBlock("After", afterValue, "detail-block-after")
-          : null}
+        <div
+          part="detail"
+          class="detail"
+          id=${detailId}
+          role="group"
+          ?hidden=${!isOpen}
+        >
+          ${hasBefore
+            ? this.renderValueBlock(
+                "Before",
+                beforeValue,
+                "detail-block-before",
+              )
+            : null}
+          ${hasAfter
+            ? this.renderValueBlock("After", afterValue, "detail-block-after")
+            : null}
+        </div>
       </div>
     `;
   }
