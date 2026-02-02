@@ -56,6 +56,8 @@ export const styles = css`
     position: absolute;
     inset-block-start: var(--uik-component-code-block-copy-offset);
     inset-inline-end: var(--uik-component-code-block-copy-offset);
+    display: inline-flex;
+    align-items: center;
     padding: var(--uik-component-code-block-copy-padding-y)
       var(--uik-component-code-block-copy-padding-x);
     font-family: var(--uik-component-code-block-font-family);
@@ -86,5 +88,27 @@ export const styles = css`
   .copy:disabled {
     cursor: default;
     opacity: var(--uik-component-code-block-copy-disabled-opacity);
+  }
+
+  @media (forced-colors: active) {
+    .wrapper,
+    .inline {
+      color: CanvasText;
+      background-color: Canvas;
+      border-color: CanvasText;
+    }
+
+    .copy {
+      forced-color-adjust: none;
+      color: ButtonText;
+      background-color: ButtonFace;
+      border-color: ButtonText;
+    }
+
+    .copy:focus-visible {
+      box-shadow: none;
+      outline: var(--uik-component-code-block-copy-focus-width) solid Highlight;
+      outline-offset: var(--uik-component-code-block-copy-focus-offset);
+    }
   }
 `;
