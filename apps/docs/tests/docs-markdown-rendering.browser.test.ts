@@ -91,6 +91,12 @@ describe("docs markdown rendering", () => {
     const copyButton =
       firstBlock.shadowRoot?.querySelector<HTMLButtonElement>("button.copy");
     expect(copyButton).toBeTruthy();
+    const styleText = Array.from(
+      firstBlock.shadowRoot?.querySelectorAll("style") ?? [],
+    )
+      .map((style) => style.textContent ?? "")
+      .join("\n");
+    expect(styleText).toContain("--uik-component-code-block-border");
 
     const originalClipboard = navigator.clipboard;
     const writeText = vi.fn().mockResolvedValue(undefined);
