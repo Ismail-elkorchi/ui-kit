@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { UikBadge } from "../src/atomic/content/uik-badge";
-import type { UikCodeBlock } from "../src/atomic/content/uik-code-block";
+import type {
+  UikCodeBlock,
+  UikCodeBlockCopyDetail,
+} from "../src/atomic/content/uik-code-block";
 import type { UikDescriptionList } from "../src/atomic/content/uik-description-list";
 import type { UikHeading } from "../src/atomic/content/uik-heading";
 import type { UikIcon } from "../src/atomic/content/uik-icon";
@@ -197,7 +200,17 @@ describe("uik content primitives", () => {
     });
 
     try {
+      const copyEvent = new Promise<CustomEvent<UikCodeBlockCopyDetail>>(
+        (resolve) => {
+          codeBlock.addEventListener(
+            "code-block-copy",
+            (event) => resolve(event as CustomEvent<UikCodeBlockCopyDetail>),
+            { once: true },
+          );
+        },
+      );
       copyButton?.click();
+      await copyEvent;
       await codeBlock.updateComplete;
 
       expect(execCommand).toHaveBeenCalledWith("copy");
