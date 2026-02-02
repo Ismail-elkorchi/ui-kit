@@ -138,17 +138,6 @@ body {
   width: 100%;
 }
 
-.docs-fixture-header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--uik-space-3);
-  padding: var(--uik-space-4);
-  border-radius: var(--uik-radius-4);
-  border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
-  background-color: oklch(var(--uik-surface-card));
-  box-shadow: var(--uik-shadow-1);
-}
-
 .docs-hero::part(base) {
   background-image:
     radial-gradient(
