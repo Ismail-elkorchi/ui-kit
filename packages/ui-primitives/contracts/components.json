@@ -110,9 +110,9 @@
       "id": "code-block",
       "tagName": "uik-code-block",
       "summary": "Read-only code block with optional copy action.",
-      "attributes": ["copy (boolean)", "inline (boolean)", "copy-label"],
+      "attributes": ["copyable (boolean)", "inline (boolean)", "copy-label"],
       "slots": ["default", "copy-label"],
-      "parts": ["base", "content", "copy-button", "inline"],
+      "parts": ["base", "content", "copy-button", "copy-status", "inline"],
       "events": ["code-block-copy (detail: {value, success})"],
       "a11y": [],
       "cssVars": [
