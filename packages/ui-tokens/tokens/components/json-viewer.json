@@ -1,0 +1,255 @@
+{
+  "component": {
+    "jsonViewer": {
+      "bg": {
+        "$value": "{surface.bg}",
+        "$type": "color",
+        "$description": "Component json viewer background."
+      },
+      "fg": {
+        "$value": "{text.default}",
+        "$type": "color",
+        "$description": "Component json viewer foreground."
+      },
+      "border": {
+        "$value": "{border.muted}",
+        "$type": "color",
+        "$description": "Component json viewer border."
+      },
+      "borderWidth": {
+        "$value": "{border.width.1}",
+        "$type": "dimension",
+        "$description": "Component json viewer border width."
+      },
+      "radius": {
+        "$value": "{radius.2}",
+        "$type": "dimension",
+        "$description": "Component json viewer radius."
+      },
+      "paddingX": {
+        "$value": "{layout.control.paddingX.2}",
+        "$type": "dimension",
+        "$description": "Component json viewer padding X."
+      },
+      "paddingY": {
+        "$value": "{layout.control.paddingY.2}",
+        "$type": "dimension",
+        "$description": "Component json viewer padding Y."
+      },
+      "fontFamily": {
+        "$value": "{typography.fontFamily.mono}",
+        "$type": "fontFamily",
+        "$description": "Component json viewer font family."
+      },
+      "fontSize": {
+        "$value": "{typography.fontSize.2}",
+        "$type": "dimension",
+        "$description": "Component json viewer font size."
+      },
+      "lineHeight": {
+        "$value": "{typography.lineHeight.2}",
+        "$type": "number",
+        "$description": "Component json viewer line height."
+      },
+      "indent": {
+        "$value": "{space.3}",
+        "$type": "dimension",
+        "$description": "Component json viewer indent."
+      },
+      "item": {
+        "height": {
+          "$value": "{size.control.sm}",
+          "$type": "dimension",
+          "$description": "Component json viewer item height."
+        },
+        "gap": {
+          "$value": "{layout.control.gap.2}",
+          "$type": "dimension",
+          "$description": "Component json viewer item gap."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.1}",
+          "$type": "dimension",
+          "$description": "Component json viewer item padding X."
+        },
+        "radius": {
+          "$value": "{radius.2}",
+          "$type": "dimension",
+          "$description": "Component json viewer item radius."
+        },
+        "hoverBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component json viewer item hover background."
+        },
+        "activeBg": {
+          "$value": "{surface.muted}",
+          "$type": "color",
+          "$description": "Component json viewer item active background."
+        }
+      },
+      "toggle": {
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component json viewer toggle foreground."
+        },
+        "size": {
+          "$value": "{size.icon.sm}",
+          "$type": "dimension",
+          "$description": "Component json viewer toggle size."
+        }
+      },
+      "key": {
+        "fg": {
+          "$value": "{text.strong}",
+          "$type": "color",
+          "$description": "Component json viewer key color."
+        }
+      },
+      "value": {
+        "string": {
+          "$value": "{text.success}",
+          "$type": "color",
+          "$description": "Component json viewer string value color."
+        },
+        "number": {
+          "$value": "{text.info}",
+          "$type": "color",
+          "$description": "Component json viewer number value color."
+        },
+        "boolean": {
+          "$value": "{text.warning}",
+          "$type": "color",
+          "$description": "Component json viewer boolean value color."
+        },
+        "null": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component json viewer null value color."
+        },
+        "object": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component json viewer object value color."
+        },
+        "array": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component json viewer array value color."
+        },
+        "unknown": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component json viewer unknown value color."
+        }
+      },
+      "type": {
+        "fg": {
+          "$value": "{text.muted}",
+          "$type": "color",
+          "$description": "Component json viewer type label color."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.1}",
+          "$type": "dimension",
+          "$description": "Component json viewer type label size."
+        }
+      },
+      "action": {
+        "gap": {
+          "$value": "{layout.control.gap.1}",
+          "$type": "dimension",
+          "$description": "Component json viewer action gap."
+        },
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component json viewer action background."
+        },
+        "fg": {
+          "$value": "{text.default}",
+          "$type": "color",
+          "$description": "Component json viewer action foreground."
+        },
+        "border": {
+          "$value": "{border.muted}",
+          "$type": "color",
+          "$description": "Component json viewer action border."
+        },
+        "borderWidth": {
+          "$value": "{border.width.1}",
+          "$type": "dimension",
+          "$description": "Component json viewer action border width."
+        },
+        "radius": {
+          "$value": "{radius.2}",
+          "$type": "dimension",
+          "$description": "Component json viewer action radius."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.1}",
+          "$type": "dimension",
+          "$description": "Component json viewer action padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.1}",
+          "$type": "dimension",
+          "$description": "Component json viewer action padding Y."
+        },
+        "fontSize": {
+          "$value": "{typography.fontSize.1}",
+          "$type": "dimension",
+          "$description": "Component json viewer action font size."
+        },
+        "fontWeight": {
+          "$value": "{typography.fontWeight.medium}",
+          "$type": "fontWeight",
+          "$description": "Component json viewer action font weight."
+        },
+        "lineHeight": {
+          "$value": "{typography.lineHeight.1}",
+          "$type": "number",
+          "$description": "Component json viewer action line height."
+        },
+        "focusOffset": {
+          "$value": "{outline.width.1}",
+          "$type": "dimension",
+          "$description": "Component json viewer action focus offset."
+        },
+        "focusWidth": {
+          "$value": "{outline.width.2}",
+          "$type": "dimension",
+          "$description": "Component json viewer action focus width."
+        }
+      },
+      "error": {
+        "bg": {
+          "$value": "{color.danger.1}",
+          "$type": "color",
+          "$description": "Component json viewer error background."
+        },
+        "fg": {
+          "$value": "{text.danger}",
+          "$type": "color",
+          "$description": "Component json viewer error foreground."
+        },
+        "border": {
+          "$value": "{border.danger}",
+          "$type": "color",
+          "$description": "Component json viewer error border."
+        },
+        "paddingX": {
+          "$value": "{layout.control.paddingX.2}",
+          "$type": "dimension",
+          "$description": "Component json viewer error padding X."
+        },
+        "paddingY": {
+          "$value": "{layout.control.paddingY.2}",
+          "$type": "dimension",
+          "$description": "Component json viewer error padding Y."
+        }
+      }
+    }
+  }
+}
