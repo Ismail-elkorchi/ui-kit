@@ -20,6 +20,7 @@ export interface UikCodeBlockCopyDetail {
  * @part base
  * @part content
  * @part copy-button
+ * @part copy-status
  * @part inline
  * @event code-block-copy (detail: {value, success})
  * @cssprop --uik-component-code-block-bg
