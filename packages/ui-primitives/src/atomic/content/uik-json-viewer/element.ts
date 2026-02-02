@@ -226,15 +226,18 @@ export class UikJsonViewer extends LitElement {
       }
     }
 
-    return {
+    const node: JsonViewerNode = {
       id: path,
       label,
       path,
       value,
       valueType,
       size,
-      children,
     };
+    if (children) {
+      node.children = children;
+    }
+    return node;
   }
 
   private resolveInitialOpenIds(nodes: JsonViewerNode[]): string[] {
