@@ -351,6 +351,38 @@
       ]
     },
     {
+      "id": "json-viewer",
+      "tagName": "uik-json-viewer",
+      "summary": "Token-driven JSON viewer for structured data.",
+      "attributes": [
+        "json (string)",
+        "expanded-depth (number)",
+        "aria-label",
+        "aria-labelledby"
+      ],
+      "slots": [],
+      "parts": [
+        "base",
+        "item",
+        "toggle",
+        "key",
+        "value",
+        "type",
+        "actions",
+        "action-button",
+        "error",
+        "status"
+      ],
+      "events": ["json-viewer-copy (detail: {kind, path, value})"],
+      "a11y": [
+        "Tree role with roving focus. Arrow keys move, Left/Right collapse/expand, Enter/Space toggles."
+      ],
+      "cssVars": ["--uik-component-json-viewer-*"],
+      "notes": [
+        "Copy shortcuts: Ctrl/Cmd+C copies value, Ctrl/Cmd+Shift+C copies path."
+      ]
+    },
+    {
       "id": "link",
       "tagName": "uik-link",
       "summary": "Anchor wrapper with tokenized colors and underline styling.",
