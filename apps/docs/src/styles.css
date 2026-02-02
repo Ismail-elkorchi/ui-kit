@@ -822,7 +822,6 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   .docs-card,
   .docs-lab-panel,
   .docs-skip-link,
-  .docs-code,
   .docs-hero-link {
     border-color: CanvasText;
   }
@@ -832,12 +831,5 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
     background-color: Canvas;
   }
 
-  .docs-code {
-    color: CanvasText;
-    background-color: Canvas;
-  }
-
-  .docs-code .docs-code-token {
-    color: CanvasText;
-  }
+}
 }
