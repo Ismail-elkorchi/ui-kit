@@ -11,9 +11,8 @@ export const styles = css`
       var(--uik-layout-control-padding-x-2);
     color: oklch(var(--uik-component-json-viewer-fg));
     background-color: oklch(var(--uik-component-json-viewer-bg));
-    border: var(--uik-border-width-1) solid
-      oklch(var(--uik-component-json-viewer-border));
-    border-radius: var(--uik-component-json-viewer-radius);
+    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
+    border-radius: var(--uik-radius-2);
     font-family: var(--uik-typography-font-family-mono);
     font-size: var(--uik-typography-font-size-2);
     line-height: var(--uik-typography-line-height-2);
@@ -36,7 +35,7 @@ export const styles = css`
     color: oklch(var(--uik-component-json-viewer-fg));
     background-color: oklch(var(--uik-component-json-viewer-bg));
     border: var(--uik-border-width-0) solid transparent;
-    border-radius: var(--uik-component-json-viewer-radius);
+    border-radius: var(--uik-radius-2);
   }
 
   .item:hover {
@@ -135,9 +134,8 @@ export const styles = css`
       var(--uik-layout-control-padding-x-1);
     color: oklch(var(--uik-component-json-viewer-fg));
     background-color: oklch(var(--uik-component-json-viewer-bg));
-    border: var(--uik-border-width-1) solid
-      oklch(var(--uik-component-json-viewer-border));
-    border-radius: var(--uik-component-json-viewer-radius);
+    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
+    border-radius: var(--uik-radius-2);
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-1);
@@ -157,7 +155,7 @@ export const styles = css`
   .error {
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
-    border-radius: var(--uik-component-json-viewer-radius);
+    border-radius: var(--uik-radius-2);
     background-color: oklch(var(--uik-color-danger-1));
     border: var(--uik-border-width-1) solid oklch(var(--uik-border-danger));
     color: oklch(var(--uik-text-danger));
@@ -168,14 +166,18 @@ export const styles = css`
     :host {
       --uik-component-json-viewer-bg: Canvas;
       --uik-component-json-viewer-fg: CanvasText;
-      --uik-component-json-viewer-border: CanvasText;
+    }
+
+    .wrapper,
+    .action-button,
+    .error {
+      border-color: CanvasText;
     }
 
     .action-button {
       forced-color-adjust: none;
       color: ButtonText;
       background-color: ButtonFace;
-      border-color: ButtonText;
     }
 
     .item:focus-visible {
