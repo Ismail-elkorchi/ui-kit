@@ -558,16 +558,16 @@
               "default": "\"\""
             },
             {
-              "name": "copy",
-              "type": "boolean",
-              "description": "boolean",
-              "default": "false"
-            },
-            {
               "name": "copy-label",
               "type": "string",
               "description": "",
               "default": "\"Copy\""
+            },
+            {
+              "name": "copyable",
+              "type": "boolean",
+              "description": "boolean",
+              "default": "false"
             },
             {
               "name": "inline",
@@ -590,7 +590,7 @@
               "default": "\"\""
             },
             {
-              "name": "copy",
+              "name": "copyable",
               "type": "boolean",
               "description": "",
               "default": "false"
@@ -606,6 +606,12 @@
               "type": "boolean",
               "description": "",
               "default": "false"
+            },
+            {
+              "name": "statusMessage",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
             }
           ],
           "events": [
@@ -622,6 +628,7 @@
             { "name": "base", "description": "" },
             { "name": "content", "description": "" },
             { "name": "copy-button", "description": "" },
+            { "name": "copy-status", "description": "" },
             { "name": "inline", "description": "" }
           ],
           "cssCustomProperties": [
