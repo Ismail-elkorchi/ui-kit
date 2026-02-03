@@ -524,6 +524,32 @@ const resolveNavCurrentId = (location: UikShellLocation) => {
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
+const scheduleIdleTask = (task: () => Promise<void>) =>
+  new Promise<void>((resolve) => {
+    const run = () => {
+      task().finally(resolve);
+    };
+    if ("requestIdleCallback" in window) {
+      (
+        window as Window & {
+          requestIdleCallback: (
+            callback: IdleRequestCallback,
+            options?: IdleRequestOptions,
+          ) => number;
+        }
+      ).requestIdleCallback(
+        () => {
+          run();
+        },
+        { timeout: 1500 },
+      );
+    } else {
+      globalThis.setTimeout(() => {
+        run();
+      }, 0);
+    }
+  });
+
 const collectPageComponentTags = (page: DocPageContent) => {
   const tags = new Set<string>();
   for (const section of page.sections) {
@@ -811,7 +837,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     : null;
   const initialPageComponentsPromise = initialPageContentPromise
     ? initialPageContentPromise.then((pageContent) =>
-        loadPageComponents(pageContent),
+        scheduleIdleTask(() => loadPageComponents(pageContent)),
       )
     : null;
   const initialPageContent = initialPageContentPromise

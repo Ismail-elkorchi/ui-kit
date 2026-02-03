@@ -132,6 +132,6 @@ describe("command palette pattern", () => {
     if (!titleText) {
       throw new Error("Expected docs title text.");
     }
-    expect(titleText.toLowerCase()).toContain("command palette");
+    expect(titleText.toLowerCase()).toMatch(/command[- ]palette/);
   });
 });

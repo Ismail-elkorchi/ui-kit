@@ -76,7 +76,8 @@ describe("patterns docs", () => {
     await customElements.whenDefined("uik-code-block");
     const emptyExample = content.querySelector<HTMLElement>("uik-example");
     if (!emptyExample) throw new Error("Expected empty state example.");
-    const previewSlot = emptyExample.querySelector<HTMLElement>('[slot="preview"]');
+    const previewSlot =
+      emptyExample.querySelector<HTMLElement>('[slot="preview"]');
     expect(previewSlot?.querySelector("uik-empty-state")).toBeTruthy();
 
     const codeBlock = emptyExample.querySelector<HTMLElement>("uik-code-block");
