@@ -53,6 +53,16 @@
       "format": "markdown"
     },
     {
+      "id": "tooling",
+      "title": "Tooling",
+      "summary": "Run gates, generate contracts, refresh docs content, and prepare releases with the UIK CLI.",
+      "navLabel": "Tooling",
+      "group": "Guides",
+      "kind": "Guide",
+      "source": "apps/docs/content/guides/tooling.md",
+      "format": "markdown"
+    },
+    {
       "id": "tokens",
       "title": "Tokens Reference",
       "summary": "UIK tokens are the single source of truth for all visual values and component hooks.",
