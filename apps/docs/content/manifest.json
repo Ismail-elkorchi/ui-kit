@@ -240,7 +240,47 @@
       "navLabel": "Examples",
       "group": "Examples",
       "kind": "Guide",
-      "source": "apps/docs/content/examples.md",
+      "source": "apps/docs/content/examples/index.md",
+      "format": "markdown"
+    },
+    {
+      "id": "examples/settings-form",
+      "title": "Settings form",
+      "summary": "Compose settings flows with validation, toggles, and save actions.",
+      "navLabel": "Settings form",
+      "group": "Examples",
+      "kind": "Example",
+      "source": "apps/docs/content/examples/settings-form.md",
+      "format": "markdown"
+    },
+    {
+      "id": "examples/shell-layout",
+      "title": "Shell layout",
+      "summary": "Arrange navigation, content, and status controls in the UI shell.",
+      "navLabel": "Shell layout",
+      "group": "Examples",
+      "kind": "Example",
+      "source": "apps/docs/content/examples/shell-layout.md",
+      "format": "markdown"
+    },
+    {
+      "id": "examples/command-palette",
+      "title": "Command palette workflow",
+      "summary": "Offer keyboard-first navigation with a command palette trigger.",
+      "navLabel": "Command palette",
+      "group": "Examples",
+      "kind": "Example",
+      "source": "apps/docs/content/examples/command-palette.md",
+      "format": "markdown"
+    },
+    {
+      "id": "examples/apply-preview",
+      "title": "Apply preview",
+      "summary": "Use JSON diff previews to review changes before applying updates.",
+      "navLabel": "Apply preview",
+      "group": "Examples",
+      "kind": "Example",
+      "source": "apps/docs/content/examples/apply-preview.md",
       "format": "markdown"
     }
   ],

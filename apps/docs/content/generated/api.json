@@ -5487,11 +5487,23 @@
               "type": "string",
               "description": "",
               "default": "\"\""
+            },
+            {
+              "name": "variant",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
             }
           ],
           "properties": [
             {
               "name": "title",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "variant",
               "type": "string",
               "description": "",
               "default": "\"\""
@@ -5503,12 +5515,17 @@
               "name": "code",
               "description": "Code snippet (use uik-code-block)."
             },
+            {
+              "name": "controls",
+              "description": "Optional variant controls (e.g. uik-tabs or uik-select)."
+            },
             { "name": "preview", "description": "Live example markup." },
             { "name": "title", "description": "Optional header title." }
           ],
           "cssParts": [
             { "name": "base", "description": "Surface wrapper." },
             { "name": "code", "description": "Code container." },
+            { "name": "controls", "description": "Controls container." },
             { "name": "header", "description": "Header container." },
             { "name": "preview", "description": "Preview container." },
             {
