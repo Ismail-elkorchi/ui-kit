@@ -23,7 +23,7 @@ const waitForNavItems = async (navTree: UikTreeView | null, attempts = 60) => {
   for (let i = 0; i < attempts; i += 1) {
     const hasItems =
       (navTree?.items && navTree.items.length > 0) ||
-      navTree?.shadowRoot?.querySelector<HTMLElement>("[role=\"treeitem\"]");
+      navTree?.shadowRoot?.querySelector<HTMLElement>('[role="treeitem"]');
     if (hasItems) return;
     await nextFrame();
   }
