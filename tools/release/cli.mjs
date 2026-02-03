@@ -67,8 +67,7 @@ const ensureCleanGit = () => {
   }
 };
 
-const readJson = (filePath) =>
-  JSON.parse(fs.readFileSync(filePath, "utf8"));
+const readJson = (filePath) => JSON.parse(fs.readFileSync(filePath, "utf8"));
 
 const writeJson = (filePath, data) => {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
@@ -76,8 +75,7 @@ const writeJson = (filePath, data) => {
 
 const parseVersion = (value) => {
   const normalized = value.startsWith("v") ? value.slice(1) : value;
-  const match =
-    /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/.exec(normalized);
+  const match = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/.exec(normalized);
   if (!match) {
     throw new Error(
       `Invalid version '${value}'. Use semver like 0.3.0 or 0.3.0-beta.1.`,
@@ -214,7 +212,9 @@ const generateReleaseNotes = (version) => {
   const lastTag = getLastTag();
   const range = lastTag ? `${lastTag}..HEAD` : null;
   const summary = getCommitSummary(range);
-  const files = range ? getChangedFiles(range) : getChangedFiles("HEAD~20..HEAD");
+  const files = range
+    ? getChangedFiles(range)
+    : getChangedFiles("HEAD~20..HEAD");
   const changedPackages = getChangedPackages(files);
   const head = runCapture("git", ["rev-parse", "HEAD"]);
   const notes = [
