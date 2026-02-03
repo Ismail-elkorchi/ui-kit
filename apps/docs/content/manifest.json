@@ -116,11 +116,101 @@
     {
       "id": "patterns",
       "title": "Patterns",
-      "summary": "Composed UI patterns built from primitives and tokens.",
+      "summary": "Curated recipes built from primitives, patterns, and tokens.",
       "navLabel": "Patterns",
-      "group": "Components",
+      "group": "Patterns",
       "kind": "Guide",
-      "source": "apps/docs/content/patterns.md",
+      "source": "apps/docs/content/patterns/index.md",
+      "format": "markdown"
+    },
+    {
+      "id": "empty-state",
+      "title": "Empty State",
+      "summary": "Guide first actions when there is no content yet.",
+      "navLabel": "Empty State",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/empty-state.md",
+      "format": "markdown"
+    },
+    {
+      "id": "page-hero",
+      "title": "Page Hero",
+      "summary": "Introduce a page with context, actions, and controls.",
+      "navLabel": "Page Hero",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/page-hero.md",
+      "format": "markdown"
+    },
+    {
+      "id": "section-card",
+      "title": "Section Card",
+      "summary": "Group related settings with aligned actions.",
+      "navLabel": "Section Card",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/section-card.md",
+      "format": "markdown"
+    },
+    {
+      "id": "command-palette",
+      "title": "Command Palette",
+      "summary": "Offer keyboard-first navigation with a command palette.",
+      "navLabel": "Command Palette",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/command-palette.md",
+      "format": "markdown"
+    },
+    {
+      "id": "overlays",
+      "title": "Overlays and Feedback",
+      "summary": "Use dialogs, popovers, tooltips, and progress indicators.",
+      "navLabel": "Overlays and Feedback",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/overlays.md",
+      "format": "markdown"
+    },
+    {
+      "id": "menus",
+      "title": "Menus and Menubars",
+      "summary": "Expose primary actions with menus and menubars.",
+      "navLabel": "Menus and Menubars",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/menus.md",
+      "format": "markdown"
+    },
+    {
+      "id": "shell-patterns",
+      "title": "Shell Patterns",
+      "summary": "Manage shell layout state and status bar controls.",
+      "navLabel": "Shell Patterns",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/shell-patterns.md",
+      "format": "markdown"
+    },
+    {
+      "id": "example-blocks",
+      "title": "Example Blocks",
+      "summary": "Use uik-example to pair previews with copyable code.",
+      "navLabel": "Example Blocks",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/example-blocks.md",
+      "format": "markdown"
+    },
+    {
+      "id": "apply-preview",
+      "title": "Apply Preview",
+      "summary": "Preview JSON changes before applying updates.",
+      "navLabel": "Apply Preview",
+      "group": "Patterns",
+      "kind": "Recipe",
+      "source": "apps/docs/content/patterns/apply-preview.md",
       "format": "markdown"
     },
     {
@@ -155,76 +245,6 @@
     }
   ],
   "lab": [
-    {
-      "id": "shell-patterns",
-      "title": "Shell Patterns",
-      "summary": "Explore shell layouts with live controls that update the layout and status bar.",
-      "navLabel": "Shell Patterns",
-      "group": "Examples",
-      "kind": "Example",
-      "source": "apps/docs/content/lab/shell-patterns.md",
-      "format": "markdown"
-    },
-    {
-      "id": "empty-state",
-      "title": "Empty State",
-      "summary": "Use the empty state pattern with slotted actions and supporting copy.",
-      "navLabel": "Empty State",
-      "group": "Examples",
-      "kind": "Example",
-      "source": "apps/docs/content/lab/empty-state.md",
-      "format": "markdown"
-    },
-    {
-      "id": "section-card",
-      "title": "Section Card",
-      "summary": "Group related content and actions with the section card pattern.",
-      "navLabel": "Section Card",
-      "group": "Examples",
-      "kind": "Example",
-      "source": "apps/docs/content/lab/section-card.md",
-      "format": "markdown"
-    },
-    {
-      "id": "page-hero",
-      "title": "Page Hero",
-      "summary": "Create a page hero with badges, summary, and control panel content.",
-      "navLabel": "Page Hero",
-      "group": "Examples",
-      "kind": "Example",
-      "source": "apps/docs/content/lab/page-hero.md",
-      "format": "markdown"
-    },
-    {
-      "id": "command-palette",
-      "title": "Command Palette",
-      "summary": "Use a command palette pattern to search and navigate the docs.",
-      "navLabel": "Command Palette",
-      "group": "Examples",
-      "kind": "Example",
-      "source": "apps/docs/content/lab/command-palette.md",
-      "format": "markdown"
-    },
-    {
-      "id": "overlays",
-      "title": "Overlays and Feedback",
-      "summary": "Exercise dialogs, popovers, tooltips, and progress indicators.",
-      "navLabel": "Overlays and Feedback",
-      "group": "Examples",
-      "kind": "Example",
-      "source": "apps/docs/content/lab/overlays.md",
-      "format": "markdown"
-    },
-    {
-      "id": "menus",
-      "title": "Menus and Menubars",
-      "summary": "Explore menu and menubar keyboard patterns.",
-      "navLabel": "Menus and Menubars",
-      "group": "Examples",
-      "kind": "Example",
-      "source": "apps/docs/content/lab/menus.md",
-      "format": "markdown"
-    },
     {
       "id": "markdown-rendering",
       "title": "Markdown Rendering Fixture",

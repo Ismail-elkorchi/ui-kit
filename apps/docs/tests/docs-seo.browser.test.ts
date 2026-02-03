@@ -2,7 +2,7 @@ import "@ismail-elkorchi/ui-tokens/base.css";
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { mountDocsApp } from "../app";
-import { labPages, publicDocsPages, publicLabPages } from "../src/content";
+import { labPages, publicDocsPages } from "../src/content";
 
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
@@ -76,20 +76,20 @@ describe("docs seo metadata", () => {
       "index,follow",
     );
 
-    const nextLab =
-      publicLabPages.find((page) => page.id === "empty-state") ??
-      publicLabPages[0];
-    if (!nextLab) throw new Error("No examples pages configured.");
+    const nextPattern =
+      publicDocsPages.find((page) => page.group === "Patterns") ??
+      publicDocsPages[1];
+    if (!nextPattern) throw new Error("No secondary docs pages configured.");
 
-    window.history.pushState({}, "", `/lab/${nextLab.id}`);
+    window.history.pushState({}, "", `/docs/${nextPattern.id}`);
     window.dispatchEvent(new PopStateEvent("popstate"));
 
     await waitForContent();
     await nextFrame();
 
     expectMetadata(
-      nextLab.navLabel ?? nextLab.title,
-      nextLab.summary,
+      nextPattern.navLabel ?? nextPattern.title,
+      nextPattern.summary,
       "index,follow",
     );
   });

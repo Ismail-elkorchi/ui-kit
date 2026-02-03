@@ -114,7 +114,13 @@ const buildActivityItems = (
   });
 };
 
-const docsGroupOrder = ["Guides", "Foundations", "Components", "Examples"];
+const docsGroupOrder = [
+  "Guides",
+  "Foundations",
+  "Components",
+  "Patterns",
+  "Examples",
+];
 const componentSectionShortcuts: Record<string, string[]> = {
   primitives: ["Portfolio", "Usage", "Contracts"],
   shell: ["Portfolio", "Layout layer", "Contracts"],
@@ -347,13 +353,15 @@ const buildNavItems = (
   const base = normalizeBaseUrl(baseUrl);
   const toHref = (key: string) => `${base}${key}`;
 
-  return [
+  const items: UikNavItem[] = [
     {
       id: "docs",
       label: "Docs",
       children: buildDocsGroupItems(docsPageList, baseUrl, activeDocPageId),
     },
-    {
+  ];
+  if (labPageList.length > 0) {
+    items.push({
       id: "lab",
       label: "Examples",
       children: labPageList.map((page) => ({
@@ -361,8 +369,9 @@ const buildNavItems = (
         label: getPageLabel(page),
         href: toHref(`lab/${page.id}`),
       })),
-    },
-  ];
+    });
+  }
+  return items;
 };
 
 const buildMobileNavOptions = (
@@ -400,9 +409,13 @@ const buildMobileNavOptions = (
     )
     .join("");
 
+  const labGroup = labOptions
+    ? `<optgroup label="Examples">${labOptions}</optgroup>`
+    : "";
+
   return `
     ${docsOptions}
-    <optgroup label="Examples">${labOptions}</optgroup>
+    ${labGroup}
   `;
 };
 

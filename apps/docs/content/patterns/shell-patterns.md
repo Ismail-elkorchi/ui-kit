@@ -1,8 +1,11 @@
+# Shell patterns
+
+Use shell controls to manage layout state and status messaging.
+
 ## Status bar controls
 
-Update the status bar message and tone using form-associated primitives.
-
-<div class="docs-lab-panel">
+```example-html
+<uik-stack gap="3">
   <uik-input data-docs-control="status-message" value="Ready">
     <span slot="label">Status message</span>
   </uik-input>
@@ -13,14 +16,13 @@ Update the status bar message and tone using form-associated primitives.
     <uik-radio value="danger"><span slot="label">Danger</span></uik-radio>
     <uik-radio value="muted"><span slot="label">Muted</span></uik-radio>
   </uik-radio-group>
-</div>
+</uik-stack>
+```
 
 ## Secondary sidebar toggle
 
-Toggle the secondary sidebar to test layout changes and focus behavior.
-
-<div class="docs-lab-panel">
-  <uik-switch data-docs-control="secondary-toggle">
-    <span slot="label">Secondary sidebar</span>
-  </uik-switch>
-</div>
+```example-html
+<uik-switch data-docs-control="secondary-toggle">
+  <span slot="label">Secondary sidebar</span>
+</uik-switch>
+```

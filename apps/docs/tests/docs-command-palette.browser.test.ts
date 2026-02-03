@@ -78,7 +78,7 @@ async function runA11y(container: HTMLElement) {
 describe("command palette pattern", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
-    window.history.replaceState({}, "", "/lab/command-palette");
+    window.history.replaceState({}, "", "/docs/command-palette");
   });
 
   it("opens, searches, selects, and restores focus", async () => {
