@@ -31,6 +31,13 @@ export const styles = css`
     min-width: 0;
   }
 
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: var(--uik-component-example-header-gap);
+    flex-shrink: 0;
+  }
+
   .tabs {
     --uik-component-tabs-gap: var(--uik-component-example-header-gap);
     --uik-component-tabs-border: var(--uik-component-example-border);

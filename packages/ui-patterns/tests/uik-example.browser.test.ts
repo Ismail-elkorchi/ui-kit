@@ -6,6 +6,9 @@ import { beforeEach, describe, expect, it } from "vitest";
 import type { UikExample } from "../src/patterns/uik-example";
 import "../src/patterns/uik-example";
 
+const nextFrame = () =>
+  new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
 function formatViolations(violations: Result[]) {
   return violations
     .map((violation) => {
@@ -78,5 +81,53 @@ describe("uik-example", () => {
     }
 
     await runA11y(surface);
+  });
+
+  it("switches preview variants from controls", async () => {
+    const example = document.createElement("uik-example") as UikExample;
+    example.variant = "comfortable";
+    example.innerHTML = `
+      <uik-tabs slot="controls" activation="manual">
+        <uik-tab slot="tab" value="comfortable">Comfortable</uik-tab>
+        <uik-tab slot="tab" value="compact">Compact</uik-tab>
+      </uik-tabs>
+      <div slot="preview" data-variant="comfortable">Comfortable preview</div>
+      <div slot="preview" data-variant="compact">Compact preview</div>
+      <div slot="code" data-variant="comfortable">Comfortable code</div>
+      <div slot="code" data-variant="compact">Compact code</div>
+    `;
+    document.body.append(example);
+
+    await example.updateComplete;
+    await nextFrame();
+
+    const previewComfortable = example.querySelector<HTMLElement>(
+      '[slot="preview"][data-variant="comfortable"]',
+    );
+    const previewCompact = example.querySelector<HTMLElement>(
+      '[slot="preview"][data-variant="compact"]',
+    );
+    if (!previewComfortable || !previewCompact) {
+      throw new Error("Expected preview variants.");
+    }
+    expect(previewComfortable.hasAttribute("hidden")).toBe(false);
+    expect(previewCompact.hasAttribute("hidden")).toBe(true);
+
+    const tabs = example.querySelector("uik-tabs");
+    if (!tabs) throw new Error("Expected controls tabs.");
+    tabs.dispatchEvent(
+      new CustomEvent("tabs-select", {
+        detail: { id: "compact" },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+
+    await example.updateComplete;
+    await nextFrame();
+
+    expect(example.variant).toBe("compact");
+    expect(previewComfortable.hasAttribute("hidden")).toBe(true);
+    expect(previewCompact.hasAttribute("hidden")).toBe(false);
   });
 });
