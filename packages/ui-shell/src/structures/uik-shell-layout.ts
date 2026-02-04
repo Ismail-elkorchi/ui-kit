@@ -39,7 +39,7 @@ import {
  */
 @customElement("uik-shell-layout")
 export class UikShellLayout extends LitElement {
-  static styles = css`
+  static override styles = css`
     uik-shell-layout > :not([data-shell-root]) {
       display: none;
     }

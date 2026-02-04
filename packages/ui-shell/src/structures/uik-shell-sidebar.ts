@@ -32,7 +32,7 @@ import {
  */
 @customElement("uik-shell-sidebar")
 export class UikShellSidebar extends LitElement {
-  static styles = css`
+  static override styles = css`
     uik-shell-sidebar > :not([data-shell-root]) {
       display: none;
     }
