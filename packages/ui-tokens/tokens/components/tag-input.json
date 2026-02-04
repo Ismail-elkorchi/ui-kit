@@ -24,90 +24,15 @@
             "$description": "Component tag input base border hover."
           }
         },
-        "borderWidth": {
-          "$value": "{border.width.1}",
-          "$type": "dimension",
-          "$description": "Component tag input base border width."
-        },
-        "disabledOpacity": {
-          "$value": "{field.disabled.opacity}",
-          "$type": "number",
-          "$description": "Component tag input base disabled opacity."
-        },
         "fg": {
           "$value": "{field.fg}",
           "$type": "color",
           "$description": "Component tag input base fg."
         },
-        "focusRing": {
-          "$value": "{focus.ring.default}",
-          "$type": "color",
-          "$description": "Component tag input base focus ring."
-        },
-        "focusRingOffset": {
-          "$value": "{focus.ring.offset.default}",
-          "$type": "dimension",
-          "$description": "Component tag input base focus ring offset."
-        },
-        "focusRingOpacity": {
-          "$value": "{focus.ring.opacity}",
-          "$type": "number",
-          "$description": "Component tag input base focus ring opacity."
-        },
-        "focusRingWidth": {
-          "$value": "{focus.ring.width}",
-          "$type": "dimension",
-          "$description": "Component tag input base focus ring width."
-        },
-        "fontSize": {
-          "$value": "{typography.fontSize.2}",
-          "$type": "dimension",
-          "$description": "Component tag input base font size."
-        },
-        "fontWeight": {
-          "$value": "{typography.fontWeight.regular}",
-          "$type": "fontWeight",
-          "$description": "Component tag input base font weight."
-        },
-        "lineHeight": {
-          "$value": "{typography.lineHeight.2}",
-          "$type": "number",
-          "$description": "Component tag input base line height."
-        },
-        "height": {
-          "$value": "{size.control.md}",
-          "$type": "dimension",
-          "$description": "Component tag input base height."
-        },
-        "paddingX": {
-          "$value": "{layout.control.paddingX.3}",
-          "$type": "dimension",
-          "$description": "Component tag input base padding X."
-        },
-        "paddingY": {
-          "$value": "{layout.control.paddingY.2}",
-          "$type": "dimension",
-          "$description": "Component tag input base padding Y."
-        },
         "placeholder": {
           "$value": "{field.placeholder}",
           "$type": "color",
           "$description": "Component tag input base placeholder."
-        },
-        "radius": {
-          "$value": "{radius.3}",
-          "$type": "dimension",
-          "$description": "Component tag input base radius."
-        },
-        "shadow": {
-          "$value": "{shadow.0}",
-          "$type": "shadow",
-          "$description": "Component tag input base shadow."
-        },
-        "gap": {
-          "$value": "{space.2}",
-          "$type": "dimension",
-          "$description": "Component tag input base gap."
         }
       },
       "tag": {
@@ -125,53 +50,6 @@
           "$value": "{text.default}",
           "$type": "color",
           "$description": "Component tag input tag fg."
-        },
-        "fontSize": {
-          "$value": "{typography.fontSize.1}",
-          "$type": "dimension",
-          "$description": "Component tag input tag font size."
-        },
-        "fontWeight": {
-          "$value": "{typography.fontWeight.medium}",
-          "$type": "fontWeight",
-          "$description": "Component tag input tag font weight."
-        },
-        "lineHeight": {
-          "$value": "{typography.lineHeight.1}",
-          "$type": "number",
-          "$description": "Component tag input tag line height."
-        },
-        "paddingX": {
-          "$value": "{space.2}",
-          "$type": "dimension",
-          "$description": "Component tag input tag padding X."
-        },
-        "paddingY": {
-          "$value": "{space.1}",
-          "$type": "dimension",
-          "$description": "Component tag input tag padding Y."
-        },
-        "radius": {
-          "$value": "{radius.2}",
-          "$type": "dimension",
-          "$description": "Component tag input tag radius."
-        },
-        "remove": {
-          "fg": {
-            "$value": "{text.muted}",
-            "$type": "color",
-            "$description": "Component tag input remove fg."
-          },
-          "hoverFg": {
-            "$value": "{text.default}",
-            "$type": "color",
-            "$description": "Component tag input remove hover fg."
-          },
-          "hoverBg": {
-            "$value": "{surface.bg}",
-            "$type": "color",
-            "$description": "Component tag input remove hover bg."
-          }
         }
       }
     }
