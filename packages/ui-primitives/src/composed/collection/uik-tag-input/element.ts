@@ -294,21 +294,21 @@ export class UikTagInput extends LitElement {
   private onTagClick = (event: Event) => {
     if (this.disabled || this.readonly) return;
     const button = event.currentTarget as HTMLButtonElement;
-    const index = Number(button.dataset.index);
+    const index = Number(button.dataset["index"]);
     if (Number.isNaN(index)) return;
     this.removeTagAt(index);
   };
 
   private onTagFocus = (event: FocusEvent) => {
     const button = event.currentTarget as HTMLButtonElement;
-    const index = Number(button.dataset.index);
+    const index = Number(button.dataset["index"]);
     if (Number.isNaN(index)) return;
     this.activeIndex = index;
   };
 
   private onTagKeyDown = (event: KeyboardEvent) => {
     const button = event.currentTarget as HTMLButtonElement;
-    const index = Number(button.dataset.index);
+    const index = Number(button.dataset["index"]);
     if (Number.isNaN(index)) return;
 
     switch (event.key) {
