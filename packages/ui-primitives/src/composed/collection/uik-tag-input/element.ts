@@ -67,8 +67,9 @@ const clampIndex = (index: number, length: number) => {
  * @event tag-input-remove (detail: {value, values, index})
  * @event tag-input-change (detail: {value, values})
  * @a11y Input remains the primary focus target; ArrowLeft/Right moves between tags; Enter adds; Backspace/Delete removes.
- * @cssprop --uik-component-tag-input-base-* (bg, border, fg, padding, radius, shadow, focus ring)
- * @cssprop --uik-component-tag-input-tag-* (bg, border, fg, radius, remove)
+ * @cssprop --uik-component-tag-input-tag-bg
+ * @cssprop --uik-component-input-base-* (bg, border, fg, placeholder)
+ * @cssprop --uik-component-badge-secondary-* (bg, border, fg)
  */
 @customElement("uik-tag-input")
 export class UikTagInput extends LitElement {
