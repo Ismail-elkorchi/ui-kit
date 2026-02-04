@@ -12,6 +12,7 @@ describe("ui-primitives exports", () => {
     expect(primitives.UikListbox).toBeDefined();
     expect(primitives.UikOption).toBeDefined();
     expect(primitives.UikCombobox).toBeDefined();
+    expect(primitives.UikTagInput).toBeDefined();
     expect(primitives.UikTabs).toBeDefined();
     expect(primitives.UikTab).toBeDefined();
     expect(primitives.UikTabPanel).toBeDefined();

@@ -29,6 +29,7 @@ export { UikVisuallyHidden } from "./src/atomic/content/uik-visually-hidden/inde
 export { UikNav } from "./src/composed/collection/uik-nav/index.js";
 export { UikNavRail } from "./src/composed/collection/uik-nav-rail/index.js";
 export { UikListbox } from "./src/composed/collection/uik-listbox/index.js";
+export { UikTagInput } from "./src/composed/collection/uik-tag-input/index.js";
 export { UikOption } from "./src/composed/collection/uik-listbox/uik-option.js";
 export { UikCombobox } from "./src/composed/collection/uik-listbox/uik-combobox.js";
 export { UikMenu } from "./src/composed/collection/uik-menu/index.js";
@@ -66,6 +67,11 @@ export type {
   UikListboxActiveDetail,
   UikListboxSelectDetail,
 } from "./src/composed/collection/uik-listbox/index.js";
+export type {
+  TagInputAddDetail,
+  TagInputChangeDetail,
+  TagInputRemoveDetail,
+} from "./src/composed/collection/uik-tag-input/index.js";
 export type {
   UikComboboxItem,
   UikComboboxSelectDetail,

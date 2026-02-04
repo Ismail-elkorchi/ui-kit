@@ -18,7 +18,7 @@ type PopoverArgs = {
 const meta: Meta<PopoverArgs> = {
   title: "Primitives/Popover",
   component: "uik-popover",
-  tags: ["autodocs", "visual"],
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },

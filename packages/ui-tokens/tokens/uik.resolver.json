@@ -94,6 +94,9 @@
           "$ref": "components/combobox.json"
         },
         {
+          "$ref": "components/tag-input.json"
+        },
+        {
           "$ref": "components/code-block.json"
         },
         {

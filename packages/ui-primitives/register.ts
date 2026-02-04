@@ -29,6 +29,7 @@ import "./src/atomic/content/uik-visually-hidden/index.js";
 import "./src/composed/collection/uik-nav/index.js";
 import "./src/composed/collection/uik-nav-rail/index.js";
 import "./src/composed/collection/uik-listbox/index.js";
+import "./src/composed/collection/uik-tag-input/index.js";
 import "./src/composed/collection/uik-listbox/uik-option.js";
 import "./src/composed/collection/uik-listbox/uik-combobox.js";
 import "./src/composed/collection/uik-menu/index.js";
