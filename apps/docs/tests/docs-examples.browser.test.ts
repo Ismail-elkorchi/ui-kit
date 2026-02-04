@@ -2,6 +2,7 @@ import "@ismail-elkorchi/ui-tokens/base.css";
 import axe from "axe-core";
 import type { Result } from "axe-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { userEvent } from "vitest/browser";
 
 import "../src/docs.css";
 import { mountDocsApp } from "../app";
@@ -74,6 +75,20 @@ describe("docs examples", () => {
     await customElements.whenDefined("uik-example");
     await customElements.whenDefined("uik-select");
     await customElements.whenDefined("uik-code-block");
+    await customElements.whenDefined("uik-tag-input");
+
+    const tagInput = content.querySelector("uik-tag-input") as
+      | (HTMLElement & { values?: string[] })
+      | null;
+    if (!tagInput) throw new Error("Tag input not found.");
+    const tagInputField =
+      tagInput.shadowRoot?.querySelector<HTMLInputElement>("input");
+    if (!tagInputField) throw new Error("Tag input field not found.");
+
+    await userEvent.click(tagInputField);
+    await userEvent.type(tagInputField, "ops{Enter}");
+    await nextFrame();
+    expect(tagInput.values?.includes("ops")).toBe(true);
 
     const densityExample = content.querySelector<HTMLElement>(
       'uik-example[data-example="settings-density"]',

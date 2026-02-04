@@ -180,6 +180,10 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
   ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
   ["uik-link", () => import("@ismail-elkorchi/ui-primitives/uik-link")],
   ["uik-listbox", () => import("@ismail-elkorchi/ui-primitives/uik-listbox")],
+  [
+    "uik-tag-input",
+    () => import("@ismail-elkorchi/ui-primitives/uik-tag-input"),
+  ],
   ["uik-menu", () => import("@ismail-elkorchi/ui-primitives/uik-menu")],
   [
     "uik-menu-item",

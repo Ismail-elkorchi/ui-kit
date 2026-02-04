@@ -25,6 +25,17 @@ save actions.
       <option value="eu">Europe</option>
       <option value="apac">Asia Pacific</option>
     </uik-select>
+    <uik-tag-input
+      aria-label="Workspace tags"
+      placeholder="Add tag"
+      values="billing, security, enterprise"
+    ></uik-tag-input>
+    <uik-tag-input
+      aria-label="Legacy tags"
+      placeholder="Add tag"
+      values="legacy, deprecated"
+      disabled
+    ></uik-tag-input>
     <uik-switch name="autoUpdates" checked>
       <span slot="label">Auto-apply weekly updates</span>
       <span slot="hint">We will schedule downtime notifications.</span>
