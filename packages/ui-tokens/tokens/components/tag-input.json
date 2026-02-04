@@ -1,13 +1,6 @@
 {
   "component": {
     "tagInput": {
-      "base": {
-        "bg": {
-          "$value": "{field.bg}",
-          "$type": "color",
-          "$description": "Component tag input base bg."
-        }
-      },
       "tag": {
         "bg": {
           "$value": "{surface.muted}",

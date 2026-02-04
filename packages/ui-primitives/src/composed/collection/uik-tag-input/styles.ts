@@ -24,7 +24,7 @@ export const styles = css`
     font-weight: var(--uik-typography-font-weight-regular);
     line-height: var(--uik-typography-line-height-2);
     color: oklch(var(--uik-component-input-base-fg));
-    background-color: oklch(var(--uik-component-tag-input-base-bg));
+    background-color: oklch(var(--uik-component-input-base-bg));
     border: var(--uik-border-width-1) solid
       oklch(var(--uik-component-input-base-border-default));
     border-radius: var(--uik-radius-3);
