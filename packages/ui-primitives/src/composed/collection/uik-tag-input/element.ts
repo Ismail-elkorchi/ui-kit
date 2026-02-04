@@ -84,8 +84,7 @@ export class UikTagInput extends LitElement {
   @property({ type: Boolean, reflect: true, useDefault: true })
   accessor readonly = false;
   @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
-  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue =
-    "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
   @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
     "";
 
@@ -118,7 +117,11 @@ export class UikTagInput extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (changed.has("values") || changed.has("disabled") || changed.has("name")) {
+    if (
+      changed.has("values") ||
+      changed.has("disabled") ||
+      changed.has("name")
+    ) {
       this.syncFormValue();
       this.activeIndex = clampIndex(this.activeIndex, this.values.length);
     }
