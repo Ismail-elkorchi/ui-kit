@@ -88,15 +88,15 @@ describe("docs integrations", () => {
       expect(getMetaContent('meta[name="description"]')).toBe(page.summary);
       expect(getMetaContent('meta[name="robots"]')).toBe("index,follow");
 
-      const content = document.querySelector<HTMLElement>("[data-docs-content]");
+      const content = document.querySelector<HTMLElement>(
+        "[data-docs-content]",
+      );
       if (!content) throw new Error("Docs content root not found.");
 
       const codeBlock = content.querySelector("uik-code-block[copyable]");
       expect(codeBlock).toBeTruthy();
 
-      const codeText = Array.from(
-        content.querySelectorAll("uik-code-block"),
-      )
+      const codeText = Array.from(content.querySelectorAll("uik-code-block"))
         .map((block) => block.textContent ?? "")
         .join("\n");
 

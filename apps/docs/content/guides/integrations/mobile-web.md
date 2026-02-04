@@ -27,7 +27,10 @@ Set theme + density on the document root:
 ```html
 <html data-uik-theme="light" data-uik-density="comfortable">
   <body>
-    <uik-empty-state title="All set" description="You are ready to go."></uik-empty-state>
+    <uik-empty-state
+      title="All set"
+      description="You are ready to go."
+    ></uik-empty-state>
   </body>
 </html>
 ```
