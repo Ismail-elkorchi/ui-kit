@@ -23,10 +23,10 @@ export const styles = css`
     font-size: var(--uik-typography-font-size-2);
     font-weight: var(--uik-typography-font-weight-regular);
     line-height: var(--uik-typography-line-height-2);
-    color: oklch(var(--uik-component-tag-input-base-fg));
+    color: oklch(var(--uik-component-input-base-fg));
     background-color: oklch(var(--uik-component-tag-input-base-bg));
     border: var(--uik-border-width-1) solid
-      oklch(var(--uik-component-tag-input-base-border-default));
+      oklch(var(--uik-component-input-base-border-default));
     border-radius: var(--uik-radius-3);
     box-shadow: var(--uik-shadow-0);
     transition:
@@ -37,12 +37,12 @@ export const styles = css`
   }
 
   :host(:not([disabled])) .base:hover {
-    border-color: oklch(var(--uik-component-tag-input-base-border-hover));
+    border-color: oklch(var(--uik-component-input-base-border-hover));
   }
 
   .base:focus-within {
     outline: none;
-    border-color: oklch(var(--uik-component-tag-input-base-border-focus));
+    border-color: oklch(var(--uik-component-input-base-border-focus));
     box-shadow:
       var(--uik-shadow-0),
       0 0 0 var(--uik-focus-ring-offset-default)
@@ -73,9 +73,9 @@ export const styles = css`
     padding: var(--uik-space-1) var(--uik-space-2);
     border-radius: var(--uik-radius-2);
     border: var(--uik-border-width-1) solid
-      oklch(var(--uik-component-tag-input-tag-border));
+      oklch(var(--uik-component-badge-secondary-border));
     background-color: oklch(var(--uik-component-tag-input-tag-bg));
-    color: oklch(var(--uik-component-tag-input-tag-fg));
+    color: oklch(var(--uik-component-badge-secondary-fg));
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-1);
@@ -90,7 +90,7 @@ export const styles = css`
 
   .tag:focus-visible {
     outline: var(--uik-border-width-1) solid
-      oklch(var(--uik-component-tag-input-base-border-focus));
+      oklch(var(--uik-component-input-base-border-focus));
     outline-offset: var(--uik-space-1);
   }
 
@@ -120,13 +120,13 @@ export const styles = css`
     margin: 0;
     border: none;
     background: transparent;
-    color: oklch(var(--uik-component-tag-input-base-fg));
+    color: oklch(var(--uik-component-input-base-fg));
     font: inherit;
     line-height: inherit;
   }
 
   .input::placeholder {
-    color: oklch(var(--uik-component-tag-input-base-placeholder));
+    color: oklch(var(--uik-component-input-base-placeholder));
   }
 
   .input:focus {

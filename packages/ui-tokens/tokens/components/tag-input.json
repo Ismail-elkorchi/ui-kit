@@ -6,33 +6,6 @@
           "$value": "{field.bg}",
           "$type": "color",
           "$description": "Component tag input base bg."
-        },
-        "border": {
-          "default": {
-            "$value": "{field.border.default}",
-            "$type": "color",
-            "$description": "Component tag input base border."
-          },
-          "focus": {
-            "$value": "{field.border.focus}",
-            "$type": "color",
-            "$description": "Component tag input base border focus."
-          },
-          "hover": {
-            "$value": "{field.border.hover}",
-            "$type": "color",
-            "$description": "Component tag input base border hover."
-          }
-        },
-        "fg": {
-          "$value": "{field.fg}",
-          "$type": "color",
-          "$description": "Component tag input base fg."
-        },
-        "placeholder": {
-          "$value": "{field.placeholder}",
-          "$type": "color",
-          "$description": "Component tag input base placeholder."
         }
       },
       "tag": {
@@ -40,16 +13,6 @@
           "$value": "{surface.muted}",
           "$type": "color",
           "$description": "Component tag input tag bg."
-        },
-        "border": {
-          "$value": "{border.muted}",
-          "$type": "color",
-          "$description": "Component tag input tag border."
-        },
-        "fg": {
-          "$value": "{text.default}",
-          "$type": "color",
-          "$description": "Component tag input tag fg."
         }
       }
     }
