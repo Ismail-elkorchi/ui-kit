@@ -4599,7 +4599,20 @@
               "default": "[]"
             }
           ],
-          "events": [],
+          "events": [
+            {
+              "name": "tag-input-add",
+              "description": "detail: {value, values, index}"
+            },
+            {
+              "name": "tag-input-remove",
+              "description": "detail: {value, values, index}"
+            },
+            {
+              "name": "tag-input-change",
+              "description": "detail: {value, values}"
+            }
+          ],
           "slots": [],
           "cssParts": [
             { "name": "base", "description": "" },
@@ -4620,7 +4633,9 @@
               "description": "bg, border, fg, radius, remove"
             }
           ],
-          "a11y": [],
+          "a11y": [
+            "Input remains the primary focus target; ArrowLeft/Right moves between tags; Enter adds; Backspace/Delete removes."
+          ],
           "notes": []
         },
         {
