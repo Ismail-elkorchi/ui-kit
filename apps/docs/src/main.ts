@@ -5,37 +5,20 @@ if (!appRoot) {
   throw new Error("Docs root element not found.");
 }
 
-const startApp = () => {
-  void mountDocsApp(appRoot);
+const startApp = async () => {
+  const { createBreakpointObserver } =
+    await import("@ismail-elkorchi/ui-tokens");
+  createBreakpointObserver();
+  await mountDocsApp(appRoot);
 };
 if ("requestAnimationFrame" in window) {
   requestAnimationFrame(() => {
-    globalThis.setTimeout(startApp, 0);
+    globalThis.setTimeout(() => {
+      void startApp();
+    }, 0);
   });
 } else {
-  globalThis.setTimeout(startApp, 0);
+  globalThis.setTimeout(() => {
+    void startApp();
+  }, 0);
 }
-
-const scheduleBreakpointObserver = () => {
-  const run = () => {
-    void import("@ismail-elkorchi/ui-tokens").then(
-      ({ createBreakpointObserver }) => {
-        createBreakpointObserver();
-      },
-    );
-  };
-  if ("requestIdleCallback" in window) {
-    (
-      window as Window & {
-        requestIdleCallback: (
-          callback: IdleRequestCallback,
-          options?: IdleRequestOptions,
-        ) => number;
-      }
-    ).requestIdleCallback(run);
-  } else {
-    globalThis.setTimeout(run, 0);
-  }
-};
-
-scheduleBreakpointObserver();

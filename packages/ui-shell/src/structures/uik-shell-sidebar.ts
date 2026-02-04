@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, css, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 
@@ -32,6 +32,11 @@ import {
  */
 @customElement("uik-shell-sidebar")
 export class UikShellSidebar extends LitElement {
+  static styles = css`
+    uik-shell-sidebar > :not([data-shell-root]) {
+      display: none;
+    }
+  `;
   @property({ type: String }) accessor heading = "";
   @property({ type: String }) accessor subtitle = "";
   @property({ type: Boolean }) accessor isBodyPadded = true;
@@ -64,6 +69,10 @@ export class UikShellSidebar extends LitElement {
         this.updateFooterState(nextHasFooter);
       },
     );
+    if (!this.hasUpdated) {
+      this.requestUpdate();
+      this.performUpdate();
+    }
     this.slotController.connect();
   }
 

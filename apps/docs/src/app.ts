@@ -240,6 +240,7 @@ const baseComponentTags = [
   "uik-badge",
   "uik-box",
   "uik-button",
+  "uik-code-block",
   "uik-heading",
   "uik-link",
   "uik-page-hero",
@@ -1312,16 +1313,21 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
   const renderPageContent = async (view: "docs" | "lab", page: DocPage) => {
     const token = (contentRenderToken += 1);
-    if (contentElement) {
-      contentElement.setAttribute("aria-busy", "true");
-      contentElement.innerHTML = "";
-    }
     const isInitialPage = Boolean(
       initialPage &&
       view === initialView &&
       page.id === initialPage.id &&
       initialPageContentPromise,
     );
+    const shouldReuseInitialContent = Boolean(
+      isInitialPage && initialPageContent,
+    );
+    if (contentElement) {
+      contentElement.setAttribute("aria-busy", "true");
+      if (!shouldReuseInitialContent) {
+        contentElement.innerHTML = "";
+      }
+    }
     const pageContent = isInitialPage
       ? await initialPageContentPromise
       : await loadPageContent(view, page.id);
@@ -1338,7 +1344,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (token !== contentRenderToken) return;
 
     if (contentElement) {
-      contentElement.innerHTML = renderPageSections(pageContent);
+      if (!shouldReuseInitialContent) {
+        contentElement.innerHTML = renderPageSections(pageContent);
+      }
       contentElement.setAttribute("aria-busy", "false");
       finalizeContentRender(page, token);
     }

@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, css, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 
@@ -39,6 +39,11 @@ import {
  */
 @customElement("uik-shell-layout")
 export class UikShellLayout extends LitElement {
+  static styles = css`
+    uik-shell-layout > :not([data-shell-root]) {
+      display: none;
+    }
+  `;
   @property({ type: Boolean }) accessor isSecondarySidebarVisible = false;
   @property({ type: Boolean }) accessor isPrimarySidebarOpen = false;
   @property({ type: String, attribute: "active-route-key" })
@@ -52,6 +57,7 @@ export class UikShellLayout extends LitElement {
   private previousDocumentOverflow: string | null = null;
   private previousBodyOverflow: string | null = null;
   private scrimElement: HTMLDivElement | null = null;
+  private restoreVisibility = false;
 
   private readonly closeReasons: OverlayCloseReason[] = [
     "escape",
@@ -66,6 +72,10 @@ export class UikShellLayout extends LitElement {
     if (!this.style.boxSizing) this.style.boxSizing = "border-box";
     if (!this.style.height) this.style.height = "100%";
     if (!this.style.width) this.style.width = "100%";
+    if (!this.style.visibility) {
+      this.style.visibility = "hidden";
+      this.restoreVisibility = true;
+    }
     this.slotController ??= new LightDomSlotController(
       this,
       "[data-shell-root]",
@@ -95,6 +105,10 @@ export class UikShellLayout extends LitElement {
         this.syncActiveTargets();
       },
     );
+    if (!this.hasUpdated) {
+      this.requestUpdate();
+      this.performUpdate();
+    }
     this.slotController.connect();
     this.resizeObserver ??= new ResizeObserver((entries) => {
       const entry = entries[0];
@@ -119,6 +133,13 @@ export class UikShellLayout extends LitElement {
 
   override firstUpdated() {
     this.updateNarrowState(this.getBoundingClientRect().width);
+    if (this.restoreVisibility) {
+      this.slotController?.sync();
+      requestAnimationFrame(() => {
+        this.style.visibility = "";
+        this.restoreVisibility = false;
+      });
+    }
   }
 
   override createRenderRoot() {
