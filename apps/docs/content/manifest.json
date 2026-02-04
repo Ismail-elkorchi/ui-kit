@@ -63,6 +63,36 @@
       "format": "markdown"
     },
     {
+      "id": "integrations/electron",
+      "title": "Electron",
+      "summary": "Integrate UIK with Electron using standards-first ESM, token layers, and secure renderer boundaries.",
+      "navLabel": "Electron",
+      "group": "Guides",
+      "kind": "Guide",
+      "source": "apps/docs/content/guides/integrations/electron.md",
+      "format": "markdown"
+    },
+    {
+      "id": "integrations/webviews",
+      "title": "Webviews",
+      "summary": "Ship UIK inside embedded webviews with strict CSP, predictable module loading, and token-first styling.",
+      "navLabel": "Webviews",
+      "group": "Guides",
+      "kind": "Guide",
+      "source": "apps/docs/content/guides/integrations/webviews.md",
+      "format": "markdown"
+    },
+    {
+      "id": "integrations/mobile-web",
+      "title": "Mobile web",
+      "summary": "Deliver UIK on mobile web with lean bundles, tokens-first setup, and performance-aware defaults.",
+      "navLabel": "Mobile web",
+      "group": "Guides",
+      "kind": "Guide",
+      "source": "apps/docs/content/guides/integrations/mobile-web.md",
+      "format": "markdown"
+    },
+    {
       "id": "tokens",
       "title": "Tokens Reference",
       "summary": "UIK tokens are the single source of truth for all visual values and component hooks.",
