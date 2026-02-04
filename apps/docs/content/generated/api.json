@@ -4625,13 +4625,14 @@
           ],
           "cssCustomProperties": [
             {
-              "name": "--uik-component-tag-input-base-*",
-              "description": "bg, border, fg, padding, radius, shadow, focus ring"
+              "name": "--uik-component-badge-secondary-*",
+              "description": "bg, border, fg"
             },
             {
-              "name": "--uik-component-tag-input-tag-*",
-              "description": "bg, border, fg, radius, remove"
-            }
+              "name": "--uik-component-input-base-*",
+              "description": "bg, border, fg, placeholder"
+            },
+            { "name": "--uik-component-tag-input-tag-bg", "description": "" }
           ],
           "a11y": [
             "Input remains the primary focus target; ArrowLeft/Right moves between tags; Enter adds; Backspace/Delete removes."
