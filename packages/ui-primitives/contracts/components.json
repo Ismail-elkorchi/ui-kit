@@ -895,6 +895,34 @@
       "cssVars": ["--uik-component-tabs-* (border, gap, tab, panel)"]
     },
     {
+      "id": "tag-input",
+      "tagName": "uik-tag-input",
+      "summary": "Token-driven tag input control with add/remove keyboard support.",
+      "attributes": ["values", "placeholder", "name", "disabled", "readonly"],
+      "slots": [],
+      "parts": [
+        "base",
+        "tags",
+        "tag",
+        "tag-label",
+        "tag-remove",
+        "input",
+        "status"
+      ],
+      "events": [
+        "tag-input-add (detail: {value, values, index})",
+        "tag-input-remove (detail: {value, values, index})",
+        "tag-input-change (detail: {value, values})"
+      ],
+      "a11y": [
+        "Input remains the primary focus target; ArrowLeft/Right moves between tags; Enter adds; Backspace/Delete removes."
+      ],
+      "cssVars": [
+        "--uik-component-tag-input-base-* (bg, border, fg, padding, radius, shadow, focus ring)",
+        "--uik-component-tag-input-tag-* (bg, border, fg, radius, remove)"
+      ]
+    },
+    {
       "id": "text",
       "tagName": "uik-text",
       "summary": "Tokenized text wrapper for size, weight, tone, and truncation.",
