@@ -989,6 +989,12 @@ const componentPreviewTemplates = {
 <span slot="label">Assignee</span>
 </uik-combobox>`,
   }),
+  "uik-tag-input": () => ({
+    layout: "start",
+    size: "md",
+    html: `<uik-tag-input aria-label="Tags" placeholder="Add tag" values="design, ops"></uik-tag-input>`,
+    snippetHtml: `<uik-tag-input aria-label="Tags" placeholder="Add tag" values="design, ops"></uik-tag-input>`,
+  }),
   "uik-command-palette": () => ({
     layout: "start",
     size: "md",
