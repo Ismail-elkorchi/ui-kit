@@ -4488,6 +4488,142 @@
           "notes": []
         },
         {
+          "id": "tag-input",
+          "tagName": "uik-tag-input",
+          "name": "<uik-tag-input>",
+          "kind": "component",
+          "summary": "Token-driven tag input control with add/remove keyboard support.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "values",
+              "type": "string[]",
+              "description": "",
+              "default": "[]"
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "formAssociated",
+              "type": "boolean",
+              "description": "",
+              "default": "true"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "type": "boolean",
+              "description": "",
+              "default": "false"
+            },
+            {
+              "name": "values",
+              "type": "string[]",
+              "description": "",
+              "default": "[]"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "input", "description": "" },
+            { "name": "status", "description": "" },
+            { "name": "tag", "description": "" },
+            { "name": "tag-label", "description": "" },
+            { "name": "tag-remove", "description": "" },
+            { "name": "tags", "description": "" }
+          ],
+          "cssCustomProperties": [
+            {
+              "name": "--uik-component-tag-input-base-*",
+              "description": "bg, border, fg, padding, radius, shadow, focus ring"
+            },
+            {
+              "name": "--uik-component-tag-input-tag-*",
+              "description": "bg, border, fg, radius, remove"
+            }
+          ],
+          "a11y": [],
+          "notes": []
+        },
+        {
           "id": "text",
           "tagName": "uik-text",
           "name": "<uik-text>",
