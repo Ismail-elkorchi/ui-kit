@@ -93,6 +93,16 @@
       "format": "markdown"
     },
     {
+      "id": "policies/edge-adapters",
+      "title": "Edge adapters",
+      "summary": "Policy for framework adapters and integration boundaries in UI Kit.",
+      "navLabel": "Edge adapters",
+      "group": "Guides",
+      "kind": "Guide",
+      "source": "apps/docs/content/guides/policies/edge-adapters.md",
+      "format": "markdown"
+    },
+    {
       "id": "tokens",
       "title": "Tokens Reference",
       "summary": "UIK tokens are the single source of truth for all visual values and component hooks.",

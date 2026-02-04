@@ -356,6 +356,7 @@ ui-shell SHOULD integrate automated:
 
 - ui-shell MUST NOT become a "docs-only" framework.
 - ui-shell MUST NOT bundle opinionated routers, markdown engines, or site generators into runtime primitives.
+- Core packages MUST NOT ship framework adapters or wrapper layers; integrations remain standards-first guidance.
 
 ---
 
