@@ -918,8 +918,9 @@
         "Input remains the primary focus target; ArrowLeft/Right moves between tags; Enter adds; Backspace/Delete removes."
       ],
       "cssVars": [
-        "--uik-component-tag-input-base-* (bg, border, fg, padding, radius, shadow, focus ring)",
-        "--uik-component-tag-input-tag-* (bg, border, fg, radius, remove)"
+        "--uik-component-tag-input-tag-bg",
+        "--uik-component-input-base-* (bg, border, fg, placeholder)",
+        "--uik-component-badge-secondary-* (bg, border, fg)"
       ]
     },
     {
