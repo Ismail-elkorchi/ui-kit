@@ -48,12 +48,8 @@ export const styles = css`
       0 0 0 var(--uik-focus-ring-offset-default)
         oklch(var(--uik-focus-ring-offset-bg)),
       0 0 0
-        calc(
-          var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width)
-        )
-        oklch(
-          var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity)
-        );
+        calc(var(--uik-focus-ring-offset-default) + var(--uik-focus-ring-width))
+        oklch(var(--uik-focus-ring-default) / var(--uik-focus-ring-opacity));
   }
 
   :host([disabled]) .base {
