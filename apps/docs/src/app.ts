@@ -34,12 +34,6 @@ import {
   type DocPageContent,
   type DocPage,
 } from "./content";
-import {
-  wireLabCommandPaletteControls,
-  wireLabOverlayControls,
-  wireLabShellControls,
-  wirePortfolioPreviews,
-} from "./lab-previews";
 
 const normalizeBaseUrl = (value: string) => {
   if (!value) return "/";
@@ -227,6 +221,18 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     () => import("@ismail-elkorchi/ui-primitives/uik-tree-view"),
   ],
 ]);
+let labPreviewsModule: typeof import("./lab-previews") | null = null;
+let labPreviewsPromise: Promise<typeof import("./lab-previews")> | null = null;
+const loadLabPreviews = async () => {
+  if (labPreviewsModule) return labPreviewsModule;
+  if (!labPreviewsPromise) {
+    labPreviewsPromise = import("./lab-previews").then((module) => {
+      labPreviewsModule = module;
+      return module;
+    });
+  }
+  return labPreviewsPromise;
+};
 const prefetchedComponents = new Set([
   "uik-description-list",
   "uik-input",
@@ -563,6 +569,13 @@ const collectPageComponentTags = (page: DocPageContent) => {
   return tags;
 };
 
+const pageHasPortfolio = (page: DocPageContent | null) =>
+  Boolean(
+    page?.sections.some((section) =>
+      section.body.includes("data-docs-portfolio"),
+    ),
+  );
+
 const loadComponent = (tag: string, loader: () => Promise<unknown>) => {
   if (loadedComponents.has(tag)) return Promise.resolve();
   const pending = pendingComponents.get(tag);
@@ -852,9 +865,14 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
-  const initialNeedsPortfolio = initialPageSections.includes(
-    "data-docs-portfolio",
-  );
+  const initialNeedsPortfolio = pageHasPortfolio(initialPageContent);
+  const initialNeedsLabControls =
+    initialPage?.id === "shell-patterns" ||
+    initialPage?.id === "overlays" ||
+    initialPage?.id === "command-palette";
+  if (initialNeedsPortfolio || initialNeedsLabControls) {
+    await loadLabPreviews();
+  }
   const initialContentBusy =
     initialPageContent || initialPage ? "true" : "false";
   const heroMarkup = initialIsInternal
@@ -965,8 +983,8 @@ export const mountDocsApp = async (container: HTMLElement) => {
       </uik-shell-status-bar>
     </uik-shell-layout>
   `;
-  if (initialNeedsPortfolio) {
-    wirePortfolioPreviews(container);
+  if (initialNeedsPortfolio && labPreviewsModule) {
+    labPreviewsModule.wirePortfolioPreviews(container);
   }
   await nextFrame();
 
@@ -1301,27 +1319,38 @@ export const mountDocsApp = async (container: HTMLElement) => {
       page.id === "command-palette";
     if (needsPortfolio || needsLabControls) {
       installCommandCenterBootstrap();
-      if (needsPortfolio) {
-        wirePortfolioPreviews(contentElement);
+      const applyLabPreviews = (module: typeof import("./lab-previews")) => {
+        if (!contentElement) return;
+        if (needsPortfolio) {
+          module.wirePortfolioPreviews(contentElement);
+        }
+        if (page.id === "shell-patterns") {
+          module.wireLabShellControls(
+            contentElement,
+            statusBar,
+            layout,
+            secondarySidebar,
+            setOutlineOpen,
+          );
+        }
+        if (page.id === "overlays") {
+          module.wireLabOverlayControls(contentElement);
+        }
+        if (page.id === "command-palette") {
+          commandPaletteOpenButton =
+            module.wireLabCommandPaletteControls(contentElement);
+        }
+        syncCommandCenterOpenButton();
+        installCommandCenterBootstrap();
+      };
+      if (labPreviewsModule) {
+        applyLabPreviews(labPreviewsModule);
+      } else {
+        void loadLabPreviews().then((module) => {
+          if (token !== undefined && token !== contentRenderToken) return;
+          applyLabPreviews(module);
+        });
       }
-      if (page.id === "shell-patterns") {
-        wireLabShellControls(
-          contentElement,
-          statusBar,
-          layout,
-          secondarySidebar,
-          setOutlineOpen,
-        );
-      }
-      if (page.id === "overlays") {
-        wireLabOverlayControls(contentElement);
-      }
-      if (page.id === "command-palette") {
-        commandPaletteOpenButton =
-          wireLabCommandPaletteControls(contentElement);
-      }
-      syncCommandCenterOpenButton();
-      installCommandCenterBootstrap();
     } else {
       syncCommandCenterOpenButton();
       installCommandCenterBootstrap();
@@ -1351,6 +1380,14 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (token !== contentRenderToken) return;
 
     const shouldAwaitComponents = page.id !== "command-palette";
+    const needsLabPreviews =
+      pageHasPortfolio(pageContent) ||
+      page.id === "shell-patterns" ||
+      page.id === "overlays" ||
+      page.id === "command-palette";
+    if (needsLabPreviews) {
+      await loadLabPreviews();
+    }
     const loadPromise =
       isInitialPage && initialPageComponentsPromise
         ? initialPageComponentsPromise
