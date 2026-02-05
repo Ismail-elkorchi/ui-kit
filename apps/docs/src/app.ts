@@ -245,7 +245,6 @@ const loadBaseComponentBundle = () => {
   return baseComponentBundlePromise;
 };
 
-
 const normalizeNavId = (value: string) =>
   value
     .toLowerCase()
