@@ -260,18 +260,7 @@ const internalBaseComponentTags = [
   "uik-text",
   "uik-tree-view",
 ];
-const preloadedComponents = new Set([
-  "uik-shell-layout",
-  "uik-shell-activity-bar",
-  "uik-shell-sidebar",
-  "uik-shell-secondary-sidebar",
-  "uik-shell-status-bar",
-  "uik-page-hero",
-  "uik-heading",
-  "uik-text",
-  "uik-box",
-  "uik-surface",
-]);
+const preloadedComponents = new Set();
 const loadedComponents = new Set(preloadedComponents);
 const pendingComponents = new Map<string, Promise<unknown>>();
 
