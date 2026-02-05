@@ -681,6 +681,13 @@ const setOutlineOpen = (
       );
       closeButton?.focus();
     });
+  } else if (!isOpen && focus) {
+    const target = secondary.focusReturnTarget;
+    if (target instanceof HTMLElement) {
+      target.focus();
+    } else if (typeof target === "string" && target.trim()) {
+      document.querySelector<HTMLElement>(target)?.focus();
+    }
   }
 };
 
