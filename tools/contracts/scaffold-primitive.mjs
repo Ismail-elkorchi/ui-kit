@@ -120,9 +120,7 @@ const updateResolverSources = async (resolverPath, componentRef) => {
   resolver.sets.base = resolver.sets.base ?? {};
   resolver.sets.base.sources = resolver.sets.base.sources ?? [];
   const sources = resolver.sets.base.sources;
-  const existing = sources.some(
-    (entry) => entry?.$ref === componentRef,
-  );
+  const existing = sources.some((entry) => entry?.$ref === componentRef);
   if (!existing) {
     let insertIndex = sources.length;
     for (let i = sources.length - 1; i >= 0; i -= 1) {
@@ -232,10 +230,7 @@ const run = async () => {
     `export {${className}} from './element';\n`,
   );
 
-  const primitivesIndex = path.join(
-    rootDir,
-    "packages/ui-primitives/index.ts",
-  );
+  const primitivesIndex = path.join(rootDir, "packages/ui-primitives/index.ts");
   const primitivesRegister = path.join(
     rootDir,
     "packages/ui-primitives/register.ts",
