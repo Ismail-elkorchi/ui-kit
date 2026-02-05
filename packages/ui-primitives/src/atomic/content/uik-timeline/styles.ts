@@ -14,14 +14,14 @@ export const styles = css`
   .timeline {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-component-timeline-gap);
+    gap: var(--uik-space-4);
     margin: var(--uik-space-0);
     padding: var(--uik-space-0);
     list-style: none;
   }
 
   :host([density="compact"]) .timeline {
-    gap: var(--uik-component-timeline-gap-compact);
+    gap: var(--uik-space-3);
   }
 
   .item {
@@ -31,14 +31,14 @@ export const styles = css`
         0,
         1fr
       );
-    column-gap: var(--uik-component-timeline-item-gap);
-    padding-block: var(--uik-component-timeline-item-padding-y);
+    column-gap: var(--uik-space-3);
+    padding-block: var(--uik-space-2);
     min-width: 0;
   }
 
   :host([density="compact"]) .item {
-    column-gap: var(--uik-component-timeline-item-gap-compact);
-    padding-block: var(--uik-component-timeline-item-padding-y-compact);
+    column-gap: var(--uik-space-2);
+    padding-block: var(--uik-space-1);
   }
 
   .item::before {
@@ -48,9 +48,9 @@ export const styles = css`
     bottom: 0;
     left: calc(
       var(--uik-component-timeline-marker-size) /
-        2 - var(--uik-component-timeline-line-width) / 2
+        2 - var(--uik-border-width-1) / 2
     );
-    width: var(--uik-component-timeline-line-width);
+    width: var(--uik-border-width-1);
     background-color: oklch(var(--uik-component-timeline-line));
   }
 
@@ -65,8 +65,8 @@ export const styles = css`
   .marker {
     width: var(--uik-component-timeline-marker-size);
     height: var(--uik-component-timeline-marker-size);
-    border-radius: var(--uik-radius-round);
-    border: var(--uik-component-timeline-marker-border-width) solid
+    border-radius: var(--uik-radius-full);
+    border: var(--uik-border-width-1) solid
       oklch(var(--uik-component-timeline-marker-border));
     background-color: oklch(var(--uik-component-timeline-marker-bg));
     margin-top: var(--uik-space-1);
@@ -97,7 +97,7 @@ export const styles = css`
     font-size: var(--uik-typography-font-size-2);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-2);
-    color: oklch(var(--uik-component-timeline-title-fg));
+    color: oklch(var(--uik-text-default));
   }
 
   .meta {
@@ -105,7 +105,7 @@ export const styles = css`
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-1);
-    color: oklch(var(--uik-component-timeline-meta-fg));
+    color: oklch(var(--uik-text-muted));
   }
 
   .description {
@@ -113,7 +113,7 @@ export const styles = css`
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-regular);
     line-height: var(--uik-typography-line-height-2);
-    color: oklch(var(--uik-component-timeline-description-fg));
+    color: oklch(var(--uik-text-secondary));
   }
 
   .status {
@@ -121,7 +121,7 @@ export const styles = css`
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-1);
-    color: oklch(var(--uik-component-timeline-meta-fg));
+    color: oklch(var(--uik-text-muted));
   }
 
   .error {
