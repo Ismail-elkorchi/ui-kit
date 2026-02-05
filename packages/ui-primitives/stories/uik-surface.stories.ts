@@ -12,7 +12,7 @@ type SurfaceArgs = {
 const meta: Meta<SurfaceArgs> = {
   title: "Primitives/Surface",
   component: "uik-surface",
-  tags: ["autodocs", "visual"],
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
