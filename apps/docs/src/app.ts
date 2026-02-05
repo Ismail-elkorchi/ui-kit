@@ -204,7 +204,6 @@ const publicBaseComponentTags = [
   "uik-heading",
   "uik-link",
   "uik-page-hero",
-  "uik-section-card",
   "uik-code-block",
   "uik-select",
   "uik-text",
@@ -219,7 +218,6 @@ const internalBaseComponentTags = [
   "uik-button",
   "uik-heading",
   "uik-link",
-  "uik-section-card",
   "uik-text",
   "uik-tree-view",
 ];
