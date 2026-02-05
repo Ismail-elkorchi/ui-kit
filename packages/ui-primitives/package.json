@@ -81,6 +81,11 @@
       "import": "./dist/src/atomic/content/uik-json-diff/index.js",
       "default": "./dist/src/atomic/content/uik-json-diff/index.js"
     },
+    "./uik-timeline": {
+      "types": "./dist/src/atomic/content/uik-timeline/index.d.ts",
+      "import": "./dist/src/atomic/content/uik-timeline/index.js",
+      "default": "./dist/src/atomic/content/uik-timeline/index.js"
+    },
     "./uik-dialog": {
       "types": "./dist/src/atomic/overlay/uik-dialog/index.d.ts",
       "import": "./dist/src/atomic/overlay/uik-dialog/index.js",

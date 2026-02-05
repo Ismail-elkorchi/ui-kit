@@ -4,6 +4,7 @@ import "./src/atomic/content/uik-code-block/index.js";
 import "./src/atomic/content/uik-description-list/index.js";
 import "./src/atomic/content/uik-json-diff/index.js";
 import "./src/atomic/content/uik-json-viewer/index.js";
+import "./src/atomic/content/uik-timeline/index.js";
 import "./src/atomic/layout/uik-box/index.js";
 import "./src/atomic/control/uik-button/index.js";
 import "./src/atomic/control/uik-checkbox/index.js";

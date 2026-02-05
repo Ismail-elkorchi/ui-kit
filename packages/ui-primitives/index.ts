@@ -4,6 +4,7 @@ export { UikCodeBlock } from "./src/atomic/content/uik-code-block/index.js";
 export { UikDescriptionList } from "./src/atomic/content/uik-description-list/index.js";
 export { UikJsonDiff } from "./src/atomic/content/uik-json-diff/index.js";
 export { UikJsonViewer } from "./src/atomic/content/uik-json-viewer/index.js";
+export { UikTimeline } from "./src/atomic/content/uik-timeline/index.js";
 export { UikBox } from "./src/atomic/layout/uik-box/index.js";
 export { UikButton } from "./src/atomic/control/uik-button/index.js";
 export { UikCheckbox } from "./src/atomic/control/uik-checkbox/index.js";
@@ -52,6 +53,7 @@ export type {
   JsonViewerCopyDetail,
   JsonViewerCopyKind,
 } from "./src/atomic/content/uik-json-viewer/index.js";
+export type { UikTimelineItem } from "./src/atomic/content/uik-timeline/index.js";
 export type {
   UikNavItem,
   UikNavSelectDetail,
