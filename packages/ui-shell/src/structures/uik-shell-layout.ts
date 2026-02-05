@@ -110,6 +110,11 @@ export class UikShellLayout extends LitElement {
     );
     if (!this.hasUpdated) {
       this.requestUpdate();
+      requestAnimationFrame(() => {
+        if (!this.hasUpdated) {
+          this.performUpdate();
+        }
+      });
     }
     this.slotController.connect();
     this.resizeObserver ??= new ResizeObserver((entries) => {

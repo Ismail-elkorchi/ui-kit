@@ -72,6 +72,11 @@ export class UikShellSidebar extends LitElement {
     );
     if (!this.hasUpdated) {
       this.requestUpdate();
+      requestAnimationFrame(() => {
+        if (!this.hasUpdated) {
+          this.performUpdate();
+        }
+      });
     }
     this.slotController.connect();
   }
