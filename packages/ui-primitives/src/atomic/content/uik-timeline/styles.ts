@@ -109,7 +109,7 @@ export const styles = css`
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-regular);
     line-height: var(--uik-typography-line-height-2);
-    color: oklch(var(--uik-text-secondary));
+    color: oklch(var(--uik-text-default));
   }
 
   .status {
