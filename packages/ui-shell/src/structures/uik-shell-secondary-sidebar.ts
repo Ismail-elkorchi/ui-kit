@@ -10,6 +10,7 @@ import {
   ensureLightDomRoot,
   LightDomSlotController,
 } from "../internal/light-dom-slot-controller.js";
+import { getForcedColors } from "../internal/media.js";
 
 type OverlayCloseReason = "escape" | "outside" | "programmatic" | "toggle";
 
@@ -178,7 +179,7 @@ export class UikShellSecondarySidebar extends LitElement {
   override render() {
     if (!this.isOpen) return nothing;
 
-    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const forcedColors = getForcedColors();
     const dividerColor = forcedColors
       ? "CanvasText"
       : "var(--uik-component-shell-divider-color)";

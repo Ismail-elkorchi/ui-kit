@@ -6,6 +6,7 @@ import {
   ensureLightDomRoot,
   LightDomSlotController,
 } from "../internal/light-dom-slot-controller.js";
+import { getForcedColors, getReducedMotion } from "../internal/media.js";
 
 /**
  * Shell region layout container with named slots.
@@ -359,7 +360,7 @@ export class UikShellLayout extends LitElement {
   };
 
   private applyScrimStyles(target: HTMLElement) {
-    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const forcedColors = getForcedColors();
     target.style.position = "fixed";
     target.style.inset = "0";
     target.style.backgroundColor = forcedColors
@@ -492,7 +493,7 @@ export class UikShellLayout extends LitElement {
       "min(100vw, calc(var(--uik-component-shell-activity-bar-width) + var(--uik-component-shell-sidebar-width)))";
     const isReducedMotion =
       document.documentElement.getAttribute("data-uik-motion") === "reduced" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      getReducedMotion();
     const drawerStyles = this.isNarrow
       ? {
           position: "fixed",

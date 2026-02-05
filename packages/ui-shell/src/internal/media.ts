@@ -1,0 +1,38 @@
+type MediaQueryState = {
+  query: MediaQueryList;
+  value: boolean;
+};
+
+const setupQuery = (media: string): MediaQueryState | null => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return null;
+  }
+  const query = window.matchMedia(media);
+  const state: MediaQueryState = { query, value: query.matches };
+  const handler = (event: MediaQueryListEvent) => {
+    state.value = event.matches;
+  };
+  if ("addEventListener" in query) {
+    query.addEventListener("change", handler);
+  } else if ("addListener" in query) {
+    query.addListener(handler);
+  }
+  return state;
+};
+
+let forcedColorsState: MediaQueryState | null | undefined;
+let reducedMotionState: MediaQueryState | null | undefined;
+
+export const getForcedColors = () => {
+  if (forcedColorsState === undefined) {
+    forcedColorsState = setupQuery("(forced-colors: active)");
+  }
+  return forcedColorsState?.value ?? false;
+};
+
+export const getReducedMotion = () => {
+  if (reducedMotionState === undefined) {
+    reducedMotionState = setupQuery("(prefers-reduced-motion: reduce)");
+  }
+  return reducedMotionState?.value ?? false;
+};

@@ -8,6 +8,7 @@ import {
   ensureLightDomRoot,
   LightDomSlotController,
 } from "../internal/light-dom-slot-controller.js";
+import { getForcedColors } from "../internal/media.js";
 
 /**
  * Primary sidebar with heading, actions, body, and footer slots.
@@ -103,7 +104,7 @@ export class UikShellSidebar extends LitElement {
   }
 
   override render() {
-    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const forcedColors = getForcedColors();
     const dividerColor = forcedColors
       ? "CanvasText"
       : "var(--uik-component-shell-divider-color)";

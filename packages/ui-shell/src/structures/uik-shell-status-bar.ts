@@ -8,6 +8,7 @@ import {
   ensureLightDomRoot,
   LightDomSlotController,
 } from "../internal/light-dom-slot-controller.js";
+import { getForcedColors } from "../internal/media.js";
 
 type StatusBarTone = "info" | "success" | "danger" | "muted";
 
@@ -129,7 +130,7 @@ export class UikShellStatusBar extends LitElement {
     const metaContent = showMetaFallback
       ? html`<uik-badge variant="outline">${this.meta}</uik-badge>`
       : nothing;
-    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const forcedColors = getForcedColors();
     const statusBarFg = forcedColors
       ? "CanvasText"
       : "oklch(var(--uik-component-shell-status-bar-fg))";

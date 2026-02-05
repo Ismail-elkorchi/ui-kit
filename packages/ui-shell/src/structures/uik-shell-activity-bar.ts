@@ -8,6 +8,7 @@ import {
   ensureLightDomRoot,
   LightDomSlotController,
 } from "../internal/light-dom-slot-controller.js";
+import { getForcedColors } from "../internal/media.js";
 
 export type {
   UikShellActivityBarIcon,
@@ -88,7 +89,7 @@ export class UikShellActivityBar extends LitElement {
       : hasLabelledby
         ? null
         : "Activity bar";
-    const forcedColors = window.matchMedia("(forced-colors: active)").matches;
+    const forcedColors = getForcedColors();
     const activityBarBg = forcedColors
       ? "Canvas"
       : "oklch(var(--uik-component-shell-activity-bar-bg))";
