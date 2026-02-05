@@ -1226,6 +1226,13 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (outlineToggleUpdate) {
       await outlineToggleUpdate;
     }
+    const statusBarUpdate = (
+      statusBar as unknown as { updateComplete?: Promise<unknown> }
+    ).updateComplete;
+    if (statusBarUpdate) {
+      await statusBarUpdate;
+    }
+    await nextFrame();
     if (!secondarySidebar.isOpen && document.activeElement === document.body) {
       outlineToggle.focus();
     }
