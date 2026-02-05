@@ -17,12 +17,6 @@ import type {
   UikShellRoute,
 } from "@ismail-elkorchi/ui-shell";
 
-import "@ismail-elkorchi/ui-shell/activity-bar";
-import "@ismail-elkorchi/ui-shell/layout";
-import "@ismail-elkorchi/ui-shell/secondary-sidebar";
-import "@ismail-elkorchi/ui-shell/sidebar";
-import "@ismail-elkorchi/ui-shell/status-bar";
-
 import {
   buildPageMap,
   componentPageIds,
