@@ -229,6 +229,7 @@ const baseComponentBundleTags = new Set([
   ...publicBaseComponentTags,
   ...internalBaseComponentTags,
 ]);
+const baseComponentSelector = [...baseComponentBundleTags].join(",");
 const preloadedComponents = new Set();
 const loadedComponents = new Set(preloadedComponents);
 const pendingComponents = new Map<string, Promise<unknown>>();
@@ -243,6 +244,23 @@ const loadBaseComponentBundle = () => {
     });
   }
   return baseComponentBundlePromise;
+};
+
+const awaitComponentUpdates = async (
+  root: HTMLElement,
+  selector: string,
+) => {
+  if (!selector) return;
+  const elements = Array.from(root.querySelectorAll<HTMLElement>(selector));
+  if (!elements.length) return;
+  await Promise.all(
+    elements.map((element) => {
+      const updateComplete = (
+        element as { updateComplete?: Promise<unknown> }
+      ).updateComplete;
+      return updateComplete ?? Promise.resolve();
+    }),
+  );
 };
 
 const normalizeNavId = (value: string) =>
@@ -993,6 +1011,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
   }
   await baseComponentsPromise;
+  await awaitComponentUpdates(container, baseComponentSelector);
   await nextFrame();
 
   const [{ createUikPreferencesController }, { createUikShellRouter }] =
