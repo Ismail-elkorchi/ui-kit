@@ -107,7 +107,6 @@ export class UikShellLayout extends LitElement {
     );
     if (!this.hasUpdated) {
       this.requestUpdate();
-      this.performUpdate();
     }
     this.slotController.connect();
     this.resizeObserver ??= new ResizeObserver((entries) => {
