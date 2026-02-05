@@ -873,9 +873,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     await loadLabPreviews();
   }
   const preRenderTasks: Promise<unknown>[] = [baseComponentsPromise];
-  if (initialPageComponentsPromise) {
-    preRenderTasks.push(initialPageComponentsPromise);
-  }
   await Promise.all(preRenderTasks);
   const initialContentBusy = initialPageContent
     ? "false"
