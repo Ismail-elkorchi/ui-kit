@@ -332,6 +332,16 @@
       "kind": "Example",
       "source": "apps/docs/content/examples/apply-preview.md",
       "format": "markdown"
+    },
+    {
+      "id": "examples/activity-feed",
+      "title": "Activity feed",
+      "summary": "Present run history and status updates with a timeline view.",
+      "navLabel": "Activity feed",
+      "group": "Examples",
+      "kind": "Example",
+      "source": "apps/docs/content/examples/activity-feed.md",
+      "format": "markdown"
     }
   ],
   "lab": [

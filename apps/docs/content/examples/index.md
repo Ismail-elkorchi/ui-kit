@@ -118,4 +118,32 @@ recipes as a starting point for real product experiences.
       <uik-link href="/docs/examples/apply-preview">View example</uik-link>
     </div>
   </uik-section-card>
+
+  <uik-section-card data-example-card data-example-id="activity-feed">
+    <uik-heading slot="title" level="2">Activity feed</uik-heading>
+    <uik-text as="p">
+      Present run history and status updates with a readable timeline.
+    </uik-text>
+    <uik-stack direction="horizontal" gap="2" align="center">
+      <uik-badge variant="secondary">Run history</uik-badge>
+      <uik-badge variant="outline">Audit</uik-badge>
+      <uik-badge variant="outline">Status</uik-badge>
+    </uik-stack>
+    <uik-text as="p" size="sm" tone="muted">What you learn</uik-text>
+    <ul class="docs-list">
+      <li>
+        <uik-text as="p" class="docs-paragraph">
+          Show key run events with timestamp and status.
+        </uik-text>
+      </li>
+      <li>
+        <uik-text as="p" class="docs-paragraph">
+          Keep timeline structure accessible and scannable.
+        </uik-text>
+      </li>
+    </ul>
+    <div slot="actions">
+      <uik-link href="/docs/examples/activity-feed">View example</uik-link>
+    </div>
+  </uik-section-card>
 </uik-stack>
