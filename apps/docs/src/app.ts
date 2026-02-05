@@ -1130,8 +1130,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (className) select.className = className;
     const optionsMarkup = options
       .map(
-        (option) =>
-          `<option value="${option.value}">${option.label}</option>`,
+        (option) => `<option value="${option.value}">${option.label}</option>`,
       )
       .join("");
     select.innerHTML = `<span slot="label">${label}</span>${optionsMarkup}`;
@@ -1680,7 +1679,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   secondarySidebar.addEventListener("secondary-sidebar-close", () => {
     setOutlineOpen(layout, secondarySidebar, false, { focus: true });
   });
-
 
   window.addEventListener("popstate", () => {
     const next = getRouteFromLocation(baseUrl);
