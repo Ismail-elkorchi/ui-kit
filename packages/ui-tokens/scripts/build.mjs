@@ -69,8 +69,8 @@ function injectReducedMotion(cssText) {
   const vars = extractReducedMotionVars(cssText);
   if (vars.length === 0) return cssText;
 
-  const reduceLines = vars.map((name) => `${name}: 0ms;`);
-  const reduceLinesInline = vars.map((name) => `${name}: 0ms;`);
+  const reduceLines = vars.map((name) => `${name}:0ms;`);
+  const reduceLinesInline = vars.map((name) => `${name}:0ms;`);
   const snippet = [
     "",
     "@media (prefers-reduced-motion: reduce) {",
@@ -121,9 +121,9 @@ function buildLayerBlock(selector, varMap, { colorScheme } = {}) {
   if (!hasVars && !colorScheme) return "";
   const entries = hasVars ? [...varMap.entries()] : [];
   entries.sort(([a], [b]) => a.localeCompare(b, "en"));
-  const lines = entries.map(([name, value]) => `${name}: ${value};`);
+  const lines = entries.map(([name, value]) => `${name}:${value};`);
   if (colorScheme) {
-    lines.unshift(`color-scheme: ${colorScheme};`);
+    lines.unshift(`color-scheme:${colorScheme};`);
   }
   return ["@layer base {", `${selector} {`, ...lines, "}", "}"].join("\n");
 }

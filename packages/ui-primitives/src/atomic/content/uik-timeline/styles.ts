@@ -44,8 +44,7 @@ export const styles = css`
     top: 0;
     bottom: 0;
     left: calc(
-      var(--uik-size-icon-sm) / 2 -
-        var(--uik-component-separator-thickness) / 2
+      var(--uik-size-icon-sm) / 2 - var(--uik-component-separator-thickness) / 2
     );
     width: var(--uik-component-separator-thickness);
     background-color: oklch(var(--uik-component-separator-color));
