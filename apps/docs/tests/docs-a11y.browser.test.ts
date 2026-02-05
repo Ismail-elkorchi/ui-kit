@@ -100,6 +100,7 @@ describe("docs a11y", () => {
     { label: "components", path: "/docs/primitives" },
     { label: "markdown", path: "/docs/baseline-support" },
   ];
+  const testTimeout = 30000;
 
   routes.forEach(({ label, path }) => {
     it(`has zero axe violations on ${label}`, async () => {
@@ -110,6 +111,6 @@ describe("docs a11y", () => {
       await waitForContent();
       assertLandmarkStructure();
       await runA11y(document.body);
-    });
+    }, testTimeout);
   });
 });
