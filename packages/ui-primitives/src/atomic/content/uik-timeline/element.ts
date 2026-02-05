@@ -21,14 +21,18 @@ const readString = (value: unknown, fallback = ""): string => {
 const normalizeItem = (value: unknown, index: number): UikTimelineItem => {
   if (typeof value === "object" && value !== null) {
     const record = value as Record<string, unknown>;
-    const title = readString(record.title, `Item ${index + 1}`);
-    return {
-      id: readString(record.id, `item-${index + 1}`),
+    const title = readString(record["title"], `Item ${index + 1}`);
+    const item: UikTimelineItem = {
+      id: readString(record["id"], `item-${index + 1}`),
       title,
-      description: readString(record.description).trim() || undefined,
-      meta: readString(record.meta).trim() || undefined,
-      status: readString(record.status).trim() || undefined,
     };
+    const description = readString(record["description"]).trim();
+    if (description) item.description = description;
+    const meta = readString(record["meta"]).trim();
+    if (meta) item.meta = meta;
+    const status = readString(record["status"]).trim();
+    if (status) item.status = status;
+    return item;
   }
 
   return {
