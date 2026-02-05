@@ -27,7 +27,8 @@ export const styles = css`
   .item {
     position: relative;
     display: grid;
-    grid-template-columns: var(--uik-component-timeline-marker-size)
+    grid-template-columns:
+      var(--uik-component-timeline-marker-size)
       minmax(0, 1fr);
     column-gap: var(--uik-component-timeline-column-gap);
     padding-block: var(--uik-component-timeline-item-padding-y);
@@ -45,8 +46,8 @@ export const styles = css`
     top: 0;
     bottom: 0;
     left: calc(
-      var(--uik-component-timeline-marker-size) / 2 -
-        var(--uik-component-timeline-line-thickness) / 2
+      var(--uik-component-timeline-marker-size) /
+        2 - var(--uik-component-timeline-line-thickness) / 2
     );
     width: var(--uik-component-timeline-line-thickness);
     background-color: oklch(var(--uik-component-timeline-line-color));
