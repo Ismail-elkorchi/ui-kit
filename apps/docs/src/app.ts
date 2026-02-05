@@ -229,8 +229,39 @@ const baseComponentBundleTags = new Set([
   ...publicBaseComponentTags,
   ...internalBaseComponentTags,
 ]);
-const loadedComponents = new Set(baseComponentBundleTags);
+const baseComponentSelector = [...baseComponentBundleTags].join(",");
+const preloadedComponents = new Set();
+const loadedComponents = new Set(preloadedComponents);
 const pendingComponents = new Map<string, Promise<unknown>>();
+let baseComponentBundlePromise: Promise<void> | null = null;
+
+const loadBaseComponentBundle = () => {
+  if (!baseComponentBundlePromise) {
+    baseComponentBundlePromise = import("./base-components").then(() => {
+      baseComponentBundleTags.forEach((tag) => {
+        loadedComponents.add(tag);
+      });
+    });
+  }
+  return baseComponentBundlePromise;
+};
+
+const awaitComponentUpdates = async (
+  root: HTMLElement,
+  selector: string,
+) => {
+  if (!selector) return;
+  const elements = Array.from(root.querySelectorAll<HTMLElement>(selector));
+  if (!elements.length) return;
+  await Promise.all(
+    elements.map((element) => {
+      const updateComplete = (
+        element as { updateComplete?: Promise<unknown> }
+      ).updateComplete;
+      return updateComplete ?? Promise.resolve();
+    }),
+  );
+};
 
 const normalizeNavId = (value: string) =>
   value
@@ -597,6 +628,11 @@ const loadPageComponents = async (page: DocPageContent) => {
   await loadComponents(tags);
 };
 
+const loadBaseComponents = (tags: string[]) => {
+  if (!tags.length) return Promise.resolve();
+  return loadBaseComponentBundle();
+};
+
 const schedulePrefetchComponents = () => {
   const schedule = () => {
     const run = () => prefetchComponents();
@@ -803,18 +839,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialHeroLinks = initialPage ? renderHeroLinks(initialPage) : "";
   const initialOutline = initialPage ? renderToc(initialPage) : "";
   const initialIsInternal = initialPage ? !isPublicPage(initialPage) : false;
-  const [{ createUikPreferencesController }, { createUikShellRouter }] =
-    await Promise.all([tokensPromise, routerPromise]);
-  const preferences = createUikPreferencesController({
-    root: document.documentElement,
-    storageKey: "uik-docs-preferences",
-    defaults: {
-      theme: "system",
-      density: "comfortable",
-    },
-    persist: true,
-  });
-  preferences.apply();
   const initialTheme = resolveTheme();
   const initialDensity =
     document.documentElement.getAttribute("data-uik-density") ?? "comfortable";
@@ -835,6 +859,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContent = initialPageContentPromise
     ? await initialPageContentPromise
     : null;
+  const baseComponentsPromise = loadBaseComponents(
+    initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
+  );
   let initialPageComponentsPromise: Promise<void> | null = null;
   const ensureInitialPageComponents = () => {
     if (initialPageComponentsPromise) return initialPageComponentsPromise;
@@ -983,6 +1010,22 @@ export const mountDocsApp = async (container: HTMLElement) => {
       globalThis.setTimeout(schedule, 0);
     }
   }
+  await baseComponentsPromise;
+  await awaitComponentUpdates(container, baseComponentSelector);
+  await nextFrame();
+
+  const [{ createUikPreferencesController }, { createUikShellRouter }] =
+    await Promise.all([tokensPromise, routerPromise]);
+  const preferences = createUikPreferencesController({
+    root: document.documentElement,
+    storageKey: "uik-docs-preferences",
+    defaults: {
+      theme: "system",
+      density: "comfortable",
+    },
+    persist: true,
+  });
+  preferences.apply();
 
   let pageMap = buildPageMap();
   const routes = buildRoutes(

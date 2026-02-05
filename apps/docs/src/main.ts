@@ -1,4 +1,3 @@
-import "./base-components";
 import { mountDocsApp } from "./app";
 
 const appRoot = document.getElementById("app");
@@ -15,4 +14,14 @@ const startApp = async () => {
   await mountDocsApp(appRoot);
   await tokensPromise;
 };
-void startApp();
+if ("requestAnimationFrame" in window) {
+  requestAnimationFrame(() => {
+    globalThis.setTimeout(() => {
+      void startApp();
+    }, 0);
+  });
+} else {
+  globalThis.setTimeout(() => {
+    void startApp();
+  }, 0);
+}
