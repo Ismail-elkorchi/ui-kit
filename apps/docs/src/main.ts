@@ -14,14 +14,4 @@ const startApp = async () => {
   await mountDocsApp(appRoot);
   await tokensPromise;
 };
-if ("requestAnimationFrame" in window) {
-  requestAnimationFrame(() => {
-    globalThis.setTimeout(() => {
-      void startApp();
-    }, 0);
-  });
-} else {
-  globalThis.setTimeout(() => {
-    void startApp();
-  }, 0);
-}
+void startApp();
