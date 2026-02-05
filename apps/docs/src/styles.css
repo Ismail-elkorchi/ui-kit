@@ -24,6 +24,62 @@
   display: block;
 }
 
+uik-shell-layout:not(:defined) {
+  display: grid;
+  grid-template-columns:
+    var(--uik-component-shell-activity-bar-width)
+    var(--uik-component-shell-sidebar-width)
+    minmax(0, 1fr)
+    var(--uik-component-shell-secondary-sidebar-width);
+  grid-template-rows:
+    minmax(0, 1fr)
+    var(--uik-component-shell-status-bar-height);
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+uik-shell-layout:not(:defined):not([isSecondarySidebarVisible]) {
+  grid-template-columns:
+    var(--uik-component-shell-activity-bar-width)
+    var(--uik-component-shell-sidebar-width)
+    minmax(0, 1fr)
+    0px;
+}
+
+uik-shell-layout:not(:defined) > [slot="activity-bar"] {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+uik-shell-layout:not(:defined) > [slot="primary-sidebar"] {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+uik-shell-layout:not(:defined) > [slot="main-content"] {
+  grid-column: 3;
+  grid-row: 1;
+  min-width: var(--uik-space-0);
+  min-height: var(--uik-space-0);
+}
+
+uik-shell-layout:not(:defined) > [slot="secondary-sidebar"] {
+  grid-column: 4;
+  grid-row: 1;
+}
+
+uik-shell-layout:not(:defined):not([isSecondarySidebarVisible])
+  > [slot="secondary-sidebar"] {
+  inline-size: 0;
+  overflow: hidden;
+}
+
+uik-shell-layout:not(:defined) > [slot="status-bar"] {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
 body {
   min-height: 100%;
   margin: var(--uik-space-0);
