@@ -79,7 +79,7 @@
       },
       "description": {
         "fg": {
-          "$value": "{text.subtle}",
+          "$value": "{text.secondary}",
           "$type": "color",
           "$description": "Component timeline description color."
         }
