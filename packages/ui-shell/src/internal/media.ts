@@ -17,8 +17,11 @@ const setupQuery = (media: string): MediaQueryState | null => {
   };
   if ("addEventListener" in query) {
     query.addEventListener("change", handler);
-  } else if ("addListener" in query) {
-    query.addListener(handler);
+  } else {
+    const legacyQuery = query as MediaQueryList & {
+      addListener?: (listener: (event: MediaQueryListEvent) => void) => void;
+    };
+    legacyQuery.addListener?.(handler);
   }
   return state;
 };
