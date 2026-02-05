@@ -27,10 +27,7 @@ export const styles = css`
   .item {
     position: relative;
     display: grid;
-    grid-template-columns: var(--uik-component-timeline-marker-size) minmax(
-        0,
-        1fr
-      );
+    grid-template-columns: var(--uik-size-icon-sm) minmax(0, 1fr);
     column-gap: var(--uik-space-3);
     padding-block: var(--uik-space-2);
     min-width: 0;
@@ -47,28 +44,28 @@ export const styles = css`
     top: 0;
     bottom: 0;
     left: calc(
-      var(--uik-component-timeline-marker-size) /
-        2 - var(--uik-border-width-1) / 2
+      var(--uik-size-icon-sm) / 2 -
+        var(--uik-component-separator-thickness) / 2
     );
-    width: var(--uik-border-width-1);
-    background-color: oklch(var(--uik-component-timeline-line));
+    width: var(--uik-component-separator-thickness);
+    background-color: oklch(var(--uik-component-separator-color));
   }
 
   .item:first-child::before {
-    top: calc(var(--uik-component-timeline-marker-size) / 2);
+    top: calc(var(--uik-size-icon-sm) / 2);
   }
 
   .item:last-child::before {
-    bottom: calc(var(--uik-component-timeline-marker-size) / 2);
+    bottom: calc(var(--uik-size-icon-sm) / 2);
   }
 
   .marker {
-    width: var(--uik-component-timeline-marker-size);
-    height: var(--uik-component-timeline-marker-size);
+    width: var(--uik-size-icon-sm);
+    height: var(--uik-size-icon-sm);
     border-radius: var(--uik-radius-full);
-    border: var(--uik-border-width-1) solid
-      oklch(var(--uik-component-timeline-marker-border));
-    background-color: oklch(var(--uik-component-timeline-marker-bg));
+    border: var(--uik-component-separator-thickness) solid
+      oklch(var(--uik-component-separator-color));
+    background-color: oklch(var(--uik-surface-bg));
     margin-top: var(--uik-space-1);
     display: inline-flex;
     align-items: center;

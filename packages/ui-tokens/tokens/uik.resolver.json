@@ -106,9 +106,6 @@
           "$ref": "components/json-diff.json"
         },
         {
-          "$ref": "components/timeline.json"
-        },
-        {
           "$ref": "components/command-palette.json"
         },
         {
