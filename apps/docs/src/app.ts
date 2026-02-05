@@ -1226,6 +1226,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (outlineToggleUpdate) {
       await outlineToggleUpdate;
     }
+    if (!secondarySidebar.isOpen && document.activeElement === document.body) {
+      outlineToggle.focus();
+    }
   }
 
   activityBar.items = buildActivityItems(routes);
