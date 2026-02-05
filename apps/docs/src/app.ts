@@ -946,7 +946,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
           <uik-text as="p" size="sm" tone="muted">Tokens-first, standards-based UI.</uik-text>
         </div>
       </uik-shell-sidebar>
-      <main slot="main-content" id="docs-main" class="docs-main">
+      <div slot="main-content" id="docs-main" class="docs-main">
           <div class="docs-page" data-docs-page>
           <header class="docs-fixture-header" data-docs-fixture${fixtureHiddenAttr}>
             <h1 class="docs-fixture-title" data-docs-fixture-title>${escapeHtml(
@@ -959,7 +959,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
           ${heroMarkup}
           <div class="docs-page-content" data-docs-content aria-busy="${initialContentBusy}">${initialPageSections}</div>
         </div>
-      </main>
+      </div>
       <uik-shell-secondary-sidebar${outlineOpenAttr}${outlineHiddenAttr}
         slot="secondary-sidebar"
         class="docs-outline"
