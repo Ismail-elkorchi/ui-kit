@@ -949,7 +949,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
       </uik-shell-status-bar>
     </uik-shell-layout>
   `;
-  void loadComponents(["uik-select"]);
   if (initialNeedsPortfolio && labPreviewsModule) {
     labPreviewsModule.wirePortfolioPreviews(container);
   }
