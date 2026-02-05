@@ -51,6 +51,24 @@ Generate docs baseline and content when you update docs pages or API metadata.
   <uik-code-block slot="code" copyable>node tools/uik/cli.mjs docs generate</uik-code-block>
 </uik-example>
 
+## Scaffold a primitive
+
+Scaffold a new primitive with deterministic output (no interactive prompts). This writes the component files, tokens file, and updates exports plus token resolver wiring.
+
+<uik-example data-example="tooling-scaffold">
+  <div slot="preview">
+    <uik-code-block copyable>node tools/contracts/scaffold-primitive.mjs --tag uik-foo-bar --class UikFooBar --layer atomic --group content</uik-code-block>
+  </div>
+  <uik-code-block slot="code" copyable>node tools/contracts/scaffold-primitive.mjs --tag uik-foo-bar --class UikFooBar --layer atomic --group content</uik-code-block>
+</uik-example>
+
+### Rules
+
+- Tag name is kebab-case (`uik-foo-bar`).
+- Token namespace is camelCase (`component.fooBar.*`).
+- CSS vars are kebab-case and scoped (`--uik-component-foo-bar-*`).
+- `npm test` enforces these conventions via the scaffold validation gate.
+
 ## Release checks
 
 Release workflows run gates before tagging. Use the release check if you want to verify the full pipeline.

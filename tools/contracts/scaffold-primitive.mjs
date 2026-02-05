@@ -29,6 +29,15 @@ const toPascalCase = (value) =>
     .map((part) => part[0].toUpperCase() + part.slice(1))
     .join("");
 
+const toCamelCase = (value) => {
+  const parts = value.split(/[-_\s]+/).filter(Boolean);
+  if (parts.length === 0) return "";
+  return [
+    parts[0].toLowerCase(),
+    ...parts.slice(1).map((part) => part[0].toUpperCase() + part.slice(1)),
+  ].join("");
+};
+
 const toTitle = (value) =>
   value
     .split(/[-_]+/)
@@ -52,16 +61,33 @@ const writeFileIfMissing = async (filePath, contents) => {
 };
 
 const appendLineIfMissing = async (filePath, line, match = line) => {
-  const content = await fs.readFile(filePath, "utf8");
-  const hasMatch =
-    match instanceof RegExp ? match.test(content) : content.includes(match);
-  if (hasMatch) return;
-  const next = content.endsWith("\n") ? content : `${content}\n`;
-  await fs.writeFile(filePath, `${next}${line}\n`);
+  try {
+    const content = await fs.readFile(filePath, "utf8");
+    const hasMatch =
+      match instanceof RegExp ? match.test(content) : content.includes(match);
+    if (hasMatch) return;
+    const next = content.endsWith("\n") ? content : `${content}\n`;
+    await fs.writeFile(filePath, `${next}${line}\n`);
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+    await ensureDir(filePath);
+    await fs.writeFile(filePath, `${line}\n`);
+  }
 };
 
-const updateExports = async (packageJsonPath, key, value) => {
-  const pkg = JSON.parse(await fs.readFile(packageJsonPath, "utf8"));
+const updateExports = async (
+  packageJsonPath,
+  key,
+  value,
+  { allowMissing = false } = {},
+) => {
+  let pkg;
+  try {
+    pkg = JSON.parse(await fs.readFile(packageJsonPath, "utf8"));
+  } catch (error) {
+    if (error.code !== "ENOENT" || !allowMissing) throw error;
+    pkg = { name: "uik-scaffold-fixture", exports: {} };
+  }
   pkg.exports = pkg.exports ?? {};
   if (!pkg.exports[key]) {
     pkg.exports[key] = value;
@@ -69,24 +95,76 @@ const updateExports = async (packageJsonPath, key, value) => {
   await fs.writeFile(packageJsonPath, `${JSON.stringify(pkg, null, 2)}\n`);
 };
 
+const ensureResolver = async (resolverPath) => {
+  try {
+    const content = await fs.readFile(resolverPath, "utf8");
+    return JSON.parse(content);
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+    const resolver = {
+      name: "UIK Tokens",
+      version: "0.0",
+      resolutionOrder: [{ $ref: "#/sets/base" }],
+      sets: { base: { sources: [] } },
+      modifiers: {},
+    };
+    await ensureDir(resolverPath);
+    await fs.writeFile(resolverPath, `${JSON.stringify(resolver, null, 2)}\n`);
+    return resolver;
+  }
+};
+
+const updateResolverSources = async (resolverPath, componentRef) => {
+  const resolver = await ensureResolver(resolverPath);
+  resolver.sets = resolver.sets ?? {};
+  resolver.sets.base = resolver.sets.base ?? {};
+  resolver.sets.base.sources = resolver.sets.base.sources ?? [];
+  const sources = resolver.sets.base.sources;
+  const existing = sources.some(
+    (entry) => entry?.$ref === componentRef,
+  );
+  if (!existing) {
+    let insertIndex = sources.length;
+    for (let i = sources.length - 1; i >= 0; i -= 1) {
+      const ref = sources[i]?.$ref;
+      if (typeof ref === "string" && ref.startsWith("components/")) {
+        insertIndex = i + 1;
+        break;
+      }
+    }
+    sources.splice(insertIndex, 0, { $ref: componentRef });
+    await fs.writeFile(resolverPath, `${JSON.stringify(resolver, null, 2)}\n`);
+  }
+};
+
 const run = async () => {
   const options = parseArgs(process.argv.slice(2));
   const rawTag = options.tag ?? options.name;
   if (!rawTag) {
     throw new Error(
-      "Usage: node tools/contracts/scaffold-primitive.mjs --tag uik-foo [--layer atomic|composed] [--group content|control|layout|feedback|overlay|collection]",
+      "Usage: node tools/contracts/scaffold-primitive.mjs --tag uik-foo [--class UikFoo] [--out-dir /tmp/out] [--layer atomic|composed] [--group content|control|layout|feedback|overlay|collection]",
     );
   }
 
   const tagName = rawTag.startsWith("uik-") ? rawTag : `uik-${rawTag}`;
-  const id = tagName.replace(/^uik-/, "");
-  const className = `Uik${toPascalCase(id)}`;
+  const tagPattern = /^uik-[a-z0-9]+(?:-[a-z0-9]+)*$/;
+  if (!tagPattern.test(tagName)) {
+    throw new Error(
+      `Tag "${tagName}" must be lowercase kebab-case (example: uik-foo-bar).`,
+    );
+  }
+  const kebabId = tagName.replace(/^uik-/, "");
+  const tokenNamespace = toCamelCase(kebabId);
+  const className = options.class ?? `Uik${toPascalCase(kebabId)}`;
   const layer = options.layer ?? "atomic";
   const group = options.group ?? "content";
-  const summary = options.summary ?? `Token-driven ${id} primitive.`;
+  const summary = options.summary ?? `Token-driven ${kebabId} primitive.`;
+  const outDir = options["out-dir"] ?? options.outDir ?? null;
+  const rootDir = outDir ? path.resolve(outDir) : repoRoot;
+  const allowMissing = Boolean(outDir);
 
   const componentDir = path.join(
-    repoRoot,
+    rootDir,
     "packages/ui-primitives/src",
     layer,
     group,
@@ -108,11 +186,12 @@ const run = async () => {
     ` * ${summary}`,
     " * @slot default",
     " * @part base",
-    ` * @cssprop --uik-component-${id}-bg`,
-    ` * @cssprop --uik-component-${id}-fg`,
-    ` * @cssprop --uik-component-${id}-border`,
-    ` * @cssprop --uik-component-${id}-radius`,
-    ` * @cssprop --uik-component-${id}-padding`,
+    ` * @cssprop --uik-component-${kebabId}-bg`,
+    ` * @cssprop --uik-component-${kebabId}-fg`,
+    ` * @cssprop --uik-component-${kebabId}-border`,
+    ` * @cssprop --uik-component-${kebabId}-border-width`,
+    ` * @cssprop --uik-component-${kebabId}-radius`,
+    ` * @cssprop --uik-component-${kebabId}-padding`,
     " */",
     `@customElement('${tagName}')`,
     `export class ${className} extends LitElement {`,
@@ -136,11 +215,11 @@ const run = async () => {
     "  }",
     "",
     "  .base {",
-    `    padding: var(--uik-component-${id}-padding);`,
-    `    color: oklch(var(--uik-component-${id}-fg));`,
-    `    background-color: oklch(var(--uik-component-${id}-bg));`,
-    `    border-radius: var(--uik-component-${id}-radius);`,
-    `    border: var(--uik-border-width-1) solid oklch(var(--uik-component-${id}-border));`,
+    `    padding: var(--uik-component-${kebabId}-padding);`,
+    `    color: oklch(var(--uik-component-${kebabId}-fg));`,
+    `    background-color: oklch(var(--uik-component-${kebabId}-bg));`,
+    `    border-radius: var(--uik-component-${kebabId}-radius);`,
+    `    border: var(--uik-component-${kebabId}-border-width) solid oklch(var(--uik-component-${kebabId}-border));`,
     "  }",
     "`;",
     "",
@@ -154,11 +233,11 @@ const run = async () => {
   );
 
   const primitivesIndex = path.join(
-    repoRoot,
+    rootDir,
     "packages/ui-primitives/index.ts",
   );
   const primitivesRegister = path.join(
-    repoRoot,
+    rootDir,
     "packages/ui-primitives/register.ts",
   );
 
@@ -177,17 +256,18 @@ const run = async () => {
     default: `./dist/src/${layer}/${group}/${tagName}/index.js`,
   };
   await updateExports(
-    path.join(repoRoot, "packages/ui-primitives/package.json"),
+    path.join(rootDir, "packages/ui-primitives/package.json"),
     `./${tagName}`,
     exportsEntry,
+    { allowMissing },
   );
 
   const storyPath = path.join(
-    repoRoot,
+    rootDir,
     "packages/ui-primitives/stories",
     `${tagName}.stories.ts`,
   );
-  const storyTitle = toTitle(id);
+  const storyTitle = toTitle(kebabId);
   const storySource = [
     "import '@ismail-elkorchi/ui-primitives/register';",
     "import type {Meta, StoryObj} from '@storybook/web-components-vite';",
@@ -215,7 +295,7 @@ const run = async () => {
   await writeFileIfMissing(storyPath, storySource);
 
   const testPath = path.join(
-    repoRoot,
+    rootDir,
     "packages/ui-primitives/tests",
     `${tagName}.browser.test.ts`,
   );
@@ -225,39 +305,44 @@ const run = async () => {
   );
 
   const tokensPath = path.join(
-    repoRoot,
+    rootDir,
     "packages/ui-tokens/tokens/components",
-    `${id}.json`,
+    `${kebabId}.json`,
   );
   await writeFileIfMissing(
     tokensPath,
     `{
   "component": {
-    "${id}": {
+    "${tokenNamespace}": {
       "bg": {
         "$value": "{surface.bg}",
         "$type": "color",
-        "$description": "Component ${id} background."
+        "$description": "Component ${kebabId} background."
       },
       "fg": {
         "$value": "{text.default}",
         "$type": "color",
-        "$description": "Component ${id} foreground."
+        "$description": "Component ${kebabId} foreground."
       },
       "border": {
         "$value": "{border.muted}",
         "$type": "color",
-        "$description": "Component ${id} border."
+        "$description": "Component ${kebabId} border."
+      },
+      "borderWidth": {
+        "$value": "{border.width.1}",
+        "$type": "dimension",
+        "$description": "Component ${kebabId} border width."
       },
       "radius": {
         "$value": "{radius.3}",
         "$type": "dimension",
-        "$description": "Component ${id} radius."
+        "$description": "Component ${kebabId} radius."
       },
       "padding": {
         "$value": "{space.4}",
         "$type": "dimension",
-        "$description": "Component ${id} padding."
+        "$description": "Component ${kebabId} padding."
       }
     }
   }
@@ -265,8 +350,14 @@ const run = async () => {
 `,
   );
 
+  const resolverPath = path.join(
+    rootDir,
+    "packages/ui-tokens/tokens/uik.resolver.json",
+  );
+  await updateResolverSources(resolverPath, `components/${kebabId}.json`);
+
   console.log(
-    `Scaffolded ${tagName} in ${path.relative(repoRoot, componentDir)}.`,
+    `Scaffolded ${tagName} in ${path.relative(rootDir, componentDir)}.`,
   );
 };
 
