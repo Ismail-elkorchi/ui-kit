@@ -121,37 +121,15 @@ const componentSectionShortcuts: Record<string, string[]> = {
 };
 
 const componentTagPattern = /<\s*(uik-[a-z0-9-]+)/g;
-const componentLoaders = new Map<string, () => Promise<unknown>>([
-  ["uik-alert", () => import("@ismail-elkorchi/ui-primitives/uik-alert")],
+const coreComponentLoaders = new Map<string, () => Promise<unknown>>([
   ["uik-badge", () => import("@ismail-elkorchi/ui-primitives/uik-badge")],
-  ["uik-box", () => import("@ismail-elkorchi/ui-primitives/uik-box")],
   ["uik-button", () => import("@ismail-elkorchi/ui-primitives/uik-button")],
-  ["uik-checkbox", () => import("@ismail-elkorchi/ui-primitives/uik-checkbox")],
   [
     "uik-code-block",
     () => import("@ismail-elkorchi/ui-primitives/uik-code-block"),
   ],
-  ["uik-combobox", () => import("@ismail-elkorchi/ui-primitives/uik-combobox")],
-  [
-    "uik-description-list",
-    () => import("@ismail-elkorchi/ui-primitives/uik-description-list"),
-  ],
-  [
-    "uik-json-viewer",
-    () => import("@ismail-elkorchi/ui-primitives/uik-json-viewer"),
-  ],
-  [
-    "uik-json-diff",
-    () => import("@ismail-elkorchi/ui-primitives/uik-json-diff"),
-  ],
-  ["uik-timeline", () => import("@ismail-elkorchi/ui-primitives/uik-timeline")],
-  ["uik-dialog", () => import("@ismail-elkorchi/ui-primitives/uik-dialog")],
-  [
-    "uik-empty-state",
-    () => import("@ismail-elkorchi/ui-patterns/uik-empty-state"),
-  ],
-  ["uik-example", () => import("@ismail-elkorchi/ui-patterns/uik-example")],
   ["uik-heading", () => import("@ismail-elkorchi/ui-primitives/uik-heading")],
+  ["uik-link", () => import("@ismail-elkorchi/ui-primitives/uik-link")],
   ["uik-page-hero", () => import("@ismail-elkorchi/ui-patterns/uik-page-hero")],
   [
     "uik-section-card",
@@ -171,56 +149,29 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     "uik-shell-status-bar",
     () => import("@ismail-elkorchi/ui-shell/status-bar"),
   ],
-  ["uik-icon", () => import("@ismail-elkorchi/ui-primitives/uik-icon")],
-  ["uik-input", () => import("@ismail-elkorchi/ui-primitives/uik-input")],
-  ["uik-link", () => import("@ismail-elkorchi/ui-primitives/uik-link")],
-  ["uik-listbox", () => import("@ismail-elkorchi/ui-primitives/uik-listbox")],
-  [
-    "uik-tag-input",
-    () => import("@ismail-elkorchi/ui-primitives/uik-tag-input"),
-  ],
-  ["uik-menu", () => import("@ismail-elkorchi/ui-primitives/uik-menu")],
-  [
-    "uik-menu-item",
-    () => import("@ismail-elkorchi/ui-primitives/uik-menu-item"),
-  ],
-  ["uik-menubar", () => import("@ismail-elkorchi/ui-primitives/uik-menubar")],
-  ["uik-nav", () => import("@ismail-elkorchi/ui-primitives/uik-nav")],
-  ["uik-option", () => import("@ismail-elkorchi/ui-primitives/uik-option")],
-  [
-    "uik-pagination",
-    () => import("@ismail-elkorchi/ui-primitives/uik-pagination"),
-  ],
-  ["uik-popover", () => import("@ismail-elkorchi/ui-primitives/uik-popover")],
-  ["uik-progress", () => import("@ismail-elkorchi/ui-primitives/uik-progress")],
-  ["uik-radio", () => import("@ismail-elkorchi/ui-primitives/uik-radio")],
-  [
-    "uik-radio-group",
-    () => import("@ismail-elkorchi/ui-primitives/uik-radio-group"),
-  ],
-  [
-    "uik-resizable-panels",
-    () => import("@ismail-elkorchi/ui-primitives/uik-resizable-panels"),
-  ],
   ["uik-select", () => import("@ismail-elkorchi/ui-primitives/uik-select")],
-  ["uik-spinner", () => import("@ismail-elkorchi/ui-primitives/uik-spinner")],
-  ["uik-stack", () => import("@ismail-elkorchi/ui-primitives/uik-stack")],
-  ["uik-surface", () => import("@ismail-elkorchi/ui-primitives/uik-surface")],
-  ["uik-switch", () => import("@ismail-elkorchi/ui-primitives/uik-switch")],
-  ["uik-tab", () => import("@ismail-elkorchi/ui-primitives/uik-tab")],
-  [
-    "uik-tab-panel",
-    () => import("@ismail-elkorchi/ui-primitives/uik-tab-panel"),
-  ],
-  ["uik-tabs", () => import("@ismail-elkorchi/ui-primitives/uik-tabs")],
   ["uik-text", () => import("@ismail-elkorchi/ui-primitives/uik-text")],
-  ["uik-textarea", () => import("@ismail-elkorchi/ui-primitives/uik-textarea")],
-  ["uik-tooltip", () => import("@ismail-elkorchi/ui-primitives/uik-tooltip")],
   [
     "uik-tree-view",
     () => import("@ismail-elkorchi/ui-primitives/uik-tree-view"),
   ],
 ]);
+let extendedComponentLoaders: Map<string, () => Promise<unknown>> | null = null;
+let extendedComponentLoadersPromise: Promise<
+  Map<string, () => Promise<unknown>>
+> | null = null;
+const loadExtendedComponentLoaders = async () => {
+  if (extendedComponentLoaders) return extendedComponentLoaders;
+  if (!extendedComponentLoadersPromise) {
+    extendedComponentLoadersPromise = import("./component-loaders").then(
+      (module) => {
+        extendedComponentLoaders = module.extendedComponentLoaders;
+        return extendedComponentLoaders;
+      },
+    );
+  }
+  return extendedComponentLoadersPromise;
+};
 let labPreviewsModule: typeof import("./lab-previews") | null = null;
 let labPreviewsPromise: Promise<typeof import("./lab-previews")> | null = null;
 const loadLabPreviews = async () => {
@@ -251,7 +202,9 @@ const publicBaseComponentTags = [
   "uik-badge",
   "uik-button",
   "uik-heading",
+  "uik-link",
   "uik-page-hero",
+  "uik-section-card",
   "uik-select",
   "uik-text",
   "uik-tree-view",
@@ -263,6 +216,9 @@ const internalBaseComponentTags = [
   "uik-shell-secondary-sidebar",
   "uik-shell-status-bar",
   "uik-button",
+  "uik-heading",
+  "uik-link",
+  "uik-section-card",
   "uik-text",
   "uik-tree-view",
 ];
@@ -591,14 +547,27 @@ const loadComponent = (tag: string, loader: () => Promise<unknown>) => {
   return promise;
 };
 
-const loadComponents = async (tags: Iterable<string>) => {
+const resolveComponentLoaders = async (tags: Iterable<string>) => {
   const queue: Array<[string, () => Promise<unknown>]> = [];
+  let extended: Map<string, () => Promise<unknown>> | null = null;
   for (const tag of tags) {
     if (loadedComponents.has(tag)) continue;
-    const loader = componentLoaders.get(tag);
-    if (!loader) continue;
-    queue.push([tag, loader]);
+    let loader = coreComponentLoaders.get(tag);
+    if (!loader) {
+      if (!extended) {
+        extended = await loadExtendedComponentLoaders();
+      }
+      loader = extended.get(tag);
+    }
+    if (loader) {
+      queue.push([tag, loader]);
+    }
   }
+  return queue;
+};
+
+const loadComponents = async (tags: Iterable<string>) => {
+  const queue = await resolveComponentLoaders(tags);
   await Promise.all(
     queue.map(([tag, loader]) => {
       if (!tag || !loader) return Promise.resolve();
@@ -607,10 +576,9 @@ const loadComponents = async (tags: Iterable<string>) => {
   );
 };
 
-const prefetchComponents = () => {
-  prefetchedComponents.forEach((tag) => {
-    const loader = componentLoaders.get(tag);
-    if (!loader) return;
+const prefetchComponents = async () => {
+  const queue = await resolveComponentLoaders(prefetchedComponents);
+  queue.forEach(([tag, loader]) => {
     void loadComponent(tag, loader);
   });
 };
