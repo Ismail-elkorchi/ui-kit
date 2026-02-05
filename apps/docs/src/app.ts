@@ -1593,5 +1593,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (mobileNavSelect) mobileNavSelect.value = locationKey(router.current);
   };
 
-  void syncSelects();
+  await Promise.all([
+    layout.updateComplete,
+    activityBar.updateComplete,
+    navTree.updateComplete,
+    statusBar.updateComplete,
+    secondarySidebar.updateComplete,
+  ]);
+  await syncSelects();
 };
