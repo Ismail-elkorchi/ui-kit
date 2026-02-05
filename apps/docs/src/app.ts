@@ -877,8 +877,11 @@ export const mountDocsApp = async (container: HTMLElement) => {
     preRenderTasks.push(initialPageComponentsPromise);
   }
   await Promise.all(preRenderTasks);
-  const initialContentBusy =
-    initialPageContent || initialPage ? "true" : "false";
+  const initialContentBusy = initialPageContent
+    ? "false"
+    : initialPage
+      ? "true"
+      : "false";
   const heroMarkup = initialIsInternal
     ? ""
     : `
