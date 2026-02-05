@@ -55,14 +55,9 @@ async function readJson(filePath) {
 }
 
 function extractReducedMotionVars(cssText) {
-  const matches = new Set();
-  for (const line of cssText.split("\n")) {
-    const match = line.match(/--uik-motion-(duration|delay)-[a-z0-9-]+/);
-    if (match) {
-      matches.add(match[0]);
-    }
-  }
-  return [...matches].sort();
+  const matches =
+    cssText.match(/--uik-motion-(duration|delay)-[a-z0-9-]+/g) ?? [];
+  return [...new Set(matches)].sort();
 }
 
 function injectReducedMotion(cssText) {
@@ -125,7 +120,8 @@ function buildLayerBlock(selector, varMap, { colorScheme } = {}) {
   if (colorScheme) {
     lines.unshift(`color-scheme:${colorScheme};`);
   }
-  return ["@layer base {", `${selector} {`, ...lines, "}", "}"].join("\n");
+  const body = lines.join("");
+  return ["@layer base {", `${selector} {`, body, "}", "}"].join("\n");
 }
 
 function wrapMedia(query, block) {
