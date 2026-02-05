@@ -34,6 +34,12 @@ import {
   type DocPageContent,
   type DocPage,
 } from "./content";
+import {
+  wireLabCommandPaletteControls,
+  wireLabOverlayControls,
+  wireLabShellControls,
+  wirePortfolioPreviews,
+} from "./lab-previews";
 
 const normalizeBaseUrl = (value: string) => {
   if (!value) return "/";
@@ -857,6 +863,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
+  const initialNeedsPortfolio = initialPageSections.includes(
+    "data-docs-portfolio",
+  );
   const initialContentBusy =
     initialPageContent || initialPage ? "true" : "false";
   const heroMarkup = initialIsInternal
@@ -967,6 +976,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
       </uik-shell-status-bar>
     </uik-shell-layout>
   `;
+  if (initialNeedsPortfolio) {
+    wirePortfolioPreviews(container);
+  }
   await nextFrame();
 
   const [{ createUikPreferencesController }, { createUikShellRouter }] =
@@ -1274,6 +1286,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   };
 
   const finalizeContentRender = (page: DocPage, token?: number) => {
+    if (token !== undefined && token !== contentRenderToken) return;
     if (!contentElement) return;
     if (!prefetchScheduled) {
       prefetchScheduled = true;
@@ -1299,31 +1312,27 @@ export const mountDocsApp = async (container: HTMLElement) => {
       page.id === "command-palette";
     if (needsPortfolio || needsLabControls) {
       installCommandCenterBootstrap();
-      void import("./lab-previews").then((module) => {
-        if (token !== undefined && token !== contentRenderToken) return;
-        if (!contentElement) return;
-        if (needsPortfolio) {
-          module.wirePortfolioPreviews(contentElement);
-        }
-        if (page.id === "shell-patterns") {
-          module.wireLabShellControls(
-            contentElement,
-            statusBar,
-            layout,
-            secondarySidebar,
-            setOutlineOpen,
-          );
-        }
-        if (page.id === "overlays") {
-          module.wireLabOverlayControls(contentElement);
-        }
-        if (page.id === "command-palette") {
-          commandPaletteOpenButton =
-            module.wireLabCommandPaletteControls(contentElement);
-        }
-        syncCommandCenterOpenButton();
-        installCommandCenterBootstrap();
-      });
+      if (needsPortfolio) {
+        wirePortfolioPreviews(contentElement);
+      }
+      if (page.id === "shell-patterns") {
+        wireLabShellControls(
+          contentElement,
+          statusBar,
+          layout,
+          secondarySidebar,
+          setOutlineOpen,
+        );
+      }
+      if (page.id === "overlays") {
+        wireLabOverlayControls(contentElement);
+      }
+      if (page.id === "command-palette") {
+        commandPaletteOpenButton =
+          wireLabCommandPaletteControls(contentElement);
+      }
+      syncCommandCenterOpenButton();
+      installCommandCenterBootstrap();
     } else {
       syncCommandCenterOpenButton();
       installCommandCenterBootstrap();
