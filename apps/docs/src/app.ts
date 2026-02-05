@@ -514,11 +514,14 @@ const scheduleIdleTask = (task: () => Promise<void>) =>
 const collectPageComponentTags = (page: DocPageContent) => {
   const tags = new Set<string>();
   for (const section of page.sections) {
+    const scrubbed = section.body
+      .replace(/<uik-code-block[\s\S]*?<\/uik-code-block>/gi, "")
+      .replace(/<pre[\s\S]*?<\/pre>/gi, "");
     componentTagPattern.lastIndex = 0;
-    let match = componentTagPattern.exec(section.body);
+    let match = componentTagPattern.exec(scrubbed);
     while (match) {
       tags.add(match[1]);
-      match = componentTagPattern.exec(section.body);
+      match = componentTagPattern.exec(scrubbed);
     }
   }
   return tags;
