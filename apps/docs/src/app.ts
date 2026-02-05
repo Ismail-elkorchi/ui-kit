@@ -1213,6 +1213,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
   if (outlineToggle) {
     secondarySidebar.focusReturnTarget = outlineToggle;
+    const outlineToggleUpdate = (
+      outlineToggle as unknown as { updateComplete?: Promise<unknown> }
+    ).updateComplete;
+    if (outlineToggleUpdate) {
+      await outlineToggleUpdate;
+    }
   }
 
   activityBar.items = buildActivityItems(routes);
