@@ -6,10 +6,13 @@ if (!appRoot) {
 }
 
 const startApp = async () => {
-  const { createBreakpointObserver } =
-    await import("@ismail-elkorchi/ui-tokens");
-  createBreakpointObserver();
+  const tokensPromise = import("@ismail-elkorchi/ui-tokens").then(
+    ({ createBreakpointObserver }) => {
+      createBreakpointObserver();
+    },
+  );
   await mountDocsApp(appRoot);
+  await tokensPromise;
 };
 if ("requestAnimationFrame" in window) {
   requestAnimationFrame(() => {
