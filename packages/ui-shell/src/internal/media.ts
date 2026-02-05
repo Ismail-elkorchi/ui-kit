@@ -33,12 +33,16 @@ export const getForcedColors = () => {
   if (forcedColorsState === undefined) {
     forcedColorsState = setupQuery("(forced-colors: active)");
   }
-  return forcedColorsState?.value ?? false;
+  if (!forcedColorsState) return false;
+  forcedColorsState.value = forcedColorsState.query.matches;
+  return forcedColorsState.value;
 };
 
 export const getReducedMotion = () => {
   if (reducedMotionState === undefined) {
     reducedMotionState = setupQuery("(prefers-reduced-motion: reduce)");
   }
-  return reducedMotionState?.value ?? false;
+  if (!reducedMotionState) return false;
+  reducedMotionState.value = reducedMotionState.query.matches;
+  return reducedMotionState.value;
 };
