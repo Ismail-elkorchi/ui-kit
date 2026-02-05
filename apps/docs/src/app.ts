@@ -823,7 +823,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const baseComponentsPromise = loadBaseComponents(
     initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
   );
-  await baseComponentsPromise;
   let initialPageComponentsPromise: Promise<void> | null = null;
   const ensureInitialPageComponents = () => {
     if (initialPageComponentsPromise) return initialPageComponentsPromise;
