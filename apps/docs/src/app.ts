@@ -822,6 +822,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialHeroLinks = initialPage ? renderHeroLinks(initialPage) : "";
   const initialOutline = initialPage ? renderToc(initialPage) : "";
   const initialIsInternal = initialPage ? !isPublicPage(initialPage) : false;
+  void loadBaseComponents(
+    initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
+  );
   const initialTheme = resolveTheme();
   const initialDensity =
     document.documentElement.getAttribute("data-uik-density") ?? "comfortable";
@@ -842,9 +845,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContent = initialPageContentPromise
     ? await initialPageContentPromise
     : null;
-  void loadBaseComponents(
-    initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
-  );
   let initialPageComponentsPromise: Promise<void> | null = null;
   const ensureInitialPageComponents = () => {
     if (initialPageComponentsPromise) return initialPageComponentsPromise;
