@@ -52,6 +52,8 @@ export class UikShellLayout extends LitElement {
   @state() private accessor isNarrow = false;
   private slotController?: LightDomSlotController;
   private resizeObserver: ResizeObserver | null = null;
+  private resizeFrame: number | null = null;
+  private pendingWidth = 0;
   private previousPrimaryFocus: HTMLElement | null = null;
   private pendingCloseReason: OverlayCloseReason | null = null;
   private scrollLockActive = false;
@@ -116,7 +118,7 @@ export class UikShellLayout extends LitElement {
       const width = entry
         ? entry.contentRect.width
         : this.getBoundingClientRect().width;
-      this.updateNarrowState(width);
+      this.queueResizeUpdate(width);
     });
     this.resizeObserver.observe(this);
     this.addEventListener("keydown", this.onKeydown);
@@ -126,6 +128,10 @@ export class UikShellLayout extends LitElement {
     this.slotController?.disconnect();
     this.resizeObserver?.disconnect();
     this.resizeObserver = null;
+    if (this.resizeFrame !== null) {
+      cancelAnimationFrame(this.resizeFrame);
+      this.resizeFrame = null;
+    }
     this.removeEventListener("keydown", this.onKeydown);
     this.unlockScroll();
     this.removeScrim();
@@ -133,7 +139,7 @@ export class UikShellLayout extends LitElement {
   }
 
   override firstUpdated() {
-    this.updateNarrowState(this.getBoundingClientRect().width);
+    this.queueResizeUpdate(this.getBoundingClientRect().width);
     if (this.restoreVisibility) {
       this.slotController?.sync();
       requestAnimationFrame(() => {
@@ -165,6 +171,15 @@ export class UikShellLayout extends LitElement {
       this.closeSecondarySidebar();
     }
     this.isNarrow = next;
+  }
+
+  private queueResizeUpdate(width: number) {
+    this.pendingWidth = width;
+    if (this.resizeFrame !== null) return;
+    this.resizeFrame = requestAnimationFrame(() => {
+      this.resizeFrame = null;
+      this.updateNarrowState(this.pendingWidth);
+    });
   }
 
   private syncActiveTargets() {
