@@ -852,6 +852,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? await initialPageContentPromise
     : null;
   let initialPageComponentsPromise: Promise<void> | null = null;
+  if (initialPageContent) {
+    initialPageComponentsPromise = loadPageComponents(initialPageContent);
+  }
   const ensureInitialPageComponents = () => {
     if (initialPageComponentsPromise) return initialPageComponentsPromise;
     if (!initialPageContent) return null;
@@ -869,6 +872,11 @@ export const mountDocsApp = async (container: HTMLElement) => {
   if (initialNeedsPortfolio || initialNeedsLabControls) {
     await loadLabPreviews();
   }
+  const preRenderTasks: Promise<unknown>[] = [baseComponentsPromise];
+  if (initialPageComponentsPromise) {
+    preRenderTasks.push(initialPageComponentsPromise);
+  }
+  await Promise.all(preRenderTasks);
   const initialContentBusy =
     initialPageContent || initialPage ? "true" : "false";
   const heroMarkup = initialIsInternal
@@ -1110,7 +1118,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? locationKey({ view: initialView, subview: initialSubview })
     : "";
   let initialContentReady = Boolean(initialPageContent);
-  let initialPageComponentsScheduled = false;
+  let initialPageComponentsScheduled = Boolean(initialPageComponentsPromise);
   let prefetchScheduled = false;
   let mobileNavScheduled = false;
 
