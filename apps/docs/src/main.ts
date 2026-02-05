@@ -5,9 +5,6 @@ if (!appRoot) {
   throw new Error("Docs root element not found.");
 }
 
-const nextFrame = () =>
-  new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-
 const startApp = async () => {
   const tokensPromise = import("@ismail-elkorchi/ui-tokens").then(
     ({ createBreakpointObserver }) => {
@@ -26,7 +23,6 @@ const startApp = async () => {
       }
     },
   );
-  await nextFrame();
   await mountDocsApp(appRoot);
   await tokensPromise;
 };
