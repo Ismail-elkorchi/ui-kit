@@ -998,7 +998,15 @@
       "a11y": [
         "Static ordered list semantics. Place interactive controls inside items."
       ],
-      "cssVars": ["--uik-component-timeline-*"],
+      "cssVars": [
+        "--uik-component-separator-color",
+        "--uik-component-separator-thickness",
+        "--uik-size-icon-sm",
+        "--uik-surface-bg",
+        "--uik-text-default",
+        "--uik-text-muted",
+        "--uik-text-secondary"
+      ],
       "notes": [
         "json-items expects a JSON array of {title, description?, meta?, status?}."
       ]
