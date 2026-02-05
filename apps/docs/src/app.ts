@@ -236,7 +236,7 @@ const prefetchedComponents = new Set([
   "uik-stack",
   "uik-switch",
 ]);
-const baseComponentTags = [
+const publicBaseComponentTags = [
   "uik-shell-layout",
   "uik-shell-activity-bar",
   "uik-shell-sidebar",
@@ -246,6 +246,17 @@ const baseComponentTags = [
   "uik-button",
   "uik-heading",
   "uik-page-hero",
+  "uik-select",
+  "uik-text",
+  "uik-tree-view",
+];
+const internalBaseComponentTags = [
+  "uik-shell-layout",
+  "uik-shell-activity-bar",
+  "uik-shell-sidebar",
+  "uik-shell-secondary-sidebar",
+  "uik-shell-status-bar",
+  "uik-button",
   "uik-select",
   "uik-text",
   "uik-tree-view",
@@ -608,8 +619,8 @@ const loadPageComponents = async (page: DocPageContent) => {
   await loadComponents(tags);
 };
 
-const loadBaseComponents = () => {
-  return loadComponents(baseComponentTags);
+const loadBaseComponents = (tags: string[]) => {
+  return loadComponents(tags);
 };
 
 const schedulePrefetchComponents = () => {
@@ -826,7 +837,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const kindBadgeAttr = initialKind ? "" : " hidden";
   const packageBadgeAttr = initialPackage ? "" : " hidden";
   const heroLinksAttr = initialHeroLinks ? "" : " hidden";
-  const heroHiddenAttr = initialIsInternal ? " hidden" : "";
   const fixtureHiddenAttr = initialIsInternal ? "" : " hidden";
   const outlineHiddenAttr = initialIsInternal ? " hidden" : "";
   const outlineOpenAttr = initialIsInternal ? "" : " isOpen";
@@ -844,12 +854,33 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContent = initialPageContentPromise
     ? await initialPageContentPromise
     : null;
-  const baseComponentsPromise = loadBaseComponents();
+  const baseComponentsPromise = loadBaseComponents(
+    initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
+  );
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
   const initialContentBusy =
     initialPageContent || initialPage ? "true" : "false";
+  const heroMarkup = initialIsInternal
+    ? ""
+    : `
+          <uik-page-hero class="docs-hero">
+            <div slot="eyebrow" class="docs-hero-top">
+              <uik-badge variant="secondary">UIK Docs</uik-badge>
+              <uik-badge variant="outline" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</uik-badge>
+              <uik-badge variant="outline" data-docs-kind${kindBadgeAttr}>${escapeHtml(initialKind)}</uik-badge>
+              <uik-badge variant="outline" data-docs-package${packageBadgeAttr}>${escapeHtml(initialPackage)}</uik-badge>
+            </div>
+            <uik-heading slot="title" level="1" data-docs-title>${escapeHtml(
+              initialTitle,
+            )}</uik-heading>
+            <uik-text slot="summary" as="p" data-docs-summary class="docs-summary">${escapeHtml(
+              initialSummary,
+            )}</uik-text>
+            <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
+          </uik-page-hero>
+          `;
 
   container.innerHTML = `
     <nav aria-label="Skip links">
@@ -887,21 +918,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
               initialSummary,
             )}</p>
           </header>
-          <uik-page-hero class="docs-hero"${heroHiddenAttr}>
-            <div slot="eyebrow" class="docs-hero-top">
-              <uik-badge variant="secondary">UIK Docs</uik-badge>
-              <uik-badge variant="outline" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</uik-badge>
-              <uik-badge variant="outline" data-docs-kind${kindBadgeAttr}>${escapeHtml(initialKind)}</uik-badge>
-              <uik-badge variant="outline" data-docs-package${packageBadgeAttr}>${escapeHtml(initialPackage)}</uik-badge>
-            </div>
-            <uik-heading slot="title" level="1" data-docs-title>${escapeHtml(
-              initialTitle,
-            )}</uik-heading>
-            <uik-text slot="summary" as="p" data-docs-summary class="docs-summary">${escapeHtml(
-              initialSummary,
-            )}</uik-text>
-            <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
-          </uik-page-hero>
+          ${heroMarkup}
           <div class="docs-page-content" data-docs-content aria-busy="${initialContentBusy}">${initialPageSections}</div>
         </div>
       </div>
