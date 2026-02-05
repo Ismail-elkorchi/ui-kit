@@ -103,14 +103,18 @@ describe("docs a11y", () => {
   const testTimeout = 30000;
 
   routes.forEach(({ label, path }) => {
-    it(`has zero axe violations on ${label}`, async () => {
-      window.history.replaceState({}, "", path);
-      const root = document.getElementById("app");
-      if (!root) throw new Error("Docs root not found.");
-      await mountDocsApp(root);
-      await waitForContent();
-      assertLandmarkStructure();
-      await runA11y(document.body);
-    }, testTimeout);
+    it(
+      `has zero axe violations on ${label}`,
+      async () => {
+        window.history.replaceState({}, "", path);
+        const root = document.getElementById("app");
+        if (!root) throw new Error("Docs root not found.");
+        await mountDocsApp(root);
+        await waitForContent();
+        assertLandmarkStructure();
+        await runA11y(document.body);
+      },
+      testTimeout,
+    );
   });
 });
