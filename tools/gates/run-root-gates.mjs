@@ -43,6 +43,7 @@ const steps = [
     "node",
     ["tools/docs/check-no-perf-route-special-casing.mjs"],
   ],
+  ["Docs lighthouse", "node", ["apps/docs/tools/check-docs-lighthouse.mjs"]],
   ["Docs token usage", "node", ["tools/tokens/check-docs-token-usage.mjs"]],
   [
     "Scaffold token hooks",
