@@ -56,7 +56,13 @@ const steps = [
   [
     "Workspace tests",
     npmBin,
-    ["run", "--workspaces", "--if-present", "--workspace-concurrency=1", "test"],
+    [
+      "run",
+      "--workspaces",
+      "--if-present",
+      "--workspace-concurrency=1",
+      "test",
+    ],
   ],
   ["Storybook tests", npmBin, ["run", "test-storybook"]],
   ["Visual regression", npmBin, ["run", "test-visual"]],
