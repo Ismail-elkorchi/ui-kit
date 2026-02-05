@@ -68,8 +68,7 @@ export class UikTimeline extends LitElement {
   @property({ type: String, reflect: true, useDefault: true })
   accessor density: "comfortable" | "compact" = "comfortable";
   @property({ attribute: "aria-label" }) accessor ariaLabelValue = "";
-  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue =
-    "";
+  @property({ attribute: "aria-labelledby" }) accessor ariaLabelledbyValue = "";
   @property({ attribute: "aria-describedby" }) accessor ariaDescribedbyValue =
     "";
 
@@ -89,9 +88,7 @@ export class UikTimeline extends LitElement {
   override render() {
     if (this.parseError) {
       return html`
-        <div part="error" class="error" role="alert">
-          ${this.parseError}
-        </div>
+        <div part="error" class="error" role="alert">${this.parseError}</div>
       `;
     }
 

@@ -150,10 +150,7 @@ const componentLoaders = new Map<string, () => Promise<unknown>>([
     "uik-json-diff",
     () => import("@ismail-elkorchi/ui-primitives/uik-json-diff"),
   ],
-  [
-    "uik-timeline",
-    () => import("@ismail-elkorchi/ui-primitives/uik-timeline"),
-  ],
+  ["uik-timeline", () => import("@ismail-elkorchi/ui-primitives/uik-timeline")],
   ["uik-dialog", () => import("@ismail-elkorchi/ui-primitives/uik-dialog")],
   [
     "uik-empty-state",

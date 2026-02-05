@@ -47,8 +47,8 @@ export const styles = css`
     top: 0;
     bottom: 0;
     left: calc(
-      var(--uik-component-timeline-marker-size) / 2 -
-        var(--uik-component-timeline-line-width) / 2
+      var(--uik-component-timeline-marker-size) /
+        2 - var(--uik-component-timeline-line-width) / 2
     );
     width: var(--uik-component-timeline-line-width);
     background-color: oklch(var(--uik-component-timeline-line));
