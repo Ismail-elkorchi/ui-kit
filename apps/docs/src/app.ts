@@ -201,9 +201,11 @@ const publicBaseComponentTags = [
   "uik-shell-status-bar",
   "uik-badge",
   "uik-button",
+  "uik-code-block",
   "uik-heading",
   "uik-link",
   "uik-page-hero",
+  "uik-section-card",
   "uik-select",
   "uik-text",
   "uik-tree-view",
@@ -215,15 +217,33 @@ const internalBaseComponentTags = [
   "uik-shell-secondary-sidebar",
   "uik-shell-status-bar",
   "uik-button",
+  "uik-code-block",
   "uik-heading",
   "uik-link",
+  "uik-section-card",
   "uik-select",
   "uik-text",
   "uik-tree-view",
 ];
+const baseComponentBundleTags = new Set([
+  ...publicBaseComponentTags,
+  ...internalBaseComponentTags,
+]);
 const preloadedComponents = new Set();
 const loadedComponents = new Set(preloadedComponents);
 const pendingComponents = new Map<string, Promise<unknown>>();
+let baseComponentBundlePromise: Promise<void> | null = null;
+
+const loadBaseComponentBundle = () => {
+  if (!baseComponentBundlePromise) {
+    baseComponentBundlePromise = import("./base-components").then(() => {
+      baseComponentBundleTags.forEach((tag) => {
+        loadedComponents.add(tag);
+      });
+    });
+  }
+  return baseComponentBundlePromise;
+};
 
 const normalizeNavId = (value: string) =>
   value
@@ -591,7 +611,8 @@ const loadPageComponents = async (page: DocPageContent) => {
 };
 
 const loadBaseComponents = (tags: string[]) => {
-  return loadComponents(tags);
+  if (!tags.length) return Promise.resolve();
+  return loadBaseComponentBundle();
 };
 
 const schedulePrefetchComponents = () => {
@@ -971,6 +992,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       globalThis.setTimeout(schedule, 0);
     }
   }
+  await baseComponentsPromise;
   await nextFrame();
 
   const [{ createUikPreferencesController }, { createUikShellRouter }] =
@@ -985,7 +1007,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     persist: true,
   });
   preferences.apply();
-  await baseComponentsPromise;
 
   let pageMap = buildPageMap();
   const routes = buildRoutes(
