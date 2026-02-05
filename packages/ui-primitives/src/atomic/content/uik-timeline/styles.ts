@@ -14,28 +14,29 @@ export const styles = css`
   .timeline {
     display: flex;
     flex-direction: column;
-    gap: var(--uik-space-4);
+    gap: var(--uik-component-timeline-gap);
     margin: var(--uik-space-0);
     padding: var(--uik-space-0);
     list-style: none;
   }
 
   :host([density="compact"]) .timeline {
-    gap: var(--uik-space-3);
+    gap: var(--uik-component-timeline-gap-compact);
   }
 
   .item {
     position: relative;
     display: grid;
-    grid-template-columns: var(--uik-size-icon-sm) minmax(0, 1fr);
-    column-gap: var(--uik-space-3);
-    padding-block: var(--uik-space-2);
+    grid-template-columns: var(--uik-component-timeline-marker-size)
+      minmax(0, 1fr);
+    column-gap: var(--uik-component-timeline-column-gap);
+    padding-block: var(--uik-component-timeline-item-padding-y);
     min-width: 0;
   }
 
   :host([density="compact"]) .item {
-    column-gap: var(--uik-space-2);
-    padding-block: var(--uik-space-1);
+    column-gap: var(--uik-component-timeline-column-gap-compact);
+    padding-block: var(--uik-component-timeline-item-padding-y-compact);
   }
 
   .item::before {
@@ -44,35 +45,36 @@ export const styles = css`
     top: 0;
     bottom: 0;
     left: calc(
-      var(--uik-size-icon-sm) / 2 - var(--uik-component-separator-thickness) / 2
+      var(--uik-component-timeline-marker-size) / 2 -
+        var(--uik-component-timeline-line-thickness) / 2
     );
-    width: var(--uik-component-separator-thickness);
-    background-color: oklch(var(--uik-component-separator-color));
+    width: var(--uik-component-timeline-line-thickness);
+    background-color: oklch(var(--uik-component-timeline-line-color));
   }
 
   .item:first-child::before {
-    top: calc(var(--uik-size-icon-sm) / 2);
+    top: calc(var(--uik-component-timeline-marker-size) / 2);
   }
 
   .item:last-child::before {
-    bottom: calc(var(--uik-size-icon-sm) / 2);
+    bottom: calc(var(--uik-component-timeline-marker-size) / 2);
   }
 
   .marker {
-    width: var(--uik-size-icon-sm);
-    height: var(--uik-size-icon-sm);
+    width: var(--uik-component-timeline-marker-size);
+    height: var(--uik-component-timeline-marker-size);
     border-radius: var(--uik-radius-full);
-    border: var(--uik-component-separator-thickness) solid
-      oklch(var(--uik-component-separator-color));
-    background-color: oklch(var(--uik-surface-bg));
-    margin-top: var(--uik-space-1);
+    border: var(--uik-component-timeline-marker-border-width) solid
+      oklch(var(--uik-component-timeline-line-color));
+    background-color: oklch(var(--uik-component-timeline-marker-bg));
+    margin-top: var(--uik-component-timeline-marker-offset);
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
   :host([density="compact"]) .marker {
-    margin-top: var(--uik-space-0);
+    margin-top: var(--uik-component-timeline-marker-offset-compact);
   }
 
   .content {

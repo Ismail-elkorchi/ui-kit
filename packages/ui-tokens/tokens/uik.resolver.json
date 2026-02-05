@@ -139,6 +139,9 @@
           "$ref": "components/shell.json"
         },
         {
+          "$ref": "components/timeline.json"
+        },
+        {
           "$ref": "components/tooltip.json"
         }
       ]

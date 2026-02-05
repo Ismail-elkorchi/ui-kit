@@ -1,0 +1,75 @@
+{
+  "component": {
+    "timeline": {
+      "gap": {
+        "$value": "{space.4}",
+        "$type": "dimension",
+        "$description": "Component timeline vertical gap."
+      },
+      "gapCompact": {
+        "$value": "{space.3}",
+        "$type": "dimension",
+        "$description": "Component timeline vertical gap (compact)."
+      },
+      "columnGap": {
+        "$value": "{space.3}",
+        "$type": "dimension",
+        "$description": "Component timeline column gap."
+      },
+      "columnGapCompact": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component timeline column gap (compact)."
+      },
+      "itemPaddingY": {
+        "$value": "{space.2}",
+        "$type": "dimension",
+        "$description": "Component timeline item padding Y."
+      },
+      "itemPaddingYCompact": {
+        "$value": "{space.1}",
+        "$type": "dimension",
+        "$description": "Component timeline item padding Y (compact)."
+      },
+      "marker": {
+        "size": {
+          "$value": "{size.icon.sm}",
+          "$type": "dimension",
+          "$description": "Component timeline marker size."
+        },
+        "borderWidth": {
+          "$value": "{component.separator.thickness}",
+          "$type": "dimension",
+          "$description": "Component timeline marker border width."
+        },
+        "bg": {
+          "$value": "{surface.bg}",
+          "$type": "color",
+          "$description": "Component timeline marker background."
+        }
+      },
+      "line": {
+        "color": {
+          "$value": "{component.separator.color}",
+          "$type": "color",
+          "$description": "Component timeline line color."
+        },
+        "thickness": {
+          "$value": "{component.separator.thickness}",
+          "$type": "dimension",
+          "$description": "Component timeline line thickness."
+        }
+      },
+      "markerOffset": {
+        "$value": "{space.1}",
+        "$type": "dimension",
+        "$description": "Component timeline marker top offset."
+      },
+      "markerOffsetCompact": {
+        "$value": "{space.0}",
+        "$type": "dimension",
+        "$description": "Component timeline marker top offset (compact)."
+      }
+    }
+  }
+}
