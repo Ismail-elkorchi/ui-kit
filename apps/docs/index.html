@@ -138,14 +138,40 @@
 
       .docs-select-placeholder {
         display: inline-flex;
-        min-height: var(--uik-component-select-base-height);
-        min-inline-size: var(--uik-space-12);
+        flex-direction: column;
+        gap: var(--uik-space-2);
+        min-block-size: calc(
+          var(--uik-typography-line-height-2) + var(--uik-space-2) +
+            var(--uik-component-select-base-height)
+        );
+        min-inline-size: var(--uik-space-16);
+        box-sizing: border-box;
+        pointer-events: none;
+      }
+
+      .docs-select-placeholder::before {
+        content: "";
+        display: block;
+        height: var(--uik-typography-line-height-2);
+        width: 100%;
+        border-radius: var(--uik-radius-2);
+        background-color: oklch(var(--uik-surface-elevated-1));
+      }
+
+      .docs-select-placeholder::after {
+        content: "";
+        display: block;
+        height: var(--uik-component-select-base-height);
+        width: 100%;
         border-radius: var(--uik-component-select-base-radius);
         border: var(--uik-border-width-1) solid
           oklch(var(--uik-component-select-base-border-default));
         background-color: oklch(var(--uik-component-select-base-bg));
         box-sizing: border-box;
-        pointer-events: none;
+      }
+
+      uik-shell-status-bar .docs-global-controls uik-select {
+        min-inline-size: var(--uik-space-16);
       }
 
       uik-shell-layout:not(:defined) {
