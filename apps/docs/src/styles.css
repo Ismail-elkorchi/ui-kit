@@ -24,10 +24,6 @@
   display: block;
 }
 
-uik-select:not(:defined) {
-  visibility: hidden;
-}
-
 body {
   min-height: 100%;
   margin: var(--uik-space-0);
