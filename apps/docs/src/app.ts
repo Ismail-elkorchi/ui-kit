@@ -257,7 +257,6 @@ const internalBaseComponentTags = [
   "uik-shell-secondary-sidebar",
   "uik-shell-status-bar",
   "uik-button",
-  "uik-select",
   "uik-text",
   "uik-tree-view",
 ];
@@ -881,6 +880,25 @@ export const mountDocsApp = async (container: HTMLElement) => {
             <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
           </uik-page-hero>
           `;
+  const globalControlsMarkup = initialIsInternal
+    ? ""
+    : `
+        <div slot="global-controls" class="docs-global-controls">
+          <uik-select data-docs-control="theme">
+            <span slot="label">Theme</span>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </uik-select>
+          <uik-select data-docs-control="density">
+            <span slot="label">Density</span>
+            <option value="comfortable">Comfortable</option>
+            <option value="compact">Compact</option>
+          </uik-select>
+          <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
+            <span slot="label">Page</span>
+          </uik-select>
+        </div>
+        `;
 
   container.innerHTML = `
     <nav aria-label="Skip links">
@@ -947,21 +965,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
           </uik-button>
           <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
         </div>
-        <div slot="global-controls" class="docs-global-controls">
-          <uik-select data-docs-control="theme">
-            <span slot="label">Theme</span>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </uik-select>
-          <uik-select data-docs-control="density">
-            <span slot="label">Density</span>
-            <option value="comfortable">Comfortable</option>
-            <option value="compact">Compact</option>
-          </uik-select>
-          <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
-            <span slot="label">Page</span>
-          </uik-select>
-        </div>
+        ${globalControlsMarkup}
       </uik-shell-status-bar>
     </uik-shell-layout>
   `;
