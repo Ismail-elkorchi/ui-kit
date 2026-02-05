@@ -220,7 +220,6 @@ const internalBaseComponentTags = [
   "uik-heading",
   "uik-link",
   "uik-section-card",
-  "uik-code-block",
   "uik-text",
   "uik-tree-view",
 ];
