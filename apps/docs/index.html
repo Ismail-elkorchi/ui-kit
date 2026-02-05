@@ -136,6 +136,18 @@
         width: 100%;
       }
 
+      .docs-select-placeholder {
+        display: inline-flex;
+        min-height: var(--uik-component-select-base-height);
+        min-inline-size: var(--uik-space-12);
+        border-radius: var(--uik-component-select-base-radius);
+        border: var(--uik-border-width-1) solid
+          oklch(var(--uik-component-select-base-border-default));
+        background-color: oklch(var(--uik-component-select-base-bg));
+        box-sizing: border-box;
+        pointer-events: none;
+      }
+
       uik-shell-layout:not(:defined) {
         display: grid;
         grid-template-columns:

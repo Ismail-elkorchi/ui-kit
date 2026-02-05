@@ -821,7 +821,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialHeroLinks = initialPage ? renderHeroLinks(initialPage) : "";
   const initialOutline = initialPage ? renderToc(initialPage) : "";
   const initialIsInternal = initialPage ? !isPublicPage(initialPage) : false;
-  await loadBaseComponents(
+  const baseComponentsPromise = loadBaseComponents(
     initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
   );
   const initialTheme = resolveTheme();
@@ -887,19 +887,18 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? ""
     : `
         <div slot="global-controls" class="docs-global-controls">
-          <uik-select data-docs-control="theme">
-            <span slot="label">Theme</span>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </uik-select>
-          <uik-select data-docs-control="density">
-            <span slot="label">Density</span>
-            <option value="comfortable">Comfortable</option>
-            <option value="compact">Compact</option>
-          </uik-select>
-          <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
-            <span slot="label">Page</span>
-          </uik-select>
+          <div
+            class="docs-select-placeholder"
+            data-docs-select-placeholder="theme"
+            aria-hidden="true"></div>
+          <div
+            class="docs-select-placeholder"
+            data-docs-select-placeholder="density"
+            aria-hidden="true"></div>
+          <div
+            class="docs-select-placeholder docs-mobile-nav"
+            data-docs-select-placeholder="mobile-nav"
+            aria-hidden="true"></div>
         </div>
         `;
 
@@ -1007,6 +1006,18 @@ export const mountDocsApp = async (container: HTMLElement) => {
   });
   preferences.apply();
 
+  await baseComponentsPromise;
+  await Promise.all([
+    customElements.whenDefined("uik-shell-layout"),
+    customElements.whenDefined("uik-shell-activity-bar"),
+    customElements.whenDefined("uik-shell-sidebar"),
+    customElements.whenDefined("uik-shell-secondary-sidebar"),
+    customElements.whenDefined("uik-shell-status-bar"),
+    customElements.whenDefined("uik-tree-view"),
+    customElements.whenDefined("uik-button"),
+    customElements.whenDefined("uik-select"),
+  ]);
+
   let pageMap = buildPageMap();
   const routes = buildRoutes(
     docsPages,
@@ -1067,15 +1078,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const navToggle = container.querySelector<UikButton>(
     '[data-docs-action="nav-toggle"]',
   );
-  const themeSelect = container.querySelector<UikSelect>(
-    'uik-select[data-docs-control="theme"]',
-  );
-  const densitySelect = container.querySelector<UikSelect>(
-    'uik-select[data-docs-control="density"]',
-  );
-  const mobileNavSelect = container.querySelector<UikSelect>(
-    'uik-select[data-docs-control="mobile-nav"]',
-  );
+  let themeSelect: UikSelect | null = null;
+  let densitySelect: UikSelect | null = null;
+  let mobileNavSelect: UikSelect | null = null;
   const syncUrl = (
     location: UikShellLocation,
     mode: "push" | "replace" = "push",
@@ -1101,6 +1106,99 @@ export const mountDocsApp = async (container: HTMLElement) => {
   let initialPageComponentsScheduled = false;
   let prefetchScheduled = false;
   let mobileNavScheduled = false;
+
+  const createSelect = ({
+    control,
+    label,
+    options = [],
+    className,
+  }: {
+    control: string;
+    label: string;
+    options?: Array<{ value: string; label: string }>;
+    className?: string;
+  }) => {
+    const select = document.createElement("uik-select") as UikSelect;
+    select.setAttribute("data-docs-control", control);
+    if (className) select.className = className;
+    const optionsMarkup = options
+      .map(
+        (option) =>
+          `<option value="${option.value}">${option.label}</option>`,
+      )
+      .join("");
+    select.innerHTML = `<span slot="label">${label}</span>${optionsMarkup}`;
+    return select;
+  };
+
+  const hydrateGlobalControls = async () => {
+    if (initialIsInternal) return;
+    const themePlaceholder = container.querySelector<HTMLElement>(
+      '[data-docs-select-placeholder="theme"]',
+    );
+    const densityPlaceholder = container.querySelector<HTMLElement>(
+      '[data-docs-select-placeholder="density"]',
+    );
+    const mobilePlaceholder = container.querySelector<HTMLElement>(
+      '[data-docs-select-placeholder="mobile-nav"]',
+    );
+    if (!themePlaceholder && !densityPlaceholder && !mobilePlaceholder) {
+      themeSelect = container.querySelector<UikSelect>(
+        'uik-select[data-docs-control="theme"]',
+      );
+      densitySelect = container.querySelector<UikSelect>(
+        'uik-select[data-docs-control="density"]',
+      );
+      mobileNavSelect = container.querySelector<UikSelect>(
+        'uik-select[data-docs-control="mobile-nav"]',
+      );
+    } else {
+      await customElements.whenDefined("uik-select");
+      themeSelect = createSelect({
+        control: "theme",
+        label: "Theme",
+        options: [
+          { value: "light", label: "Light" },
+          { value: "dark", label: "Dark" },
+        ],
+      });
+      densitySelect = createSelect({
+        control: "density",
+        label: "Density",
+        options: [
+          { value: "comfortable", label: "Comfortable" },
+          { value: "compact", label: "Compact" },
+        ],
+      });
+      mobileNavSelect = createSelect({
+        control: "mobile-nav",
+        label: "Page",
+        className: "docs-mobile-nav",
+      });
+      themePlaceholder?.replaceWith(themeSelect);
+      densityPlaceholder?.replaceWith(densitySelect);
+      mobilePlaceholder?.replaceWith(mobileNavSelect);
+    }
+    themeSelect?.addEventListener("change", () => {
+      preferences.setTheme(themeSelect?.value ?? "system");
+      updateStatusMeta(statusBar);
+    });
+    densitySelect?.addEventListener("change", () => {
+      preferences.setDensity(densitySelect?.value ?? "comfortable");
+      updateStatusMeta(statusBar);
+    });
+    mobileNavSelect?.addEventListener("change", () => {
+      const { view, subview } = splitViewAndSubview(mobileNavSelect?.value ?? "");
+      if (!view || !subview) return;
+      router.navigate(view, subview);
+      syncUrl(router.current);
+      updateActiveRoute(router.current);
+    });
+    if (!mobileNavScheduled && mobileNavSelect) {
+      mobileNavScheduled = true;
+      scheduleMobileNavOptions(mobileNavSelect);
+    }
+  };
 
   if (!layout || !activityBar || !navTree || !statusBar || !secondarySidebar) {
     throw new Error("Docs layout could not be initialized.");
@@ -1184,6 +1282,8 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (!commandCenter) return;
     commandCenter.setOpenButton(commandPaletteOpenButton);
   };
+
+  await hydrateGlobalControls();
 
   let commandCenterInit: Promise<void> | null = null;
   let commandCenterBootstrapActive = false;
@@ -1304,7 +1404,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       prefetchScheduled = true;
       schedulePrefetchComponents();
     }
-    if (!mobileNavScheduled) {
+    if (!mobileNavScheduled && mobileNavSelect) {
       mobileNavScheduled = true;
       scheduleMobileNavOptions(mobileNavSelect);
     }
@@ -1554,23 +1654,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     setOutlineOpen(layout, secondarySidebar, false, { focus: true });
   });
 
-  themeSelect?.addEventListener("change", () => {
-    preferences.setTheme(themeSelect.value);
-    updateStatusMeta(statusBar);
-  });
-
-  densitySelect?.addEventListener("change", () => {
-    preferences.setDensity(densitySelect.value);
-    updateStatusMeta(statusBar);
-  });
-
-  mobileNavSelect?.addEventListener("change", () => {
-    const { view, subview } = splitViewAndSubview(mobileNavSelect.value);
-    if (!view || !subview) return;
-    router.navigate(view, subview);
-    syncUrl(router.current);
-    updateActiveRoute(router.current);
-  });
 
   window.addEventListener("popstate", () => {
     const next = getRouteFromLocation(baseUrl);
@@ -1593,16 +1676,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (mobileNavSelect) mobileNavSelect.value = locationKey(router.current);
   };
 
-  await Promise.all([
-    customElements.whenDefined("uik-shell-layout"),
-    customElements.whenDefined("uik-shell-activity-bar"),
-    customElements.whenDefined("uik-shell-sidebar"),
-    customElements.whenDefined("uik-shell-secondary-sidebar"),
-    customElements.whenDefined("uik-shell-status-bar"),
-    customElements.whenDefined("uik-tree-view"),
-    customElements.whenDefined("uik-button"),
-    customElements.whenDefined("uik-select"),
-  ]);
   await Promise.all([
     layout.updateComplete,
     activityBar.updateComplete,
