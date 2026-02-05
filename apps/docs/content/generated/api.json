@@ -4911,6 +4911,117 @@
           "notes": []
         },
         {
+          "id": "timeline",
+          "tagName": "uik-timeline",
+          "name": "<uik-timeline>",
+          "kind": "component",
+          "summary": "Token-driven timeline/log list for run history and activity feeds.",
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-label",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "aria-labelledby",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "density",
+              "type": "\"comfortable\" | \"compact\"",
+              "description": "comfortable | compact",
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "json-items",
+              "type": "string",
+              "description": "string",
+              "default": "\"\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "ariaDescribedbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelledbyValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "ariaLabelValue",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "density",
+              "type": "\"comfortable\" | \"compact\"",
+              "description": "",
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "items",
+              "type": "UikTimelineItem[]",
+              "description": "UikTimelineItem[]",
+              "default": "[]"
+            },
+            {
+              "name": "jsonItems",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "parseError",
+              "type": "string",
+              "description": "",
+              "default": "\"\""
+            },
+            {
+              "name": "resolvedItems",
+              "type": "UikTimelineItem[]",
+              "description": "",
+              "default": "[]"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [
+            { "name": "base", "description": "" },
+            { "name": "content", "description": "" },
+            { "name": "description", "description": "" },
+            { "name": "error", "description": "" },
+            { "name": "item", "description": "" },
+            { "name": "marker", "description": "" },
+            { "name": "meta", "description": "" },
+            { "name": "status", "description": "" },
+            { "name": "title", "description": "" }
+          ],
+          "cssCustomProperties": [
+            { "name": "--uik-component-timeline-*", "description": "" }
+          ],
+          "a11y": [
+            "Static ordered list semantics. Place interactive controls inside items."
+          ],
+          "notes": [
+            "json-items expects a JSON array of {title, description?, meta?, status?}."
+          ]
+        },
+        {
           "id": "tooltip",
           "tagName": "uik-tooltip",
           "name": "<uik-tooltip>",
