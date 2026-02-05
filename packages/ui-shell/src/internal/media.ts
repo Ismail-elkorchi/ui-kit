@@ -4,7 +4,10 @@ type MediaQueryState = {
 };
 
 const setupQuery = (media: string): MediaQueryState | null => {
-  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+  if (
+    typeof window === "undefined" ||
+    typeof window.matchMedia !== "function"
+  ) {
     return null;
   }
   const query = window.matchMedia(media);
