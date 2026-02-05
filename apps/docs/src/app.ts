@@ -841,7 +841,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     : null;
   const initialPageComponentsPromise = initialPageContentPromise
     ? initialPageContentPromise.then((pageContent) =>
-        scheduleIdleTask(() => loadPageComponents(pageContent)),
+        loadPageComponents(pageContent),
       )
     : null;
   const initialPageContent = initialPageContentPromise
@@ -850,6 +850,10 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const baseComponentsPromise = loadBaseComponents(
     initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
   );
+  if (initialPageComponentsPromise) {
+    await initialPageComponentsPromise;
+  }
+  await baseComponentsPromise;
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
