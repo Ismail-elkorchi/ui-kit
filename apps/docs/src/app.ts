@@ -204,8 +204,6 @@ const publicBaseComponentTags = [
   "uik-heading",
   "uik-link",
   "uik-page-hero",
-  "uik-code-block",
-  "uik-select",
   "uik-text",
   "uik-tree-view",
 ];
@@ -825,7 +823,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const baseComponentsPromise = loadBaseComponents(
     initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
   );
-  await baseComponentsPromise;
+  const initialComponentsPromise =
+    initialPageComponentsPromise ?? Promise.resolve();
+  await Promise.all([baseComponentsPromise, initialComponentsPromise]);
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
@@ -947,6 +947,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       </uik-shell-status-bar>
     </uik-shell-layout>
   `;
+  void loadComponents(["uik-select"]);
   if (initialNeedsPortfolio && labPreviewsModule) {
     labPreviewsModule.wirePortfolioPreviews(container);
   }
