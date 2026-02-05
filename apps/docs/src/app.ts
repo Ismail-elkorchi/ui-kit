@@ -842,7 +842,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContent = initialPageContentPromise
     ? await initialPageContentPromise
     : null;
-  const baseComponentsPromise = loadBaseComponents(
+  void loadBaseComponents(
     initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
   );
   let initialPageComponentsPromise: Promise<void> | null = null;
@@ -993,7 +993,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
       globalThis.setTimeout(schedule, 0);
     }
   }
-  await baseComponentsPromise;
   await nextFrame();
 
   const [{ createUikPreferencesController }, { createUikShellRouter }] =
