@@ -1372,7 +1372,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       await loadLabPreviews();
     }
     const loadPromise = isInitialPage
-      ? ensureInitialPageComponents() ?? loadPageComponents(pageContent)
+      ? (ensureInitialPageComponents() ?? loadPageComponents(pageContent))
       : loadPageComponents(pageContent);
     if (shouldAwaitComponents) {
       await loadPromise;
