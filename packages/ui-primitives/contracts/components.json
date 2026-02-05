@@ -1000,12 +1000,7 @@
       ],
       "cssVars": [
         "--uik-component-separator-color",
-        "--uik-component-separator-thickness",
-        "--uik-size-icon-sm",
-        "--uik-surface-bg",
-        "--uik-text-default",
-        "--uik-text-muted",
-        "--uik-text-secondary"
+        "--uik-component-separator-thickness"
       ],
       "notes": [
         "json-items expects a JSON array of {title, description?, meta?, status?}."

@@ -65,11 +65,6 @@ const normalizeItems = (values: unknown[]): UikTimelineItem[] =>
  * @note json-items expects a JSON array of {title, description?, meta?, status?}.
  * @cssprop --uik-component-separator-color
  * @cssprop --uik-component-separator-thickness
- * @cssprop --uik-size-icon-sm
- * @cssprop --uik-surface-bg
- * @cssprop --uik-text-default
- * @cssprop --uik-text-muted
- * @cssprop --uik-text-secondary
  */
 @customElement("uik-timeline")
 export class UikTimeline extends LitElement {
