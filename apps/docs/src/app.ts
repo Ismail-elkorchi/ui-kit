@@ -814,20 +814,20 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageContentPromise = initialPage
     ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
     : null;
-  const initialPageComponentsPromise = initialPageContentPromise
-    ? initialPageContentPromise.then((pageContent) =>
-        loadPageComponents(pageContent),
-      )
-    : null;
   const initialPageContent = initialPageContentPromise
     ? await initialPageContentPromise
     : null;
   const baseComponentsPromise = loadBaseComponents(
     initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
   );
-  const initialComponentsPromise =
-    initialPageComponentsPromise ?? Promise.resolve();
-  await Promise.all([baseComponentsPromise, initialComponentsPromise]);
+  await baseComponentsPromise;
+  let initialPageComponentsPromise: Promise<void> | null = null;
+  const ensureInitialPageComponents = () => {
+    if (initialPageComponentsPromise) return initialPageComponentsPromise;
+    if (!initialPageContent) return null;
+    initialPageComponentsPromise = loadPageComponents(initialPageContent);
+    return initialPageComponentsPromise;
+  };
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
@@ -951,6 +951,23 @@ export const mountDocsApp = async (container: HTMLElement) => {
   `;
   if (initialNeedsPortfolio && labPreviewsModule) {
     labPreviewsModule.wirePortfolioPreviews(container);
+  }
+  if (initialPageContent) {
+    const schedule = () => {
+      void ensureInitialPageComponents();
+    };
+    if ("requestIdleCallback" in window) {
+      (
+        window as Window & {
+          requestIdleCallback: (
+            callback: IdleRequestCallback,
+            options?: IdleRequestOptions,
+          ) => number;
+        }
+      ).requestIdleCallback(schedule);
+    } else {
+      globalThis.setTimeout(schedule, 0);
+    }
   }
   await nextFrame();
 
@@ -1354,10 +1371,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (needsLabPreviews) {
       await loadLabPreviews();
     }
-    const loadPromise =
-      isInitialPage && initialPageComponentsPromise
-        ? initialPageComponentsPromise
-        : loadPageComponents(pageContent);
+    const loadPromise = isInitialPage
+      ? ensureInitialPageComponents() ?? loadPageComponents(pageContent)
+      : loadPageComponents(pageContent);
     if (shouldAwaitComponents) {
       await loadPromise;
     }
@@ -1448,7 +1464,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       if (initialPageContent && !initialPageComponentsScheduled) {
         initialPageComponentsScheduled = true;
         const loadPromise =
-          initialPageComponentsPromise ??
+          ensureInitialPageComponents() ??
           loadPageComponents(initialPageContent);
         loadPromise.finally(() => {
           if (contentElement) {
