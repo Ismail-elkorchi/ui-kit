@@ -7,12 +7,12 @@ Use this page to capture a representative form surface in Lighthouse audits.
     <uik-input value="Workspace">
       <span slot="label">Project name</span>
     </uik-input>
-    <uik-radio-group value="daily">
+    <uik-select value="daily">
       <span slot="label">Sync cadence</span>
-      <uik-radio value="daily"><span slot="label">Daily</span></uik-radio>
-      <uik-radio value="weekly"><span slot="label">Weekly</span></uik-radio>
-      <uik-radio value="manual"><span slot="label">Manual</span></uik-radio>
-    </uik-radio-group>
+      <option value="daily">Daily</option>
+      <option value="weekly">Weekly</option>
+      <option value="manual">Manual</option>
+    </uik-select>
     <uik-switch>
       <span slot="label">Enable alerts</span>
     </uik-switch>

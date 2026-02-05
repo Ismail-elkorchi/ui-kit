@@ -5,14 +5,16 @@ This route provides a stable shell layout snapshot for Lighthouse audits.
 <div class="docs-lab-panel">
   <uik-stack gap="3">
     <uik-text as="p">Workspace overview</uik-text>
-    <uik-description-list>
-      <dt>Active space</dt>
-      <dd>Docs</dd>
-      <dt>Workspace</dt>
-      <dd>UIK Lab</dd>
-      <dt>Sync status</dt>
-      <dd><uik-badge>Online</uik-badge></dd>
-    </uik-description-list>
+    <uik-stack gap="2">
+      <uik-text as="p" size="sm" tone="muted">Active space</uik-text>
+      <uik-text as="p">Docs</uik-text>
+      <uik-text as="p" size="sm" tone="muted">Workspace</uik-text>
+      <uik-text as="p">UIK Lab</uik-text>
+      <uik-stack direction="horizontal" gap="2" align="center">
+        <uik-text as="p" size="sm" tone="muted">Sync status</uik-text>
+        <uik-badge>Online</uik-badge>
+      </uik-stack>
+    </uik-stack>
   </uik-stack>
 </div>
 
