@@ -18,7 +18,7 @@
     "preview": "vite preview",
     "perf:check": "node ./tools/check-docs-performance.mjs",
     "lighthouse:check": "node ./tools/check-docs-lighthouse.mjs",
-    "test": "npm run perf:check && npm run lighthouse:check && vitest --run --project browser --config ../../vitest.config.ts --dir .",
+    "test": "npm run lighthouse:check && npm run perf:check && vitest --run --project browser --config ../../vitest.config.ts --dir .",
     "prebuild": "npm run deps:build && npm run generate:baseline && npm run generate:content",
     "predev": "npm run deps:build && npm run generate:baseline && npm run generate:content",
     "pretest": "npm run deps:build && npm run generate:baseline && npm run generate:content"
