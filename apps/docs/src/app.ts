@@ -821,7 +821,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialHeroLinks = initialPage ? renderHeroLinks(initialPage) : "";
   const initialOutline = initialPage ? renderToc(initialPage) : "";
   const initialIsInternal = initialPage ? !isPublicPage(initialPage) : false;
-  void loadBaseComponents(
+  await loadBaseComponents(
     initialIsInternal ? internalBaseComponentTags : publicBaseComponentTags,
   );
   const initialTheme = resolveTheme();
@@ -929,7 +929,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
           <uik-text as="p" size="sm" tone="muted">Tokens-first, standards-based UI.</uik-text>
         </div>
       </uik-shell-sidebar>
-      <div slot="main-content" id="docs-main" class="docs-main">
+      <main slot="main-content" id="docs-main" class="docs-main">
           <div class="docs-page" data-docs-page>
           <header class="docs-fixture-header" data-docs-fixture${fixtureHiddenAttr}>
             <h1 class="docs-fixture-title" data-docs-fixture-title>${escapeHtml(
@@ -942,7 +942,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
           ${heroMarkup}
           <div class="docs-page-content" data-docs-content aria-busy="${initialContentBusy}">${initialPageSections}</div>
         </div>
-      </div>
+      </main>
       <uik-shell-secondary-sidebar${outlineOpenAttr}${outlineHiddenAttr}
         slot="secondary-sidebar"
         class="docs-outline"
@@ -1593,6 +1593,16 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (mobileNavSelect) mobileNavSelect.value = locationKey(router.current);
   };
 
+  await Promise.all([
+    customElements.whenDefined("uik-shell-layout"),
+    customElements.whenDefined("uik-shell-activity-bar"),
+    customElements.whenDefined("uik-shell-sidebar"),
+    customElements.whenDefined("uik-shell-secondary-sidebar"),
+    customElements.whenDefined("uik-shell-status-bar"),
+    customElements.whenDefined("uik-tree-view"),
+    customElements.whenDefined("uik-button"),
+    customElements.whenDefined("uik-select"),
+  ]);
   await Promise.all([
     layout.updateComplete,
     activityBar.updateComplete,
