@@ -1133,71 +1133,75 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
   const hydrateGlobalControls = async () => {
     if (initialIsInternal) return;
-    const themePlaceholder = container.querySelector<HTMLElement>(
-      '[data-docs-select-placeholder="theme"]',
-    );
-    const densityPlaceholder = container.querySelector<HTMLElement>(
-      '[data-docs-select-placeholder="density"]',
-    );
-    const mobilePlaceholder = container.querySelector<HTMLElement>(
-      '[data-docs-select-placeholder="mobile-nav"]',
-    );
-    if (!themePlaceholder && !densityPlaceholder && !mobilePlaceholder) {
-      themeSelect = container.querySelector<UikSelect>(
-        'uik-select[data-docs-control="theme"]',
+    await scheduleIdleTask(async () => {
+      const themePlaceholder = container.querySelector<HTMLElement>(
+        '[data-docs-select-placeholder="theme"]',
       );
-      densitySelect = container.querySelector<UikSelect>(
-        'uik-select[data-docs-control="density"]',
+      const densityPlaceholder = container.querySelector<HTMLElement>(
+        '[data-docs-select-placeholder="density"]',
       );
-      mobileNavSelect = container.querySelector<UikSelect>(
-        'uik-select[data-docs-control="mobile-nav"]',
+      const mobilePlaceholder = container.querySelector<HTMLElement>(
+        '[data-docs-select-placeholder="mobile-nav"]',
       );
-    } else {
-      await customElements.whenDefined("uik-select");
-      themeSelect = createSelect({
-        control: "theme",
-        label: "Theme",
-        options: [
-          { value: "light", label: "Light" },
-          { value: "dark", label: "Dark" },
-        ],
+      if (!themePlaceholder && !densityPlaceholder && !mobilePlaceholder) {
+        themeSelect = container.querySelector<UikSelect>(
+          'uik-select[data-docs-control="theme"]',
+        );
+        densitySelect = container.querySelector<UikSelect>(
+          'uik-select[data-docs-control="density"]',
+        );
+        mobileNavSelect = container.querySelector<UikSelect>(
+          'uik-select[data-docs-control="mobile-nav"]',
+        );
+      } else {
+        await customElements.whenDefined("uik-select");
+        themeSelect = createSelect({
+          control: "theme",
+          label: "Theme",
+          options: [
+            { value: "light", label: "Light" },
+            { value: "dark", label: "Dark" },
+          ],
+        });
+        densitySelect = createSelect({
+          control: "density",
+          label: "Density",
+          options: [
+            { value: "comfortable", label: "Comfortable" },
+            { value: "compact", label: "Compact" },
+          ],
+        });
+        mobileNavSelect = createSelect({
+          control: "mobile-nav",
+          label: "Page",
+          className: "docs-mobile-nav",
+        });
+        themePlaceholder?.replaceWith(themeSelect);
+        densityPlaceholder?.replaceWith(densitySelect);
+        mobilePlaceholder?.replaceWith(mobileNavSelect);
+      }
+      themeSelect?.addEventListener("change", () => {
+        preferences.setTheme(themeSelect?.value ?? "system");
+        updateStatusMeta(statusBar);
       });
-      densitySelect = createSelect({
-        control: "density",
-        label: "Density",
-        options: [
-          { value: "comfortable", label: "Comfortable" },
-          { value: "compact", label: "Compact" },
-        ],
+      densitySelect?.addEventListener("change", () => {
+        preferences.setDensity(densitySelect?.value ?? "comfortable");
+        updateStatusMeta(statusBar);
       });
-      mobileNavSelect = createSelect({
-        control: "mobile-nav",
-        label: "Page",
-        className: "docs-mobile-nav",
+      mobileNavSelect?.addEventListener("change", () => {
+        const { view, subview } = splitViewAndSubview(
+          mobileNavSelect?.value ?? "",
+        );
+        if (!view || !subview) return;
+        router.navigate(view, subview);
+        syncUrl(router.current);
+        updateActiveRoute(router.current);
       });
-      themePlaceholder?.replaceWith(themeSelect);
-      densityPlaceholder?.replaceWith(densitySelect);
-      mobilePlaceholder?.replaceWith(mobileNavSelect);
-    }
-    themeSelect?.addEventListener("change", () => {
-      preferences.setTheme(themeSelect?.value ?? "system");
-      updateStatusMeta(statusBar);
+      if (!mobileNavScheduled && mobileNavSelect) {
+        mobileNavScheduled = true;
+        scheduleMobileNavOptions(mobileNavSelect);
+      }
     });
-    densitySelect?.addEventListener("change", () => {
-      preferences.setDensity(densitySelect?.value ?? "comfortable");
-      updateStatusMeta(statusBar);
-    });
-    mobileNavSelect?.addEventListener("change", () => {
-      const { view, subview } = splitViewAndSubview(mobileNavSelect?.value ?? "");
-      if (!view || !subview) return;
-      router.navigate(view, subview);
-      syncUrl(router.current);
-      updateActiveRoute(router.current);
-    });
-    if (!mobileNavScheduled && mobileNavSelect) {
-      mobileNavScheduled = true;
-      scheduleMobileNavOptions(mobileNavSelect);
-    }
   };
 
   if (!layout || !activityBar || !navTree || !statusBar || !secondarySidebar) {
