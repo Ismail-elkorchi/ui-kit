@@ -53,17 +53,15 @@ const steps = [
   ["Contracts drift", npmBin, ["run", "contracts:validate"]],
   ["Queue validation", "node", ["tools/ato.mjs", "q", "validate", "--json"]],
   ["Cycle finish check", "node", ["tools/ato/check-cycle-finish.mjs"]],
+  ["Docs tests", npmBin, ["-w", "apps/docs", "run", "test"]],
+  ["UI tokens tests", npmBin, ["-w", "packages/ui-tokens", "run", "test"]],
   [
-    "Workspace tests",
+    "UI primitives tests",
     npmBin,
-    [
-      "run",
-      "--workspaces",
-      "--if-present",
-      "--workspace-concurrency=1",
-      "test",
-    ],
+    ["-w", "packages/ui-primitives", "run", "test"],
   ],
+  ["UI shell tests", npmBin, ["-w", "packages/ui-shell", "run", "test"]],
+  ["UI patterns tests", npmBin, ["-w", "packages/ui-patterns", "run", "test"]],
   ["Storybook tests", npmBin, ["run", "test-storybook"]],
   ["Visual regression", npmBin, ["run", "test-visual"]],
 ];
