@@ -27,3 +27,18 @@ Override any `--uik-*` token in your app scope to customize the system.
   --uik-border-radius-4: var(--uik-border-radius-6);
 }
 ```
+
+## Semantic app naming
+
+UIK does not ship a second "app semantic alias" layer. Use the built-in semantic tokens directly (`--uik-surface-*`, `--uik-text-*`, `--uik-border-*`, `--uik-focus-ring-*`) so host styles stay aligned with source tokens.
+
+If your app requires local aliases like `--background` or `--foreground`, define them in your app stylesheet as thin references:
+
+```css
+:root {
+  --background: oklch(var(--uik-surface-bg));
+  --foreground: oklch(var(--uik-text-default));
+  --border: oklch(var(--uik-border-default));
+  --ring: oklch(var(--uik-focus-ring-default));
+}
+```
