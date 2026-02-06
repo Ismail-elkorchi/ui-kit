@@ -873,6 +873,10 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageCriticalComponentsPromise = initialPageContent
     ? loadCriticalPageComponents(initialPageContent)
     : null;
+  if (initialPageContent) {
+    initialPageComponentsPromise = loadPageComponents(initialPageContent);
+    initialPageComponentsScheduled = true;
+  }
   const ensureInitialPageComponents = () => {
     if (initialPageComponentsPromise) return initialPageComponentsPromise;
     if (!initialPageContent) return null;
