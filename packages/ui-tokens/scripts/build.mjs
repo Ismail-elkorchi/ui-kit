@@ -618,7 +618,7 @@ async function buildCssOutputs() {
   const compactCssText = await terrazzoBuildCssText(
     densityCompactSources,
     "_terrazzo.compact.css",
-    ":where([data-uik-density='compact'])",
+    "[data-uik-density='compact']",
     oklchRawTransform,
   );
 
@@ -673,11 +673,11 @@ async function buildCssOutputs() {
     }),
   );
   const compactBlock = buildLayerBlock(
-    ":where([data-uik-density='compact'])",
+    "[data-uik-density='compact']",
     compactDiffMap,
   );
   const comfortableBlock = buildLayerBlock(
-    ":where(:root, [data-uik-density='comfortable'])",
+    ":root, [data-uik-density='comfortable']",
     comfortableResetMap,
   );
 

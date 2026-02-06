@@ -22,6 +22,29 @@ const waitForControls = async (attempts = 60) => {
   throw new Error("Docs controls did not render.");
 };
 
+const readDensityMetrics = () => {
+  const rootStyle = getComputedStyle(document.documentElement);
+  const themeControl = document.querySelector<HTMLElement>(
+    'uik-select[data-docs-control="theme"]',
+  );
+  const navRail = document.querySelector<HTMLElement>(
+    "uik-shell-activity-bar uik-nav-rail",
+  );
+  const navRailItem = navRail?.shadowRoot?.querySelector<HTMLElement>(".item");
+  return {
+    controlSizeMd: rootStyle.getPropertyValue("--uik-size-control-md").trim(),
+    navRailItemSizeVar: rootStyle
+      .getPropertyValue("--uik-component-nav-rail-item-size")
+      .trim(),
+    themeControlBlockSize: themeControl
+      ? getComputedStyle(themeControl).blockSize
+      : "",
+    navRailItemBlockSize: navRailItem
+      ? getComputedStyle(navRailItem).blockSize
+      : "",
+  };
+};
+
 const resetPreferences = () => {
   try {
     localStorage.removeItem(storageKey);
@@ -101,5 +124,43 @@ describe("docs theme and density preferences", () => {
     await waitForControls();
     expect(root.getAttribute("data-uik-theme")).toBe(nextTheme);
     expect(root.getAttribute("data-uik-density")).toBe("compact");
+  });
+
+  it("changes deterministic computed values when density toggles", async () => {
+    const root = document.documentElement;
+    const { densitySelect } = await waitForControls();
+
+    root.setAttribute("data-uik-density", "comfortable");
+    await nextFrame();
+    await nextFrame();
+    const before = readDensityMetrics();
+    expect(before.controlSizeMd).toBe("2.5rem");
+    expect(before.navRailItemSizeVar).toBe("3rem");
+
+    (densitySelect as HTMLInputElement).value = "compact";
+    densitySelect.dispatchEvent(new Event("change", { bubbles: true }));
+    await nextFrame();
+    await nextFrame();
+    const compact = readDensityMetrics();
+
+    expect(compact.controlSizeMd).toBe("2.25rem");
+    expect(compact.navRailItemSizeVar).toBe("2.5rem");
+    expect(compact.themeControlBlockSize).not.toBe(
+      before.themeControlBlockSize,
+    );
+    expect(compact.navRailItemBlockSize).not.toBe(before.navRailItemBlockSize);
+
+    (densitySelect as HTMLInputElement).value = "comfortable";
+    densitySelect.dispatchEvent(new Event("change", { bubbles: true }));
+    await nextFrame();
+    await nextFrame();
+    const comfortable = readDensityMetrics();
+
+    expect(comfortable.controlSizeMd).toBe("2.5rem");
+    expect(comfortable.navRailItemSizeVar).toBe("3rem");
+    expect(comfortable.themeControlBlockSize).toBe(
+      before.themeControlBlockSize,
+    );
+    expect(comfortable.navRailItemBlockSize).toBe(before.navRailItemBlockSize);
   });
 });
