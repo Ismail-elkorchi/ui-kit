@@ -60,7 +60,6 @@ export class UikShellLayout extends LitElement {
   private previousDocumentOverflow: string | null = null;
   private previousBodyOverflow: string | null = null;
   private scrimElement: HTMLDivElement | null = null;
-  private restoreVisibility = false;
 
   private readonly closeReasons: OverlayCloseReason[] = [
     "escape",
@@ -75,10 +74,6 @@ export class UikShellLayout extends LitElement {
     if (!this.style.boxSizing) this.style.boxSizing = "border-box";
     if (!this.style.height) this.style.height = "100%";
     if (!this.style.width) this.style.width = "100%";
-    if (!this.style.visibility) {
-      this.style.visibility = "hidden";
-      this.restoreVisibility = true;
-    }
     this.slotController ??= new LightDomSlotController(
       this,
       "[data-shell-root]",
@@ -139,13 +134,6 @@ export class UikShellLayout extends LitElement {
 
   override firstUpdated() {
     this.queueResizeUpdate(this.getBoundingClientRect().width);
-    if (this.restoreVisibility) {
-      this.slotController?.sync();
-      requestAnimationFrame(() => {
-        this.style.visibility = "";
-        this.restoreVisibility = false;
-      });
-    }
   }
 
   override createRenderRoot() {
