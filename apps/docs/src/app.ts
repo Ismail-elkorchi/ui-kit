@@ -193,7 +193,10 @@ const prefetchedComponents = new Set([
   "uik-stack",
   "uik-switch",
 ]);
-const criticalInitialComponents = new Set([...prefetchedComponents, "uik-badge"]);
+const criticalInitialComponents = new Set([
+  ...prefetchedComponents,
+  "uik-badge",
+]);
 const publicBaseComponentTags = [
   "uik-shell-layout",
   "uik-shell-activity-bar",
