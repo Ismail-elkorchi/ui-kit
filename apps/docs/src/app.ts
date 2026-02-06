@@ -193,10 +193,7 @@ const prefetchedComponents = new Set([
   "uik-stack",
   "uik-switch",
 ]);
-const criticalInitialComponents = new Set([
-  ...prefetchedComponents,
-  "uik-badge",
-]);
+const criticalInitialComponents = new Set(prefetchedComponents);
 const publicBaseComponentTags = [
   "uik-shell-layout",
   "uik-shell-activity-bar",
@@ -874,13 +871,17 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? loadCriticalPageComponents(initialPageContent)
     : null;
   if (initialPageContent) {
-    initialPageComponentsPromise = loadPageComponents(initialPageContent);
+    initialPageComponentsPromise = baseComponentsPromise.then(() =>
+      loadPageComponents(initialPageContent),
+    );
     initialPageComponentsScheduled = true;
   }
   const ensureInitialPageComponents = () => {
     if (initialPageComponentsPromise) return initialPageComponentsPromise;
     if (!initialPageContent) return null;
-    initialPageComponentsPromise = loadPageComponents(initialPageContent);
+    initialPageComponentsPromise = baseComponentsPromise.then(() =>
+      loadPageComponents(initialPageContent),
+    );
     initialPageComponentsScheduled = true;
     return initialPageComponentsPromise;
   };
