@@ -193,6 +193,7 @@ const prefetchedComponents = new Set([
   "uik-stack",
   "uik-switch",
 ]);
+const criticalInitialComponents = new Set([...prefetchedComponents, "uik-badge"]);
 const publicBaseComponentTags = [
   "uik-shell-layout",
   "uik-shell-activity-bar",
@@ -610,6 +611,19 @@ const loadPageComponents = async (page: DocPageContent) => {
   await loadComponents(tags);
 };
 
+const loadCriticalPageComponents = async (page: DocPageContent) => {
+  const tags = collectPageComponentTags(page);
+  const critical = new Set<string>();
+  tags.forEach((tag) => {
+    if (criticalInitialComponents.has(tag)) {
+      critical.add(tag);
+    }
+  });
+  if (critical.size) {
+    await loadComponents(critical);
+  }
+};
+
 const loadBaseComponents = (tags: string[]) => {
   if (!tags.length) return Promise.resolve();
   return loadBaseComponentBundle();
@@ -852,13 +866,15 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? await initialPageContentPromise
     : null;
   let initialPageComponentsPromise: Promise<void> | null = null;
-  if (initialPageContent) {
-    initialPageComponentsPromise = loadPageComponents(initialPageContent);
-  }
+  let initialPageComponentsScheduled = false;
+  const initialPageCriticalComponentsPromise = initialPageContent
+    ? loadCriticalPageComponents(initialPageContent)
+    : null;
   const ensureInitialPageComponents = () => {
     if (initialPageComponentsPromise) return initialPageComponentsPromise;
     if (!initialPageContent) return null;
     initialPageComponentsPromise = loadPageComponents(initialPageContent);
+    initialPageComponentsScheduled = true;
     return initialPageComponentsPromise;
   };
   const initialPageSections = initialPageContent
@@ -873,6 +889,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     await loadLabPreviews();
   }
   const preRenderTasks: Promise<unknown>[] = [baseComponentsPromise];
+  if (initialPageCriticalComponentsPromise) {
+    preRenderTasks.push(initialPageCriticalComponentsPromise);
+  }
   await Promise.all(preRenderTasks);
   const initialContentBusy = initialPageContent
     ? "false"
@@ -989,7 +1008,8 @@ export const mountDocsApp = async (container: HTMLElement) => {
   if (initialNeedsPortfolio && labPreviewsModule) {
     labPreviewsModule.wirePortfolioPreviews(container);
   }
-  if (initialPageContent) {
+  if (initialPageContent && !initialPageComponentsScheduled) {
+    initialPageComponentsScheduled = true;
     const schedule = () => {
       void ensureInitialPageComponents();
     };
@@ -1118,7 +1138,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? locationKey({ view: initialView, subview: initialSubview })
     : "";
   let initialContentReady = Boolean(initialPageContent);
-  let initialPageComponentsScheduled = Boolean(initialPageComponentsPromise);
   let prefetchScheduled = false;
   let mobileNavScheduled = false;
 
