@@ -30,6 +30,9 @@ const setupLayout = async (width = 720) => {
     <div slot="main-content">
       <button type="button" data-opener>Open</button>
     </div>
+    <uik-shell-secondary-sidebar slot="secondary-sidebar" isOpen>
+      <div data-test="secondary-content">Outline</div>
+    </uik-shell-secondary-sidebar>
     <uik-shell-status-bar slot="status-bar">
       <button type="button" slot="context-actions" data-test="context">
         Context
@@ -39,11 +42,27 @@ const setupLayout = async (width = 720) => {
       </button>
     </uik-shell-status-bar>
   `;
+  layout.isSecondarySidebarVisible = true;
   document.body.append(layout);
   await layout.updateComplete;
   await nextFrame();
   await nextFrame();
   return layout;
+};
+
+const waitForNarrowState = async (
+  layout: UikShellLayout,
+  isNarrow: boolean,
+  timeoutMs = 1500,
+) => {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    if (layout.hasAttribute("data-shell-narrow") === isNarrow) return;
+    await nextFrame();
+  }
+  throw new Error(
+    `Expected data-shell-narrow=${isNarrow ? "true" : "false"} after resize.`,
+  );
 };
 
 const setLayoutWidth = async (layout: UikShellLayout, width: number) => {
@@ -77,7 +96,7 @@ describe("uik-shell layout extension points", () => {
     ).toBeTruthy();
 
     await setLayoutWidth(layout, 360);
-    expect(layout.hasAttribute("data-shell-narrow")).toBe(true);
+    await waitForNarrowState(layout, true);
     expect(
       statusBar.querySelector(
         '[data-shell-slot="context-actions"] [data-test="context"]',
@@ -129,5 +148,42 @@ describe("uik-shell layout extension points", () => {
 
     expect(layout.isPrimarySidebarOpen).toBe(false);
     expect(document.activeElement).toBe(opener);
+  });
+
+  it("retains secondary sidebar content in wide and narrow layouts", async () => {
+    const layout = await setupLayout(720);
+    const secondary = layout.querySelector<HTMLElement>(
+      "uik-shell-secondary-sidebar",
+    ) as
+      | (HTMLElement & { isOpen: boolean; updateComplete: Promise<unknown> })
+      | null;
+    if (!secondary) throw new Error("Expected secondary sidebar.");
+
+    const initialContent = secondary.querySelector(
+      "[data-test='secondary-content']",
+    );
+    expect(initialContent).toBeTruthy();
+
+    const toggleSecondary = async (isOpen: boolean) => {
+      secondary.isOpen = isOpen;
+      layout.isSecondarySidebarVisible = isOpen;
+      await layout.updateComplete;
+      await secondary.updateComplete;
+      await nextFrame();
+    };
+
+    await toggleSecondary(false);
+    await toggleSecondary(true);
+    expect(secondary.querySelector("[data-test='secondary-content']")).toBe(
+      initialContent,
+    );
+
+    await setLayoutWidth(layout, 360);
+    await waitForNarrowState(layout, true);
+    await toggleSecondary(false);
+    await toggleSecondary(true);
+    expect(secondary.querySelector("[data-test='secondary-content']")).toBe(
+      initialContent,
+    );
   });
 });

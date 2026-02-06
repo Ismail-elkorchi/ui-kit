@@ -76,4 +76,31 @@ describe("uik-shell-secondary-sidebar", () => {
 
     expect(document.activeElement).toBe(fallbackTarget);
   });
+
+  it("retains slotted content across close and reopen", async () => {
+    const sidebar = document.createElement("uik-shell-secondary-sidebar");
+    sidebar.innerHTML = `<div data-outline-item>Outline item</div>`;
+    document.body.append(sidebar);
+
+    sidebar.isOpen = true;
+    await sidebar.updateComplete;
+
+    const initialItem = sidebar.querySelector<HTMLElement>(
+      "[data-outline-item]",
+    );
+    expect(initialItem?.textContent).toContain("Outline item");
+
+    sidebar.isOpen = false;
+    await sidebar.updateComplete;
+    expect(sidebar.querySelector("[data-shell-slot='default']")).toBeTruthy();
+
+    sidebar.isOpen = true;
+    await sidebar.updateComplete;
+
+    const reopenedItem = sidebar.querySelector<HTMLElement>(
+      "[data-outline-item]",
+    );
+    expect(reopenedItem).toBe(initialItem);
+    expect(reopenedItem?.textContent).toContain("Outline item");
+  });
 });

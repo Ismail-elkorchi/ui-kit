@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import type { PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
@@ -177,8 +177,6 @@ export class UikShellSecondarySidebar extends LitElement {
   }
 
   override render() {
-    if (!this.isOpen) return nothing;
-
     const forcedColors = getForcedColors();
     const dividerColor = forcedColors
       ? "CanvasText"
@@ -190,7 +188,7 @@ export class UikShellSecondarySidebar extends LitElement {
         : "oklch(var(--uik-component-shell-secondary-sidebar-bg))",
       color: forcedColors ? "CanvasText" : "oklch(var(--uik-text-default))",
       borderLeft: `var(--uik-border-width-1) solid ${dividerColor}`,
-      display: "flex",
+      display: this.isOpen ? "flex" : "none",
       flexDirection: "column",
       flexShrink: "0",
       height: "100%",
@@ -246,6 +244,8 @@ export class UikShellSecondarySidebar extends LitElement {
       <div
         part="secondary-sidebar"
         data-region="secondary-sidebar"
+        aria-hidden=${this.isOpen ? "false" : "true"}
+        ?inert=${!this.isOpen}
         style=${styleMap(sidebarStyles)}
       >
         <div part="header" style=${styleMap(headerStyles)}>
