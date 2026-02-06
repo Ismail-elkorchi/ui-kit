@@ -901,11 +901,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     preRenderTasks.push(initialPageCriticalComponentsPromise);
   }
   await Promise.all(preRenderTasks);
-  const initialContentBusy = initialPageContent
-    ? "false"
-    : initialPage
-      ? "true"
-      : "false";
+  const initialContentBusy = initialPage ? "true" : "false";
   const heroMarkup = initialIsInternal
     ? ""
     : `
@@ -1644,16 +1640,15 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (isInitialContent) {
       initialContentReady = false;
       finalizeContentRender(page, contentRenderToken);
-      if (initialPageContent && !initialPageComponentsScheduled) {
-        initialPageComponentsScheduled = true;
-        const loadPromise =
-          ensureInitialPageComponents() ??
-          loadPageComponents(initialPageContent);
-        loadPromise.finally(() => {
-          if (contentElement) {
-            contentElement.setAttribute("aria-busy", "false");
-          }
-        });
+      if (initialPageContent) {
+        const loadPromise = ensureInitialPageComponents();
+        if (loadPromise) {
+          loadPromise.finally(() => {
+            contentElement?.setAttribute("aria-busy", "false");
+          });
+        } else {
+          contentElement?.setAttribute("aria-busy", "false");
+        }
       }
       void scrollToHashTarget();
     } else {
