@@ -175,41 +175,27 @@ const prefetchedComponents = new Set([
 const criticalInitialComponents = new Set(prefetchedComponents);
 const publicBaseComponentTags = [
   "uik-shell-layout",
-  "uik-shell-activity-bar",
   "uik-shell-sidebar",
   "uik-shell-secondary-sidebar",
-  "uik-shell-status-bar",
   "uik-badge",
   "uik-button",
   "uik-code-block",
   "uik-heading",
-  "uik-input",
-  "uik-link",
   "uik-page-hero",
-  "uik-progress",
   "uik-section-card",
   "uik-select",
-  "uik-stack",
-  "uik-switch",
   "uik-text",
   "uik-tree-view",
 ];
 const internalBaseComponentTags = [
   "uik-shell-layout",
-  "uik-shell-activity-bar",
   "uik-shell-sidebar",
   "uik-shell-secondary-sidebar",
-  "uik-shell-status-bar",
   "uik-button",
   "uik-code-block",
   "uik-heading",
-  "uik-input",
-  "uik-link",
-  "uik-progress",
   "uik-section-card",
   "uik-select",
-  "uik-stack",
-  "uik-switch",
   "uik-text",
   "uik-tree-view",
 ];
@@ -801,6 +787,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const tokensPromise = import("@ismail-elkorchi/ui-tokens");
   const routerPromise = import("@ismail-elkorchi/ui-shell/router");
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
+  const toHref = (key: string) => `${baseUrl}${key}`;
   const initialRoute = getRouteFromLocation(baseUrl);
   const initialView = initialRoute.view === "lab" ? "lab" : "docs";
   const defaultDocsSubview = publicDocsNavPages[0]?.id ?? docsPages[0]?.id;
@@ -884,11 +871,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   if (initialNeedsPortfolio || initialNeedsLabControls) {
     await loadLabPreviews();
   }
-  const preRenderTasks: Promise<unknown>[] = [baseComponentsPromise];
   if (initialPageCriticalComponentsPromise) {
-    preRenderTasks.push(initialPageCriticalComponentsPromise);
+    void initialPageCriticalComponentsPromise;
   }
-  await Promise.all(preRenderTasks);
   const initialContentBusy = initialPage ? "true" : "false";
   const heroMarkup = initialIsInternal
     ? ""
@@ -913,18 +898,19 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? ""
     : `
         <div class="docs-header-controls">
-          <div
-            class="docs-select-placeholder"
-            data-docs-select-placeholder="theme"
-            aria-hidden="true"></div>
-          <div
-            class="docs-select-placeholder"
-            data-docs-select-placeholder="density"
-            aria-hidden="true"></div>
-          <div
-            class="docs-select-placeholder docs-mobile-nav"
-            data-docs-select-placeholder="mobile-nav"
-            aria-hidden="true"></div>
+          <uik-select data-docs-control="theme">
+            <span slot="label">Theme</span>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </uik-select>
+          <uik-select data-docs-control="density">
+            <span slot="label">Density</span>
+            <option value="comfortable">Comfortable</option>
+            <option value="compact">Compact</option>
+          </uik-select>
+          <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
+            <span slot="label">Page</span>
+          </uik-select>
         </div>
         `;
 
@@ -950,6 +936,14 @@ export const mountDocsApp = async (container: HTMLElement) => {
           )}</uik-text>
         </div>
         <div class="docs-header-actions">
+          <uik-button
+            variant="ghost"
+            size="sm"
+            data-docs-action="command-palette-open"
+            aria-haspopup="dialog"
+          >
+            Search
+          </uik-button>
           <uik-button
             variant="ghost"
             size="sm"
@@ -1136,85 +1130,25 @@ export const mountDocsApp = async (container: HTMLElement) => {
   let prefetchScheduled = false;
   let mobileNavScheduled = false;
 
-  const createSelect = ({
-    control,
-    label,
-    options = [],
-    className,
-  }: {
-    control: string;
-    label: string;
-    options?: Array<{ value: string; label: string }>;
-    className?: string;
-  }) => {
-    const select = document.createElement("uik-select") as UikSelect;
-    select.setAttribute("data-docs-control", control);
-    if (className) select.className = className;
-    const optionsMarkup = options
-      .map(
-        (option) => `<option value="${option.value}">${option.label}</option>`,
-      )
-      .join("");
-    select.innerHTML = `<span slot="label">${label}</span>${optionsMarkup}`;
-    return select;
-  };
-
   const hydrateGlobalControls = async () => {
     if (initialIsInternal) return;
     await scheduleIdleTask(async () => {
-      const themePlaceholder = container.querySelector<HTMLElement>(
-        '[data-docs-select-placeholder="theme"]',
+      themeSelect = container.querySelector<UikSelect>(
+        'uik-select[data-docs-control="theme"]',
       );
-      const densityPlaceholder = container.querySelector<HTMLElement>(
-        '[data-docs-select-placeholder="density"]',
+      densitySelect = container.querySelector<UikSelect>(
+        'uik-select[data-docs-control="density"]',
       );
-      const mobilePlaceholder = container.querySelector<HTMLElement>(
-        '[data-docs-select-placeholder="mobile-nav"]',
+      mobileNavSelect = container.querySelector<UikSelect>(
+        'uik-select[data-docs-control="mobile-nav"]',
       );
-      if (!themePlaceholder && !densityPlaceholder && !mobilePlaceholder) {
-        themeSelect = container.querySelector<UikSelect>(
-          'uik-select[data-docs-control="theme"]',
-        );
-        densitySelect = container.querySelector<UikSelect>(
-          'uik-select[data-docs-control="density"]',
-        );
-        mobileNavSelect = container.querySelector<UikSelect>(
-          'uik-select[data-docs-control="mobile-nav"]',
-        );
-      } else {
-        await customElements.whenDefined("uik-select");
-        themeSelect = createSelect({
-          control: "theme",
-          label: "Theme",
-          options: [
-            { value: "light", label: "Light" },
-            { value: "dark", label: "Dark" },
-          ],
-        });
-        densitySelect = createSelect({
-          control: "density",
-          label: "Density",
-          options: [
-            { value: "comfortable", label: "Comfortable" },
-            { value: "compact", label: "Compact" },
-          ],
-        });
-        mobileNavSelect = createSelect({
-          control: "mobile-nav",
-          label: "Page",
-          className: "docs-mobile-nav",
-        });
-        themePlaceholder?.replaceWith(themeSelect);
-        densityPlaceholder?.replaceWith(densitySelect);
-        mobilePlaceholder?.replaceWith(mobileNavSelect);
-      }
       themeSelect?.addEventListener("change", () => {
         preferences.setTheme(themeSelect?.value ?? "system");
-        updateStatusMeta(statusBar);
+        updatePreferenceMeta(preferenceMetaElement);
       });
       densitySelect?.addEventListener("change", () => {
         preferences.setDensity(densitySelect?.value ?? "comfortable");
-        updateStatusMeta(statusBar);
+        updatePreferenceMeta(preferenceMetaElement);
       });
       mobileNavSelect?.addEventListener("change", () => {
         const { view, subview } = splitViewAndSubview(
@@ -1232,7 +1166,13 @@ export const mountDocsApp = async (container: HTMLElement) => {
     });
   };
 
-  if (!layout || !activityBar || !navTree || !statusBar || !secondarySidebar) {
+  if (
+    !layout ||
+    !navTree ||
+    !secondarySidebar ||
+    !currentPageElement ||
+    !preferenceMetaElement
+  ) {
     throw new Error("Docs layout could not be initialized.");
   }
 
@@ -1247,19 +1187,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (outlineToggleUpdate) {
       await outlineToggleUpdate;
     }
-    const statusBarUpdate = (
-      statusBar as unknown as { updateComplete?: Promise<unknown> }
-    ).updateComplete;
-    if (statusBarUpdate) {
-      await statusBarUpdate;
-    }
     await nextFrame();
     if (!secondarySidebar.isOpen && document.activeElement === document.body) {
       outlineToggle.focus();
     }
   }
 
-  activityBar.items = buildActivityItems(routes);
   let activeDocPageId = initialView === "docs" ? initialSubview : null;
   let navItems = buildNavItems(
     baseUrl,
@@ -1270,8 +1203,16 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialNavId = resolveNavCurrentId(router.current);
   navTree.items = navItems;
   navTree.openIds = collectOpenIds(navItems, initialNavId);
-  setOutlineOpen(layout, secondarySidebar, true, { focus: false });
-  let commandPaletteOpenButton: UikButton | null = null;
+  const shouldOpenOutlineByDefault =
+    !initialIsInternal && !layout.hasAttribute("data-shell-narrow");
+  setOutlineOpen(layout, secondarySidebar, shouldOpenOutlineByDefault, {
+    focus: false,
+  });
+  outlineRestoreState = shouldOpenOutlineByDefault;
+  const headerCommandPaletteButton = container.querySelector<UikButton>(
+    '[data-docs-action="command-palette-open"]',
+  );
+  let commandPaletteOpenButton: UikButton | null = headerCommandPaletteButton;
 
   const setBadgeContent = (element: HTMLElement | null, value?: string) => {
     if (!element) return;
@@ -1463,7 +1404,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (shouldPrefetchCommandCenter && !commandCenterInit) {
       void ensureCommandCenter();
     }
-    commandPaletteOpenButton = null;
+    commandPaletteOpenButton = headerCommandPaletteButton;
     const needsPortfolio =
       contentElement.querySelector("[data-docs-portfolio]") !== null;
     const needsLabControls =
@@ -1480,7 +1421,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
         if (page.id === "shell-patterns") {
           module.wireLabShellControls(
             contentElement,
-            statusBar,
+            null,
             layout,
             secondarySidebar,
             setOutlineOpen,
@@ -1611,6 +1552,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       packageBadge,
       page.package ? `@ismail-elkorchi/${page.package}` : "",
     );
+    currentPageElement.textContent = page.title;
     updateHeroLinks(page);
     if (contentElement) {
       if (!isInitialContent) {
@@ -1623,9 +1565,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       mobileNavSelect.value = key;
     }
 
-    statusBar.message = page.title;
-    if (page.id !== "shell-patterns") statusBar.tone = "info";
-    updateStatusMeta(statusBar);
+    updatePreferenceMeta(preferenceMetaElement);
     const canonicalUrl = buildCanonicalUrl(baseUrl, key);
     updateSeoMetadata(page, canonicalUrl, isInternal);
     if (isInitialContent) {
@@ -1657,13 +1597,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     void scrollToHashTarget();
   });
 
-  activityBar.addEventListener("activity-bar-select", (event: Event) => {
-    const detail = (event as CustomEvent<{ id: string }>).detail;
-    router.navigate(detail.id);
-    syncUrl(router.current);
-    updateActiveRoute(router.current);
-  });
-
   navTree.addEventListener("tree-view-activate", (event: Event) => {
     const detail = (event as CustomEvent<{ id: string }>).detail;
     const [path, hash] = detail.id.split("#");
@@ -1686,7 +1619,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   });
 
   navToggle?.addEventListener("click", () => {
-    layout.isPrimarySidebarOpen = true;
+    layout.isPrimarySidebarOpen = !layout.isPrimarySidebarOpen;
   });
 
   layout.addEventListener("primary-sidebar-open", () => {
@@ -1724,9 +1657,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
   await Promise.all([
     layout.updateComplete,
-    activityBar.updateComplete,
     navTree.updateComplete,
-    statusBar.updateComplete,
     secondarySidebar.updateComplete,
   ]);
   await syncSelects();

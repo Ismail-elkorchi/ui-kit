@@ -27,23 +27,50 @@ const readDensityMetrics = () => {
   const themeControl = document.querySelector<HTMLElement>(
     'uik-select[data-docs-control="theme"]',
   );
-  const navRail = document.querySelector<HTMLElement>(
-    "uik-shell-activity-bar uik-nav-rail",
-  );
-  const navRailItem = navRail?.shadowRoot?.querySelector<HTMLElement>(".item");
+  const header = document.querySelector<HTMLElement>(".docs-header");
   return {
     controlSizeMd: rootStyle.getPropertyValue("--uik-size-control-md").trim(),
-    navRailItemSizeVar: rootStyle
-      .getPropertyValue("--uik-component-nav-rail-item-size")
-      .trim(),
     themeControlBlockSize: themeControl
       ? getComputedStyle(themeControl).blockSize
       : "",
-    navRailItemBlockSize: navRailItem
-      ? getComputedStyle(navRailItem).blockSize
-      : "",
+    headerBlockSize: header ? getComputedStyle(header).blockSize : "",
   };
 };
+
+const readThemeMetrics = () => {
+  const rootStyle = getComputedStyle(document.documentElement);
+  return {
+    surfaceBgVar: rootStyle.getPropertyValue("--uik-surface-bg").trim(),
+    colorScheme: rootStyle.colorScheme,
+  };
+};
+
+const setSelectValue = (element: HTMLElement, value: string) => {
+  (element as HTMLInputElement).value = value;
+  element.dispatchEvent(new Event("change", { bubbles: true }));
+};
+
+const waitForStyleChange = async () => {
+  await nextFrame();
+  await nextFrame();
+  await nextFrame();
+};
+
+const getPreferenceMetaText = () =>
+  document
+    .querySelector<HTMLElement>("[data-docs-preference-meta]")
+    ?.textContent?.trim();
+
+const getControlContainer = (element: HTMLElement) =>
+  element.closest(".docs-header-controls");
+
+const getCurrentPageText = () =>
+  document.querySelector<HTMLElement>("[data-docs-current-page]")?.textContent;
+
+const getSearchButton = () =>
+  document.querySelector<HTMLElement>(
+    '[data-docs-action="command-palette-open"]',
+  );
 
 const resetPreferences = () => {
   try {
@@ -86,26 +113,31 @@ describe("docs theme and density preferences", () => {
     const expectedTheme = prefersDark ? "dark" : "light";
 
     const { themeSelect, densitySelect } = await waitForControls();
-    const statusBar = document.querySelector("uik-shell-status-bar");
-    expect(statusBar).toBeTruthy();
-    expect(
-      themeSelect.closest('[data-shell-slot="global-controls"]'),
-    ).toBeTruthy();
-    expect(
-      densitySelect.closest('[data-shell-slot="global-controls"]'),
-    ).toBeTruthy();
+    expect(getControlContainer(themeSelect)).toBeTruthy();
+    expect(getControlContainer(densitySelect)).toBeTruthy();
+    expect(getCurrentPageText()).toBeTruthy();
+    expect(getSearchButton()).toBeTruthy();
+    expect(document.querySelector("uik-shell-activity-bar")).toBeNull();
     expect(root.getAttribute("data-uik-theme")).toBe(expectedTheme);
     expect(root.getAttribute("data-uik-density")).toBe("comfortable");
+    expect(getPreferenceMetaText()).toContain(`Theme: ${expectedTheme}`);
+    expect(getPreferenceMetaText()).toContain("Density: comfortable");
 
     const nextTheme = expectedTheme === "dark" ? "light" : "dark";
-    (themeSelect as HTMLInputElement).value = nextTheme;
-    themeSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    const beforeTheme = readThemeMetrics();
+    setSelectValue(themeSelect, nextTheme);
+    await waitForStyleChange();
+    const afterTheme = readThemeMetrics();
 
-    (densitySelect as HTMLInputElement).value = "compact";
-    densitySelect.dispatchEvent(new Event("change", { bubbles: true }));
+    setSelectValue(densitySelect, "compact");
+    await waitForStyleChange();
 
     expect(root.getAttribute("data-uik-theme")).toBe(nextTheme);
     expect(root.getAttribute("data-uik-density")).toBe("compact");
+    expect(afterTheme.surfaceBgVar).not.toBe(beforeTheme.surfaceBgVar);
+    expect(afterTheme.colorScheme).not.toBe(beforeTheme.colorScheme);
+    expect(getPreferenceMetaText()).toContain(`Theme: ${nextTheme}`);
+    expect(getPreferenceMetaText()).toContain("Density: compact");
 
     const stored = localStorage.getItem(storageKey);
     expect(stored).toBeTruthy();
@@ -131,36 +163,30 @@ describe("docs theme and density preferences", () => {
     const { densitySelect } = await waitForControls();
 
     root.setAttribute("data-uik-density", "comfortable");
-    await nextFrame();
-    await nextFrame();
+    await waitForStyleChange();
     const before = readDensityMetrics();
     expect(before.controlSizeMd).toBe("2.5rem");
-    expect(before.navRailItemSizeVar).toBe("3rem");
+    expect(before.themeControlBlockSize).toBeTruthy();
+    expect(before.headerBlockSize).toBeTruthy();
 
-    (densitySelect as HTMLInputElement).value = "compact";
-    densitySelect.dispatchEvent(new Event("change", { bubbles: true }));
-    await nextFrame();
-    await nextFrame();
+    setSelectValue(densitySelect, "compact");
+    await waitForStyleChange();
     const compact = readDensityMetrics();
 
     expect(compact.controlSizeMd).toBe("2.25rem");
-    expect(compact.navRailItemSizeVar).toBe("2.5rem");
     expect(compact.themeControlBlockSize).not.toBe(
       before.themeControlBlockSize,
     );
-    expect(compact.navRailItemBlockSize).not.toBe(before.navRailItemBlockSize);
+    expect(compact.headerBlockSize).not.toBe(before.headerBlockSize);
 
-    (densitySelect as HTMLInputElement).value = "comfortable";
-    densitySelect.dispatchEvent(new Event("change", { bubbles: true }));
-    await nextFrame();
-    await nextFrame();
+    setSelectValue(densitySelect, "comfortable");
+    await waitForStyleChange();
     const comfortable = readDensityMetrics();
 
     expect(comfortable.controlSizeMd).toBe("2.5rem");
-    expect(comfortable.navRailItemSizeVar).toBe("3rem");
     expect(comfortable.themeControlBlockSize).toBe(
       before.themeControlBlockSize,
     );
-    expect(comfortable.navRailItemBlockSize).toBe(before.navRailItemBlockSize);
+    expect(comfortable.headerBlockSize).toBe(before.headerBlockSize);
   });
 });

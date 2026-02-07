@@ -23,221 +23,66 @@
       content="UI Kit documentation and component references."
     />
     <style>
+      html,
       body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
+        height: 100%;
         margin: 0;
       }
 
       .docs-app {
-        flex: 1 1 auto;
-        min-height: 0;
+        min-height: 100%;
       }
 
-      .docs-brand {
+      .docs-boot-shell {
+        min-height: 100%;
+        background: oklch(var(--uik-surface-bg));
+      }
+
+      .docs-boot-header {
         display: flex;
         align-items: center;
-        font-family: var(
-          --uik-typography-font-family-sans,
-          ui-sans-serif,
-          system-ui,
-          -apple-system,
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
-          "Noto Sans",
-          "Apple Color Emoji",
-          "Segoe UI Emoji",
-          "Segoe UI Symbol",
-          sans-serif
-        );
-        padding: var(--uik-space-4, 1rem) var(--uik-space-6, 1.5rem);
-        border-bottom: var(--uik-border-width-1, 0.0625rem) solid
-          oklch(var(--uik-border-muted, 0.94 0.007 260));
-        background-color: oklch(var(--uik-surface-bg, 0.99 0.005 260));
+        min-height: var(--uik-size-control-xl);
+        padding: var(--uik-space-3) var(--uik-space-5);
+        border-bottom: var(--uik-border-width-1) solid
+          oklch(var(--uik-border-muted));
+        background: oklch(var(--uik-surface-elevated-1));
       }
 
-      .docs-brand-title {
+      .docs-boot-content {
+        padding: var(--uik-space-8);
+      }
+
+      .docs-boot-heading {
         margin: 0;
-        font-size: var(--uik-typography-font-size-10, 3.75rem);
-        line-height: var(--uik-typography-line-height-10, 3.75);
-        font-weight: var(--uik-typography-font-weight-semibold, 600);
-        letter-spacing: var(--uik-typography-letter-spacing-tight, -0.01rem);
+        font-size: var(--uik-typography-font-size-10);
+        line-height: var(--uik-typography-line-height-10);
       }
 
-      .docs-shell {
-        height: 100%;
-        --uik-component-shell-activity-bar-width: var(--uik-size-control-xl);
-        --uik-component-shell-sidebar-width: var(--uik-layout-panel-width-md);
-        --uik-component-shell-secondary-sidebar-width: var(
-          --uik-layout-panel-width-md
+      .docs-boot-summary {
+        max-width: calc(
+          var(--uik-layout-panel-width-lg) + var(--uik-layout-panel-width-md)
         );
-      }
-
-      .docs-tree-nav {
-        --uik-component-tree-view-indent: var(--uik-space-4);
-        --uik-component-tree-view-item-radius: var(--uik-radius-3);
-        flex: 1 1 auto;
-        min-height: var(--uik-space-0);
-      }
-
-      .docs-skip-link {
-        position: fixed;
-        top: var(--uik-space-4);
-        left: var(--uik-space-4);
-        z-index: var(--uik-component-tooltip-z-local-tooltip);
-        padding: var(--uik-space-2) var(--uik-space-3);
-        color: oklch(var(--uik-text-strong));
-        text-decoration: none;
-        pointer-events: none;
-        background-color: oklch(var(--uik-surface-card));
-        border: var(--uik-border-width-1) solid oklch(var(--uik-border-default));
-        border-radius: var(--uik-radius-3);
-        box-shadow: var(--uik-shadow-2);
-        opacity: var(--uik-opacity-0);
-        transform: translateY(calc(var(--uik-space-8) * -1));
-        transition:
-          opacity var(--uik-motion-duration-2) var(--uik-motion-ease-standard),
-          transform var(--uik-motion-duration-2) var(--uik-motion-ease-standard);
-      }
-
-      .docs-skip-link:focus-visible {
-        pointer-events: auto;
-        opacity: var(--uik-opacity-100);
-        transform: translateY(var(--uik-space-0));
-      }
-
-      .docs-context-actions,
-      .docs-global-controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--uik-space-2);
-        align-items: center;
-      }
-
-      .docs-global-controls {
-        justify-content: flex-end;
-      }
-
-      [data-docs-action="nav-toggle"] {
-        display: none;
-      }
-
-      uik-shell-layout[data-shell-narrow="true"]
-        [data-docs-action="nav-toggle"] {
-        display: inline-flex;
-      }
-
-      .docs-mobile-nav {
-        display: none;
-        width: 100%;
-      }
-
-      .docs-select-placeholder {
-        display: inline-flex;
-        flex-direction: column;
-        gap: var(--uik-space-2);
-        min-block-size: calc(
-          var(--uik-typography-line-height-2) + var(--uik-space-2) +
-            var(--uik-component-select-base-height)
-        );
-        min-inline-size: var(--uik-space-16);
-        box-sizing: border-box;
-        pointer-events: none;
-      }
-
-      .docs-select-placeholder::before {
-        content: "";
-        display: block;
-        height: var(--uik-typography-line-height-2);
-        width: 100%;
-        border-radius: var(--uik-radius-2);
-        background-color: oklch(var(--uik-surface-elevated-1));
-      }
-
-      .docs-select-placeholder::after {
-        content: "";
-        display: block;
-        height: var(--uik-component-select-base-height);
-        width: 100%;
-        border-radius: var(--uik-component-select-base-radius);
-        border: var(--uik-border-width-1) solid
-          oklch(var(--uik-component-select-base-border-default));
-        background-color: oklch(var(--uik-component-select-base-bg));
-        box-sizing: border-box;
-      }
-
-      uik-shell-status-bar .docs-global-controls uik-select {
-        min-inline-size: var(--uik-space-16);
-      }
-
-      uik-shell-layout:not(:defined) {
-        display: grid;
-        grid-template-columns:
-          var(--uik-component-shell-activity-bar-width)
-          var(--uik-component-shell-sidebar-width)
-          minmax(0, 1fr)
-          var(--uik-component-shell-secondary-sidebar-width);
-        grid-template-rows:
-          minmax(0, 1fr)
-          var(--uik-component-shell-status-bar-height);
-        height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-      }
-
-      uik-shell-layout:not(:defined):not([isSecondarySidebarVisible]) {
-        grid-template-columns:
-          var(--uik-component-shell-activity-bar-width)
-          var(--uik-component-shell-sidebar-width)
-          minmax(0, 1fr)
-          0px;
-      }
-
-      uik-shell-layout:not(:defined) > [slot="activity-bar"] {
-        grid-column: 1;
-        grid-row: 1;
-      }
-
-      uik-shell-layout:not(:defined) > [slot="primary-sidebar"] {
-        grid-column: 2;
-        grid-row: 1;
-      }
-
-      uik-shell-layout:not(:defined) > [slot="main-content"] {
-        grid-column: 3;
-        grid-row: 1;
-        min-width: var(--uik-space-0);
-        min-height: var(--uik-space-0);
-      }
-
-      uik-shell-layout:not(:defined) > [slot="secondary-sidebar"] {
-        grid-column: 4;
-        grid-row: 1;
-      }
-
-      uik-shell-layout:not(:defined):not([isSecondarySidebarVisible])
-        > [slot="secondary-sidebar"] {
-        inline-size: 0;
-        overflow: hidden;
-      }
-
-      uik-shell-layout:not(:defined) > [slot="status-bar"] {
-        grid-column: 1 / -1;
-        grid-row: 2;
+        margin: var(--uik-space-4) 0 0;
+        font-size: var(--uik-typography-font-size-6);
       }
     </style>
     <link rel="preload" as="style" href="/src/docs.css" />
     <link rel="stylesheet" href="/src/docs.css" fetchpriority="high" />
   </head>
   <body>
-    <header class="docs-brand">
-      <h1 class="docs-brand-title">UI Kit Documentation</h1>
-    </header>
-    <div id="app" class="docs-app"></div>
+    <div id="app" class="docs-app">
+      <div class="docs-boot-shell" aria-hidden="true">
+        <div class="docs-boot-header">
+          <span>UI Kit Docs</span>
+        </div>
+        <div class="docs-boot-content">
+          <h1 class="docs-boot-heading">UI Kit Documentation</h1>
+          <p class="docs-boot-summary">
+            Loading guides, foundations, components, patterns, and examples.
+          </p>
+        </div>
+      </div>
+    </div>
     <link rel="modulepreload" href="/src/main.ts" />
     <script type="module" src="/src/main.ts" fetchpriority="high"></script>
   </body>

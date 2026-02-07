@@ -22,6 +22,18 @@ const waitForContent = async (timeoutMs = 2000) => {
   throw new Error("Docs content did not render.");
 };
 
+const waitForNarrowLayout = async (
+  layout: UikShellLayout,
+  timeoutMs = 2000,
+) => {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    if (layout.hasAttribute("data-shell-narrow")) return;
+    await nextFrame();
+  }
+  throw new Error("Shell layout did not enter narrow mode.");
+};
+
 describe("docs outline drawer focus", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
@@ -75,5 +87,74 @@ describe("docs outline drawer focus", () => {
 
     expect(secondarySidebar.isOpen).toBe(false);
     expect(document.activeElement).toBe(outlineToggle);
+  });
+
+  it("retains outline content after close/reopen in wide and narrow layouts", async () => {
+    const root = document.getElementById("app");
+    if (!root) throw new Error("Docs root not found.");
+    await mountDocsApp(root);
+    await waitForContent();
+
+    const layout = document.querySelector<UikShellLayout>("uik-shell-layout");
+    const outlineToggle = document.querySelector<UikButton>(
+      '[data-docs-action="outline-toggle"]',
+    );
+    const secondarySidebar = document.querySelector<UikShellSecondarySidebar>(
+      "uik-shell-secondary-sidebar",
+    );
+    if (!layout || !outlineToggle || !secondarySidebar) {
+      throw new Error("Docs shell controls not found.");
+    }
+
+    const initialItem = secondarySidebar.querySelector<HTMLElement>(
+      "[data-docs-outline] a, [data-docs-outline] li, [data-docs-outline] span",
+    );
+    if (!initialItem) throw new Error("Outline item not found.");
+    const initialText = initialItem.textContent?.trim() ?? "";
+    expect(initialText.length).toBeGreaterThan(0);
+
+    if (secondarySidebar.isOpen) {
+      await userEvent.click(outlineToggle);
+      await secondarySidebar.updateComplete;
+      await nextFrame();
+      expect(secondarySidebar.isOpen).toBe(false);
+    }
+
+    await userEvent.click(outlineToggle);
+    await secondarySidebar.updateComplete;
+    await nextFrame();
+    const reopenedWide = secondarySidebar.querySelector<HTMLElement>(
+      "[data-docs-outline] a, [data-docs-outline] li, [data-docs-outline] span",
+    );
+    expect(reopenedWide?.textContent?.trim()).toBe(initialText);
+
+    layout.style.setProperty(
+      "--uik-component-shell-collapse-breakpoint",
+      "40rem",
+    );
+    layout.style.width = "22rem";
+    await waitForNarrowLayout(layout);
+    expect(layout.hasAttribute("data-shell-narrow")).toBe(true);
+
+    await userEvent.click(outlineToggle);
+    await secondarySidebar.updateComplete;
+    await nextFrame();
+    if (!secondarySidebar.isOpen) {
+      await userEvent.click(outlineToggle);
+      await secondarySidebar.updateComplete;
+      await nextFrame();
+    }
+
+    const mainRegion = layout.querySelector<HTMLElement>(
+      '[data-region="main-content"]',
+    );
+    if (!mainRegion) throw new Error("Main region not found.");
+    const mainWidth = mainRegion.getBoundingClientRect().width;
+    expect(mainWidth).toBeGreaterThan(12);
+
+    const reopenedNarrow = secondarySidebar.querySelector<HTMLElement>(
+      "[data-docs-outline] a, [data-docs-outline] li, [data-docs-outline] span",
+    );
+    expect(reopenedNarrow?.textContent?.trim()).toBe(initialText);
   });
 });

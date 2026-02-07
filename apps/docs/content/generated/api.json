@@ -5402,6 +5402,7 @@
           ],
           "slots": [
             { "name": "activity-bar", "description": "" },
+            { "name": "header", "description": "" },
             { "name": "main-content", "description": "" },
             { "name": "primary-sidebar", "description": "" },
             { "name": "secondary-sidebar", "description": "" },
@@ -5410,6 +5411,7 @@
           "cssParts": [
             { "name": "activity-bar", "description": "" },
             { "name": "drawer", "description": "" },
+            { "name": "header", "description": "" },
             { "name": "layout", "description": "" },
             { "name": "main-content", "description": "" },
             { "name": "primary-sidebar", "description": "" },

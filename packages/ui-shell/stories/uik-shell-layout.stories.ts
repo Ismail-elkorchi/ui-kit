@@ -25,7 +25,7 @@ type LayoutArgs = {
 const meta: Meta<LayoutArgs> = {
   title: "Shell/Layout",
   component: "uik-shell-layout",
-  tags: ["autodocs", "visual"],
+  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     uikA11y: { skipMainWrapper: true },
@@ -219,4 +219,105 @@ type Story = StoryObj<LayoutArgs>;
 
 export const Default: Story = {
   ...interactionStory,
+};
+
+export const DocumentationLayout: Story = {
+  ...interactionStory,
+  tags: ["visual"],
+  args: {
+    isSecondarySidebarVisible: true,
+  },
+  render: (args) => html`
+    <div
+      style="
+        height: calc(var(--uik-layout-panel-width-lg) + var(--uik-layout-panel-width-sm));
+        border: var(--uik-border-width-1) solid oklch(var(--uik-border-default));
+      "
+    >
+      <uik-shell-layout
+        ?isSecondarySidebarVisible=${args.isSecondarySidebarVisible}
+      >
+        <header
+          slot="header"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--uik-space-3);
+            min-height: var(--uik-size-control-xl);
+            padding-inline: var(--uik-space-4);
+            border-bottom: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
+            background: oklch(var(--uik-surface-elevated-1));
+          "
+        >
+          <div
+            style="
+              font-size: var(--uik-typography-font-size-3);
+              font-weight: var(--uik-typography-font-weight-semibold);
+            "
+          >
+            UI Kit Docs
+          </div>
+          <uik-button size="sm" variant="ghost">Search</uik-button>
+        </header>
+        <uik-shell-sidebar
+          slot="primary-sidebar"
+          heading="Guides"
+          subtitle="Navigation"
+        >
+          <uik-tree-view
+            style="flex: 1 1 auto;"
+            .items=${[
+              {
+                id: "getting-started",
+                label: "Getting started",
+                children: [
+                  { id: "install", label: "Installation" },
+                  { id: "theming", label: "Theme + density" },
+                ],
+              },
+              { id: "components", label: "Components" },
+            ]}
+            .openIds=${["getting-started"]}
+            currentId="theming"
+          ></uik-tree-view>
+        </uik-shell-sidebar>
+        <section
+          slot="main-content"
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: var(--uik-space-4);
+            padding: var(--uik-space-6);
+            overflow: auto;
+          "
+        >
+          <uik-heading level="1">Theme and density</uik-heading>
+          <uik-text as="p" tone="muted">
+            Density tokens change the measurable control sizes and typography
+            rhythm across shell, primitives, and docs.
+          </uik-text>
+          <uik-section-card>
+            <uik-text as="p">
+              This layout intentionally omits activity and status bars to show a
+              standard documentation shell composition.
+            </uik-text>
+          </uik-section-card>
+        </section>
+        <uik-shell-secondary-sidebar
+          slot="secondary-sidebar"
+          heading="On this page"
+          .isOpen=${args.isSecondarySidebarVisible}
+        >
+          <nav aria-label="Table of contents">
+            <a href="#overview">Overview</a>
+            <br />
+            <a href="#tokens">Token layers</a>
+            <br />
+            <a href="#tests">Regression tests</a>
+          </nav>
+        </uik-shell-secondary-sidebar>
+      </uik-shell-layout>
+    </div>
+  `,
 };

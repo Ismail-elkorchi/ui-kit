@@ -58,6 +58,37 @@ const setupLayoutWithoutActivity = async (width = 360) => {
   return layout;
 };
 
+const setupLayoutWithSecondary = async (width = 360) => {
+  const layout = document.createElement("uik-shell-layout") as UikShellLayout;
+  layout.style.width = `${width.toString()}px`;
+  layout.style.height = "400px";
+  layout.style.setProperty(
+    "--uik-component-shell-collapse-breakpoint",
+    "480px",
+  );
+  layout.style.setProperty("--uik-component-shell-sidebar-width", "120px");
+  layout.style.setProperty(
+    "--uik-component-shell-secondary-sidebar-width",
+    "180px",
+  );
+  layout.innerHTML = `
+    <uik-shell-sidebar slot="primary-sidebar">
+      <button type="button" data-drawer-button>Nav</button>
+    </uik-shell-sidebar>
+    <div slot="main-content">
+      <button type="button" data-opener>Open</button>
+    </div>
+    <uik-shell-secondary-sidebar slot="secondary-sidebar">
+      <div data-outline-item>Outline item</div>
+    </uik-shell-secondary-sidebar>
+  `;
+  document.body.append(layout);
+  await layout.updateComplete;
+  await nextFrame();
+  await nextFrame();
+  return layout;
+};
+
 const setLayoutWidth = async (layout: UikShellLayout, width: number) => {
   layout.style.width = `${width.toString()}px`;
   await nextFrame();
@@ -212,8 +243,12 @@ describe("uik-shell-layout drawer", () => {
     const activityRegion = layout.querySelector<HTMLElement>(
       '[part=\"activity-bar\"]',
     );
-    const statusRegion = layout.querySelector<HTMLElement>('[part=\"status-bar\"]');
-    const mainRegion = layout.querySelector<HTMLElement>('[part=\"main-content\"]');
+    const statusRegion = layout.querySelector<HTMLElement>(
+      '[part=\"status-bar\"]',
+    );
+    const mainRegion = layout.querySelector<HTMLElement>(
+      '[part=\"main-content\"]',
+    );
     if (!drawer || !activityRegion || !statusRegion || !mainRegion) {
       throw new Error("Expected shell regions.");
     }
@@ -228,5 +263,55 @@ describe("uik-shell-layout drawer", () => {
     const drawerWidth = Number.parseFloat(getComputedStyle(drawer).width);
     expect(Math.round(drawerWidth)).toBe(120);
     expect(mainRegion.getBoundingClientRect().width).toBeGreaterThan(0);
+  });
+
+  it("renders secondary sidebar as overlay in narrow mode without collapsing main content", async () => {
+    const layout = await setupLayoutWithSecondary(360);
+    const secondary = layout.querySelector<HTMLElement>(
+      '[part="secondary-sidebar"]',
+    );
+    const mainRegion = layout.querySelector<HTMLElement>(
+      '[part="main-content"]',
+    );
+    const sidebar = layout.querySelector<HTMLElement>(
+      "uik-shell-secondary-sidebar",
+    ) as HTMLElement & {
+      isOpen?: boolean;
+      updateComplete?: Promise<unknown>;
+    };
+    if (!secondary || !mainRegion || !sidebar) {
+      throw new Error("Expected secondary and main regions.");
+    }
+
+    layout.isSecondarySidebarVisible = true;
+    if ("isOpen" in sidebar) sidebar.isOpen = true;
+    await layout.updateComplete;
+    if (sidebar.updateComplete) {
+      await sidebar.updateComplete;
+    }
+    await nextFrame();
+
+    expect(layout.hasAttribute("data-shell-narrow")).toBe(true);
+    expect(getComputedStyle(secondary).position).toBe("fixed");
+    expect(mainRegion.getBoundingClientRect().width).toBeGreaterThan(12);
+
+    layout.isSecondarySidebarVisible = false;
+    if ("isOpen" in sidebar) sidebar.isOpen = false;
+    await layout.updateComplete;
+    if (sidebar.updateComplete) {
+      await sidebar.updateComplete;
+    }
+    await nextFrame();
+
+    layout.isSecondarySidebarVisible = true;
+    if ("isOpen" in sidebar) sidebar.isOpen = true;
+    await layout.updateComplete;
+    if (sidebar.updateComplete) {
+      await sidebar.updateComplete;
+    }
+    await nextFrame();
+
+    const content = layout.querySelector<HTMLElement>("[data-outline-item]");
+    expect(content?.textContent).toContain("Outline item");
   });
 });

@@ -35,6 +35,7 @@
         "activeRouteKey (string)"
       ],
       "slots": [
+        "header",
         "activity-bar",
         "primary-sidebar",
         "main-content",
@@ -43,6 +44,7 @@
       ],
       "parts": [
         "layout",
+        "header",
         "row",
         "drawer",
         "scrim",

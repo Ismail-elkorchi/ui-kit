@@ -119,13 +119,10 @@ describe("uik-shell layout extension points", () => {
     );
     if (!headerButton) throw new Error("Expected header action.");
 
-    expect(
-      headerButton.closest("[data-shell-slot='header']"),
-    ).toBeTruthy();
+    expect(headerButton.closest("[data-shell-slot='header']")).toBeTruthy();
     expect(
       getComputedStyle(
-        layout.querySelector<HTMLElement>('[part=\"header\"]') ??
-          document.body,
+        layout.querySelector<HTMLElement>('[part=\"header\"]') ?? document.body,
       ).display,
     ).not.toBe("none");
 
@@ -212,5 +209,28 @@ describe("uik-shell layout extension points", () => {
     expect(secondary.querySelector("[data-test='secondary-content']")).toBe(
       initialContent,
     );
+  });
+
+  it("does not treat nested slot attributes in main content as shell regions", async () => {
+    const layout = document.createElement("uik-shell-layout") as UikShellLayout;
+    layout.style.width = "720px";
+    layout.style.height = "400px";
+    layout.innerHTML = `
+      <uik-shell-sidebar slot="primary-sidebar"></uik-shell-sidebar>
+      <div slot="main-content">
+        <pre>
+          <code>&lt;div slot="activity-bar"&gt;example&lt;/div&gt;</code>
+        </pre>
+      </div>
+    `;
+    document.body.append(layout);
+    await layout.updateComplete;
+    await nextFrame();
+
+    const activityRegion = layout.querySelector<HTMLElement>(
+      '[part="activity-bar"]',
+    );
+    if (!activityRegion) throw new Error("Expected activity region.");
+    expect(getComputedStyle(activityRegion).display).toBe("none");
   });
 });

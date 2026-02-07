@@ -33,7 +33,7 @@ type OutlineToggle = (
 
 export const wireLabShellControls = (
   container: HTMLElement,
-  statusBar: UikShellStatusBar,
+  statusBar: UikShellStatusBar | null,
   layout: UikShellLayout,
   secondary: UikShellSecondarySidebar,
   setOutlineOpen: OutlineToggle,
@@ -42,20 +42,30 @@ export const wireLabShellControls = (
     '[data-docs-control="status-message"]',
   );
   if (messageInput) {
-    messageInput.value = statusBar.message;
-    messageInput.addEventListener("input", () => {
-      statusBar.message = messageInput.value;
-    });
+    if (statusBar) {
+      messageInput.value = statusBar.message;
+      messageInput.addEventListener("input", () => {
+        statusBar.message = messageInput.value;
+      });
+    } else {
+      messageInput.disabled = true;
+      messageInput.setAttribute("aria-disabled", "true");
+    }
   }
 
   const toneGroup = container.querySelector<UikRadioGroup>(
     '[data-docs-control="status-tone"]',
   );
   if (toneGroup) {
-    toneGroup.value = statusBar.tone;
-    toneGroup.addEventListener("change", () => {
-      statusBar.tone = toneGroup.value as UikShellStatusBar["tone"];
-    });
+    if (statusBar) {
+      toneGroup.value = statusBar.tone;
+      toneGroup.addEventListener("change", () => {
+        statusBar.tone = toneGroup.value as UikShellStatusBar["tone"];
+      });
+    } else {
+      toneGroup.disabled = true;
+      toneGroup.setAttribute("aria-disabled", "true");
+    }
   }
 
   const secondaryToggle = container.querySelector<UikSwitch>(

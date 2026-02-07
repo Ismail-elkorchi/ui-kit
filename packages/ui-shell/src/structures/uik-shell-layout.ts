@@ -204,6 +204,12 @@ export class UikShellLayout extends LitElement {
       .getPropertyValue("--uik-component-shell-collapse-breakpoint")
       .trim();
     if (!raw) return 0;
+    if (raw.includes("var(") || raw.includes("calc(")) {
+      const measured = this.measureCssLength(raw);
+      if (Number.isFinite(measured) && measured > 0) {
+        return measured;
+      }
+    }
     const rootFont = Number.parseFloat(
       getComputedStyle(document.documentElement).fontSize || "16",
     );
@@ -212,6 +218,19 @@ export class UikShellLayout extends LitElement {
     if (raw.endsWith("rem")) return numeric * rootFont;
     if (raw.endsWith("em")) return numeric * rootFont;
     return numeric;
+  }
+
+  private measureCssLength(raw: string): number {
+    const probe = document.createElement("div");
+    probe.style.position = "absolute";
+    probe.style.visibility = "hidden";
+    probe.style.pointerEvents = "none";
+    probe.style.height = "0";
+    probe.style.width = raw;
+    this.append(probe);
+    const measured = Number.parseFloat(getComputedStyle(probe).width || "0");
+    probe.remove();
+    return measured;
   }
 
   private captureFocusOrigin() {
@@ -452,11 +471,15 @@ export class UikShellLayout extends LitElement {
   }
 
   override render() {
+    const getAssignedSlotElement = (slotName: string) =>
+      this.querySelector<HTMLElement>(
+        `[data-shell-slot="${slotName}"] > [slot="${slotName}"]`,
+      );
     const resolveSlotLabel = (
       slotName: string,
       fallback: string,
     ): { label: string | null; labelledby: string | null } => {
-      const element = this.querySelector<HTMLElement>(`[slot="${slotName}"]`);
+      const element = getAssignedSlotElement(slotName);
       if (element) {
         const ariaLabel = element.getAttribute("aria-label");
         if (ariaLabel && ariaLabel.trim()) {
@@ -483,9 +506,9 @@ export class UikShellLayout extends LitElement {
       "secondary-sidebar",
       "Secondary sidebar",
     );
-    const hasHeader = !!this.querySelector('[slot="header"]');
-    const hasActivityBar = !!this.querySelector('[slot="activity-bar"]');
-    const hasStatusBar = !!this.querySelector('[slot="status-bar"]');
+    const hasHeader = !!getAssignedSlotElement("header");
+    const hasActivityBar = !!getAssignedSlotElement("activity-bar");
+    const hasStatusBar = !!getAssignedSlotElement("status-bar");
     const headerStyles = {
       flexShrink: "0",
       display: hasHeader ? "block" : "none",
@@ -546,10 +569,20 @@ export class UikShellLayout extends LitElement {
       display: hasStatusBar ? "block" : "none",
     };
     const secondaryHidden = !this.isSecondarySidebarVisible;
-    const secondaryStyles = {
-      ...fixedRegionStyles,
-      display: secondaryHidden ? "none" : "block",
-    };
+    const secondaryStyles = this.isNarrow
+      ? {
+          position: "fixed",
+          insetBlock: "0",
+          insetInlineEnd: "0",
+          display: secondaryHidden ? "none" : "block",
+          maxWidth: "100vw",
+          zIndex: "calc(var(--uik-component-shell-drawer-z) + 1)",
+          pointerEvents: secondaryHidden ? "none" : "auto",
+        }
+      : {
+          ...fixedRegionStyles,
+          display: secondaryHidden ? "none" : "block",
+        };
     const activityStyles = {
       ...fixedRegionStyles,
       display: hasActivityBar ? "block" : "none",
