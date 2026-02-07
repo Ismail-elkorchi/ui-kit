@@ -108,6 +108,7 @@ describe("docs outline drawer focus", () => {
     });
 
     window.location.hash = href;
+    window.dispatchEvent(new Event("hashchange"));
     await waitForHash(href);
     await nextFrame();
     await nextFrame();
