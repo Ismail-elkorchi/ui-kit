@@ -44,7 +44,9 @@ export class UikShellStatusBar extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    if (!this.style.display) this.style.display = "block";
+    if (!this.style.display && getComputedStyle(this).display === "inline") {
+      this.style.display = "block";
+    }
     if (!this.style.boxSizing) this.style.boxSizing = "border-box";
     if (!this.style.width) this.style.width = "100%";
     this.slotController ??= new LightDomSlotController(

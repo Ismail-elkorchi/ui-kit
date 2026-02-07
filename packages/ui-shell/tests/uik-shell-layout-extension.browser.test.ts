@@ -20,6 +20,9 @@ const setupLayout = async (width = 720) => {
   layout.style.setProperty("--uik-component-shell-activity-bar-width", "48px");
   layout.style.setProperty("--uik-component-shell-sidebar-width", "160px");
   layout.innerHTML = `
+    <header slot="header" data-test="header-shell" aria-label="Docs header">
+      <button type="button" data-test="header-action">Menu</button>
+    </header>
     <uik-shell-activity-bar
       slot="activity-bar"
       data-shell-active-target="view"></uik-shell-activity-bar>
@@ -107,6 +110,30 @@ describe("uik-shell layout extension points", () => {
         '[data-shell-slot="global-controls"] [data-test="controls"]',
       ),
     ).toBeTruthy();
+  });
+
+  it("renders header slot content in wide and narrow layouts", async () => {
+    const layout = await setupLayout(720);
+    const headerButton = layout.querySelector<HTMLButtonElement>(
+      "[data-test='header-action']",
+    );
+    if (!headerButton) throw new Error("Expected header action.");
+
+    expect(
+      headerButton.closest("[data-shell-slot='header']"),
+    ).toBeTruthy();
+    expect(
+      getComputedStyle(
+        layout.querySelector<HTMLElement>('[part=\"header\"]') ??
+          document.body,
+      ).display,
+    ).not.toBe("none");
+
+    await setLayoutWidth(layout, 360);
+    await waitForNarrowState(layout, true);
+    expect(layout.querySelector("[data-test='header-action']")).toBe(
+      headerButton,
+    );
   });
 
   it("syncs activeRouteKey to view and route targets", async () => {

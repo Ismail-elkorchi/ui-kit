@@ -8,12 +8,9 @@ import type {
 import type {
   UikCommandCenterCommand,
   UikCommandCenterHandle,
-  UikShellActivityBar,
-  UikShellActivityBarItem,
   UikShellLayout,
   UikShellLocation,
   UikShellSecondarySidebar,
-  UikShellStatusBar,
   UikShellRoute,
 } from "@ismail-elkorchi/ui-shell";
 
@@ -88,24 +85,6 @@ const buildRoutes = (
     createRoute("docs", "Docs", uniqueDocsSubviewIds, docsDefault),
     createRoute("lab", "Examples", labSubviewIds, labDefault),
   ];
-};
-
-const buildActivityItems = (
-  routes: UikShellRoute[],
-): UikShellActivityBarItem[] => {
-  const icons = {
-    docs: "M4 5a2 2 0 012-2h10a2 2 0 012 2v14a1 1 0 01-1 1h-2a2 2 0 00-2 2H6a2 2 0 01-2-2V5z",
-    lab: "M3 3h6v6H3V3zm0 8h6v6H3v-6zm8-8h6v6h-6V3zm0 8h6v6h-6v-6z",
-  } as const;
-
-  return routes.map((route) => {
-    const icon = route.id === "lab" ? icons.lab : icons.docs;
-    return {
-      id: route.id,
-      label: route.label ?? route.id,
-      icon,
-    };
-  });
 };
 
 const docsGroupOrder = [
@@ -726,11 +705,12 @@ const resolveTheme = () => {
   return theme && theme.length > 0 ? theme : getSystemTheme();
 };
 
-const updateStatusMeta = (statusBar: UikShellStatusBar) => {
+const updatePreferenceMeta = (metaElement: HTMLElement | null) => {
+  if (!metaElement) return;
   const root = document.documentElement;
   const theme = resolveTheme();
   const density = root.getAttribute("data-uik-density") ?? "comfortable";
-  statusBar.meta = `Theme: ${theme} | Density: ${density}`;
+  metaElement.textContent = `Theme: ${theme} | Density: ${density}`;
 };
 
 const getBaseUrlFromVite = () => {
@@ -856,7 +836,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialTheme = resolveTheme();
   const initialDensity =
     document.documentElement.getAttribute("data-uik-density") ?? "comfortable";
-  const initialStatusMeta = `Theme: ${initialTheme} | Density: ${initialDensity}`;
+  const initialPreferenceMeta = `Theme: ${initialTheme} | Density: ${initialDensity}`;
   const groupBadgeAttr = initialGroup ? "" : " hidden";
   const kindBadgeAttr = initialKind ? "" : " hidden";
   const packageBadgeAttr = initialPackage ? "" : " hidden";
@@ -929,10 +909,10 @@ export const mountDocsApp = async (container: HTMLElement) => {
             <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
           </uik-page-hero>
           `;
-  const globalControlsMarkup = initialIsInternal
+  const headerControlsMarkup = initialIsInternal
     ? ""
     : `
-        <div slot="global-controls" class="docs-global-controls">
+        <div class="docs-header-controls">
           <div
             class="docs-select-placeholder"
             data-docs-select-placeholder="theme"
@@ -953,11 +933,36 @@ export const mountDocsApp = async (container: HTMLElement) => {
       <a class="docs-skip-link" href="#docs-main">Skip to content</a>
     </nav>
     <uik-shell-layout class="docs-shell"${secondaryVisibleAttr}>
-      <uik-shell-activity-bar
-        slot="activity-bar"
-        class="docs-activity-bar"
-        data-shell-active-target="view"
-        aria-label="Primary navigation"></uik-shell-activity-bar>
+      <header slot="header" class="docs-header">
+        <div class="docs-header-main">
+          <uik-button
+            variant="ghost"
+            size="sm"
+            data-docs-action="nav-toggle"
+            aria-controls="docs-sidebar"
+            aria-expanded="false"
+          >
+            Menu
+          </uik-button>
+          <a class="docs-header-title" href="${toHref("docs/getting-started")}">UI Kit Docs</a>
+          <uik-text as="p" size="sm" tone="muted" data-docs-current-page>${escapeHtml(
+            initialTitle,
+          )}</uik-text>
+        </div>
+        <div class="docs-header-actions">
+          <uik-button
+            variant="ghost"
+            size="sm"
+            data-docs-action="outline-toggle"${initialIsInternal ? " hidden" : ""}
+          >
+            Outline
+          </uik-button>
+          ${headerControlsMarkup}
+          <uik-text as="p" size="sm" tone="muted" class="docs-preference-meta" data-docs-preference-meta>${escapeHtml(
+            initialPreferenceMeta,
+          )}</uik-text>
+        </div>
+      </header>
       <uik-shell-sidebar
         slot="primary-sidebar"
         id="docs-sidebar"
@@ -995,26 +1000,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
         aria-label="On this page">
         <div data-docs-outline>${initialOutline}</div>
       </uik-shell-secondary-sidebar>
-      <uik-shell-status-bar
-        slot="status-bar"
-        class="docs-status"
-        message="${escapeHtml(initialTitle)}"
-        tone="info"
-        meta="${escapeHtml(initialStatusMeta)}">
-        <div slot="context-actions" class="docs-context-actions">
-          <uik-button
-            variant="ghost"
-            size="sm"
-            data-docs-action="nav-toggle"
-            aria-controls="docs-sidebar"
-            aria-expanded="false"
-          >
-            Menu
-          </uik-button>
-          <uik-button variant="ghost" size="sm" data-docs-action="outline-toggle">Outline</uik-button>
-        </div>
-        ${globalControlsMarkup}
-      </uik-shell-status-bar>
     </uik-shell-layout>
   `;
   if (initialNeedsPortfolio && labPreviewsModule) {
@@ -1056,10 +1041,8 @@ export const mountDocsApp = async (container: HTMLElement) => {
   await baseComponentsPromise;
   await Promise.all([
     customElements.whenDefined("uik-shell-layout"),
-    customElements.whenDefined("uik-shell-activity-bar"),
     customElements.whenDefined("uik-shell-sidebar"),
     customElements.whenDefined("uik-shell-secondary-sidebar"),
-    customElements.whenDefined("uik-shell-status-bar"),
     customElements.whenDefined("uik-tree-view"),
     customElements.whenDefined("uik-button"),
     customElements.whenDefined("uik-select"),
@@ -1080,15 +1063,15 @@ export const mountDocsApp = async (container: HTMLElement) => {
   });
 
   const layout = container.querySelector<UikShellLayout>("uik-shell-layout");
-  const activityBar = container.querySelector<UikShellActivityBar>(
-    "uik-shell-activity-bar",
-  );
   const navTree = container.querySelector<UikTreeView>("[data-docs-nav-tree]");
-  const statusBar = container.querySelector<UikShellStatusBar>(
-    "uik-shell-status-bar",
-  );
   const secondarySidebar = container.querySelector<UikShellSecondarySidebar>(
     "uik-shell-secondary-sidebar",
+  );
+  const currentPageElement = container.querySelector<HTMLElement>(
+    "[data-docs-current-page]",
+  );
+  const preferenceMetaElement = container.querySelector<HTMLElement>(
+    "[data-docs-preference-meta]",
   );
   const heroElement = container.querySelector<HTMLElement>(".docs-hero");
   const fixtureHeader = container.querySelector<HTMLElement>(

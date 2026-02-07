@@ -50,7 +50,9 @@ export class UikShellSecondarySidebar extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener("keydown", this.onKeydown);
-    if (!this.style.display) this.style.display = "block";
+    if (!this.style.display && getComputedStyle(this).display === "inline") {
+      this.style.display = "block";
+    }
     if (!this.style.boxSizing) this.style.boxSizing = "border-box";
     if (!this.style.height) this.style.height = "100%";
     this.slotController ??= new LightDomSlotController(

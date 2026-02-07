@@ -49,7 +49,9 @@ export class UikShellSidebar extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    if (!this.style.display) this.style.display = "block";
+    if (!this.style.display && getComputedStyle(this).display === "inline") {
+      this.style.display = "block";
+    }
     if (!this.style.boxSizing) this.style.boxSizing = "border-box";
     if (!this.style.height) this.style.height = "100%";
     ensureLightDomRoot(this);

@@ -13,12 +13,14 @@ import { getForcedColors, getReducedMotion } from "../internal/media.js";
  * @attr isSecondarySidebarVisible (boolean)
  * @attr isPrimarySidebarOpen (boolean)
  * @attr activeRouteKey (string)
+ * @slot header
  * @slot activity-bar
  * @slot primary-sidebar
  * @slot main-content
  * @slot secondary-sidebar
  * @slot status-bar
  * @part layout
+ * @part header
  * @part row
  * @part drawer
  * @part scrim
@@ -70,7 +72,9 @@ export class UikShellLayout extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    if (!this.style.display) this.style.display = "block";
+    if (!this.style.display && getComputedStyle(this).display === "inline") {
+      this.style.display = "block";
+    }
     if (!this.style.boxSizing) this.style.boxSizing = "border-box";
     if (!this.style.height) this.style.height = "100%";
     if (!this.style.width) this.style.width = "100%";
@@ -78,6 +82,10 @@ export class UikShellLayout extends LitElement {
       this,
       "[data-shell-root]",
       [
+        {
+          name: "header",
+          containerSelector: '[data-shell-slot="header"]',
+        },
         {
           name: "activity-bar",
           containerSelector: '[data-shell-slot="activity-bar"]',
@@ -101,6 +109,7 @@ export class UikShellLayout extends LitElement {
       ],
       () => {
         this.syncActiveTargets();
+        this.requestUpdate();
       },
     );
     if (!this.hasUpdated) {
@@ -474,6 +483,13 @@ export class UikShellLayout extends LitElement {
       "secondary-sidebar",
       "Secondary sidebar",
     );
+    const hasHeader = !!this.querySelector('[slot="header"]');
+    const hasActivityBar = !!this.querySelector('[slot="activity-bar"]');
+    const hasStatusBar = !!this.querySelector('[slot="status-bar"]');
+    const headerStyles = {
+      flexShrink: "0",
+      display: hasHeader ? "block" : "none",
+    };
 
     const layoutStyles = {
       backgroundColor: "oklch(var(--uik-surface-bg))",
@@ -491,8 +507,7 @@ export class UikShellLayout extends LitElement {
       overflow: "hidden",
     };
     const fixedRegionStyles = { flexShrink: "0" };
-    const drawerWidth =
-      "min(100vw, calc(var(--uik-component-shell-activity-bar-width) + var(--uik-component-shell-sidebar-width)))";
+    const drawerWidth = `min(100vw, calc(${hasActivityBar ? "var(--uik-component-shell-activity-bar-width)" : "0px"} + var(--uik-component-shell-sidebar-width)))`;
     const isReducedMotion =
       document.documentElement.getAttribute("data-uik-motion") === "reduced" ||
       getReducedMotion();
@@ -528,11 +543,19 @@ export class UikShellLayout extends LitElement {
     };
     const statusBarStyles = {
       flexShrink: "0",
+      display: hasStatusBar ? "block" : "none",
     };
     const secondaryHidden = !this.isSecondarySidebarVisible;
     const secondaryStyles = {
       ...fixedRegionStyles,
       display: secondaryHidden ? "none" : "block",
+    };
+    const activityStyles = {
+      ...fixedRegionStyles,
+      display: hasActivityBar ? "block" : "none",
+    };
+    const headerSlotStyles = {
+      width: "100%",
     };
     const slotColumnStyles = {
       height: "100%",
@@ -555,6 +578,18 @@ export class UikShellLayout extends LitElement {
         style=${styleMap(layoutStyles)}
         data-layout-layer="shell"
       >
+        <div
+          part="header"
+          style=${styleMap(headerStyles)}
+          data-region="header"
+          aria-hidden=${hasHeader ? nothing : "true"}
+          ?inert=${!hasHeader}
+        >
+          <div
+            data-shell-slot="header"
+            style=${styleMap(headerSlotStyles)}
+          ></div>
+        </div>
         <div part="row" style=${styleMap(rowStyles)}>
           <aside
             part="drawer"
@@ -567,7 +602,7 @@ export class UikShellLayout extends LitElement {
           >
             <div
               part="activity-bar"
-              style=${styleMap(fixedRegionStyles)}
+              style=${styleMap(activityStyles)}
               data-region="activity-bar"
               role="presentation"
             >

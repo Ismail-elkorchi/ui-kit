@@ -34,6 +34,30 @@ const setupLayout = async (width = 360) => {
   return layout;
 };
 
+const setupLayoutWithoutActivity = async (width = 360) => {
+  const layout = document.createElement("uik-shell-layout") as UikShellLayout;
+  layout.style.width = `${width.toString()}px`;
+  layout.style.height = "400px";
+  layout.style.setProperty(
+    "--uik-component-shell-collapse-breakpoint",
+    "480px",
+  );
+  layout.style.setProperty("--uik-component-shell-sidebar-width", "120px");
+  layout.innerHTML = `
+    <uik-shell-sidebar slot="primary-sidebar">
+      <button type="button" data-drawer-button>Nav</button>
+    </uik-shell-sidebar>
+    <div slot="main-content">
+      <button type="button" data-opener>Open</button>
+    </div>
+  `;
+  document.body.append(layout);
+  await layout.updateComplete;
+  await nextFrame();
+  await nextFrame();
+  return layout;
+};
+
 const setLayoutWidth = async (layout: UikShellLayout, width: number) => {
   layout.style.width = `${width.toString()}px`;
   await nextFrame();
@@ -180,5 +204,29 @@ describe("uik-shell-layout drawer", () => {
       writable: true,
       value: originalMatchMedia,
     });
+  });
+
+  it("does not reserve activity or status regions when slots are omitted", async () => {
+    const layout = await setupLayoutWithoutActivity(360);
+    const drawer = layout.querySelector<HTMLElement>("[data-shell-drawer]");
+    const activityRegion = layout.querySelector<HTMLElement>(
+      '[part=\"activity-bar\"]',
+    );
+    const statusRegion = layout.querySelector<HTMLElement>('[part=\"status-bar\"]');
+    const mainRegion = layout.querySelector<HTMLElement>('[part=\"main-content\"]');
+    if (!drawer || !activityRegion || !statusRegion || !mainRegion) {
+      throw new Error("Expected shell regions.");
+    }
+
+    expect(getComputedStyle(activityRegion).display).toBe("none");
+    expect(getComputedStyle(statusRegion).display).toBe("none");
+
+    layout.isPrimarySidebarOpen = true;
+    await layout.updateComplete;
+    await nextFrame();
+
+    const drawerWidth = Number.parseFloat(getComputedStyle(drawer).width);
+    expect(Math.round(drawerWidth)).toBe(120);
+    expect(mainRegion.getBoundingClientRect().width).toBeGreaterThan(0);
   });
 });
