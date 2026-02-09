@@ -1,11 +1,7 @@
 import "@ismail-elkorchi/ui-patterns/uik-page-hero";
-import "@ismail-elkorchi/ui-patterns/uik-section-card";
-import "@ismail-elkorchi/ui-primitives/uik-badge";
 import "@ismail-elkorchi/ui-primitives/uik-button";
 import "@ismail-elkorchi/ui-primitives/uik-code-block";
-import "@ismail-elkorchi/ui-primitives/uik-heading";
 import "@ismail-elkorchi/ui-primitives/uik-select";
-import "@ismail-elkorchi/ui-primitives/uik-text";
 import "@ismail-elkorchi/ui-primitives/uik-tree-view";
 import "@ismail-elkorchi/ui-shell/layout";
 import "@ismail-elkorchi/ui-shell/secondary-sidebar";

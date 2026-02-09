@@ -18,6 +18,7 @@ import {
   buildPageMap,
   componentPageIds,
   docsPages,
+  ensureDocsContent,
   ensureComponentPages,
   getAllDocsPages,
   getPublicDocsPages,
@@ -177,14 +178,10 @@ const publicBaseComponentTags = [
   "uik-shell-layout",
   "uik-shell-sidebar",
   "uik-shell-secondary-sidebar",
-  "uik-badge",
   "uik-button",
   "uik-code-block",
-  "uik-heading",
   "uik-page-hero",
-  "uik-section-card",
   "uik-select",
-  "uik-text",
   "uik-tree-view",
 ];
 const internalBaseComponentTags = [
@@ -193,10 +190,7 @@ const internalBaseComponentTags = [
   "uik-shell-secondary-sidebar",
   "uik-button",
   "uik-code-block",
-  "uik-heading",
-  "uik-section-card",
   "uik-select",
-  "uik-text",
   "uik-tree-view",
 ];
 const baseComponentBundleTags = new Set([
@@ -509,6 +503,19 @@ const collectPageComponentTags = (page: DocPageContent) => {
   const tags = new Set<string>();
   for (const section of page.sections) {
     const scrubbed = section.body
+      .replace(
+        /<uik-text([^>]*class="[^"]*docs-paragraph[^"]*"[^>]*)>([\s\S]*?)<\/uik-text>/gi,
+        "<p$1>$2</p>",
+      )
+      .replace(
+        /<uik-heading([^>]*class="[^"]*docs-heading[^"]*"[^>]*)>([\s\S]*?)<\/uik-heading>/gi,
+        (_match, attrs: string, inner: string) => {
+          const levelMatch = attrs.match(/\blevel="([1-6])"/i);
+          const level = levelMatch?.[1] ?? "2";
+          const normalizedAttrs = attrs.replace(/\slevel="[^"]*"/i, "");
+          return `<h${level}${normalizedAttrs}>${inner}</h${level}>`;
+        },
+      )
       .replace(/<uik-code-block[\s\S]*?<\/uik-code-block>/gi, "")
       .replace(/<pre[\s\S]*?<\/pre>/gi, "");
     componentTagPattern.lastIndex = 0;
@@ -784,6 +791,7 @@ const scrollToHashTarget = async () => {
 };
 
 export const mountDocsApp = async (container: HTMLElement) => {
+  await ensureDocsContent();
   const tokensPromise = import("@ismail-elkorchi/ui-tokens");
   const routerPromise = import("@ismail-elkorchi/ui-shell/router");
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
@@ -880,17 +888,17 @@ export const mountDocsApp = async (container: HTMLElement) => {
     : `
           <uik-page-hero class="docs-hero">
             <div slot="eyebrow" class="docs-hero-top">
-              <uik-badge variant="secondary">UIK Docs</uik-badge>
-              <uik-badge variant="outline" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</uik-badge>
-              <uik-badge variant="outline" data-docs-kind${kindBadgeAttr}>${escapeHtml(initialKind)}</uik-badge>
-              <uik-badge variant="outline" data-docs-package${packageBadgeAttr}>${escapeHtml(initialPackage)}</uik-badge>
+              <span class="docs-hero-pill docs-hero-pill-secondary">UIK Docs</span>
+              <span class="docs-hero-pill" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</span>
+              <span class="docs-hero-pill" data-docs-kind${kindBadgeAttr}>${escapeHtml(initialKind)}</span>
+              <span class="docs-hero-pill" data-docs-package${packageBadgeAttr}>${escapeHtml(initialPackage)}</span>
             </div>
-            <uik-heading slot="title" level="1" data-docs-title>${escapeHtml(
+            <h1 slot="title" class="docs-title" data-docs-title>${escapeHtml(
               initialTitle,
-            )}</uik-heading>
-            <uik-text slot="summary" as="p" data-docs-summary class="docs-summary">${escapeHtml(
+            )}</h1>
+            <p slot="summary" data-docs-summary class="docs-summary">${escapeHtml(
               initialSummary,
-            )}</uik-text>
+            )}</p>
             <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
           </uik-page-hero>
           `;
@@ -931,9 +939,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
             Menu
           </uik-button>
           <a class="docs-header-title" href="${toHref("docs/getting-started")}">UI Kit Docs</a>
-          <uik-text as="p" size="sm" tone="muted" data-docs-current-page>${escapeHtml(
+          <p class="docs-current-page" data-docs-current-page>${escapeHtml(
             initialTitle,
-          )}</uik-text>
+          )}</p>
         </div>
         <div class="docs-header-actions">
           <uik-button
@@ -952,9 +960,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
             Outline
           </uik-button>
           ${headerControlsMarkup}
-          <uik-text as="p" size="sm" tone="muted" class="docs-preference-meta" data-docs-preference-meta>${escapeHtml(
+          <p class="docs-preference-meta" data-docs-preference-meta>${escapeHtml(
             initialPreferenceMeta,
-          )}</uik-text>
+          )}</p>
         </div>
       </header>
       <uik-shell-sidebar
@@ -970,7 +978,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
           data-shell-active-target="route"
           aria-label="Docs navigation"></uik-tree-view>
         <div slot="footer" class="docs-sidebar-footer">
-          <uik-text as="p" size="sm" tone="muted">Tokens-first, standards-based UI.</uik-text>
+          <p class="docs-sidebar-note">Tokens-first, standards-based UI.</p>
         </div>
       </uik-shell-sidebar>
       <div slot="main-content" id="docs-main" class="docs-main">
@@ -1310,9 +1318,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
       <span slot="title">Command palette</span>
       <span slot="description">Type to search docs and examples.</span>
       <uik-visually-hidden slot="label">Search commands</uik-visually-hidden>
-      <uik-text slot="footer" as="p" size="sm" tone="muted">
+      <p slot="footer" class="docs-command-palette-footer">
         Use Up/Down to navigate, Enter to select, Esc to close.
-      </uik-text>
+      </p>
     `;
     container.appendChild(palette);
     commandPalette = palette;
@@ -1396,13 +1404,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (!mobileNavScheduled && mobileNavSelect) {
       mobileNavScheduled = true;
       scheduleMobileNavOptions(mobileNavSelect);
-    }
-    const shouldPrefetchCommandCenter =
-      contentElement.querySelector(
-        '[data-docs-action="command-palette-open"]',
-      ) !== null;
-    if (shouldPrefetchCommandCenter && !commandCenterInit) {
-      void ensureCommandCenter();
     }
     commandPaletteOpenButton = headerCommandPaletteButton;
     const needsPortfolio =

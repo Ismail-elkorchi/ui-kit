@@ -50,7 +50,8 @@ describe("docs markdown rendering", () => {
     expect(infoAlert).toBeTruthy();
     const infoTitle = infoAlert?.querySelector('[slot="title"]');
     expect(infoTitle?.textContent.trim()).toBe("Note");
-    const infoParagraphs = infoAlert?.querySelectorAll("uik-text") ?? [];
+    const infoParagraphs =
+      infoAlert?.querySelectorAll(".docs-paragraph") ?? [];
     expect(infoParagraphs.length).toBeGreaterThan(1);
     expect(infoAlert?.querySelector("ul")).toBeTruthy();
     const inlineCodes = Array.from(

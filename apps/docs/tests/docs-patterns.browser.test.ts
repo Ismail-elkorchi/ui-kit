@@ -64,7 +64,9 @@ describe("patterns docs", () => {
     await customElements.whenDefined("uik-section-card");
     const content = document.querySelector<HTMLElement>("[data-docs-content]");
     if (!content) throw new Error("Docs content root not found.");
-    const cards = content.querySelectorAll("uik-section-card");
+    const cards = content.querySelectorAll(
+      "uik-section-card, .docs-section-surface",
+    );
     expect(cards.length).toBeGreaterThan(0);
     await runA11y(document.body);
 

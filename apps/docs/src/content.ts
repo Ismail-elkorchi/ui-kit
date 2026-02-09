@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
-import docsManifest from "./generated/docs-manifest.json";
 
 const escapeHtml = (value: string) =>
   value
@@ -45,21 +44,47 @@ interface DocsManifest {
   componentPageIds?: string[];
 }
 
-const content = docsManifest as DocsManifest;
+let docsManifest: DocsManifest | null = null;
+let docsManifestPromise: Promise<DocsManifest> | null = null;
 
 const pageModules = import.meta.glob<{ default: DocPageContent }>(
   "./generated/pages/**/*.json",
 );
 
-export const docsPages = content.docsPages;
-export const labPages = content.labPages;
-export const componentPageIds = content.componentPageIds ?? [];
+export let docsPages: DocPage[] = [];
+export let labPages: DocPage[] = [];
+export let componentPageIds: string[] = [];
 export const isPublicPage = (page: DocPage) =>
   (page.visibility ?? "public") !== "internal";
-export const publicDocsPages = docsPages.filter(isPublicPage);
-export const publicLabPages = labPages.filter(isPublicPage);
+export let publicDocsPages: DocPage[] = [];
+export let publicLabPages: DocPage[] = [];
 export const isNavVisiblePage = (page: DocPage) => !page.navHidden;
-export const publicDocsNavPages = publicDocsPages.filter(isNavVisiblePage);
+export let publicDocsNavPages: DocPage[] = [];
+
+const assignManifest = (manifest: DocsManifest) => {
+  docsManifest = manifest;
+  docsPages = manifest.docsPages;
+  labPages = manifest.labPages;
+  componentPageIds = manifest.componentPageIds ?? [];
+  publicDocsPages = docsPages.filter(isPublicPage);
+  publicLabPages = labPages.filter(isPublicPage);
+  publicDocsNavPages = publicDocsPages.filter(isNavVisiblePage);
+};
+
+export const ensureDocsContent = async () => {
+  if (docsManifest) return docsManifest;
+  if (!docsManifestPromise) {
+    docsManifestPromise = import("./generated/docs-manifest.json").then(
+      (module) => {
+        const manifest = (module as { default?: DocsManifest }).default ??
+          (module as DocsManifest);
+        assignManifest(manifest);
+        return manifest;
+      },
+    );
+  }
+  return docsManifestPromise;
+};
 
 let componentPages: DocPage[] = [];
 let componentPagesPromise: Promise<DocPage[]> | null = null;
@@ -123,29 +148,48 @@ export const renderToc = (page: DocPage) => {
   return `<nav aria-label="On this page" class="docs-toc"><ul class="docs-toc-list">${page.toc
     .map(
       (item) =>
-        `<li class="docs-toc-item" data-level="${String(item.level)}"><uik-text as="p" class="docs-paragraph"><uik-link href="#${item.id}">${escapeHtml(
+        `<li class="docs-toc-item" data-level="${String(item.level)}"><p class="docs-paragraph"><a class="docs-toc-link" href="#${item.id}">${escapeHtml(
           item.title,
-        )}</uik-link></uik-text></li>`,
+        )}</a></p></li>`,
     )
     .join("")}</ul></nav>`;
 };
 
 export const renderPageSections = (page: DocPageContent) => {
+  const normalizeSectionBody = (body: string) =>
+    body
+      .replace(
+        /<uik-text([^>]*class="[^"]*docs-paragraph[^"]*"[^>]*)>([\s\S]*?)<\/uik-text>/gi,
+        "<p$1>$2</p>",
+      )
+      .replace(
+        /<uik-heading([^>]*class="[^"]*docs-heading[^"]*"[^>]*)>([\s\S]*?)<\/uik-heading>/gi,
+        (_match, attrs: string, inner: string) => {
+          const levelMatch = attrs.match(/\blevel="([1-6])"/i);
+          const level = levelMatch?.[1] ?? "2";
+          const normalizedAttrs = attrs.replace(/\slevel="[^"]*"/i, "");
+          return `<h${level}${normalizedAttrs}>${inner}</h${level}>`;
+        },
+      );
+
   return page.sections
     .map((sectionItem) => {
+      const sectionBody = normalizeSectionBody(sectionItem.body);
       return `
         <section class="docs-section" id="${sectionItem.id}">
-          <uik-section-card class="docs-section-card">
-            <uik-heading slot="title" level="2" class="docs-heading docs-section-heading">
+          <section class="docs-section-surface">
+            <div class="docs-section-inner">
+              <h2 class="docs-heading docs-section-heading">
               <a class="docs-heading-anchor" href="#${sectionItem.id}" aria-label="Link to ${escapeHtml(
                 sectionItem.title,
               )}">#</a>
               <span class="docs-heading-text">${escapeHtml(
                 sectionItem.title,
               )}</span>
-            </uik-heading>
-            <div class="docs-section-body">${sectionItem.body}</div>
-          </uik-section-card>
+              </h2>
+              <div class="docs-section-body">${sectionBody}</div>
+            </div>
+          </section>
         </section>
       `;
     })

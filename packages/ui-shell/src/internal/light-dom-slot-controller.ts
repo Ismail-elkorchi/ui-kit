@@ -29,6 +29,7 @@ export function ensureLightDomRoot(
 
 export class LightDomSlotController {
   private observer: MutationObserver | null = null;
+  private syncQueued = false;
 
   constructor(
     private readonly host: HTMLElement,
@@ -43,22 +44,71 @@ export class LightDomSlotController {
   connect() {
     if (this.observer) return;
     this.sync();
-    this.observer = new MutationObserver(() => this.sync());
-    this.observer.observe(this.host, { childList: true, subtree: true });
+    this.observer = new MutationObserver((records) => {
+      if (!this.shouldSync(records)) return;
+      this.queueSync();
+    });
+    this.observer.observe(this.host, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["slot"],
+    });
   }
 
   disconnect() {
     this.observer?.disconnect();
     this.observer = null;
+    this.syncQueued = false;
   }
 
-  sync() {
+  private queueSync() {
+    if (this.syncQueued) return;
+    this.syncQueued = true;
+    queueMicrotask(() => {
+      this.syncQueued = false;
+      this.sync();
+    });
+  }
+
+  private resolveRoot() {
     const scopedSelector = this.rootSelector.includes(":scope")
       ? this.rootSelector
       : `:scope > ${this.rootSelector}`;
-    const root =
+    return (
       this.host.querySelector<HTMLElement>(scopedSelector) ??
-      this.host.querySelector<HTMLElement>(this.rootSelector);
+      this.host.querySelector<HTMLElement>(this.rootSelector)
+    );
+  }
+
+  private shouldSync(records: MutationRecord[]) {
+    const root = this.resolveRoot();
+    for (const record of records) {
+      if (record.type === "childList") {
+        // React only when direct host children are added/removed.
+        if (record.target === this.host) return true;
+        if (
+          root &&
+          record.target instanceof Node &&
+          !root.contains(record.target) &&
+          record.target !== root
+        ) {
+          return true;
+        }
+        continue;
+      }
+      if (record.type === "attributes" && record.attributeName === "slot") {
+        const target = record.target;
+        if (!(target instanceof HTMLElement)) continue;
+        // Slot assignment changes matter only for shell-level projected nodes.
+        if (target.parentElement === this.host) return true;
+      }
+    }
+    return false;
+  }
+
+  sync() {
+    const root = this.resolveRoot();
     if (!root) return;
 
     const containers = new Map<string | null, HTMLElement>();
@@ -97,6 +147,9 @@ export class LightDomSlotController {
       }
     }
 
-    this.onAfterSync?.(root, { moved });
+    const hasMoves = Object.values(moved).some((count) => count > 0);
+    if (hasMoves) {
+      this.onAfterSync?.(root, { moved });
+    }
   }
 }

@@ -91,7 +91,7 @@ describe("docs outline drawer focus", () => {
     expect(secondarySidebar.isOpen).toBe(true);
 
     const tocLink = secondarySidebar.querySelector<HTMLElement>(
-      '[data-docs-outline] uik-link[href^="#"]',
+      '[data-docs-outline] a.docs-toc-link[href^="#"]',
     );
     if (!tocLink) throw new Error("Expected at least one TOC link.");
     const href = tocLink.getAttribute("href");

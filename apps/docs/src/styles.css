@@ -137,6 +137,11 @@ body {
   color: oklch(var(--uik-text-muted));
 }
 
+.docs-current-page {
+  margin: var(--uik-space-0);
+  color: oklch(var(--uik-text-muted));
+}
+
 .docs-skip-link {
   position: fixed;
   top: var(--uik-space-4);
@@ -204,12 +209,17 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
 
 .docs-section-surface {
   width: 100%;
+  background-color: oklch(var(--uik-surface-card));
+  border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
+  border-radius: var(--uik-radius-4);
+  box-shadow: var(--uik-shadow-1);
 }
 
 .docs-section-inner {
   display: flex;
   flex-direction: column;
   gap: var(--uik-space-3);
+  padding: var(--uik-space-5);
 }
 
 .docs-section-body {
@@ -234,9 +244,31 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   align-items: center;
 }
 
+.docs-hero-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--uik-space-1) var(--uik-space-2);
+  font-size: var(--uik-typography-font-size-1);
+  line-height: var(--uik-typography-line-height-1);
+  color: oklch(var(--uik-text-strong));
+  background-color: oklch(var(--uik-surface-card));
+  border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
+  border-radius: var(--uik-radius-4);
+}
+
+.docs-hero-pill-secondary {
+  color: oklch(var(--uik-text-default));
+  background-color: oklch(var(--uik-surface-elevated-2));
+}
+
 .docs-summary {
+  margin: var(--uik-space-0);
   max-inline-size: var(--uik-layout-panel-width-lg);
   color: oklch(var(--uik-text-muted));
+}
+
+.docs-title {
+  margin: var(--uik-space-0);
 }
 
 .docs-hero-links {
@@ -317,6 +349,10 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
 
 .docs-heading-text {
   color: oklch(var(--uik-text-strong));
+}
+
+.docs-section-heading {
+  margin: var(--uik-space-0);
 }
 
 .docs-list {
@@ -816,8 +852,28 @@ uik-shell-layout[data-shell-narrow="true"] [data-docs-action="nav-toggle"] {
   padding-left: var(--uik-space-5);
 }
 
+.docs-toc-link {
+  color: oklch(var(--uik-component-link-fg-default));
+  text-decoration: none;
+}
+
+.docs-toc-link:hover {
+  color: oklch(var(--uik-component-link-fg-hover));
+  text-decoration: underline;
+}
+
 .docs-outline [part="body"] {
   gap: var(--uik-space-3);
+}
+
+.docs-sidebar-note {
+  margin: var(--uik-space-0);
+  color: oklch(var(--uik-text-muted));
+}
+
+.docs-command-palette-footer {
+  margin: var(--uik-space-0);
+  color: oklch(var(--uik-text-muted));
 }
 
 @media (prefers-reduced-motion: reduce) {

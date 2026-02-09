@@ -1,6 +1,6 @@
 import "@ismail-elkorchi/ui-tokens/index.css";
 import "@ismail-elkorchi/ui-primitives/uik-tree-view";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 
 import type { UikShellLayout } from "../index";
@@ -232,5 +232,36 @@ describe("uik-shell layout extension points", () => {
     );
     if (!activityRegion) throw new Error("Expected activity region.");
     expect(getComputedStyle(activityRegion).display).toBe("none");
+  });
+
+  it("ignores nested subtree mutations inside assigned slots", async () => {
+    const layout = await setupLayout(720);
+    const requestUpdateSpy = vi.spyOn(layout, "requestUpdate");
+    const mainContent = layout.querySelector<HTMLElement>(
+      '[data-shell-slot="main-content"] [slot="main-content"]',
+    );
+    if (!mainContent) throw new Error("Expected main content slot node.");
+
+    await nextFrame();
+    await nextFrame();
+    requestUpdateSpy.mockClear();
+
+    const nested = document.createElement("div");
+    mainContent.append(nested);
+    await nextFrame();
+    requestUpdateSpy.mockClear();
+
+    for (let index = 0; index < 12; index += 1) {
+      const span = document.createElement("span");
+      span.textContent = `mutation-${index.toString()}`;
+      nested.append(span);
+      if (index % 2 === 0) {
+        span.remove();
+      }
+    }
+    await nextFrame();
+    await nextFrame();
+
+    expect(requestUpdateSpy).not.toHaveBeenCalled();
   });
 });
