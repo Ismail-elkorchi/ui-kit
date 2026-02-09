@@ -697,12 +697,20 @@ const setOutlineOpen = (
       closeButton?.focus();
     });
   } else if (!isOpen && focus) {
-    const target = secondary.focusReturnTarget;
-    if (target instanceof HTMLElement) {
-      target.focus();
-    } else if (typeof target === "string" && target.trim()) {
-      document.querySelector<HTMLElement>(target)?.focus();
-    }
+    void secondary.updateComplete.then(() => {
+      const target = secondary.focusReturnTarget;
+      if (target instanceof HTMLElement) {
+        requestAnimationFrame(() => {
+          if (target.isConnected) {
+            target.focus();
+          }
+        });
+      } else if (typeof target === "string" && target.trim()) {
+        requestAnimationFrame(() => {
+          document.querySelector<HTMLElement>(target)?.focus();
+        });
+      }
+    });
   }
 };
 
@@ -1209,7 +1217,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   let hadInternalOverride = false;
 
   if (outlineToggle) {
-    secondarySidebar.focusReturnTarget = outlineToggle;
+    secondarySidebar.focusReturnTarget = '[data-docs-action="outline-toggle"]';
     const outlineToggleUpdate = (
       outlineToggle as unknown as { updateComplete?: Promise<unknown> }
     ).updateComplete;
@@ -1500,7 +1508,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
     if (token !== contentRenderToken) return;
 
-    const shouldAwaitComponents = false;
+    const shouldAwaitComponents = true;
     const needsLabPreviews =
       pageHasPortfolio(pageContent) ||
       page.id === "shell-patterns" ||
@@ -1539,9 +1547,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
       finalizeContentRender(page, token);
     }
 
-    if (!shouldAwaitComponents) {
-      void loadPromise;
-    }
     if (token !== contentRenderToken) return;
 
     void scrollToHashTarget();

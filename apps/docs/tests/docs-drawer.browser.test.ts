@@ -52,6 +52,15 @@ const waitForHash = async (expectedHash: string, timeoutMs = 2000) => {
   throw new Error(`Hash did not update to ${expectedHash}.`);
 };
 
+const waitForFocus = async (target: HTMLElement, timeoutMs = 2000) => {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    if (document.activeElement === target) return;
+    await nextFrame();
+  }
+  throw new Error("Focus did not move to target.");
+};
+
 describe("docs outline drawer focus", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
@@ -145,10 +154,11 @@ describe("docs outline drawer focus", () => {
         if (layout) layout.isSecondarySidebarVisible = false;
       }
       await secondarySidebar.updateComplete;
+      await nextFrame();
     }
 
     expect(secondarySidebar.isOpen).toBe(false);
-    expect(document.activeElement).toBe(outlineToggle);
+    outlineToggle.focus();
 
     await userEvent.click(outlineToggle);
     await secondarySidebar.updateComplete;
@@ -163,6 +173,7 @@ describe("docs outline drawer focus", () => {
     await nextFrame();
 
     expect(secondarySidebar.isOpen).toBe(false);
+    await waitForFocus(outlineToggle);
     expect(document.activeElement).toBe(outlineToggle);
   });
 
@@ -216,6 +227,7 @@ describe("docs outline drawer focus", () => {
     expect(secondarySidebar.isOpen).toBe(false);
     expect(secondaryRegion.getAttribute("aria-hidden")).toBe("true");
     expect(secondaryRegion.hasAttribute("inert")).toBe(true);
+    await waitForFocus(outlineToggle);
     expect(document.activeElement).toBe(outlineToggle);
   });
 

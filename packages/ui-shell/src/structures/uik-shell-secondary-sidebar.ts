@@ -124,7 +124,13 @@ export class UikShellSecondarySidebar extends LitElement {
 
   private restoreFocus() {
     const target = this.resolveFocusReturnTarget();
-    if (target) target.focus();
+    if (target) {
+      requestAnimationFrame(() => {
+        if (target.isConnected) {
+          target.focus();
+        }
+      });
+    }
     this.previousActiveElement = null;
   }
 
