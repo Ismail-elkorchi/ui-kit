@@ -231,6 +231,48 @@ describe("docs outline drawer focus", () => {
     expect(document.activeElement).toBe(outlineToggle);
   });
 
+  it("shows the menu toggle in narrow mode and opens/closes the primary drawer", async () => {
+    const root = document.getElementById("app");
+    if (!root) throw new Error("Docs root not found.");
+    await mountDocsApp(root);
+    await waitForContent();
+
+    const layout = document.querySelector<UikShellLayout>("uik-shell-layout");
+    const navToggle = document.querySelector<UikButton>(
+      '[data-docs-action="nav-toggle"]',
+    );
+    if (!layout || !navToggle) {
+      throw new Error("Docs shell nav controls not found.");
+    }
+
+    layout.style.setProperty(
+      "--uik-component-shell-collapse-breakpoint",
+      "40rem",
+    );
+    layout.style.width = "22rem";
+    await waitForNarrowLayout(layout);
+
+    expect(layout.hasAttribute("data-shell-narrow")).toBe(true);
+    expect(getComputedStyle(navToggle).display).not.toBe("none");
+    expect(navToggle.getBoundingClientRect().width).toBeGreaterThan(0);
+    expect(layout.isPrimarySidebarOpen).toBe(false);
+    expect(navToggle.getAttribute("aria-expanded")).toBe("false");
+
+    await userEvent.click(navToggle);
+    await layout.updateComplete;
+    await nextFrame();
+
+    expect(layout.isPrimarySidebarOpen).toBe(true);
+    expect(navToggle.getAttribute("aria-expanded")).toBe("true");
+
+    await userEvent.keyboard("{Escape}");
+    await layout.updateComplete;
+    await nextFrame();
+
+    expect(layout.isPrimarySidebarOpen).toBe(false);
+    expect(navToggle.getAttribute("aria-expanded")).toBe("false");
+  });
+
   it("retains outline content after close/reopen in wide and narrow layouts", async () => {
     const root = document.getElementById("app");
     if (!root) throw new Error("Docs root not found.");
