@@ -46,10 +46,9 @@ interface DocsManifest {
 
 let docsManifest: DocsManifest | null = null;
 let docsManifestPromise: Promise<DocsManifest> | null = null;
-
-const pageModules = import.meta.glob<{ default: DocPageContent }>(
-  "./generated/pages/**/*.json",
-);
+let pageModuleLoaderPromise: Promise<
+  typeof import("./content-page-modules")
+> | null = null;
 
 export let docsPages: DocPage[] = [];
 export let labPages: DocPage[] = [];
@@ -76,7 +75,8 @@ export const ensureDocsContent = async () => {
   if (!docsManifestPromise) {
     docsManifestPromise = import("./generated/docs-manifest.json").then(
       (module) => {
-        const manifest = (module as { default?: DocsManifest }).default ??
+        const manifest =
+          (module as { default?: DocsManifest }).default ??
           (module as DocsManifest);
         assignManifest(manifest);
         return manifest;
@@ -134,13 +134,11 @@ export const loadPageContent = async (
   view: "docs" | "lab",
   id: string,
 ): Promise<DocPageContent> => {
-  const key = `./generated/pages/${view}/${id}.json`;
-  const loader = pageModules[key];
-  if (!loader) {
-    throw new Error(`Docs content not found for ${view}/${id}.`);
+  if (!pageModuleLoaderPromise) {
+    pageModuleLoaderPromise = import("./content-page-modules");
   }
-  const module = (await loader()) as { default?: DocPageContent };
-  return module.default ?? { sections: [] };
+  const { loadDocsPageModule } = await pageModuleLoaderPromise;
+  return loadDocsPageModule(view, id);
 };
 
 export const renderToc = (page: DocPage) => {
@@ -156,42 +154,37 @@ export const renderToc = (page: DocPage) => {
 };
 
 export const renderPageSections = (page: DocPageContent) => {
-  const normalizeSectionBody = (body: string) =>
-    body
-      .replace(
-        /<uik-text([^>]*class="[^"]*docs-paragraph[^"]*"[^>]*)>([\s\S]*?)<\/uik-text>/gi,
-        "<p$1>$2</p>",
-      )
-      .replace(
-        /<uik-heading([^>]*class="[^"]*docs-heading[^"]*"[^>]*)>([\s\S]*?)<\/uik-heading>/gi,
-        (_match, attrs: string, inner: string) => {
-          const levelMatch = attrs.match(/\blevel="([1-6])"/i);
-          const level = levelMatch?.[1] ?? "2";
-          const normalizedAttrs = attrs.replace(/\slevel="[^"]*"/i, "");
-          return `<h${level}${normalizedAttrs}>${inner}</h${level}>`;
-        },
-      );
+  return page.sections.map(renderPageSection).join("");
+};
 
-  return page.sections
-    .map((sectionItem) => {
-      const sectionBody = normalizeSectionBody(sectionItem.body);
-      return `
-        <section class="docs-section" id="${sectionItem.id}">
-          <section class="docs-section-surface">
-            <div class="docs-section-inner">
-              <h2 class="docs-heading docs-section-heading">
-              <a class="docs-heading-anchor" href="#${sectionItem.id}" aria-label="Link to ${escapeHtml(
-                sectionItem.title,
-              )}">#</a>
-              <span class="docs-heading-text">${escapeHtml(
-                sectionItem.title,
-              )}</span>
-              </h2>
-              <div class="docs-section-body">${sectionBody}</div>
-            </div>
-          </section>
-        </section>
-      `;
-    })
-    .join("");
+export const renderPageSection = (sectionItem: DocSection) => {
+  const sectionBody = sectionItem.body
+    .replace(
+      /<uik-text([^>]*class="[^"]*docs-paragraph[^"]*"[^>]*)>([\s\S]*?)<\/uik-text>/gi,
+      "<p$1>$2</p>",
+    )
+    .replace(
+      /<uik-heading([^>]*class="[^"]*docs-heading[^"]*"[^>]*)>([\s\S]*?)<\/uik-heading>/gi,
+      (_match, attrs: string, inner: string) => {
+        const levelMatch = attrs.match(/\blevel="([1-6])"/i);
+        const level = levelMatch?.[1] ?? "2";
+        const normalizedAttrs = attrs.replace(/\slevel="[^"]*"/i, "");
+        return `<h${level}${normalizedAttrs}>${inner}</h${level}>`;
+      },
+    );
+  return `
+    <section class="docs-section" id="${sectionItem.id}">
+      <section class="docs-section-surface">
+        <div class="docs-section-inner">
+          <h2 class="docs-heading docs-section-heading">
+          <a class="docs-heading-anchor" href="#${sectionItem.id}" aria-label="Link to ${escapeHtml(
+            sectionItem.title,
+          )}">#</a>
+          <span class="docs-heading-text">${escapeHtml(sectionItem.title)}</span>
+          </h2>
+          <div class="docs-section-body">${sectionBody}</div>
+        </div>
+      </section>
+    </section>
+  `;
 };

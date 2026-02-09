@@ -50,8 +50,7 @@ describe("docs markdown rendering", () => {
     expect(infoAlert).toBeTruthy();
     const infoTitle = infoAlert?.querySelector('[slot="title"]');
     expect(infoTitle?.textContent.trim()).toBe("Note");
-    const infoParagraphs =
-      infoAlert?.querySelectorAll(".docs-paragraph") ?? [];
+    const infoParagraphs = infoAlert?.querySelectorAll(".docs-paragraph") ?? [];
     expect(infoParagraphs.length).toBeGreaterThan(1);
     expect(infoAlert?.querySelector("ul")).toBeTruthy();
     const inlineCodes = Array.from(
@@ -83,6 +82,8 @@ describe("docs markdown rendering", () => {
       content.querySelectorAll<HTMLElement>("uik-code-block"),
     );
     expect(codeBlocks.length).toBeGreaterThanOrEqual(4);
+    await customElements.whenDefined("uik-code-block");
+    await nextFrame();
 
     const codeTokens = content.querySelectorAll(".docs-code-token");
     expect(codeTokens.length).toBeGreaterThan(0);
@@ -193,6 +194,7 @@ describe("docs markdown rendering", () => {
     if (!content) throw new Error("Docs content root not found.");
 
     await customElements.whenDefined("uik-example");
+    await customElements.whenDefined("uik-code-block");
     const example = content.querySelector<HTMLElement>("uik-example");
     if (!example) throw new Error("Expected example fence to render.");
 

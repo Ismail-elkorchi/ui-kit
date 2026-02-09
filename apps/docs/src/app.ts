@@ -27,7 +27,7 @@ import {
   publicDocsNavPages,
   publicLabPages,
   loadPageContent,
-  renderPageSections,
+  renderPageSection,
   renderToc,
   type DocPageContent,
   type DocPage,
@@ -154,6 +154,13 @@ const loadExtendedComponentLoaders = async () => {
 };
 let labPreviewsModule: typeof import("./lab-previews") | null = null;
 let labPreviewsPromise: Promise<typeof import("./lab-previews")> | null = null;
+let extendedStylesPromise: Promise<unknown> | null = null;
+const ensureExtendedStyles = () => {
+  if (!extendedStylesPromise) {
+    extendedStylesPromise = import("./styles-extended.css");
+  }
+  return extendedStylesPromise;
+};
 const loadLabPreviews = async () => {
   if (labPreviewsModule) return labPreviewsModule;
   if (!labPreviewsPromise) {
@@ -179,7 +186,6 @@ const publicBaseComponentTags = [
   "uik-shell-sidebar",
   "uik-shell-secondary-sidebar",
   "uik-button",
-  "uik-code-block",
   "uik-page-hero",
   "uik-select",
   "uik-tree-view",
@@ -189,7 +195,6 @@ const internalBaseComponentTags = [
   "uik-shell-sidebar",
   "uik-shell-secondary-sidebar",
   "uik-button",
-  "uik-code-block",
   "uik-select",
   "uik-tree-view",
 ];
@@ -502,6 +507,9 @@ const scheduleIdleTask = (task: () => Promise<void>) =>
 const collectPageComponentTags = (page: DocPageContent) => {
   const tags = new Set<string>();
   for (const section of page.sections) {
+    if (/<\s*uik-code-block\b/i.test(section.body)) {
+      tags.add("uik-code-block");
+    }
     const scrubbed = section.body
       .replace(
         /<uik-text([^>]*class="[^"]*docs-paragraph[^"]*"[^>]*)>([\s\S]*?)<\/uik-text>/gi,
@@ -534,6 +542,19 @@ const pageHasPortfolio = (page: DocPageContent | null) =>
       section.body.includes("data-docs-portfolio"),
     ),
   );
+
+const pageNeedsExtendedStyles = (view: "docs" | "lab", page: DocPageContent) =>
+  view === "lab" ||
+  page.sections.some((section) => {
+    const body = section.body;
+    return (
+      body.includes("data-docs-portfolio") ||
+      body.includes("docs-components") ||
+      body.includes("docs-component-") ||
+      body.includes("docs-lab-panel") ||
+      body.includes("docs-popover-panel")
+    );
+  });
 
 const loadComponent = (tag: string, loader: () => Promise<unknown>) => {
   if (loadedComponents.has(tag)) return Promise.resolve();
@@ -794,6 +815,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   await ensureDocsContent();
   const tokensPromise = import("@ismail-elkorchi/ui-tokens");
   const routerPromise = import("@ismail-elkorchi/ui-shell/router");
+  const useInitialContentHydration = false;
   const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
   const toHref = (key: string) => `${baseUrl}${key}`;
   const initialRoute = getRouteFromLocation(baseUrl);
@@ -842,9 +864,10 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const secondaryVisibleAttr = initialIsInternal
     ? ""
     : " isSecondarySidebarVisible";
-  const initialPageContentPromise = initialPage
-    ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
-    : null;
+  const initialPageContentPromise =
+    useInitialContentHydration && initialPage
+      ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
+      : null;
   const initialPageContent = initialPageContentPromise
     ? await initialPageContentPromise
     : null;
@@ -868,9 +891,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     initialPageComponentsScheduled = true;
     return initialPageComponentsPromise;
   };
-  const initialPageSections = initialPageContent
-    ? renderPageSections(initialPageContent)
-    : "";
+  const initialPageSections = "";
   const initialNeedsPortfolio = pageHasPortfolio(initialPageContent);
   const initialNeedsLabControls =
     initialPage?.id === "shell-patterns" ||
@@ -1474,7 +1495,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
       : await loadPageContent(view, page.id);
     if (token !== contentRenderToken) return;
 
-    const shouldAwaitComponents = page.id !== "command-palette";
+    if (pageNeedsExtendedStyles(view, pageContent)) {
+      await ensureExtendedStyles();
+    }
+    if (token !== contentRenderToken) return;
+
+    const shouldAwaitComponents = false;
     const needsLabPreviews =
       pageHasPortfolio(pageContent) ||
       page.id === "shell-patterns" ||
@@ -1493,7 +1519,21 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
     if (contentElement) {
       if (!shouldReuseInitialContent) {
-        contentElement.innerHTML = renderPageSections(pageContent);
+        contentElement.innerHTML = "";
+        for (
+          let sectionIndex = 0;
+          sectionIndex < pageContent.sections.length;
+          sectionIndex += 1
+        ) {
+          if (token !== contentRenderToken) return;
+          contentElement.insertAdjacentHTML(
+            "beforeend",
+            renderPageSection(pageContent.sections[sectionIndex]),
+          );
+          if ((sectionIndex + 1) % 4 === 0) {
+            await nextFrame();
+          }
+        }
       }
       contentElement.setAttribute("aria-busy", "false");
       finalizeContentRender(page, token);
