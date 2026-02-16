@@ -61,9 +61,26 @@ const waitForFocus = async (target: HTMLElement, timeoutMs = 2000) => {
   throw new Error("Focus did not move to target.");
 };
 
+const waitForTocActive = async (
+  root: HTMLElement,
+  activeId: string,
+  timeoutMs = 2000,
+) => {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    const activeLink = root.querySelector<HTMLAnchorElement>(
+      '.docs-toc-link[aria-current="location"]',
+    );
+    const href = activeLink?.getAttribute("href") ?? "";
+    if (href === `#${activeId}`) return activeLink;
+    await nextFrame();
+  }
+  throw new Error(`TOC did not activate #${activeId}.`);
+};
+
 describe("docs outline drawer focus", () => {
   beforeEach(() => {
-    document.body.innerHTML = '<div id="app"></div>';
+    document.body.innerHTML = '<div id="app" class="docs-app"></div>';
     window.history.replaceState({}, "", "/docs/getting-started");
   });
 
@@ -320,6 +337,12 @@ describe("docs outline drawer focus", () => {
     await waitForNarrowLayout(layout);
     expect(layout.hasAttribute("data-shell-narrow")).toBe(true);
 
+    if (secondarySidebar.isOpen) {
+      await userEvent.keyboard("{Escape}");
+      await secondarySidebar.updateComplete;
+      await nextFrame();
+    }
+
     await userEvent.click(outlineToggle);
     await secondarySidebar.updateComplete;
     await nextFrame();
@@ -340,5 +363,76 @@ describe("docs outline drawer focus", () => {
       "[data-docs-outline] a, [data-docs-outline] li, [data-docs-outline] span",
     );
     expect(reopenedNarrow?.textContent?.trim()).toBe(initialText);
+  });
+
+  it("highlights the active TOC section while scrolling", async () => {
+    const root = document.getElementById("app");
+    if (!root) throw new Error("Docs root not found.");
+    await mountDocsApp(root);
+    await waitForContent();
+
+    const layout = document.querySelector<UikShellLayout>("uik-shell-layout");
+    const secondarySidebar = document.querySelector<UikShellSecondarySidebar>(
+      "uik-shell-secondary-sidebar",
+    );
+    const main = document.querySelector<HTMLElement>("#docs-main");
+    if (!layout || !secondarySidebar || !main) {
+      throw new Error("Docs shell controls not found.");
+    }
+
+    main.style.maxHeight = "18rem";
+    main.style.overflow = "auto";
+
+    layout.style.setProperty(
+      "--uik-component-shell-collapse-breakpoint",
+      "40rem",
+    );
+    layout.style.width = "70rem";
+    await waitForWideLayout(layout);
+
+    if (!secondarySidebar.isOpen) {
+      const outlineToggle = document.querySelector<UikButton>(
+        '[data-docs-action="outline-toggle"]',
+      );
+      if (!outlineToggle) throw new Error("Outline toggle not found.");
+      await userEvent.click(outlineToggle);
+      await secondarySidebar.updateComplete;
+      await nextFrame();
+    }
+
+    const tocLinks = Array.from(
+      secondarySidebar.querySelectorAll<HTMLAnchorElement>(
+        '[data-docs-outline] a.docs-toc-link[href^="#"]',
+      ),
+    );
+    expect(tocLinks.length).toBeGreaterThan(2);
+    const initialId = decodeURIComponent(
+      (tocLinks[0].getAttribute("href") ?? "").slice(1),
+    );
+    await waitForTocActive(secondarySidebar, initialId);
+
+    const targetLink = tocLinks[1];
+    const targetId = decodeURIComponent(
+      (targetLink.getAttribute("href") ?? "").slice(1),
+    );
+    const target = document.getElementById(targetId);
+    if (!target) throw new Error(`Target heading not found: ${targetId}`);
+
+    target.scrollIntoView({ block: "start" });
+    await nextFrame();
+    await nextFrame();
+    await nextFrame();
+    const useMainScroller = main.scrollHeight > main.clientHeight + 1;
+    if (useMainScroller) {
+      main.scrollBy({ top: 80 });
+    } else {
+      window.scrollBy({ top: 80 });
+    }
+    await nextFrame();
+    await nextFrame();
+
+    const activeLink = await waitForTocActive(secondarySidebar, targetId);
+    expect(activeLink).toBe(targetLink);
+    expect(targetLink.getAttribute("data-active")).toBe("true");
   });
 });

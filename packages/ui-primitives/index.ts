@@ -43,6 +43,7 @@ export { UikTreeView } from "./src/composed/collection/uik-tree-view/index.js";
 export { UikRadioGroup } from "./src/composed/collection/uik-radio-group/index.js";
 export { UikTooltip } from "./src/composed/overlay/uik-tooltip/index.js";
 export { UikCommandPalette } from "./src/composed/overlay/uik-command-palette/index.js";
+export { createUikScrollSpyController } from "./src/scroll-spy/index.js";
 export type { UikCodeBlockCopyDetail } from "./src/atomic/content/uik-code-block/index.js";
 export type {
   JsonDiffCopyDetail,
@@ -101,3 +102,7 @@ export type {
   UikResizablePanelsResizePhase,
   UikResizablePanelsResizeSource,
 } from "./src/atomic/layout/uik-resizable-panels/index.js";
+export type {
+  UikScrollSpyController,
+  UikScrollSpyControllerOptions,
+} from "./src/scroll-spy/index.js";

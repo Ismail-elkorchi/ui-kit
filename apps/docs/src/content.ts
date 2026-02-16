@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+import { loadDocsPageModule } from "./content-page-modules";
+
 const escapeHtml = (value: string) =>
   value
     .replace(/&/g, "&amp;")
@@ -46,9 +48,6 @@ interface DocsManifest {
 
 let docsManifest: DocsManifest | null = null;
 let docsManifestPromise: Promise<DocsManifest> | null = null;
-let pageModuleLoaderPromise: Promise<
-  typeof import("./content-page-modules")
-> | null = null;
 
 export let docsPages: DocPage[] = [];
 export let labPages: DocPage[] = [];
@@ -133,13 +132,7 @@ export const buildPageMap = () => {
 export const loadPageContent = async (
   view: "docs" | "lab",
   id: string,
-): Promise<DocPageContent> => {
-  if (!pageModuleLoaderPromise) {
-    pageModuleLoaderPromise = import("./content-page-modules");
-  }
-  const { loadDocsPageModule } = await pageModuleLoaderPromise;
-  return loadDocsPageModule(view, id);
-};
+): Promise<DocPageContent> => loadDocsPageModule(view, id);
 
 export const renderToc = (page: DocPage) => {
   if (page.toc.length === 0) return "";

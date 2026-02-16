@@ -43,6 +43,13 @@ import { getForcedColors, getReducedMotion } from "../internal/media.js";
 @customElement("uik-shell-layout")
 export class UikShellLayout extends LitElement {
   static override styles = css`
+    uik-shell-layout {
+      box-sizing: border-box;
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
     uik-shell-layout > :not([data-shell-root]) {
       display: none;
     }
@@ -528,6 +535,7 @@ export class UikShellLayout extends LitElement {
       flex: "1 1 auto",
       minHeight: "var(--uik-space-0)",
       overflow: "hidden",
+      position: "relative",
     };
     const fixedRegionStyles = { flexShrink: "0" };
     const drawerWidth = `min(100vw, calc(${hasActivityBar ? "var(--uik-component-shell-activity-bar-width)" : "0px"} + var(--uik-component-shell-sidebar-width)))`;

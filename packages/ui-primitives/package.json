@@ -260,6 +260,11 @@
       "types": "./dist/src/atomic/content/uik-visually-hidden/index.d.ts",
       "import": "./dist/src/atomic/content/uik-visually-hidden/index.js",
       "default": "./dist/src/atomic/content/uik-visually-hidden/index.js"
+    },
+    "./scroll-spy": {
+      "types": "./dist/src/scroll-spy/index.d.ts",
+      "import": "./dist/src/scroll-spy/index.js",
+      "default": "./dist/src/scroll-spy/index.js"
     }
   },
   "sideEffects": [

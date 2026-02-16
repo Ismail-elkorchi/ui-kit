@@ -5,6 +5,7 @@ import type {
   UikSelect,
   UikTreeView,
 } from "@ismail-elkorchi/ui-primitives";
+import type { UikScrollSpyController } from "@ismail-elkorchi/ui-primitives/scroll-spy";
 import type {
   UikCommandCenterCommand,
   UikCommandCenterHandle,
@@ -13,6 +14,8 @@ import type {
   UikShellSecondarySidebar,
   UikShellRoute,
 } from "@ismail-elkorchi/ui-shell";
+
+import "@ismail-elkorchi/ui-primitives/uik-code-block";
 
 import {
   buildPageMap,
@@ -28,6 +31,7 @@ import {
   publicLabPages,
   loadPageContent,
   renderPageSection,
+  renderPageSections,
   renderToc,
   type DocPageContent,
   type DocPage,
@@ -328,51 +332,6 @@ const buildNavItems = (
   return items;
 };
 
-const buildMobileNavOptions = (
-  docsPageList: DocPage[] = publicDocsNavPages,
-  labPageList: DocPage[] = publicLabPages,
-) => {
-  const grouped = new Map<string, DocPage[]>();
-  docsPageList.forEach((page) => {
-    const group = getPageGroup(page);
-    if (!grouped.has(group)) grouped.set(group, []);
-    grouped.get(group)?.push(page);
-  });
-  const remaining = new Set(grouped.keys());
-  const renderGroup = (group: string) => {
-    const pages = grouped.get(group) ?? [];
-    if (!pages.length) return "";
-    remaining.delete(group);
-    const options = pages
-      .map(
-        (page) =>
-          `<option value="docs/${page.id}">${getPageLabel(page)}</option>`,
-      )
-      .join("");
-    return `<optgroup label="${group}">${options}</optgroup>`;
-  };
-  const docsOptions = [
-    ...docsGroupOrder.map(renderGroup),
-    ...[...remaining].sort().map(renderGroup),
-  ]
-    .filter(Boolean)
-    .join("");
-  const labOptions = labPageList
-    .map(
-      (page) => `<option value="lab/${page.id}">${getPageLabel(page)}</option>`,
-    )
-    .join("");
-
-  const labGroup = labOptions
-    ? `<optgroup label="Examples">${labOptions}</optgroup>`
-    : "";
-
-  return `
-    ${docsOptions}
-    ${labGroup}
-  `;
-};
-
 type CommandPaletteCommand = UikCommandCenterCommand & { value: string };
 
 const buildCommandPaletteCommands = (
@@ -655,31 +614,6 @@ const schedulePrefetchComponents = () => {
   });
 };
 
-const scheduleMobileNavOptions = (mobileNavSelect: UikSelect | null) => {
-  if (!mobileNavSelect) return;
-  const populate = () => {
-    if (!mobileNavSelect.isConnected) return;
-    if (mobileNavSelect.querySelector("option")) return;
-    const currentValue = mobileNavSelect.value;
-    mobileNavSelect.insertAdjacentHTML(
-      "beforeend",
-      buildMobileNavOptions(publicDocsNavPages, publicLabPages),
-    );
-    if (currentValue) {
-      mobileNavSelect.value = currentValue;
-    }
-  };
-  const handlePopulate = () => {
-    populate();
-    mobileNavSelect.removeEventListener("focus", handlePopulate);
-    mobileNavSelect.removeEventListener("pointerdown", handlePopulate);
-  };
-  mobileNavSelect.addEventListener("focus", handlePopulate);
-  mobileNavSelect.addEventListener("pointerdown", handlePopulate, {
-    passive: true,
-  });
-};
-
 const setOutlineOpen = (
   layout: UikShellLayout,
   secondary: UikShellSecondarySidebar,
@@ -712,6 +646,37 @@ const setOutlineOpen = (
       }
     });
   }
+};
+
+const setActiveTocLink = (
+  outlineElement: HTMLElement | null,
+  activeId: string | null,
+) => {
+  if (!outlineElement) return;
+  const links =
+    outlineElement.querySelectorAll<HTMLAnchorElement>(".docs-toc-link");
+  links.forEach((link) => {
+    const href = link.getAttribute("href") ?? "";
+    const linkTargetId = href.startsWith("#")
+      ? decodeURIComponent(href.slice(1))
+      : "";
+    const isActive = Boolean(activeId && linkTargetId === activeId);
+    if (isActive) {
+      link.setAttribute("aria-current", "location");
+      link.setAttribute("data-active", "true");
+    } else {
+      link.removeAttribute("aria-current");
+      link.removeAttribute("data-active");
+    }
+    const item = link.closest<HTMLElement>(".docs-toc-item");
+    if (item) {
+      if (isActive) {
+        item.setAttribute("data-active", "true");
+      } else {
+        item.removeAttribute("data-active");
+      }
+    }
+  });
 };
 
 const getSystemTheme = () => {
@@ -820,13 +785,22 @@ const scrollToHashTarget = async () => {
 };
 
 export const mountDocsApp = async (container: HTMLElement) => {
+  const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
+  const initialRoute = getRouteFromLocation(baseUrl);
+  const initialRouteView = initialRoute.view === "lab" ? "lab" : "docs";
+  const initialRouteSubview = initialRoute.subview ?? null;
+  const initialRouteKey = initialRouteSubview
+    ? `${initialRouteView}/${initialRouteSubview}`
+    : null;
+  const initialRouteContentPreload = initialRouteSubview
+    ? loadPageContent(initialRouteView, initialRouteSubview).catch(() => null)
+    : null;
+
   await ensureDocsContent();
   const tokensPromise = import("@ismail-elkorchi/ui-tokens");
   const routerPromise = import("@ismail-elkorchi/ui-shell/router");
-  const useInitialContentHydration = false;
-  const baseUrl = normalizeBaseUrl(getBaseUrlFromVite());
+  const useInitialContentHydration = true;
   const toHref = (key: string) => `${baseUrl}${key}`;
-  const initialRoute = getRouteFromLocation(baseUrl);
   const initialView = initialRoute.view === "lab" ? "lab" : "docs";
   const defaultDocsSubview = publicDocsNavPages[0]?.id ?? docsPages[0]?.id;
   const defaultLabSubview = publicLabPages[0]?.id ?? labPages[0]?.id;
@@ -845,6 +819,23 @@ export const mountDocsApp = async (container: HTMLElement) => {
     initialView === "lab"
       ? labPages.find((page) => page.id === initialSubview)
       : docsPageList.find((page) => page.id === initialSubview);
+  const resolvedInitialKey = initialPage
+    ? `${initialView}/${initialPage.id}`
+    : null;
+  const initialPageContentPromise = initialPage
+    ? initialRouteContentPreload &&
+      initialRouteKey &&
+      resolvedInitialKey === initialRouteKey
+      ? initialRouteContentPreload.then((content) => {
+          if (content) return content;
+          return loadPageContent(initialView as "docs" | "lab", initialPage.id);
+        })
+      : loadPageContent(initialView as "docs" | "lab", initialPage.id)
+    : null;
+  const initialPageContent =
+    useInitialContentHydration && initialPageContentPromise
+      ? await initialPageContentPromise
+      : null;
   const initialTitle = initialPage?.title ?? "";
   const initialSummary = initialPage?.summary ?? "";
   const initialGroup = initialPage?.group ?? "";
@@ -872,34 +863,30 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const secondaryVisibleAttr = initialIsInternal
     ? ""
     : " isSecondarySidebarVisible";
-  const initialPageContentPromise =
-    useInitialContentHydration && initialPage
-      ? loadPageContent(initialView as "docs" | "lab", initialPage.id)
-      : null;
-  const initialPageContent = initialPageContentPromise
-    ? await initialPageContentPromise
-    : null;
   let initialPageComponentsPromise: Promise<void> | null = null;
-  let initialPageComponentsScheduled = false;
-  const initialPageCriticalComponentsPromise = initialPageContent
-    ? loadCriticalPageComponents(initialPageContent)
+  let initialPageComponentsScheduled = Boolean(initialPageContentPromise);
+  const initialPageCriticalComponentsPromise = initialPageContentPromise
+    ? initialPageContentPromise.then((pageContent) =>
+        loadCriticalPageComponents(pageContent),
+      )
     : null;
-  if (initialPageContent) {
-    initialPageComponentsPromise = baseComponentsPromise.then(() =>
-      loadPageComponents(initialPageContent),
+  if (initialPageContentPromise) {
+    initialPageComponentsPromise = initialPageContentPromise.then(
+      (pageContent) => loadPageComponents(pageContent),
     );
-    initialPageComponentsScheduled = true;
   }
   const ensureInitialPageComponents = () => {
     if (initialPageComponentsPromise) return initialPageComponentsPromise;
-    if (!initialPageContent) return null;
-    initialPageComponentsPromise = baseComponentsPromise.then(() =>
-      loadPageComponents(initialPageContent),
+    if (!initialPageContentPromise) return null;
+    initialPageComponentsPromise = initialPageContentPromise.then(
+      (pageContent) => loadPageComponents(pageContent),
     );
     initialPageComponentsScheduled = true;
     return initialPageComponentsPromise;
   };
-  const initialPageSections = "";
+  const initialPageSections = initialPageContent
+    ? renderPageSections(initialPageContent)
+    : "";
   const initialNeedsPortfolio = pageHasPortfolio(initialPageContent);
   const initialNeedsLabControls =
     initialPage?.id === "shell-patterns" ||
@@ -912,10 +899,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
     void initialPageCriticalComponentsPromise;
   }
   const initialContentBusy = initialPage ? "true" : "false";
-  const heroMarkup = initialIsInternal
-    ? ""
-    : `
-          <uik-page-hero class="docs-hero">
+  const heroHiddenAttr = initialIsInternal ? " hidden" : "";
+  const heroMarkup = `
+          <uik-page-hero class="docs-hero"${heroHiddenAttr}>
             <div slot="eyebrow" class="docs-hero-top">
               <span class="docs-hero-pill docs-hero-pill-secondary">UIK Docs</span>
               <span class="docs-hero-pill" data-docs-group${groupBadgeAttr}>${escapeHtml(initialGroup)}</span>
@@ -931,22 +917,16 @@ export const mountDocsApp = async (container: HTMLElement) => {
             <nav slot="links" class="docs-hero-links" data-docs-hero-links${heroLinksAttr} aria-label="Jump to sections">${initialHeroLinks}</nav>
           </uik-page-hero>
           `;
-  const headerControlsMarkup = initialIsInternal
-    ? ""
-    : `
-        <div class="docs-header-controls">
-          <uik-select data-docs-control="theme">
-            <span slot="label">Theme</span>
+  const headerControlsHiddenAttr = initialIsInternal ? " hidden" : "";
+  const headerControlsMarkup = `
+        <div class="docs-header-controls" aria-label="Display preferences"${headerControlsHiddenAttr}>
+          <uik-select data-docs-control="theme" aria-label="Theme">
             <option value="light">Light</option>
             <option value="dark">Dark</option>
           </uik-select>
-          <uik-select data-docs-control="density">
-            <span slot="label">Density</span>
+          <uik-select data-docs-control="density" aria-label="Density">
             <option value="comfortable">Comfortable</option>
             <option value="compact">Compact</option>
-          </uik-select>
-          <uik-select data-docs-control="mobile-nav" class="docs-mobile-nav">
-            <span slot="label">Page</span>
           </uik-select>
         </div>
         `;
@@ -956,7 +936,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       <a class="docs-skip-link" href="#docs-main">Skip to content</a>
     </nav>
     <uik-shell-layout class="docs-shell"${secondaryVisibleAttr}>
-      <header slot="header" class="docs-header">
+      <header slot="header" class="docs-header" role="banner" aria-label="Documentation header">
         <div class="docs-header-main">
           <uik-button
             variant="ghost"
@@ -973,21 +953,24 @@ export const mountDocsApp = async (container: HTMLElement) => {
           )}</p>
         </div>
         <div class="docs-header-actions">
-          <uik-button
-            variant="ghost"
-            size="sm"
-            data-docs-action="command-palette-open"
-            aria-haspopup="dialog"
-          >
-            Search
-          </uik-button>
-          <uik-button
-            variant="ghost"
-            size="sm"
-            data-docs-action="outline-toggle"${initialIsInternal ? " hidden" : ""}
-          >
-            Outline
-          </uik-button>
+          <div class="docs-header-utility">
+            <uik-button
+              variant="ghost"
+              size="sm"
+              data-docs-action="command-palette-open"
+              aria-haspopup="dialog"
+            >
+              Search
+              <span class="docs-command-shortcut" aria-hidden="true">Ctrl+K</span>
+            </uik-button>
+            <uik-button
+              variant="ghost"
+              size="sm"
+              data-docs-action="outline-toggle"${initialIsInternal ? " hidden" : ""}
+            >
+              Outline
+            </uik-button>
+          </div>
           ${headerControlsMarkup}
           <p class="docs-preference-meta" data-docs-preference-meta>${escapeHtml(
             initialPreferenceMeta,
@@ -1004,7 +987,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
         <uik-tree-view
           class="docs-tree-nav"
           data-docs-nav-tree
-          data-shell-active-target="route"
           aria-label="Docs navigation"></uik-tree-view>
         <div slot="footer" class="docs-sidebar-footer">
           <p class="docs-sidebar-note">Tokens-first, standards-based UI.</p>
@@ -1036,7 +1018,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   if (initialNeedsPortfolio && labPreviewsModule) {
     labPreviewsModule.wirePortfolioPreviews(container);
   }
-  if (initialPageContent && !initialPageComponentsScheduled) {
+  if (initialPageContentPromise && !initialPageComponentsScheduled) {
     initialPageComponentsScheduled = true;
     const schedule = () => {
       void ensureInitialPageComponents();
@@ -1056,6 +1038,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   }
   await nextFrame();
 
+  const scrollSpyPromise = import("@ismail-elkorchi/ui-primitives/scroll-spy");
   const [{ createUikPreferencesController }, { createUikShellRouter }] =
     await Promise.all([tokensPromise, routerPromise]);
   const preferences = createUikPreferencesController({
@@ -1130,6 +1113,8 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const contentElement = container.querySelector<HTMLElement>(
     "[data-docs-content]",
   );
+  const mainScrollContainer =
+    container.querySelector<HTMLElement>(".docs-main");
   const outlineElement = container.querySelector<HTMLElement>(
     "[data-docs-outline]",
   );
@@ -1139,9 +1124,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const navToggle = container.querySelector<UikButton>(
     '[data-docs-action="nav-toggle"]',
   );
+  const headerControlsElement = container.querySelector<HTMLElement>(
+    ".docs-header-controls",
+  );
   let themeSelect: UikSelect | null = null;
   let densitySelect: UikSelect | null = null;
-  let mobileNavSelect: UikSelect | null = null;
+  let scrollSpyController: UikScrollSpyController | null = null;
   const syncUrl = (
     location: UikShellLocation,
     mode: "push" | "replace" = "push",
@@ -1165,19 +1153,14 @@ export const mountDocsApp = async (container: HTMLElement) => {
     : "";
   let initialContentReady = Boolean(initialPageContent);
   let prefetchScheduled = false;
-  let mobileNavScheduled = false;
 
   const hydrateGlobalControls = async () => {
-    if (initialIsInternal) return;
     await scheduleIdleTask(async () => {
       themeSelect = container.querySelector<UikSelect>(
         'uik-select[data-docs-control="theme"]',
       );
       densitySelect = container.querySelector<UikSelect>(
         'uik-select[data-docs-control="density"]',
-      );
-      mobileNavSelect = container.querySelector<UikSelect>(
-        'uik-select[data-docs-control="mobile-nav"]',
       );
       themeSelect?.addEventListener("change", () => {
         preferences.setTheme(themeSelect?.value ?? "system");
@@ -1187,19 +1170,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
         preferences.setDensity(densitySelect?.value ?? "comfortable");
         updatePreferenceMeta(preferenceMetaElement);
       });
-      mobileNavSelect?.addEventListener("change", () => {
-        const { view, subview } = splitViewAndSubview(
-          mobileNavSelect?.value ?? "",
-        );
-        if (!view || !subview) return;
-        router.navigate(view, subview);
-        syncUrl(router.current);
-        updateActiveRoute(router.current);
-      });
-      if (!mobileNavScheduled && mobileNavSelect) {
-        mobileNavScheduled = true;
-        scheduleMobileNavOptions(mobileNavSelect);
-      }
     });
   };
 
@@ -1207,11 +1177,45 @@ export const mountDocsApp = async (container: HTMLElement) => {
     !layout ||
     !navTree ||
     !secondarySidebar ||
+    !mainScrollContainer ||
     !currentPageElement ||
     !preferenceMetaElement
   ) {
     throw new Error("Docs layout could not be initialized.");
   }
+
+  const disconnectScrollSpy = () => {
+    scrollSpyController?.disconnect();
+    scrollSpyController = null;
+    setActiveTocLink(outlineElement, null);
+  };
+
+  const refreshScrollSpy = async () => {
+    if (!contentElement || !outlineElement || !mainScrollContainer) {
+      disconnectScrollSpy();
+      return;
+    }
+    const hasTocLinks = outlineElement.querySelector(".docs-toc-link");
+    const hasHeadings = contentElement.querySelector(".docs-section[id]");
+    if (!hasTocLinks || !hasHeadings) {
+      disconnectScrollSpy();
+      return;
+    }
+    const { createUikScrollSpyController } = await scrollSpyPromise;
+    if (!scrollSpyController) {
+      scrollSpyController = createUikScrollSpyController({
+        targets: ".docs-section[id]",
+        scope: contentElement,
+        root: mainScrollContainer,
+        activationOffset: 48,
+        onActiveIdChange: (activeId) => {
+          setActiveTocLink(outlineElement, activeId);
+        },
+      });
+      scrollSpyController.connect();
+    }
+    scrollSpyController.refresh();
+  };
 
   let outlineRestoreState = secondarySidebar.isOpen;
   let hadInternalOverride = false;
@@ -1240,6 +1244,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialNavId = resolveNavCurrentId(router.current);
   navTree.items = navItems;
   navTree.openIds = collectOpenIds(navItems, initialNavId);
+  if ("currentId" in navTree) {
+    (navTree as unknown as { currentId?: string }).currentId = initialNavId;
+  }
   const shouldOpenOutlineByDefault =
     !initialIsInternal && !layout.hasAttribute("data-shell-narrow");
   setOutlineOpen(layout, secondarySidebar, shouldOpenOutlineByDefault, {
@@ -1271,6 +1278,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     const isInternal = !isPublicPage(page);
     heroElement?.toggleAttribute("hidden", isInternal);
     fixtureHeader?.toggleAttribute("hidden", !isInternal);
+    headerControlsElement?.toggleAttribute("hidden", isInternal);
     secondarySidebar.toggleAttribute("hidden", isInternal);
     if (outlineToggle) outlineToggle.toggleAttribute("hidden", isInternal);
 
@@ -1300,8 +1308,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
     overrideKey?: string,
   ) => {
     const nextKey = overrideKey?.trim() ?? "";
-    layout.activeRouteKey =
+    const currentId =
       nextKey.length > 0 ? nextKey : resolveNavCurrentId(location);
+    layout.activeRouteKey = currentId;
+    if ("currentId" in navTree) {
+      (navTree as unknown as { currentId?: string }).currentId = currentId;
+    }
   };
 
   const syncCommandCenterOpenButton = () => {
@@ -1430,10 +1442,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       prefetchScheduled = true;
       schedulePrefetchComponents();
     }
-    if (!mobileNavScheduled && mobileNavSelect) {
-      mobileNavScheduled = true;
-      scheduleMobileNavOptions(mobileNavSelect);
-    }
+    void refreshScrollSpy();
     commandPaletteOpenButton = headerCommandPaletteButton;
     const needsPortfolio =
       contentElement.querySelector("[data-docs-portfolio]") !== null;
@@ -1606,9 +1615,9 @@ export const mountDocsApp = async (container: HTMLElement) => {
         contentElement.setAttribute("aria-busy", "true");
       }
     }
-    if (outlineElement) outlineElement.innerHTML = renderToc(page);
-    if (mobileNavSelect) {
-      mobileNavSelect.value = key;
+    if (outlineElement) {
+      outlineElement.innerHTML = renderToc(page);
+      setActiveTocLink(outlineElement, null);
     }
 
     updatePreferenceMeta(preferenceMetaElement);
@@ -1640,7 +1649,22 @@ export const mountDocsApp = async (container: HTMLElement) => {
 
   window.addEventListener("hashchange", () => {
     updateActiveRoute(router.current);
-    void scrollToHashTarget();
+    void scrollToHashTarget().then(() => {
+      scrollSpyController?.refresh();
+    });
+  });
+  mainScrollContainer.addEventListener(
+    "scroll",
+    () => {
+      scrollSpyController?.refresh();
+    },
+    { passive: true },
+  );
+  window.addEventListener("resize", () => {
+    void refreshScrollSpy();
+  });
+  window.addEventListener("scroll", () => {
+    scrollSpyController?.refresh();
   });
 
   navTree.addEventListener("tree-view-activate", (event: Event) => {
@@ -1698,7 +1722,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
       densitySelect.value =
         document.documentElement.getAttribute("data-uik-density") ??
         "comfortable";
-    if (mobileNavSelect) mobileNavSelect.value = locationKey(router.current);
   };
 
   await Promise.all([

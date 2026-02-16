@@ -140,4 +140,37 @@ describe("command palette pattern", () => {
     }
     expect(titleText.toLowerCase()).toMatch(/command[- ]palette/);
   });
+
+  it("keeps brand/search/theme-density controls in header and opens via search trigger", async () => {
+    window.history.replaceState({}, "", "/docs/getting-started");
+    const root = document.getElementById("app");
+    if (!root) throw new Error("Docs root not found.");
+    await mountDocsApp(root);
+    await waitForContent();
+
+    const header = document.querySelector<HTMLElement>(".docs-header");
+    const brand =
+      document.querySelector<HTMLAnchorElement>(".docs-header-title");
+    const searchButton = document.querySelector<UikButton>(
+      '[data-docs-action="command-palette-open"]',
+    );
+    const themeControl = document.querySelector<HTMLElement>(
+      'uik-select[data-docs-control="theme"]',
+    );
+    const densityControl = document.querySelector<HTMLElement>(
+      'uik-select[data-docs-control="density"]',
+    );
+    expect(header).toBeTruthy();
+    expect(brand?.getAttribute("href")).toContain("/docs/getting-started");
+    expect(searchButton).toBeTruthy();
+    expect(themeControl).toBeTruthy();
+    expect(densityControl).toBeTruthy();
+    expect(searchButton?.closest(".docs-header")).toBe(header);
+    expect(themeControl?.closest(".docs-header")).toBe(header);
+    expect(densityControl?.closest(".docs-header")).toBe(header);
+
+    await userEvent.click(searchButton as UikButton);
+    const palette = await waitForPaletteOpen();
+    expect(palette.open).toBe(true);
+  });
 });

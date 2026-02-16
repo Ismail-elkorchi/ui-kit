@@ -243,8 +243,8 @@ export const DocumentationLayout: Story = {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: var(--uik-space-3);
-            min-height: var(--uik-size-control-xl);
+            gap: var(--uik-space-4);
+            min-height: var(--uik-size-control-lg);
             padding-inline: var(--uik-space-4);
             border-bottom: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
             background: oklch(var(--uik-surface-elevated-1));
@@ -252,13 +252,47 @@ export const DocumentationLayout: Story = {
         >
           <div
             style="
-              font-size: var(--uik-typography-font-size-3);
-              font-weight: var(--uik-typography-font-weight-semibold);
+              display: flex;
+              align-items: center;
+              gap: var(--uik-space-2);
+              min-width: 0;
             "
           >
-            UI Kit Docs
+            <div
+              style="
+                font-size: var(--uik-typography-font-size-3);
+                font-weight: var(--uik-typography-font-weight-semibold);
+              "
+            >
+              UI Kit Docs
+            </div>
+            <div
+              style="
+                font-size: var(--uik-typography-font-size-2);
+                color: oklch(var(--uik-text-muted));
+              "
+            >
+              Theme + density
+            </div>
           </div>
-          <uik-button size="sm" variant="ghost">Search</uik-button>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: var(--uik-space-2);
+            "
+          >
+            <uik-button size="sm" variant="ghost">Search</uik-button>
+            <uik-button size="sm" variant="ghost">Outline</uik-button>
+            <uik-select value="light" aria-label="Theme">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </uik-select>
+            <uik-select value="comfortable" aria-label="Density">
+              <option value="comfortable">Comfortable</option>
+              <option value="compact">Compact</option>
+            </uik-select>
+          </div>
         </header>
         <uik-shell-sidebar
           slot="primary-sidebar"

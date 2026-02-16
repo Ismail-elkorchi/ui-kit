@@ -30,6 +30,12 @@ const readDensityMetrics = () => {
   const header = document.querySelector<HTMLElement>(".docs-header");
   return {
     controlSizeMd: rootStyle.getPropertyValue("--uik-size-control-md").trim(),
+    layoutControlGap3: rootStyle
+      .getPropertyValue("--uik-layout-control-gap-3")
+      .trim(),
+    headingLineHeight1: rootStyle
+      .getPropertyValue("--uik-component-heading-line-height-1")
+      .trim(),
     themeControlBlockSize: themeControl
       ? getComputedStyle(themeControl).blockSize
       : "",
@@ -117,7 +123,9 @@ describe("docs theme and density preferences", () => {
     expect(getControlContainer(densitySelect)).toBeTruthy();
     expect(getCurrentPageText()).toBeTruthy();
     expect(getSearchButton()).toBeTruthy();
-    expect(document.querySelector("uik-shell-activity-bar")).toBeNull();
+    expect(
+      document.querySelector('uik-shell-layout > [slot="activity-bar"]'),
+    ).toBeNull();
     expect(root.getAttribute("data-uik-theme")).toBe(expectedTheme);
     expect(root.getAttribute("data-uik-density")).toBe("comfortable");
     expect(getPreferenceMetaText()).toContain(`Theme: ${expectedTheme}`);
@@ -166,6 +174,8 @@ describe("docs theme and density preferences", () => {
     await waitForStyleChange();
     const before = readDensityMetrics();
     expect(before.controlSizeMd).toBe("2.5rem");
+    expect(before.layoutControlGap3).toBe("0.75rem");
+    expect(before.headingLineHeight1).toBe("2.25");
     expect(before.themeControlBlockSize).toBeTruthy();
     expect(before.headerBlockSize).toBeTruthy();
 
@@ -174,6 +184,8 @@ describe("docs theme and density preferences", () => {
     const compact = readDensityMetrics();
 
     expect(compact.controlSizeMd).toBe("2.25rem");
+    expect(compact.layoutControlGap3).toBe("0.5rem");
+    expect(compact.headingLineHeight1).toBe("2");
     expect(compact.themeControlBlockSize).not.toBe(
       before.themeControlBlockSize,
     );
@@ -184,6 +196,8 @@ describe("docs theme and density preferences", () => {
     const comfortable = readDensityMetrics();
 
     expect(comfortable.controlSizeMd).toBe("2.5rem");
+    expect(comfortable.layoutControlGap3).toBe("0.75rem");
+    expect(comfortable.headingLineHeight1).toBe("2.25");
     expect(comfortable.themeControlBlockSize).toBe(
       before.themeControlBlockSize,
     );

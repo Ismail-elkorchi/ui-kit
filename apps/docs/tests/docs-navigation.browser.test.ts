@@ -91,4 +91,27 @@ describe("docs navigation", () => {
     expect(navIds).not.toContain("lab/markdown-rendering");
     expect(navIds).not.toContain("docs/components/uik-alert");
   });
+
+  it("restores hero and preference controls after booting on an internal route", async () => {
+    window.history.replaceState({}, "", "/lab/perf-shell");
+    document.body.innerHTML = '<div id="app"></div>';
+    const root = document.getElementById("app");
+    if (!root) throw new Error("Docs root not found.");
+    await mountDocsApp(root);
+    await waitForContent();
+
+    const hero = document.querySelector<HTMLElement>(".docs-hero");
+    const headerControls = document.querySelector<HTMLElement>(
+      ".docs-header-controls",
+    );
+    expect(hero?.hasAttribute("hidden")).toBe(true);
+    expect(headerControls?.hasAttribute("hidden")).toBe(true);
+
+    window.history.pushState({}, "", "/docs/getting-started");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+    await waitForContent();
+
+    expect(hero?.hasAttribute("hidden")).toBe(false);
+    expect(headerControls?.hasAttribute("hidden")).toBe(false);
+  });
 });
