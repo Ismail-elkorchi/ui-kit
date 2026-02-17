@@ -6,6 +6,7 @@ import { styleMap } from "lit/directives/style-map.js";
 import { styles } from "./styles.js";
 import { buildTreeItems, collectTreeIds } from "../../../internal/index.js";
 import type { TreeItem, TreeItemBase } from "../../../internal/index.js";
+// eslint-disable-next-line import/no-internal-modules -- Keep explicit extension for dist import contract checks.
 import "../uik-visually-hidden/index.js";
 
 export type JsonViewerCopyKind = "path" | "value";
@@ -66,6 +67,10 @@ const resolveValueType = (value: unknown): JsonValueType => {
       return "undefined";
     case "object":
       return "object";
+    case "bigint":
+    case "symbol":
+    case "function":
+      return "unknown";
     default:
       return "unknown";
   }
@@ -76,8 +81,8 @@ const stringifyValue = (value: unknown): string => {
   if (typeof value === "symbol") return value.toString();
   if (typeof value === "function") return "[Function]";
   try {
-    const json = JSON.stringify(value, null, 2);
-    if (json !== undefined) return json;
+    const json = JSON.stringify(value, null, 2) as unknown;
+    if (typeof json === "string") return json;
   } catch {
     // fall through to String
   }
@@ -94,8 +99,10 @@ const formatStringDisplay = (value: string) => {
 const formatValuePreview = (node: JsonViewerNode) => {
   const { value, valueType, size } = node;
   switch (valueType) {
-    case "string":
-      return formatStringDisplay(String(value ?? ""));
+    case "string": {
+      const stringValue = typeof value === "string" ? value : "";
+      return formatStringDisplay(stringValue);
+    }
     case "number":
     case "boolean":
       return { display: String(value), full: String(value) };
@@ -104,10 +111,16 @@ const formatValuePreview = (node: JsonViewerNode) => {
     case "undefined":
       return { display: "undefined", full: "undefined" };
     case "array":
-      return { display: `Array(${size})`, full: `Array(${size})` };
+      return {
+        display: `Array(${String(size)})`,
+        full: `Array(${String(size)})`,
+      };
     case "object":
-      return { display: `Object(${size})`, full: `Object(${size})` };
-    default:
+      return {
+        display: `Object(${String(size)})`,
+        full: `Object(${String(size)})`,
+      };
+    case "unknown":
       return { display: String(value), full: String(value) };
   }
 };
@@ -182,7 +195,7 @@ export class UikJsonViewer extends LitElement {
         return { nodes: [], error: "Invalid JSON: input is empty." };
       }
       try {
-        const parsed = JSON.parse(trimmed);
+        const parsed: unknown = JSON.parse(trimmed);
         return { nodes: [this.buildNode("$", parsed, "$")], error: "" };
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -241,7 +254,8 @@ export class UikJsonViewer extends LitElement {
   }
 
   private resolveInitialOpenIds(nodes: JsonViewerNode[]): string[] {
-    const maxDepth = Math.max(0, Number(this.expandedDepth) || 0);
+    const depth = Number.isFinite(this.expandedDepth) ? this.expandedDepth : 0;
+    const maxDepth = Math.max(0, depth);
     if (maxDepth === 0) return [];
     const open = new Set<string>();
     const walk = (entries: JsonViewerNode[], depth: number) => {
@@ -310,7 +324,13 @@ export class UikJsonViewer extends LitElement {
   }
 
   private fallbackCopy(value: string): boolean {
-    if (!document.execCommand) return false;
+    const execCommand = (document as unknown as { execCommand?: unknown })
+      .execCommand;
+    if (typeof execCommand !== "function") return false;
+    const runCopy = execCommand as (
+      this: Document,
+      commandId: string,
+    ) => boolean;
     const textarea = document.createElement("textarea");
     textarea.value = value;
     textarea.setAttribute("readonly", "true");
@@ -324,7 +344,7 @@ export class UikJsonViewer extends LitElement {
 
     const selection = document.getSelection();
     const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
-    const success = document.execCommand("copy");
+    const success = runCopy.call(document, "copy");
     textarea.remove();
     if (range && selection) {
       selection.removeAllRanges();
@@ -334,13 +354,11 @@ export class UikJsonViewer extends LitElement {
   }
 
   private async copyText(value: string): Promise<boolean> {
-    if (navigator.clipboard?.writeText) {
-      try {
-        await navigator.clipboard.writeText(value);
-        return true;
-      } catch {
-        // fall back to execCommand
-      }
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      // fall back to execCommand
     }
     return this.fallbackCopy(value);
   }
@@ -382,9 +400,9 @@ export class UikJsonViewer extends LitElement {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "c") {
       event.preventDefault();
       if (event.shiftKey) {
-        this.onCopy("path", current.item);
+        void this.onCopy("path", current.item);
       } else {
-        this.onCopy("value", current.item);
+        void this.onCopy("value", current.item);
       }
       return;
     }
@@ -463,7 +481,7 @@ export class UikJsonViewer extends LitElement {
     const isOpen = entry.isExpanded;
     const { display, full } = formatValuePreview(item);
     const itemStyles = {
-      paddingInlineStart: `calc(var(--uik-component-json-viewer-item-padding-x) + (var(--uik-component-json-viewer-indent) * ${entry.depth}))`,
+      paddingInlineStart: `calc(var(--uik-component-json-viewer-item-padding-x) + (var(--uik-component-json-viewer-indent) * ${String(entry.depth)}))`,
       paddingInlineEnd: "var(--uik-component-json-viewer-item-padding-x)",
     };
 
@@ -477,6 +495,7 @@ export class UikJsonViewer extends LitElement {
         aria-level=${String(entry.depth + 1)}
         aria-posinset=${String(entry.index + 1)}
         aria-setsize=${String(entry.setSize)}
+        aria-selected=${entry.id === this.focusId ? "true" : "false"}
         aria-expanded=${ifDefined(
           isBranch ? (isOpen ? "true" : "false") : undefined,
         )}
@@ -515,7 +534,7 @@ export class UikJsonViewer extends LitElement {
             aria-label=${`Copy path ${item.path}`}
             @click=${(event: Event) => {
               event.stopPropagation();
-              this.onCopy("path", item);
+              void this.onCopy("path", item);
             }}
           >
             Path
@@ -529,7 +548,7 @@ export class UikJsonViewer extends LitElement {
             aria-label=${`Copy value at ${item.path}`}
             @click=${(event: Event) => {
               event.stopPropagation();
-              this.onCopy("value", item);
+              void this.onCopy("value", item);
             }}
           >
             Value
@@ -540,8 +559,12 @@ export class UikJsonViewer extends LitElement {
   }
 
   override render() {
-    const ariaLabel = this.ariaLabelValue || undefined;
-    const ariaLabelledby = this.ariaLabelledbyValue || undefined;
+    const ariaLabel =
+      this.ariaLabelValue.trim() === "" ? undefined : this.ariaLabelValue;
+    const ariaLabelledby =
+      this.ariaLabelledbyValue.trim() === ""
+        ? undefined
+        : this.ariaLabelledbyValue;
 
     if (this.parseError) {
       return html`
@@ -568,7 +591,7 @@ export class UikJsonViewer extends LitElement {
           class="tree"
           role="tree"
           aria-label=${ifDefined(
-            ariaLabel || (ariaLabelledby ? undefined : "JSON viewer"),
+            ariaLabel ?? (ariaLabelledby ? undefined : "JSON viewer"),
           )}
           aria-labelledby=${ifDefined(ariaLabelledby)}
         >

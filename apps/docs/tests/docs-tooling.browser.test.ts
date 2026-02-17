@@ -21,21 +21,40 @@ const waitForContent = async (attempts = 60) => {
 
 const waitForNavItems = async (navTree: UikTreeView | null, attempts = 60) => {
   for (let i = 0; i < attempts; i += 1) {
-    const hasItems =
-      (navTree?.items && navTree.items.length > 0) ||
-      navTree?.shadowRoot?.querySelector<HTMLElement>('[role="treeitem"]');
+    const itemCount = Array.isArray(navTree?.items) ? navTree.items.length : 0;
+    const hasRenderedItem =
+      navTree?.shadowRoot?.querySelector<HTMLElement>('[role="treeitem"]') !==
+      null;
+    const hasItems = itemCount > 0 || hasRenderedItem;
     if (hasItems) return;
     await nextFrame();
   }
   throw new Error("Docs navigation tree did not render.");
 };
 
-type NavItem = { id: string; label?: string; children?: NavItem[] };
-const flattenNavIds = (items: NavItem[] = []) =>
-  items.flatMap((item) => [
-    item.id,
-    ...flattenNavIds((item.children ?? []) as NavItem[]),
-  ]);
+interface NavItem {
+  id: string;
+  children: NavItem[];
+}
+
+const readNavItems = (value: unknown): NavItem[] => {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((entry): NavItem[] => {
+    if (!entry || typeof entry !== "object") return [];
+    const record = entry as Record<string, unknown>;
+    if (typeof record.id !== "string") return [];
+    return [{ id: record.id, children: readNavItems(record.children) }];
+  });
+};
+
+const flattenNavIds = (items: NavItem[]): string[] => {
+  const ids: string[] = [];
+  for (const item of items) {
+    ids.push(item.id);
+    ids.push(...flattenNavIds(item.children));
+  }
+  return ids;
+};
 
 const getMetaContent = (selector: string) => {
   const element = document.head.querySelector<HTMLMetaElement>(selector);
@@ -59,12 +78,10 @@ describe("docs tooling", () => {
     await navTree?.updateComplete;
     await waitForNavItems(navTree);
 
-    const navIds = flattenNavIds((navTree?.items ?? []) as NavItem[]);
+    const navIds = flattenNavIds(readNavItems(navTree?.items));
     expect(navIds).toContain("docs/tooling");
 
-    const codeBlock = document.querySelector(
-      "uik-code-block[copyable]",
-    ) as HTMLElement | null;
+    const codeBlock = document.querySelector("uik-code-block[copyable]");
     expect(codeBlock).toBeTruthy();
 
     expect(document.title).toBe("UI Kit — Tooling");

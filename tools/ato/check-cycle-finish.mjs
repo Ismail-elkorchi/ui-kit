@@ -30,7 +30,7 @@ if (result.status !== 0) {
 let payload;
 try {
   payload = JSON.parse(stdout);
-} catch (error) {
+} catch {
   console.error("Invalid JSON output from cycle finish check.");
   if (stdout) console.error(stdout);
   if (stderr) console.error(stderr);

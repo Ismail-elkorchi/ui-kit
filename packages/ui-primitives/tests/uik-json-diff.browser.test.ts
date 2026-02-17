@@ -2,13 +2,10 @@ import "@ismail-elkorchi/ui-tokens/index.css";
 import axe from "axe-core";
 import type { Result } from "axe-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { userEvent } from "vitest/browser";
 
-import type {
-  JsonDiffCopyDetail,
-  UikJsonDiff,
-} from "../src/atomic/content/uik-json-diff";
+import type { JsonDiffCopyDetail } from "../src/atomic/content/uik-json-diff";
 import "../src/atomic/content/uik-json-diff";
-import { pressKey } from "./apg/keyboard";
 
 const beforeValue = {
   status: "queued",
@@ -60,7 +57,7 @@ describe("uik-json-diff", () => {
   });
 
   it("renders diff operations and supports keyboard navigation", async () => {
-    const diff = document.createElement("uik-json-diff") as UikJsonDiff;
+    const diff = document.createElement("uik-json-diff");
     diff.before = beforeValue;
     diff.after = afterValue;
     document.body.append(diff);
@@ -79,14 +76,14 @@ describe("uik-json-diff", () => {
     firstItem.focus();
     await diff.updateComplete;
 
-    await pressKey("ArrowDown");
+    await userEvent.keyboard("{ArrowDown}");
     await diff.updateComplete;
 
     const focused =
       diff.shadowRoot?.querySelector<HTMLElement>('[data-index="1"]');
     expect(focused?.getAttribute("tabindex")).toBe("0");
 
-    await pressKey("ArrowRight");
+    await userEvent.keyboard("{ArrowRight}");
     await diff.updateComplete;
 
     const detail = diff.shadowRoot?.querySelector<HTMLElement>(
@@ -96,7 +93,7 @@ describe("uik-json-diff", () => {
   });
 
   it("copies diff values and emits events", async () => {
-    const diff = document.createElement("uik-json-diff") as UikJsonDiff;
+    const diff = document.createElement("uik-json-diff");
     diff.before = beforeValue;
     diff.after = afterValue;
     document.body.append(diff);
@@ -109,7 +106,10 @@ describe("uik-json-diff", () => {
     );
     if (!copyButton) throw new Error("Expected copy-after button.");
 
-    const originalClipboard = navigator.clipboard;
+    const originalClipboardDescriptor = Object.getOwnPropertyDescriptor(
+      navigator,
+      "clipboard",
+    );
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "clipboard", {
       value: { writeText },
@@ -136,20 +136,20 @@ describe("uik-json-diff", () => {
       const status = diff.shadowRoot?.querySelector('[part="status"]');
       expect(status?.textContent).toContain("Copied");
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
+      if (originalClipboardDescriptor) {
+        Object.defineProperty(
+          navigator,
+          "clipboard",
+          originalClipboardDescriptor,
+        );
       } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
+        Reflect.deleteProperty(navigator, "clipboard");
       }
     }
   });
 
   it("has zero axe violations", async () => {
-    const diff = document.createElement("uik-json-diff") as UikJsonDiff;
+    const diff = document.createElement("uik-json-diff");
     diff.before = beforeValue;
     diff.after = afterValue;
     document.body.append(diff);

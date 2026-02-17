@@ -67,7 +67,7 @@ describe("docs edge adapters policy", () => {
     expect(codeBlock).toBeTruthy();
 
     const codeText = Array.from(content.querySelectorAll("uik-code-block"))
-      .map((block) => block.textContent ?? "")
+      .map((block) => block.textContent)
       .join("\n");
 
     page.specifiers.forEach((specifier) => {

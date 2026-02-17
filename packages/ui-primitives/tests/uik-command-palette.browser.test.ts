@@ -4,10 +4,7 @@ import type { Result } from "axe-core";
 import { beforeEach, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 
-import type {
-  UikCommandPalette,
-  UikCommandPaletteSelectDetail,
-} from "../src/composed/overlay/uik-command-palette";
+import type { UikCommandPaletteSelectDetail } from "../src/composed/overlay/uik-command-palette";
 import "../src/composed/overlay/uik-command-palette";
 import { styles as commandPaletteStyles } from "../src/composed/overlay/uik-command-palette/styles";
 
@@ -67,9 +64,7 @@ describe("uik-command-palette", () => {
   });
 
   it("navigates and selects with keyboard", async () => {
-    const palette = document.createElement(
-      "uik-command-palette",
-    ) as UikCommandPalette;
+    const palette = document.createElement("uik-command-palette");
     palette.items = items;
     palette.innerHTML = `
       <span slot="title">Command palette</span>
@@ -113,9 +108,7 @@ describe("uik-command-palette", () => {
     document.body.append(opener);
     opener.focus();
 
-    const palette = document.createElement(
-      "uik-command-palette",
-    ) as UikCommandPalette;
+    const palette = document.createElement("uik-command-palette");
     palette.items = items;
     palette.innerHTML = `
       <span slot="title">Command palette</span>
@@ -136,9 +129,7 @@ describe("uik-command-palette", () => {
   });
 
   it("has zero axe violations", async () => {
-    const palette = document.createElement(
-      "uik-command-palette",
-    ) as UikCommandPalette;
+    const palette = document.createElement("uik-command-palette");
     palette.items = items;
     palette.innerHTML = `
       <span slot="title">Command palette</span>

@@ -1,12 +1,6 @@
 import "@ismail-elkorchi/ui-tokens/index.css";
 import { afterEach, describe, expect, it } from "vitest";
 
-import type {
-  UikShellActivityBar,
-  UikShellSecondarySidebar,
-  UikShellSidebar,
-  UikShellStatusBar,
-} from "../index";
 import "../index";
 
 const mockForcedColors = () => {
@@ -45,9 +39,7 @@ describe("uik-shell forced-colors support", () => {
   it("applies system colors to shell surfaces in forced-colors mode", async () => {
     const restoreMatchMedia = mockForcedColors();
 
-    const activityBar = document.createElement(
-      "uik-shell-activity-bar",
-    ) as UikShellActivityBar;
+    const activityBar = document.createElement("uik-shell-activity-bar");
     document.body.append(activityBar);
     await activityBar.updateComplete;
 
@@ -63,9 +55,7 @@ describe("uik-shell forced-colors support", () => {
     );
     expect(activityContainer.style.color.toLowerCase()).toBe("canvastext");
 
-    const sidebar = document.createElement(
-      "uik-shell-sidebar",
-    ) as UikShellSidebar;
+    const sidebar = document.createElement("uik-shell-sidebar");
     sidebar.heading = "Navigation";
     document.body.append(sidebar);
     await sidebar.updateComplete;
@@ -86,9 +76,7 @@ describe("uik-shell forced-colors support", () => {
       "canvastext",
     );
 
-    const secondary = document.createElement(
-      "uik-shell-secondary-sidebar",
-    ) as UikShellSecondarySidebar;
+    const secondary = document.createElement("uik-shell-secondary-sidebar");
     secondary.heading = "Details";
     secondary.isOpen = true;
     document.body.append(secondary);
@@ -106,9 +94,7 @@ describe("uik-shell forced-colors support", () => {
       "canvastext",
     );
 
-    const statusBar = document.createElement(
-      "uik-shell-status-bar",
-    ) as UikShellStatusBar;
+    const statusBar = document.createElement("uik-shell-status-bar");
     statusBar.message = "Ready";
     document.body.append(statusBar);
     await statusBar.updateComplete;

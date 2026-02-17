@@ -14,16 +14,33 @@ export interface UikTimelineItem {
 
 const readString = (value: unknown, fallback = ""): string => {
   if (typeof value === "string") return value;
+  if (
+    typeof value === "number" ||
+    typeof value === "boolean" ||
+    typeof value === "bigint"
+  ) {
+    return String(value);
+  }
+  if (typeof value === "symbol") {
+    return value.description ?? fallback;
+  }
   if (value === null || value === undefined) return fallback;
-  return String(value);
+  try {
+    const json = JSON.stringify(value) as unknown;
+    if (typeof json === "string") return json;
+  } catch {
+    // ignore and use fallback
+  }
+  return fallback;
 };
 
 const normalizeItem = (value: unknown, index: number): UikTimelineItem => {
+  const ordinal = String(index + 1);
   if (typeof value === "object" && value !== null) {
     const record = value as Record<string, unknown>;
-    const title = readString(record["title"], `Item ${index + 1}`);
+    const title = readString(record["title"], `Item ${ordinal}`);
     const item: UikTimelineItem = {
-      id: readString(record["id"], `item-${index + 1}`),
+      id: readString(record["id"], `item-${ordinal}`),
       title,
     };
     const description = readString(record["description"]).trim();
@@ -36,8 +53,8 @@ const normalizeItem = (value: unknown, index: number): UikTimelineItem => {
   }
 
   return {
-    id: `item-${index + 1}`,
-    title: readString(value, `Item ${index + 1}`),
+    id: `item-${ordinal}`,
+    title: readString(value, `Item ${ordinal}`),
   };
 };
 
@@ -140,7 +157,7 @@ export class UikTimeline extends LitElement {
     const rawJson = this.jsonItems.trim();
     if (rawJson) {
       try {
-        const parsed = JSON.parse(rawJson);
+        const parsed: unknown = JSON.parse(rawJson);
         if (!Array.isArray(parsed)) {
           return {
             items: [],

@@ -46,8 +46,8 @@ export class UikShellLayout extends LitElement {
     uik-shell-layout {
       box-sizing: border-box;
       display: block;
-      height: 100%;
       width: 100%;
+      height: 100%;
     }
 
     uik-shell-layout > :not([data-shell-root]) {
@@ -489,15 +489,15 @@ export class UikShellLayout extends LitElement {
       const element = getAssignedSlotElement(slotName);
       if (element) {
         const ariaLabel = element.getAttribute("aria-label");
-        if (ariaLabel && ariaLabel.trim()) {
+        if (ariaLabel?.trim()) {
           return { label: ariaLabel, labelledby: null };
         }
         const ariaLabelledby = element.getAttribute("aria-labelledby");
-        if (ariaLabelledby && ariaLabelledby.trim()) {
+        if (ariaLabelledby?.trim()) {
           return { label: null, labelledby: ariaLabelledby };
         }
         const heading = element.getAttribute("heading");
-        if (heading && heading.trim()) {
+        if (heading?.trim()) {
           return { label: heading, labelledby: null };
         }
       }

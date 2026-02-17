@@ -7,7 +7,6 @@ import { userEvent } from "vitest/browser";
 import type {
   TagInputAddDetail,
   TagInputRemoveDetail,
-  UikTagInput,
 } from "../src/composed/collection/uik-tag-input";
 import { styles as tagInputStyles } from "../src/composed/collection/uik-tag-input/styles";
 import "../src/composed/collection/uik-tag-input";
@@ -49,7 +48,7 @@ describe("uik-tag-input", () => {
   });
 
   it("adds and removes tags with keyboard input", async () => {
-    const tagInput = document.createElement("uik-tag-input") as UikTagInput;
+    const tagInput = document.createElement("uik-tag-input");
     tagInput.setAttribute("aria-label", "Tags");
     document.body.append(tagInput);
 
@@ -97,7 +96,7 @@ describe("uik-tag-input", () => {
   });
 
   it("has zero axe violations", async () => {
-    const tagInput = document.createElement("uik-tag-input") as UikTagInput;
+    const tagInput = document.createElement("uik-tag-input");
     tagInput.setAttribute("aria-label", "Tags");
     tagInput.values = ["alpha", "bravo"];
     document.body.append(tagInput);

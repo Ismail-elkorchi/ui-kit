@@ -58,7 +58,7 @@ describe("components docs", () => {
     expect(apiSection).toBeTruthy();
 
     const labels = Array.from(apiSection?.querySelectorAll("dt") ?? []).map(
-      (el) => el.textContent ?? "",
+      (el) => el.textContent,
     );
     expect(labels).toContain("Slots");
     expect(labels).toContain("Parts");

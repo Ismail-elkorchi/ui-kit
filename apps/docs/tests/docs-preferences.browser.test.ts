@@ -65,7 +65,7 @@ const waitForStyleChange = async () => {
 const getPreferenceMetaText = () =>
   document
     .querySelector<HTMLElement>("[data-docs-preference-meta]")
-    ?.textContent?.trim();
+    ?.textContent.trim();
 
 const getControlContainer = (element: HTMLElement) =>
   element.closest(".docs-header-controls");

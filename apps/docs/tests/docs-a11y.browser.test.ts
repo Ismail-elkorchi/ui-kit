@@ -37,11 +37,11 @@ const assertLandmarkStructure = () => {
   const mains = Array.from(document.querySelectorAll("main,[role='main']"));
   if (mains.length !== 1) {
     throw new Error(
-      `Expected exactly one main landmark; found ${mains.length}.`,
+      `Expected exactly one main landmark; found ${String(mains.length)}.`,
     );
   }
 
-  const topLevelGroups: Array<{ label: string; selector: string }> = [
+  const topLevelGroups: { label: string; selector: string }[] = [
     { label: "banner", selector: "[role='banner']" },
     { label: "main", selector: "main,[role='main']" },
     { label: "complementary", selector: "aside,[role='complementary']" },

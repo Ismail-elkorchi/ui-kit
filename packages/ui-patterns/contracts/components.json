@@ -1,0 +1,103 @@
+{
+  "$schema": "../../../tools/contracts/schemas/contracts-components.schema.json",
+  "schemaVersion": "1.0.0",
+  "components": [
+    {
+      "id": "empty-state",
+      "tagName": "uik-empty-state",
+      "summary": "Composed empty state pattern built from primitives.",
+      "attributes": [],
+      "slots": [
+        "title - Primary heading content.",
+        "description - Supporting description text.",
+        "actions - Action buttons or links.",
+        "default - Optional supporting content."
+      ],
+      "parts": [
+        "base - Surface wrapper.",
+        "content - Content container.",
+        "title - Heading container.",
+        "description - Description container.",
+        "actions - Actions container."
+      ],
+      "events": [],
+      "a11y": [],
+      "cssVars": ["--uik-space-2", "--uik-space-3", "--uik-space-6"]
+    },
+    {
+      "id": "example",
+      "tagName": "uik-example",
+      "summary": "Preview + code example pattern.",
+      "attributes": ["title", "variant"],
+      "slots": [
+        "title - Optional header title.",
+        "controls - Optional variant controls (e.g. uik-tabs or uik-select).",
+        "preview - Live example markup.",
+        "code - Code snippet (use uik-code-block)."
+      ],
+      "parts": [
+        "base - Surface wrapper.",
+        "header - Header container.",
+        "title - Title container.",
+        "controls - Controls container.",
+        "preview - Preview container.",
+        "code - Code container.",
+        "tabs - Tabs wrapper (when tabs render)."
+      ],
+      "events": [],
+      "a11y": [],
+      "cssVars": []
+    },
+    {
+      "id": "page-hero",
+      "tagName": "uik-page-hero",
+      "summary": "Page hero pattern with content and optional control panel.",
+      "attributes": [],
+      "slots": [
+        "eyebrow - Eyebrow content (badges or metadata).",
+        "title - Primary hero title content.",
+        "summary - Supporting summary content.",
+        "links - Optional hero links.",
+        "panel - Optional control panel content."
+      ],
+      "parts": [
+        "base - Surface wrapper.",
+        "content - Content container.",
+        "layout - Layout wrapper.",
+        "body - Content column.",
+        "eyebrow - Eyebrow container.",
+        "title - Title container.",
+        "summary - Summary container.",
+        "links - Links container.",
+        "panel - Panel wrapper.",
+        "panel-surface - Panel surface wrapper.",
+        "panel-content - Panel content container."
+      ],
+      "events": [],
+      "a11y": [],
+      "cssVars": []
+    },
+    {
+      "id": "section-card",
+      "tagName": "uik-section-card",
+      "summary": "Section card pattern for grouping related content.",
+      "attributes": [],
+      "slots": [
+        "title - Section heading content.",
+        "actions - Optional actions for the section.",
+        "default - Section body content."
+      ],
+      "parts": [
+        "base - Surface wrapper.",
+        "content - Content container.",
+        "header - Header container.",
+        "title - Title container.",
+        "actions - Actions container.",
+        "body - Body container."
+      ],
+      "events": [],
+      "a11y": [],
+      "cssVars": []
+    }
+  ]
+}

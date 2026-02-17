@@ -146,33 +146,29 @@ let extendedComponentLoadersPromise: Promise<
 > | null = null;
 const loadExtendedComponentLoaders = async () => {
   if (extendedComponentLoaders) return extendedComponentLoaders;
-  if (!extendedComponentLoadersPromise) {
-    extendedComponentLoadersPromise = import("./component-loaders").then(
-      (module) => {
-        extendedComponentLoaders = module.extendedComponentLoaders;
-        return extendedComponentLoaders;
-      },
-    );
-  }
+  extendedComponentLoadersPromise ??= import("./component-loaders").then(
+    (module) => {
+      extendedComponentLoaders = module.extendedComponentLoaders;
+      return extendedComponentLoaders;
+    },
+  );
   return extendedComponentLoadersPromise;
 };
-let labPreviewsModule: typeof import("./lab-previews") | null = null;
-let labPreviewsPromise: Promise<typeof import("./lab-previews")> | null = null;
+const importLabPreviews = () => import("./lab-previews");
+type LabPreviewsModule = Awaited<ReturnType<typeof importLabPreviews>>;
+let labPreviewsModule: LabPreviewsModule | null = null;
+let labPreviewsPromise: Promise<LabPreviewsModule> | null = null;
 let extendedStylesPromise: Promise<unknown> | null = null;
 const ensureExtendedStyles = () => {
-  if (!extendedStylesPromise) {
-    extendedStylesPromise = import("./styles-extended.css");
-  }
+  extendedStylesPromise ??= import("./styles-extended.css");
   return extendedStylesPromise;
 };
 const loadLabPreviews = async () => {
   if (labPreviewsModule) return labPreviewsModule;
-  if (!labPreviewsPromise) {
-    labPreviewsPromise = import("./lab-previews").then((module) => {
-      labPreviewsModule = module;
-      return module;
-    });
-  }
+  labPreviewsPromise ??= importLabPreviews().then((module) => {
+    labPreviewsModule = module;
+    return module;
+  });
   return labPreviewsPromise;
 };
 const prefetchedComponents = new Set([
@@ -185,6 +181,7 @@ const prefetchedComponents = new Set([
   "uik-switch",
 ]);
 const criticalInitialComponents = new Set(prefetchedComponents);
+const deferredInitialHydrationTags = new Set(["uik-text", "uik-code-block"]);
 const publicBaseComponentTags = [
   "uik-shell-layout",
   "uik-shell-sidebar",
@@ -212,13 +209,11 @@ const pendingComponents = new Map<string, Promise<unknown>>();
 let baseComponentBundlePromise: Promise<void> | null = null;
 
 const loadBaseComponentBundle = () => {
-  if (!baseComponentBundlePromise) {
-    baseComponentBundlePromise = import("./base-components").then(() => {
-      baseComponentBundleTags.forEach((tag) => {
-        loadedComponents.add(tag);
-      });
+  baseComponentBundlePromise ??= import("./base-components").then(() => {
+    baseComponentBundleTags.forEach((tag) => {
+      loadedComponents.add(tag);
     });
-  }
+  });
   return baseComponentBundlePromise;
 };
 
@@ -437,10 +432,10 @@ const resolveNavCurrentId = (location: UikShellLocation) => {
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-const scheduleIdleTask = (task: () => Promise<void>) =>
+const scheduleIdleTask = (task: () => void | Promise<void>) =>
   new Promise<void>((resolve) => {
     const run = () => {
-      task().finally(resolve);
+      void Promise.resolve(task()).finally(resolve);
     };
     if ("requestIdleCallback" in window) {
       (
@@ -477,7 +472,7 @@ const collectPageComponentTags = (page: DocPageContent) => {
       .replace(
         /<uik-heading([^>]*class="[^"]*docs-heading[^"]*"[^>]*)>([\s\S]*?)<\/uik-heading>/gi,
         (_match, attrs: string, inner: string) => {
-          const levelMatch = attrs.match(/\blevel="([1-6])"/i);
+          const levelMatch = /\blevel="([1-6])"/i.exec(attrs);
           const level = levelMatch?.[1] ?? "2";
           const normalizedAttrs = attrs.replace(/\slevel="[^"]*"/i, "");
           return `<h${level}${normalizedAttrs}>${inner}</h${level}>`;
@@ -531,15 +526,13 @@ const loadComponent = (tag: string, loader: () => Promise<unknown>) => {
 };
 
 const resolveComponentLoaders = async (tags: Iterable<string>) => {
-  const queue: Array<[string, () => Promise<unknown>]> = [];
+  const queue: [string, () => Promise<unknown>][] = [];
   let extended: Map<string, () => Promise<unknown>> | null = null;
   for (const tag of tags) {
     if (loadedComponents.has(tag)) continue;
     let loader = coreComponentLoaders.get(tag);
     if (!loader) {
-      if (!extended) {
-        extended = await loadExtendedComponentLoaders();
-      }
+      extended ??= await loadExtendedComponentLoaders();
       loader = extended.get(tag);
     }
     if (loader) {
@@ -551,12 +544,7 @@ const resolveComponentLoaders = async (tags: Iterable<string>) => {
 
 const loadComponents = async (tags: Iterable<string>) => {
   const queue = await resolveComponentLoaders(tags);
-  await Promise.all(
-    queue.map(([tag, loader]) => {
-      if (!tag || !loader) return Promise.resolve();
-      return loadComponent(tag, loader);
-    }),
-  );
+  await Promise.all(queue.map(([tag, loader]) => loadComponent(tag, loader)));
 };
 
 const prefetchComponents = async () => {
@@ -591,7 +579,9 @@ const loadBaseComponents = (tags: string[]) => {
 
 const schedulePrefetchComponents = () => {
   const schedule = () => {
-    const run = () => prefetchComponents();
+    const run = () => {
+      void prefetchComponents();
+    };
     if ("requestIdleCallback" in window) {
       (
         window as Window & {
@@ -799,7 +789,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   await ensureDocsContent();
   const tokensPromise = import("@ismail-elkorchi/ui-tokens");
   const routerPromise = import("@ismail-elkorchi/ui-shell/router");
-  const useInitialContentHydration = true;
   const toHref = (key: string) => `${baseUrl}${key}`;
   const initialView = initialRoute.view === "lab" ? "lab" : "docs";
   const defaultDocsSubview = publicDocsNavPages[0]?.id ?? docsPages[0]?.id;
@@ -828,14 +817,13 @@ export const mountDocsApp = async (container: HTMLElement) => {
       resolvedInitialKey === initialRouteKey
       ? initialRouteContentPreload.then((content) => {
           if (content) return content;
-          return loadPageContent(initialView as "docs" | "lab", initialPage.id);
+          return loadPageContent(initialView, initialPage.id);
         })
-      : loadPageContent(initialView as "docs" | "lab", initialPage.id)
+      : loadPageContent(initialView, initialPage.id)
     : null;
-  const initialPageContent =
-    useInitialContentHydration && initialPageContentPromise
-      ? await initialPageContentPromise
-      : null;
+  const initialPageContent = initialPageContentPromise
+    ? await initialPageContentPromise
+    : null;
   const initialTitle = initialPage?.title ?? "";
   const initialSummary = initialPage?.summary ?? "";
   const initialGroup = initialPage?.group ?? "";
@@ -864,7 +852,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
     ? ""
     : " isSecondarySidebarVisible";
   let initialPageComponentsPromise: Promise<void> | null = null;
-  let initialPageComponentsScheduled = Boolean(initialPageContentPromise);
+  let initialPageComponentsScheduled = false;
   const initialPageCriticalComponentsPromise = initialPageContentPromise
     ? initialPageContentPromise.then((pageContent) =>
         loadCriticalPageComponents(pageContent),
@@ -887,6 +875,12 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const initialPageSections = initialPageContent
     ? renderPageSections(initialPageContent)
     : "";
+  const initialPageTags = initialPageContent
+    ? collectPageComponentTags(initialPageContent)
+    : new Set<string>();
+  const shouldDeferInitialPageComponents =
+    initialPageTags.size > 0 &&
+    [...initialPageTags].every((tag) => deferredInitialHydrationTags.has(tag));
   const initialNeedsPortfolio = pageHasPortfolio(initialPageContent);
   const initialNeedsLabControls =
     initialPage?.id === "shell-patterns" ||
@@ -1018,24 +1012,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
   if (initialNeedsPortfolio && labPreviewsModule) {
     labPreviewsModule.wirePortfolioPreviews(container);
   }
-  if (initialPageContentPromise && !initialPageComponentsScheduled) {
-    initialPageComponentsScheduled = true;
-    const schedule = () => {
-      void ensureInitialPageComponents();
-    };
-    if ("requestIdleCallback" in window) {
-      (
-        window as Window & {
-          requestIdleCallback: (
-            callback: IdleRequestCallback,
-            options?: IdleRequestOptions,
-          ) => number;
-        }
-      ).requestIdleCallback(schedule);
-    } else {
-      globalThis.setTimeout(schedule, 0);
-    }
-  }
   await nextFrame();
 
   const scrollSpyPromise = import("@ismail-elkorchi/ui-primitives/scroll-spy");
@@ -1155,7 +1131,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   let prefetchScheduled = false;
 
   const hydrateGlobalControls = async () => {
-    await scheduleIdleTask(async () => {
+    await scheduleIdleTask(() => {
       themeSelect = container.querySelector<UikSelect>(
         'uik-select[data-docs-control="theme"]',
       );
@@ -1191,7 +1167,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   };
 
   const refreshScrollSpy = async () => {
-    if (!contentElement || !outlineElement || !mainScrollContainer) {
+    if (!contentElement || !outlineElement) {
       disconnectScrollSpy();
       return;
     }
@@ -1268,7 +1244,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
   const setFixtureContent = (page: DocPage) => {
     if (fixtureTitle) fixtureTitle.textContent = page.title;
     if (fixtureSummary) {
-      const nextSummary = page.summary?.trim() ?? "";
+      const nextSummary = page.summary.trim();
       fixtureSummary.textContent = nextSummary;
       fixtureSummary.toggleAttribute("hidden", nextSummary.length === 0);
     }
@@ -1349,9 +1325,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       import("@ismail-elkorchi/ui-primitives/uik-command-palette"),
       import("@ismail-elkorchi/ui-primitives/uik-visually-hidden"),
     ]);
-    const palette = document.createElement(
-      "uik-command-palette",
-    ) as UikCommandPalette;
+    const palette = document.createElement("uik-command-palette");
     palette.className = "docs-command-palette";
     palette.setAttribute("data-docs-command-palette", "");
     palette.setAttribute("placeholder", "Search docs and examples");
@@ -1371,7 +1345,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     if (commandCenterInit) return commandCenterInit;
     commandCenterInit = (async () => {
       const palette = await ensureCommandPaletteElement();
-      if (!palette) return;
       await ensureComponentPages();
       const { createUikCommandCenter } =
         await import("@ismail-elkorchi/ui-shell/command-center");
@@ -1452,8 +1425,7 @@ export const mountDocsApp = async (container: HTMLElement) => {
       page.id === "command-palette";
     if (needsPortfolio || needsLabControls) {
       installCommandCenterBootstrap();
-      const applyLabPreviews = (module: typeof import("./lab-previews")) => {
-        if (!contentElement) return;
+      const applyLabPreviews = (module: LabPreviewsModule) => {
         if (needsPortfolio) {
           module.wirePortfolioPreviews(contentElement);
         }
@@ -1517,7 +1489,6 @@ export const mountDocsApp = async (container: HTMLElement) => {
     }
     if (token !== contentRenderToken) return;
 
-    const shouldAwaitComponents = true;
     const needsLabPreviews =
       pageHasPortfolio(pageContent) ||
       page.id === "shell-patterns" ||
@@ -1529,11 +1500,8 @@ export const mountDocsApp = async (container: HTMLElement) => {
     const loadPromise = isInitialPage
       ? (ensureInitialPageComponents() ?? loadPageComponents(pageContent))
       : loadPageComponents(pageContent);
-    if (shouldAwaitComponents) {
-      await loadPromise;
-    }
+    await loadPromise;
     if (token !== contentRenderToken) return;
-
     if (contentElement) {
       if (!shouldReuseInitialContent) {
         contentElement.innerHTML = "";
@@ -1627,13 +1595,36 @@ export const mountDocsApp = async (container: HTMLElement) => {
       initialContentReady = false;
       finalizeContentRender(page, contentRenderToken);
       if (initialPageContent) {
-        const loadPromise = ensureInitialPageComponents();
-        if (loadPromise) {
-          loadPromise.finally(() => {
-            contentElement?.setAttribute("aria-busy", "false");
-          });
-        } else {
+        if (shouldDeferInitialPageComponents) {
           contentElement?.setAttribute("aria-busy", "false");
+          if (!initialPageComponentsScheduled) {
+            initialPageComponentsScheduled = true;
+            let fallbackTimer: number | null = null;
+            const schedule = () => {
+              if (fallbackTimer !== null) {
+                window.clearTimeout(fallbackTimer);
+                fallbackTimer = null;
+              }
+              window.removeEventListener("pointerdown", schedule);
+              window.removeEventListener("keydown", schedule);
+              void ensureInitialPageComponents();
+            };
+            window.addEventListener("pointerdown", schedule, {
+              once: true,
+              passive: true,
+            });
+            window.addEventListener("keydown", schedule, { once: true });
+            fallbackTimer = window.setTimeout(schedule, 8000);
+          }
+        } else {
+          const loadPromise = ensureInitialPageComponents();
+          if (loadPromise) {
+            void loadPromise.finally(() => {
+              contentElement?.setAttribute("aria-busy", "false");
+            });
+          } else {
+            contentElement?.setAttribute("aria-busy", "false");
+          }
         }
       }
       void scrollToHashTarget();

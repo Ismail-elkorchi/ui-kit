@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 
-import type { UikPagination } from "../src/atomic/control/uik-pagination";
 import "../src/atomic/control/uik-pagination";
 
 describe("uik-pagination", () => {
@@ -10,9 +9,7 @@ describe("uik-pagination", () => {
   });
 
   it("renders pages and emits pagination-change", async () => {
-    const pagination = document.createElement(
-      "uik-pagination",
-    ) as UikPagination;
+    const pagination = document.createElement("uik-pagination");
     pagination.page = 2;
     pagination.pageCount = 5;
     document.body.append(pagination);
@@ -39,9 +36,7 @@ describe("uik-pagination", () => {
   });
 
   it("clamps pages within the page count", async () => {
-    const pagination = document.createElement(
-      "uik-pagination",
-    ) as UikPagination;
+    const pagination = document.createElement("uik-pagination");
     pagination.page = 12;
     pagination.pageCount = 3;
     document.body.append(pagination);

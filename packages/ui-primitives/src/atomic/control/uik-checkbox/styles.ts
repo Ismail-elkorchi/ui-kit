@@ -37,10 +37,85 @@ export const styles = css`
   }
 
   input {
+    box-sizing: border-box;
     width: var(--uik-component-checkbox-size);
     height: var(--uik-component-checkbox-size);
     margin: var(--uik-space-0);
-    accent-color: oklch(var(--uik-component-checkbox-accent));
+  }
+
+  input:disabled {
+    cursor: not-allowed;
+  }
+
+  @supports (accent-color: auto) {
+    input {
+      accent-color: oklch(var(--uik-component-checkbox-accent));
+    }
+  }
+
+  @supports not (accent-color: auto) {
+    input {
+      display: inline-grid;
+      place-content: center;
+      appearance: none;
+      background-color: oklch(var(--uik-surface-bg));
+      border-color: oklch(var(--uik-border-default));
+      border-style: var(--uik-border-style-solid);
+      border-width: var(--uik-border-width-1);
+      border-radius: var(--uik-radius-1);
+      transition:
+        background-color var(--uik-motion-transition-colors),
+        border-color var(--uik-motion-transition-colors),
+        box-shadow var(--uik-motion-transition-shadow);
+    }
+
+    input::before {
+      width: calc(var(--uik-component-checkbox-size) / 2);
+      height: calc(var(--uik-component-checkbox-size) / 3);
+      content: "";
+      border-color: oklch(var(--uik-surface-bg));
+      border-style: var(--uik-border-style-solid);
+      border-width: 0 0 var(--uik-border-width-2) var(--uik-border-width-2);
+      transform: rotate(-45deg) scale(0);
+      transform-origin: center;
+      transition: transform var(--uik-motion-transition-transform);
+    }
+
+    input:checked,
+    input:indeterminate {
+      background-color: oklch(var(--uik-component-checkbox-accent));
+      border-color: oklch(var(--uik-component-checkbox-accent));
+    }
+
+    input:checked::before {
+      transform: rotate(-45deg) scale(1);
+    }
+
+    input:indeterminate::before {
+      width: calc(var(--uik-component-checkbox-size) / 2);
+      height: var(--uik-border-width-2);
+      background-color: oklch(var(--uik-surface-bg));
+      border-width: var(--uik-border-width-0);
+      border-radius: var(--uik-radius-full);
+      transform: scale(1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      input,
+      input::before {
+        transition: none;
+      }
+    }
+
+    @media (forced-colors: active) {
+      input {
+        appearance: auto;
+      }
+
+      input::before {
+        content: none;
+      }
+    }
   }
 
   input:focus-visible {

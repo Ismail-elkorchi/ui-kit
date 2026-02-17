@@ -141,7 +141,9 @@ export class UikTagInput extends LitElement {
 
   formStateRestoreCallback(state: string | File | FormData | null) {
     if (state instanceof FormData && this.name) {
-      const values = state.getAll(this.name).map((entry) => String(entry));
+      const values = state
+        .getAll(this.name)
+        .map((entry) => (typeof entry === "string" ? entry : entry.name));
       this.values = values;
       this.syncFormValue();
       return;

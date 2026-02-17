@@ -9,13 +9,13 @@ export const styles = css`
     display: block;
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
+    font-family: var(--uik-typography-font-family-mono);
+    font-size: var(--uik-typography-font-size-2);
+    line-height: var(--uik-typography-line-height-2);
     color: oklch(var(--uik-text-default));
     background-color: oklch(var(--uik-component-json-diff-bg));
     border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
     border-radius: var(--uik-radius-2);
-    font-family: var(--uik-typography-font-family-mono);
-    font-size: var(--uik-typography-font-size-2);
-    line-height: var(--uik-typography-line-height-2);
   }
 
   .header {
@@ -39,8 +39,8 @@ export const styles = css`
   .item {
     display: grid;
     grid-template-columns: auto auto minmax(0, 1fr) auto;
-    align-items: center;
     gap: var(--uik-layout-control-gap-2);
+    align-items: center;
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
     background-color: oklch(var(--uik-component-json-diff-bg));
@@ -64,11 +64,11 @@ export const styles = css`
     justify-content: center;
     width: var(--uik-size-icon-sm);
     height: var(--uik-size-icon-sm);
+    padding: var(--uik-space-0);
     color: oklch(var(--uik-text-muted));
+    cursor: pointer;
     background: none;
     border: none;
-    padding: var(--uik-space-0);
-    cursor: pointer;
   }
 
   .toggle svg {
@@ -77,13 +77,13 @@ export const styles = css`
   }
 
   .kind {
-    text-transform: uppercase;
-    font-size: var(--uik-typography-font-size-1);
-    font-weight: var(--uik-typography-font-weight-semibold);
     padding: var(--uik-layout-control-padding-y-1)
       var(--uik-layout-control-padding-x-1);
-    border-radius: var(--uik-radius-2);
+    font-size: var(--uik-typography-font-size-1);
+    font-weight: var(--uik-typography-font-weight-semibold);
+    text-transform: uppercase;
     border: var(--uik-border-width-1) solid transparent;
+    border-radius: var(--uik-radius-2);
   }
 
   .kind[data-kind="add"] {
@@ -105,10 +105,10 @@ export const styles = css`
   }
 
   .path {
-    color: oklch(var(--uik-text-strong));
     min-width: var(--uik-space-0);
     overflow: hidden;
     text-overflow: ellipsis;
+    color: oklch(var(--uik-text-strong));
     white-space: nowrap;
   }
 
@@ -119,18 +119,18 @@ export const styles = css`
 
   .action-button {
     display: inline-flex;
-    align-items: center;
     gap: var(--uik-space-1);
+    align-items: center;
     padding: var(--uik-layout-control-padding-y-1)
       var(--uik-layout-control-padding-x-1);
-    color: oklch(var(--uik-text-default));
-    background-color: oklch(var(--uik-component-json-diff-bg));
-    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
-    border-radius: var(--uik-radius-2);
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-1);
+    color: oklch(var(--uik-text-default));
     cursor: pointer;
+    background-color: oklch(var(--uik-component-json-diff-bg));
+    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
+    border-radius: var(--uik-radius-2);
   }
 
   .action-button:focus-visible {
@@ -145,12 +145,12 @@ export const styles = css`
 
   .detail {
     display: grid;
-    gap: var(--uik-layout-control-gap-2);
     grid-column: 1 / -1;
+    gap: var(--uik-layout-control-gap-2);
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
-    border-radius: var(--uik-radius-2);
     background-color: oklch(var(--uik-surface-muted));
+    border-radius: var(--uik-radius-2);
   }
 
   .detail-block {
@@ -167,11 +167,11 @@ export const styles = css`
   .error {
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
-    border-radius: var(--uik-radius-2);
+    font-weight: var(--uik-typography-font-weight-medium);
+    color: oklch(var(--uik-text-danger));
     background-color: oklch(var(--uik-color-danger-1));
     border: var(--uik-border-width-1) solid oklch(var(--uik-border-danger));
-    color: oklch(var(--uik-text-danger));
-    font-weight: var(--uik-typography-font-weight-medium);
+    border-radius: var(--uik-radius-2);
   }
 
   @media (forced-colors: active) {
@@ -198,15 +198,15 @@ export const styles = css`
     }
 
     .kind {
-      forced-color-adjust: none;
       color: CanvasText;
+      forced-color-adjust: none;
       background-color: Canvas;
       border-color: CanvasText;
     }
 
     .action-button {
-      forced-color-adjust: none;
       color: ButtonText;
+      forced-color-adjust: none;
       background-color: ButtonFace;
     }
 

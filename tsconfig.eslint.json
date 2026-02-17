@@ -13,9 +13,5 @@
     "**/storybook-static/**",
     "**/playwright-report/**",
     "**/test-results/**"
-  ],
-  "references": [
-    { "path": "./packages/ui-primitives/tsconfig.build.json" },
-    { "path": "./packages/ui-shell/tsconfig.build.json" }
   ]
 }

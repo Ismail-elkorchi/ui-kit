@@ -3,7 +3,9 @@ import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles.js";
+// eslint-disable-next-line import/no-internal-modules -- Keep explicit extension for dist import contract checks.
 import "../uik-json-viewer/index.js";
+// eslint-disable-next-line import/no-internal-modules -- Keep explicit extension for dist import contract checks.
 import "../uik-visually-hidden/index.js";
 
 export type JsonDiffCopyKind = "path" | "before" | "after";
@@ -70,6 +72,11 @@ const resolveValueType = (value: unknown): JsonValueType => {
       return "string";
     case "undefined":
       return "undefined";
+    case "object":
+    case "bigint":
+    case "symbol":
+    case "function":
+      return "unknown";
     default:
       return "unknown";
   }
@@ -80,8 +87,8 @@ const stringifyValue = (value: unknown): string => {
   if (typeof value === "symbol") return value.toString();
   if (typeof value === "function") return "[Function]";
   try {
-    const json = JSON.stringify(value, null, 2);
-    if (json !== undefined) return json;
+    const json = JSON.stringify(value, null, 2) as unknown;
+    if (typeof json === "string") return json;
   } catch {
     // fall through to String
   }
@@ -105,16 +112,18 @@ const diffValues = (
     for (let index = 0; index < max; index += 1) {
       const nextPath = buildPath(path, String(index), true);
       if (index >= beforeArray.length) {
+        const id = `${String(changes.length)}:${nextPath}`;
         changes.push({
-          id: `${changes.length}:${nextPath}`,
+          id,
           kind: "add",
           path: nextPath,
           before: undefined,
           after: afterArray[index],
         });
       } else if (index >= afterArray.length) {
+        const id = `${String(changes.length)}:${nextPath}`;
         changes.push({
-          id: `${changes.length}:${nextPath}`,
+          id,
           kind: "remove",
           path: nextPath,
           before: beforeArray[index],
@@ -136,8 +145,9 @@ const diffValues = (
       .forEach((key) => {
         const nextPath = buildPath(path, key, false);
         if (!(key in beforeObj)) {
+          const id = `${String(changes.length)}:${nextPath}`;
           changes.push({
-            id: `${changes.length}:${nextPath}`,
+            id,
             kind: "add",
             path: nextPath,
             before: undefined,
@@ -146,8 +156,9 @@ const diffValues = (
           return;
         }
         if (!(key in afterObj)) {
+          const id = `${String(changes.length)}:${nextPath}`;
           changes.push({
-            id: `${changes.length}:${nextPath}`,
+            id,
             kind: "remove",
             path: nextPath,
             before: beforeObj[key],
@@ -160,8 +171,9 @@ const diffValues = (
     return;
   }
 
+  const id = `${String(changes.length)}:${path}`;
   changes.push({
-    id: `${changes.length}:${path}`,
+    id,
     kind: "replace",
     path,
     before,
@@ -173,8 +185,9 @@ const buildDiff = (before: unknown, after: unknown) => {
   const changes: JsonDiffChange[] = [];
   if (before === undefined && after === undefined) return changes;
   if (before === undefined) {
+    const id = `${String(changes.length)}:$`;
     changes.push({
-      id: `${changes.length}:$`,
+      id,
       kind: "add",
       path: "$",
       before: undefined,
@@ -183,8 +196,9 @@ const buildDiff = (before: unknown, after: unknown) => {
     return changes;
   }
   if (after === undefined) {
+    const id = `${String(changes.length)}:$`;
     changes.push({
-      id: `${changes.length}:$`,
+      id,
       kind: "remove",
       path: "$",
       before,
@@ -293,8 +307,8 @@ export class UikJsonDiff extends LitElement {
         };
       }
       try {
-        const parsedBefore = JSON.parse(rawBefore);
-        const parsedAfter = JSON.parse(rawAfter);
+        const parsedBefore: unknown = JSON.parse(rawBefore);
+        const parsedAfter: unknown = JSON.parse(rawAfter);
         return { changes: buildDiff(parsedBefore, parsedAfter), error: "" };
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -336,7 +350,7 @@ export class UikJsonDiff extends LitElement {
     this.requestUpdate();
     void this.updateComplete.then(() => {
       const element = this.renderRoot.querySelector<HTMLElement>(
-        `[data-index="${index}"]`,
+        `[data-index="${String(index)}"]`,
       );
       element?.focus();
     });
@@ -362,7 +376,13 @@ export class UikJsonDiff extends LitElement {
   }
 
   private fallbackCopy(value: string): boolean {
-    if (!document.execCommand) return false;
+    const execCommand = (document as unknown as { execCommand?: unknown })
+      .execCommand;
+    if (typeof execCommand !== "function") return false;
+    const runCopy = execCommand as (
+      this: Document,
+      commandId: string,
+    ) => boolean;
     const textarea = document.createElement("textarea");
     textarea.value = value;
     textarea.setAttribute("readonly", "true");
@@ -376,7 +396,7 @@ export class UikJsonDiff extends LitElement {
 
     const selection = document.getSelection();
     const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
-    const success = document.execCommand("copy");
+    const success = runCopy.call(document, "copy");
     textarea.remove();
     if (range && selection) {
       selection.removeAllRanges();
@@ -386,13 +406,11 @@ export class UikJsonDiff extends LitElement {
   }
 
   private async copyText(value: string): Promise<boolean> {
-    if (navigator.clipboard?.writeText) {
-      try {
-        await navigator.clipboard.writeText(value);
-        return true;
-      } catch {
-        // fall back to execCommand
-      }
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      // fall back to execCommand
     }
     return this.fallbackCopy(value);
   }
@@ -490,7 +508,7 @@ export class UikJsonDiff extends LitElement {
 
   private renderItem(change: JsonDiffChange, index: number) {
     const isOpen = this.openIds.includes(change.id);
-    const detailId = `json-diff-detail-${index}`;
+    const detailId = `json-diff-detail-${String(index)}`;
     const beforeValue = change.before;
     const afterValue = change.after;
     const hasBefore = typeof beforeValue !== "undefined";
@@ -502,8 +520,6 @@ export class UikJsonDiff extends LitElement {
         class="item"
         role="listitem"
         tabindex=${index === this.focusIndex ? 0 : -1}
-        aria-expanded=${ifDefined(isOpen ? "true" : "false")}
-        aria-controls=${detailId}
         aria-label=${`${change.kind} ${change.path}`}
         data-index=${index}
         data-kind=${change.kind}
@@ -515,6 +531,8 @@ export class UikJsonDiff extends LitElement {
           part="toggle"
           class="toggle"
           type="button"
+          aria-expanded=${isOpen ? "true" : "false"}
+          aria-controls=${detailId}
           aria-label=${isOpen ? "Collapse change" : "Expand change"}
           @click=${(event: Event) => {
             event.stopPropagation();
@@ -592,8 +610,12 @@ export class UikJsonDiff extends LitElement {
   }
 
   override render() {
-    const ariaLabel = this.ariaLabelValue || undefined;
-    const ariaLabelledby = this.ariaLabelledbyValue || undefined;
+    const ariaLabel =
+      this.ariaLabelValue.trim() === "" ? undefined : this.ariaLabelValue;
+    const ariaLabelledby =
+      this.ariaLabelledbyValue.trim() === ""
+        ? undefined
+        : this.ariaLabelledbyValue;
 
     if (this.parseError) {
       return html`
@@ -612,7 +634,7 @@ export class UikJsonDiff extends LitElement {
     }
 
     const count = this.changes.length;
-    const summary = count === 1 ? "1 change" : `${count} changes`;
+    const summary = count === 1 ? "1 change" : `${String(count)} changes`;
 
     return html`
       <div part="base" class="wrapper">
@@ -627,7 +649,7 @@ export class UikJsonDiff extends LitElement {
           class="list"
           role="list"
           aria-label=${ifDefined(
-            ariaLabel || (ariaLabelledby ? undefined : "JSON diff"),
+            ariaLabel ?? (ariaLabelledby ? undefined : "JSON diff"),
           )}
           aria-labelledby=${ifDefined(ariaLabelledby)}
         >

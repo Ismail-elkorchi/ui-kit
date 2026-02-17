@@ -3,6 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { styles } from "./styles.js";
+// eslint-disable-next-line import/no-internal-modules -- Keep explicit extension for dist import contract checks.
 import "../uik-visually-hidden/index.js";
 
 export interface UikCodeBlockCopyDetail {
@@ -74,7 +75,13 @@ export class UikCodeBlock extends LitElement {
   }
 
   private fallbackCopy(value: string): boolean {
-    if (!document.execCommand) return false;
+    const execCommand = (document as unknown as { execCommand?: unknown })
+      .execCommand;
+    if (typeof execCommand !== "function") return false;
+    const runCopy = execCommand as (
+      this: Document,
+      commandId: string,
+    ) => boolean;
     const textarea = document.createElement("textarea");
     textarea.value = value;
     textarea.setAttribute("readonly", "true");
@@ -88,7 +95,7 @@ export class UikCodeBlock extends LitElement {
 
     const selection = document.getSelection();
     const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
-    const success = document.execCommand("copy");
+    const success = runCopy.call(document, "copy");
     textarea.remove();
     if (range && selection) {
       selection.removeAllRanges();
@@ -98,13 +105,11 @@ export class UikCodeBlock extends LitElement {
   }
 
   private async copyText(value: string): Promise<boolean> {
-    if (navigator.clipboard?.writeText) {
-      try {
-        await navigator.clipboard.writeText(value);
-        return true;
-      } catch {
-        // fall back to execCommand path
-      }
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      // fall back to execCommand path
     }
     return this.fallbackCopy(value);
   }

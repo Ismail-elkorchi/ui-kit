@@ -1,7 +1,7 @@
-type MediaQueryState = {
+interface MediaQueryState {
   query: MediaQueryList;
   value: boolean;
-};
+}
 
 const setupQuery = (media: string): MediaQueryState | null => {
   if (
@@ -15,14 +15,7 @@ const setupQuery = (media: string): MediaQueryState | null => {
   const handler = (event: MediaQueryListEvent) => {
     state.value = event.matches;
   };
-  if ("addEventListener" in query) {
-    query.addEventListener("change", handler);
-  } else {
-    const legacyQuery = query as MediaQueryList & {
-      addListener?: (listener: (event: MediaQueryListEvent) => void) => void;
-    };
-    legacyQuery.addListener?.(handler);
-  }
+  query.addEventListener("change", handler);
   return state;
 };
 

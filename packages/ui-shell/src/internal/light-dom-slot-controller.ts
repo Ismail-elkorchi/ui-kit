@@ -129,7 +129,7 @@ export class LightDomSlotController {
       if (node === root) continue;
       if (node.nodeType === Node.ELEMENT_NODE) {
         const element = node as HTMLElement;
-        const slotName = element.getAttribute("slot") || null;
+        const slotName = element.getAttribute("slot") ?? null;
         const container = containers.get(slotName);
         if (!container) continue;
         container.append(element);

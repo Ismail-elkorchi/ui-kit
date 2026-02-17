@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import type { UikInput } from "../src/atomic/control/uik-input";
 import type { UikSelect } from "../src/atomic/control/uik-select";
-import type { UikCombobox } from "../src/composed/collection/uik-listbox/uik-combobox";
 import "../src/atomic/control/uik-input";
 import "../src/atomic/control/uik-select";
 import "../src/composed/collection/uik-listbox/uik-combobox";
@@ -24,7 +23,7 @@ describe("control heights", () => {
       <option value="beta">Beta</option>
     `;
 
-    const combobox = document.createElement("uik-combobox") as UikCombobox;
+    const combobox = document.createElement("uik-combobox");
     combobox.setAttribute("aria-label", "Combobox");
     combobox.items = [
       { id: "alpha", label: "Alpha" },

@@ -14,9 +14,9 @@ export const styles = css`
 
   .base {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
     gap: var(--uik-space-2);
+    align-items: center;
     min-height: var(--uik-size-control-md);
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-3);
@@ -60,26 +60,26 @@ export const styles = css`
   .tags {
     display: flex;
     flex: 1;
-    align-items: center;
     flex-wrap: wrap;
     gap: var(--uik-space-2);
+    align-items: center;
     min-width: 0;
   }
 
   .tag {
     display: inline-flex;
-    align-items: center;
     gap: var(--uik-space-1);
+    align-items: center;
     padding: var(--uik-space-1) var(--uik-space-2);
-    border-radius: var(--uik-radius-2);
-    border: var(--uik-border-width-1) solid
-      oklch(var(--uik-component-badge-secondary-border));
-    background-color: oklch(var(--uik-component-tag-input-tag-bg));
-    color: oklch(var(--uik-component-badge-secondary-fg));
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-1);
+    color: oklch(var(--uik-component-badge-secondary-fg));
     cursor: pointer;
+    background-color: oklch(var(--uik-component-tag-input-tag-bg));
+    border: var(--uik-border-width-1) solid
+      oklch(var(--uik-component-badge-secondary-border));
+    border-radius: var(--uik-radius-2);
   }
 
   .tag[aria-disabled="true"],
@@ -102,9 +102,9 @@ export const styles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    padding: 0 var(--uik-space-1);
     color: oklch(var(--uik-text-muted));
     border-radius: var(--uik-radius-1);
-    padding: 0 var(--uik-space-1);
   }
 
   .tag:hover .tag-remove,
@@ -118,11 +118,11 @@ export const styles = css`
     min-width: 8rem;
     padding: 0;
     margin: 0;
-    border: none;
-    background: transparent;
-    color: oklch(var(--uik-component-input-base-fg));
     font: inherit;
     line-height: inherit;
+    color: oklch(var(--uik-component-input-base-fg));
+    background: transparent;
+    border: none;
   }
 
   .input::placeholder {
@@ -140,23 +140,23 @@ export const styles = css`
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+    clip-path: inset(50%);
   }
 
   @media (forced-colors: active) {
     .base {
+      color: CanvasText;
       background-color: Canvas;
       border-color: CanvasText;
-      color: CanvasText;
     }
 
     .tag {
-      background-color: Canvas;
-      border-color: CanvasText;
       color: CanvasText;
       forced-color-adjust: none;
+      background-color: Canvas;
+      border-color: CanvasText;
     }
 
     .tag-remove {

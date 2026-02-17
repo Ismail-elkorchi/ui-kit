@@ -72,7 +72,7 @@ const run = async () => {
         `Token namespace must not use kebab-case key "${kebabId}" in ${tokensPath}.`,
       );
     }
-  } catch (error) {
+  } catch {
     errors.push(`Missing or invalid tokens file: ${tokensPath}`);
   }
 
@@ -102,7 +102,7 @@ const run = async () => {
         errors.push(`Component var "${varName}" must be kebab-case.`);
       }
     }
-  } catch (error) {
+  } catch {
     errors.push(`Missing scaffolded styles file: ${stylesPath}`);
   }
 
@@ -120,7 +120,7 @@ const run = async () => {
         `uik.resolver.json must include ${ref} in sets.base.sources.`,
       );
     }
-  } catch (error) {
+  } catch {
     errors.push(`Missing or invalid resolver file: ${resolverPath}`);
   }
 

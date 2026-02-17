@@ -3,7 +3,6 @@ import axe from "axe-core";
 import type { Result } from "axe-core";
 import { beforeEach, describe, expect, it } from "vitest";
 
-import type { UikTimeline } from "../src/atomic/content/uik-timeline";
 import { styles as timelineStyles } from "../src/atomic/content/uik-timeline/styles";
 import "../src/atomic/content/uik-timeline";
 
@@ -44,7 +43,7 @@ describe("uik-timeline", () => {
   });
 
   it("renders items from json-items", async () => {
-    const timeline = document.createElement("uik-timeline") as UikTimeline;
+    const timeline = document.createElement("uik-timeline");
     timeline.setAttribute("aria-label", "Run history");
     timeline.setAttribute(
       "json-items",
@@ -75,7 +74,7 @@ describe("uik-timeline", () => {
   });
 
   it("has zero axe violations", async () => {
-    const timeline = document.createElement("uik-timeline") as UikTimeline;
+    const timeline = document.createElement("uik-timeline");
     timeline.setAttribute("aria-label", "Run history");
     timeline.items = [
       { title: "Queued", description: "Waiting for approval." },

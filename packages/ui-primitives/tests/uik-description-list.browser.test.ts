@@ -5,9 +5,7 @@ import type { UikDescriptionList } from "../src/atomic/content/uik-description-l
 import "../src/atomic/content/uik-description-list";
 
 const buildList = (layout?: string) => {
-  const list = document.createElement(
-    "uik-description-list",
-  ) as UikDescriptionList;
+  const list = document.createElement("uik-description-list");
   if (layout) {
     list.setAttribute("layout", layout);
   }

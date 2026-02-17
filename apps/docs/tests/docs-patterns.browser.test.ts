@@ -6,6 +6,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import "../src/docs.css";
 import { mountDocsApp } from "../app";
 
+interface CodeBlockCopyDetail {
+  success: boolean;
+}
+
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
@@ -97,27 +101,24 @@ describe("patterns docs", () => {
     });
 
     try {
-      const copyEvent = new Promise<CustomEvent>((resolve) => {
-        codeBlock.addEventListener(
-          "code-block-copy",
-          (event) => resolve(event as CustomEvent),
-          { once: true },
-        );
-      });
+      const copyEvent = new Promise<CustomEvent<CodeBlockCopyDetail>>(
+        (resolve) => {
+          codeBlock.addEventListener(
+            "code-block-copy",
+            (event) => resolve(event as CustomEvent<CodeBlockCopyDetail>),
+            { once: true },
+          );
+        },
+      );
       copyButton.click();
       const event = await copyEvent;
       expect(event.detail.success).toBe(true);
       expect(writeText).toHaveBeenCalled();
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
-      } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
-      }
+      Object.defineProperty(navigator, "clipboard", {
+        value: originalClipboard,
+        configurable: true,
+      });
     }
 
     window.history.pushState({}, "", "/docs/apply-preview");

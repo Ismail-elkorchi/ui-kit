@@ -1,8 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 
-import type { UikNav } from "../src/composed/collection/uik-nav";
-import type { UikTreeView } from "../src/composed/collection/uik-tree-view";
 import "../src/composed/collection/uik-tree-view";
 import "../src/composed/collection/uik-nav";
 
@@ -49,7 +47,7 @@ describe("uik-nav", () => {
   });
 
   it("marks the current link and emits selection events", async () => {
-    const nav = document.createElement("uik-nav") as UikNav;
+    const nav = document.createElement("uik-nav");
     nav.items = navItems;
     nav.openIds = ["docs", "lab"];
     nav.currentId = "docs/tokens";
@@ -83,7 +81,7 @@ describe("uik-tree-view", () => {
   });
 
   it("supports navigation tree keyboard behavior and activation", async () => {
-    const tree = document.createElement("uik-tree-view") as UikTreeView;
+    const tree = document.createElement("uik-tree-view");
     tree.items = treeItems;
     tree.openIds = ["apps"];
     tree.currentId = "apps/main.ts";

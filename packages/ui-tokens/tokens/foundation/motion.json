@@ -67,6 +67,75 @@
         "$type": "duration"
       }
     },
+    "reduced": {
+      "delay": {
+        "0": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        },
+        "1": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        },
+        "2": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        }
+      },
+      "duration": {
+        "1": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        },
+        "2": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        },
+        "3": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        },
+        "4": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        },
+        "5": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        },
+        "6": {
+          "$value": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "$type": "duration"
+        }
+      }
+    },
     "ease": {
       "emphasized": {
         "$value": [0.2, 0, 0, 1],

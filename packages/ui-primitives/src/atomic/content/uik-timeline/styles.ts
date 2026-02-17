@@ -15,8 +15,8 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     gap: var(--uik-component-timeline-gap);
-    margin: var(--uik-space-0);
     padding: var(--uik-space-0);
+    margin: var(--uik-space-0);
     list-style: none;
   }
 
@@ -31,8 +31,8 @@ export const styles = css`
       var(--uik-component-timeline-marker-size)
       minmax(0, 1fr);
     column-gap: var(--uik-component-timeline-column-gap);
-    padding-block: var(--uik-component-timeline-item-padding-y);
     min-width: 0;
+    padding-block: var(--uik-component-timeline-item-padding-y);
   }
 
   :host([density="compact"]) .item {
@@ -41,7 +41,6 @@ export const styles = css`
   }
 
   .item::before {
-    content: "";
     position: absolute;
     top: 0;
     bottom: 0;
@@ -50,6 +49,7 @@ export const styles = css`
         2 - var(--uik-component-timeline-line-thickness) / 2
     );
     width: var(--uik-component-timeline-line-thickness);
+    content: "";
     background-color: oklch(var(--uik-component-timeline-line-color));
   }
 
@@ -62,16 +62,16 @@ export const styles = css`
   }
 
   .marker {
-    width: var(--uik-component-timeline-marker-size);
-    height: var(--uik-component-timeline-marker-size);
-    border-radius: var(--uik-radius-full);
-    border: var(--uik-component-timeline-marker-border-width) solid
-      oklch(var(--uik-component-timeline-line-color));
-    background-color: oklch(var(--uik-component-timeline-marker-bg));
-    margin-top: var(--uik-component-timeline-marker-offset);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: var(--uik-component-timeline-marker-size);
+    height: var(--uik-component-timeline-marker-size);
+    margin-top: var(--uik-component-timeline-marker-offset);
+    background-color: oklch(var(--uik-component-timeline-marker-bg));
+    border: var(--uik-component-timeline-marker-border-width) solid
+      oklch(var(--uik-component-timeline-line-color));
+    border-radius: var(--uik-radius-full);
   }
 
   :host([density="compact"]) .marker {
@@ -87,8 +87,8 @@ export const styles = css`
   .header {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
     gap: var(--uik-space-2);
+    align-items: baseline;
   }
 
   .title {
@@ -130,9 +130,9 @@ export const styles = css`
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-2);
     color: oklch(var(--uik-text-danger));
+    background-color: oklch(var(--uik-surface-danger));
     border: var(--uik-border-width-1) solid oklch(var(--uik-border-danger));
     border-radius: var(--uik-radius-3);
-    background-color: oklch(var(--uik-surface-danger));
   }
 
   @media (forced-colors: active) {
@@ -141,9 +141,9 @@ export const styles = css`
     }
 
     .marker {
-      border-color: CanvasText;
-      background-color: Canvas;
       forced-color-adjust: none;
+      background-color: Canvas;
+      border-color: CanvasText;
     }
 
     .title,
@@ -154,10 +154,10 @@ export const styles = css`
     }
 
     .error {
-      background-color: Canvas;
-      border-color: CanvasText;
       color: CanvasText;
       forced-color-adjust: none;
+      background-color: Canvas;
+      border-color: CanvasText;
     }
   }
 `;

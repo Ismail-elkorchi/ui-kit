@@ -4,12 +4,8 @@ import type { Result } from "axe-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 
-import type {
-  JsonViewerCopyDetail,
-  UikJsonViewer,
-} from "../src/atomic/content/uik-json-viewer";
+import type { JsonViewerCopyDetail } from "../src/atomic/content/uik-json-viewer";
 import "../src/atomic/content/uik-json-viewer";
-import { pressKey } from "./apg/keyboard";
 
 const sample = {
   status: "ok",
@@ -56,7 +52,7 @@ describe("uik-json-viewer", () => {
   });
 
   it("supports keyboard expand/collapse navigation", async () => {
-    const viewer = document.createElement("uik-json-viewer") as UikJsonViewer;
+    const viewer = document.createElement("uik-json-viewer");
     viewer.value = sample;
     viewer.expandedDepth = 0;
     document.body.append(viewer);
@@ -72,7 +68,7 @@ describe("uik-json-viewer", () => {
     await viewer.updateComplete;
     expect(rootItem.getAttribute("aria-expanded")).toBe("false");
 
-    await pressKey("ArrowRight");
+    await userEvent.keyboard("{ArrowRight}");
     await viewer.updateComplete;
 
     rootItem =
@@ -82,7 +78,7 @@ describe("uik-json-viewer", () => {
       viewer.shadowRoot?.querySelector('[data-item-id="$.nested"]'),
     ).not.toBeNull();
 
-    await pressKey("ArrowLeft");
+    await userEvent.keyboard("{ArrowLeft}");
     await viewer.updateComplete;
 
     rootItem =
@@ -91,7 +87,7 @@ describe("uik-json-viewer", () => {
   });
 
   it("copies JSON values and emits events", async () => {
-    const viewer = document.createElement("uik-json-viewer") as UikJsonViewer;
+    const viewer = document.createElement("uik-json-viewer");
     viewer.value = sample;
     document.body.append(viewer);
 
@@ -103,8 +99,14 @@ describe("uik-json-viewer", () => {
     );
     if (!copyButton) throw new Error("Expected copy button.");
 
-    const originalClipboard = navigator.clipboard;
-    const originalExecCommand = document.execCommand;
+    const originalClipboardDescriptor = Object.getOwnPropertyDescriptor(
+      navigator,
+      "clipboard",
+    );
+    const originalExecCommandDescriptor = Object.getOwnPropertyDescriptor(
+      document,
+      "execCommand",
+    );
     const writeText = vi.fn().mockRejectedValue(new Error("blocked"));
     const execCommand = vi.fn(() => true);
 
@@ -139,30 +141,29 @@ describe("uik-json-viewer", () => {
       const status = viewer.shadowRoot?.querySelector('[part="status"]');
       expect(status?.textContent).toContain("Copied");
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
+      if (originalClipboardDescriptor) {
+        Object.defineProperty(
+          navigator,
+          "clipboard",
+          originalClipboardDescriptor,
+        );
       } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
+        Reflect.deleteProperty(navigator, "clipboard");
       }
-      if (originalExecCommand) {
-        Object.defineProperty(document, "execCommand", {
-          value: originalExecCommand,
-          configurable: true,
-        });
+      if (originalExecCommandDescriptor) {
+        Object.defineProperty(
+          document,
+          "execCommand",
+          originalExecCommandDescriptor,
+        );
       } else {
-        delete (
-          document as Document & { execCommand?: Document["execCommand"] }
-        ).execCommand;
+        Reflect.deleteProperty(document, "execCommand");
       }
     }
   });
 
   it("has zero axe violations", async () => {
-    const viewer = document.createElement("uik-json-viewer") as UikJsonViewer;
+    const viewer = document.createElement("uik-json-viewer");
     viewer.value = sample;
     document.body.append(viewer);
 

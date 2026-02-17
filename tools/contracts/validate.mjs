@@ -30,6 +30,16 @@ const paths = {
     register: path.join(repoRoot, "packages/ui-shell/register.ts"),
     index: path.join(repoRoot, "packages/ui-shell/index.ts"),
   },
+  patterns: {
+    contracts: path.join(
+      repoRoot,
+      "packages/ui-patterns/contracts/components.json",
+    ),
+    cem: path.join(repoRoot, "packages/ui-patterns/dist/custom-elements.json"),
+    register: path.join(repoRoot, "packages/ui-patterns/register.ts"),
+    index: path.join(repoRoot, "packages/ui-patterns/index.ts"),
+    packageJson: path.join(repoRoot, "packages/ui-patterns/package.json"),
+  },
 };
 
 const schemaPaths = {
@@ -287,15 +297,15 @@ const validateContracts = async ({
   return { errors, warnings, cemTags };
 };
 
-const validateExports = async (tagNames, errors) => {
-  const pkg = await readJson(paths.primitives.packageJson);
+const validateExports = async (tagNames, packageJsonPath, errors, label) => {
+  const pkg = await readJson(packageJsonPath);
   const exportKeys = new Set(Object.keys(pkg.exports ?? {}));
 
   for (const tagName of tagNames) {
     const key = `./${tagName}`;
     if (!exportKeys.has(key)) {
       errors.push(
-        `ui-primitives: missing package.json export for ${tagName} (${key}).`,
+        `${label}: missing package.json export for ${tagName} (${key}).`,
       );
     }
   }
@@ -331,6 +341,7 @@ const run = async () => {
     { label: "ui-tokens base.css", path: paths.tokensCss },
     { label: "ui-primitives custom-elements.json", path: paths.primitives.cem },
     { label: "ui-shell custom-elements.json", path: paths.shell.cem },
+    { label: "ui-patterns custom-elements.json", path: paths.patterns.cem },
   ]);
   if (!artifactsOk) return;
 
@@ -374,7 +385,12 @@ const run = async () => {
   warnings.push(...primitives.warnings);
 
   if (primitives.cemTags) {
-    await validateExports(primitives.cemTags, errors);
+    await validateExports(
+      primitives.cemTags,
+      paths.primitives.packageJson,
+      errors,
+      "ui-primitives",
+    );
     await validateIndexAndRegister(
       primitives.cemTags,
       paths.primitives.register,
@@ -402,6 +418,33 @@ const run = async () => {
       paths.shell.index,
       errors,
       "ui-shell",
+    );
+  }
+
+  const patterns = await validateContracts({
+    name: "ui-patterns",
+    contractsPath: paths.patterns.contracts,
+    cemPath: paths.patterns.cem,
+    tokenSet,
+    enforceStories: false,
+    schemaValidator: primitivesSchemaValidator,
+  });
+  errors.push(...patterns.errors);
+  warnings.push(...patterns.warnings);
+
+  if (patterns.cemTags) {
+    await validateExports(
+      patterns.cemTags,
+      paths.patterns.packageJson,
+      errors,
+      "ui-patterns",
+    );
+    await validateIndexAndRegister(
+      patterns.cemTags,
+      paths.patterns.register,
+      paths.patterns.index,
+      errors,
+      "ui-patterns",
     );
   }
 

@@ -4,6 +4,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import "../src/docs.css";
 import { mountDocsApp } from "../app";
 
+interface JsonDiffCopyDetail {
+  kind: string;
+  path: string;
+}
+
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
@@ -59,13 +64,15 @@ describe("docs json diff page", () => {
     });
 
     try {
-      const copyEvent = new Promise<CustomEvent>((resolve) => {
-        diff.addEventListener(
-          "json-diff-copy",
-          (event) => resolve(event as CustomEvent),
-          { once: true },
-        );
-      });
+      const copyEvent = new Promise<CustomEvent<JsonDiffCopyDetail>>(
+        (resolve) => {
+          diff.addEventListener(
+            "json-diff-copy",
+            (event) => resolve(event as CustomEvent<JsonDiffCopyDetail>),
+            { once: true },
+          );
+        },
+      );
       copyButton.click();
       const event = await copyEvent;
 
@@ -76,15 +83,10 @@ describe("docs json diff page", () => {
       const status = diff.shadowRoot?.querySelector('[part="status"]');
       expect(status?.textContent).toContain("Copied");
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
-      } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
-      }
+      Object.defineProperty(navigator, "clipboard", {
+        value: originalClipboard,
+        configurable: true,
+      });
     }
   });
 });

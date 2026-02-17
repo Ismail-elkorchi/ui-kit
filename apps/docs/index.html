@@ -65,6 +65,23 @@
         margin: var(--uik-space-4) 0 0;
         font-size: var(--uik-typography-font-size-6);
       }
+
+      .docs-boot-code {
+        inline-size: min(100%, var(--uik-layout-panel-width-sm));
+        min-block-size: calc(var(--uik-size-control-xl) + var(--uik-space-6));
+        margin: var(--uik-space-4) 0 0;
+        padding: var(--uik-space-3) var(--uik-space-4);
+        overflow: auto;
+        color: oklch(var(--uik-text-strong));
+        background: oklch(var(--uik-component-code-block-bg));
+        border: var(--uik-component-code-block-border-width) solid
+          oklch(var(--uik-component-code-block-border));
+        border-radius: var(--uik-radius-3);
+        font-family: var(--uik-component-code-block-font-family);
+        font-size: var(--uik-component-code-block-font-size);
+        font-weight: var(--uik-component-code-block-font-weight);
+        line-height: var(--uik-component-code-block-line-height);
+      }
     </style>
     <link rel="preload" as="style" href="/src/docs.css" />
     <link rel="stylesheet" href="/src/docs.css" fetchpriority="high" />
@@ -80,10 +97,10 @@
           <p class="docs-boot-summary">
             Loading guides, foundations, components, patterns, and examples.
           </p>
+          <pre class="docs-boot-code">npm install @ismail-elkorchi/ui-tokens @ismail-elkorchi/ui-primitives @ismail-elkorchi/ui-patterns @ismail-elkorchi/ui-shell</pre>
         </div>
       </div>
     </div>
-    <link rel="modulepreload" href="/src/main.ts" />
-    <script type="module" src="/src/main.ts" fetchpriority="high"></script>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

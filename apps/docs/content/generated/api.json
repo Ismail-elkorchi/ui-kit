@@ -5,8 +5,8 @@
     {
       "id": "ui-primitives",
       "name": "Primitives",
-      "contracts": "packages/ui-primitives/contracts/components.json",
-      "cem": "packages/ui-primitives/dist/custom-elements.json",
+      "contracts": "@ismail-elkorchi/ui-primitives/contracts/components.json",
+      "cem": "@ismail-elkorchi/ui-primitives/custom-elements.json",
       "components": [
         {
           "id": "alert",
@@ -5256,8 +5256,8 @@
     {
       "id": "ui-shell",
       "name": "Shell",
-      "contracts": "packages/ui-shell/contracts/entries.json",
-      "cem": "packages/ui-shell/dist/custom-elements.json",
+      "contracts": "@ismail-elkorchi/ui-shell/contracts/entries.json",
+      "cem": "@ismail-elkorchi/ui-shell/custom-elements.json",
       "components": [
         {
           "id": "shell-activity-bar",
@@ -5703,7 +5703,7 @@
       "id": "ui-patterns",
       "name": "Patterns",
       "contracts": null,
-      "cem": "packages/ui-patterns/dist/custom-elements.json",
+      "cem": "@ismail-elkorchi/ui-patterns/custom-elements.json",
       "components": [
         {
           "id": "empty-state",

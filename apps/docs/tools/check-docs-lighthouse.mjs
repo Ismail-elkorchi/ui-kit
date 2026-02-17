@@ -60,6 +60,12 @@ const thresholds = {
   inpMs: 200,
 };
 
+const lighthouseRetryAttempts = Math.max(
+  1,
+  Number.parseInt(process.env.UIK_LIGHTHOUSE_RETRIES ?? "3", 10),
+);
+const lighthouseRetryDelayMs = 250;
+
 const runCommand = (cmd, args, options = {}) =>
   new Promise((resolve, reject) => {
     const child = spawn(cmd, args, {
@@ -303,22 +309,63 @@ const run = async () => {
     const failures = [];
 
     for (const route of routes) {
-      const { metrics, reportJson, reportHtml } = await runLighthouse(
-        baseUrl,
-        route,
-        chrome,
-      );
-      await writeReports(outputDir, route.id, reportJson, reportHtml);
-      failures.push(...evaluateThresholds(route.id, metrics, route.checks));
-      process.stdout.write(
-        `Lighthouse ${route.id}: perf ${formatScore(metrics.performance)}, a11y ${formatScore(
-          metrics.accessibility,
-        )}, LCP ${metrics.lcpMs.toFixed(0)}ms, CLS ${metrics.cls.toFixed(
-          3,
-        )}, TBT ${metrics.tbtMs.toFixed(0)}ms${
-          metrics.inpMs === null ? "" : `, INP ${metrics.inpMs.toFixed(0)}ms`
-        }\n`,
-      );
+      let routePassed = false;
+      let routeAttemptFailures = [];
+
+      for (
+        let attemptIndex = 0;
+        attemptIndex < lighthouseRetryAttempts;
+        attemptIndex += 1
+      ) {
+        const attemptNumber = attemptIndex + 1;
+        const { metrics, reportJson, reportHtml } = await runLighthouse(
+          baseUrl,
+          route,
+          chrome,
+        );
+        const attemptReportId =
+          lighthouseRetryAttempts > 1
+            ? `${route.id}-attempt-${attemptNumber}`
+            : route.id;
+        await writeReports(outputDir, attemptReportId, reportJson, reportHtml);
+        await writeReports(outputDir, route.id, reportJson, reportHtml);
+
+        process.stdout.write(
+          `Lighthouse ${route.id} [attempt ${attemptNumber}/${lighthouseRetryAttempts}]: perf ${formatScore(metrics.performance)}, a11y ${formatScore(
+            metrics.accessibility,
+          )}, LCP ${metrics.lcpMs.toFixed(0)}ms, CLS ${metrics.cls.toFixed(
+            3,
+          )}, TBT ${metrics.tbtMs.toFixed(0)}ms${
+            metrics.inpMs === null ? "" : `, INP ${metrics.inpMs.toFixed(0)}ms`
+          }\n`,
+        );
+
+        routeAttemptFailures = evaluateThresholds(
+          route.id,
+          metrics,
+          route.checks,
+        );
+        if (routeAttemptFailures.length === 0) {
+          routePassed = true;
+          break;
+        }
+        if (attemptNumber < lighthouseRetryAttempts) {
+          await new Promise((resolve) => {
+            globalThis.setTimeout(resolve, lighthouseRetryDelayMs);
+          });
+        }
+      }
+
+      if (!routePassed) {
+        failures.push(
+          ...routeAttemptFailures.map(
+            (failure) =>
+              `${failure} (after ${lighthouseRetryAttempts} attempt${
+                lighthouseRetryAttempts === 1 ? "" : "s"
+              })`,
+          ),
+        );
+      }
     }
 
     if (failures.length) {

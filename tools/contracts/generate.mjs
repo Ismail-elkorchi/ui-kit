@@ -323,6 +323,7 @@ const formatJson = async (data) =>
 
 const writeJson = async (filePath, data) => {
   const output = await formatJson(data);
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, output);
   return output;
 };
@@ -343,6 +344,7 @@ const run = async () => {
 
   const primitivesRoot = path.join(repoRoot, "packages/ui-primitives");
   const shellRoot = path.join(repoRoot, "packages/ui-shell");
+  const patternsRoot = path.join(repoRoot, "packages/ui-patterns");
   const artifactsOk = await ensureArtifacts(
     [
       {
@@ -353,6 +355,10 @@ const run = async () => {
         label: "ui-shell custom-elements.json",
         path: path.join(shellRoot, "dist/custom-elements.json"),
       },
+      {
+        label: "ui-patterns custom-elements.json",
+        path: path.join(patternsRoot, "dist/custom-elements.json"),
+      },
     ],
     checkOnly ? "check" : "generation",
   );
@@ -361,6 +367,11 @@ const run = async () => {
   const primitivesContracts = await buildComponentContracts({
     packageRoot: primitivesRoot,
     cemPath: path.join(primitivesRoot, "dist/custom-elements.json"),
+    includeKind: false,
+  });
+  const patternsContracts = await buildComponentContracts({
+    packageRoot: patternsRoot,
+    cemPath: path.join(patternsRoot, "dist/custom-elements.json"),
     includeKind: false,
   });
 
@@ -375,9 +386,13 @@ const run = async () => {
   shellUtilities.sort((a, b) => a.id.localeCompare(b.id));
 
   const primitivesPath = path.join(primitivesRoot, "contracts/components.json");
+  const patternsPath = path.join(patternsRoot, "contracts/components.json");
   const shellPath = path.join(shellRoot, "contracts/entries.json");
   const primitivesSchemaRef = toPosixPath(
     path.relative(path.dirname(primitivesPath), schemaPaths.primitives),
+  );
+  const patternsSchemaRef = toPosixPath(
+    path.relative(path.dirname(patternsPath), schemaPaths.primitives),
   );
   const shellSchemaRef = toPosixPath(
     path.relative(path.dirname(shellPath), schemaPaths.shell),
@@ -388,6 +403,11 @@ const run = async () => {
     schemaVersion: "1.0.0",
     components: primitivesContracts,
   };
+  const patternsOutput = {
+    $schema: patternsSchemaRef,
+    schemaVersion: "1.0.0",
+    components: patternsContracts,
+  };
   const shellOutput = {
     $schema: shellSchemaRef,
     schemaVersion: "1.0.0",
@@ -396,11 +416,13 @@ const run = async () => {
 
   if (checkOnly) {
     await checkJson(primitivesPath, primitivesOutput);
+    await checkJson(patternsPath, patternsOutput);
     await checkJson(shellPath, shellOutput);
     return;
   }
 
   await writeJson(primitivesPath, primitivesOutput);
+  await writeJson(patternsPath, patternsOutput);
   await writeJson(shellPath, shellOutput);
   console.log("Contracts generated.");
 };

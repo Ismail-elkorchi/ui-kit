@@ -311,7 +311,7 @@ describe("docs outline drawer focus", () => {
       "[data-docs-outline] a, [data-docs-outline] li, [data-docs-outline] span",
     );
     if (!initialItem) throw new Error("Outline item not found.");
-    const initialText = initialItem.textContent?.trim() ?? "";
+    const initialText = initialItem.textContent.trim();
     expect(initialText.length).toBeGreaterThan(0);
 
     if (secondarySidebar.isOpen) {
@@ -327,7 +327,7 @@ describe("docs outline drawer focus", () => {
     const reopenedWide = secondarySidebar.querySelector<HTMLElement>(
       "[data-docs-outline] a, [data-docs-outline] li, [data-docs-outline] span",
     );
-    expect(reopenedWide?.textContent?.trim()).toBe(initialText);
+    expect(reopenedWide?.textContent.trim()).toBe(initialText);
 
     layout.style.setProperty(
       "--uik-component-shell-collapse-breakpoint",
@@ -362,7 +362,7 @@ describe("docs outline drawer focus", () => {
     const reopenedNarrow = secondarySidebar.querySelector<HTMLElement>(
       "[data-docs-outline] a, [data-docs-outline] li, [data-docs-outline] span",
     );
-    expect(reopenedNarrow?.textContent?.trim()).toBe(initialText);
+    expect(reopenedNarrow?.textContent.trim()).toBe(initialText);
   });
 
   it("highlights the active TOC section while scrolling", async () => {

@@ -1,4 +1,5 @@
 import { promises as fs } from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -10,6 +11,7 @@ import prettier from "prettier";
 import { getHighlighter } from "shiki";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const moduleRequire = createRequire(import.meta.url);
 const repoRoot = path.resolve(scriptDir, "../../..");
 const docsRoot = path.join(repoRoot, "apps/docs");
 const contentRoot = path.join(docsRoot, "content");
@@ -280,12 +282,12 @@ const buildCodeBlockMarkup = ({ code, language, highlighter, slot }) => {
   const langClass = langValue ? `language-${escapeHtml(langValue)}` : "";
   const codeClass = ["docs-code-content", langClass].filter(Boolean).join(" ");
   const highlighted = renderHighlightedCode(code, langValue, highlighter);
-  const slotAttr = slot ? ` slot=\"${slot}\"` : "";
+  const slotAttr = slot ? ` slot="${slot}"` : "";
   return stripBlankLines(`
-    <uik-code-block${slotAttr} class=\"docs-code-block\" copyable>
-      <span class=\"${codeClass}\" data-language=\"${escapeHtml(
+    <uik-code-block${slotAttr} class="docs-code-block" copyable>
+      <span class="${codeClass}" data-language="${escapeHtml(
         langValue,
-      )}\">${highlighted}</span>
+      )}">${highlighted}</span>
     </uik-code-block>
   `);
 };
@@ -301,7 +303,7 @@ const buildExampleMarkup = ({ previewHtml, code, language, highlighter }) => {
   });
   return stripBlankLines(`
 <uik-example>
-  <div slot=\"preview\">${preview}</div>
+  <div slot="preview">${preview}</div>
   ${codeBlock}
 </uik-example>
   `);
@@ -475,6 +477,11 @@ const readRepoFile = async (relativePath) => {
   return fs.readFile(filePath, "utf8");
 };
 
+const readExportedJson = async (specifier) => {
+  const filePath = moduleRequire.resolve(specifier);
+  return JSON.parse(await fs.readFile(filePath, "utf8"));
+};
+
 const stripTopHeading = (markdown) => markdown.replace(/^#\s+.*\n+/, "");
 
 const parseMarkdownSections = (markdown, introTitle = "Overview") => {
@@ -503,9 +510,6 @@ const parseMarkdownSections = (markdown, introTitle = "Overview") => {
   flush();
   return sections;
 };
-
-const readJson = async (relativePath) =>
-  JSON.parse(await readRepoFile(relativePath));
 
 const normalizeTypeText = (value) =>
   value.replace(/\s+/g, " ").replace(/\|/g, "|").trim();
@@ -696,20 +700,20 @@ const apiPackageDefinitions = [
   {
     id: "ui-primitives",
     name: "Primitives",
-    contracts: "packages/ui-primitives/contracts/components.json",
-    cem: "packages/ui-primitives/dist/custom-elements.json",
+    contracts: "@ismail-elkorchi/ui-primitives/contracts/components.json",
+    cem: "@ismail-elkorchi/ui-primitives/custom-elements.json",
   },
   {
     id: "ui-shell",
     name: "Shell",
-    contracts: "packages/ui-shell/contracts/entries.json",
-    cem: "packages/ui-shell/dist/custom-elements.json",
+    contracts: "@ismail-elkorchi/ui-shell/contracts/entries.json",
+    cem: "@ismail-elkorchi/ui-shell/custom-elements.json",
   },
   {
     id: "ui-patterns",
     name: "Patterns",
     contracts: null,
-    cem: "packages/ui-patterns/dist/custom-elements.json",
+    cem: "@ismail-elkorchi/ui-patterns/custom-elements.json",
   },
 ];
 
@@ -717,9 +721,9 @@ const buildDocsApiModel = async () => {
   const packages = [];
   for (const definition of apiPackageDefinitions) {
     const contracts = definition.contracts
-      ? await readJson(definition.contracts)
+      ? await readExportedJson(definition.contracts)
       : null;
-    const cem = definition.cem ? await readJson(definition.cem) : null;
+    const cem = definition.cem ? await readExportedJson(definition.cem) : null;
     packages.push({
       id: definition.id,
       name: definition.name,
@@ -970,14 +974,14 @@ const componentPreviewTemplates = {
   "uik-json-viewer": () => ({
     layout: "start",
     size: "lg",
-    html: `<uik-json-viewer json='{\"status\":\"ok\",\"count\":2,\"tags\":[\"alpha\",\"bravo\"]}'></uik-json-viewer>`,
-    snippetHtml: `<uik-json-viewer json='{\"status\":\"ok\",\"count\":2,\"tags\":[\"alpha\",\"bravo\"]}'></uik-json-viewer>`,
+    html: `<uik-json-viewer json='{"status":"ok","count":2,"tags":["alpha","bravo"]}'></uik-json-viewer>`,
+    snippetHtml: `<uik-json-viewer json='{"status":"ok","count":2,"tags":["alpha","bravo"]}'></uik-json-viewer>`,
   }),
   "uik-json-diff": () => ({
     layout: "start",
     size: "lg",
-    html: `<uik-json-diff json-before='{\"status\":\"queued\",\"count\":2}' json-after='{\"status\":\"done\",\"count\":3,\"extra\":true}'></uik-json-diff>`,
-    snippetHtml: `<uik-json-diff json-before='{\"status\":\"queued\",\"count\":2}' json-after='{\"status\":\"done\",\"count\":3,\"extra\":true}'></uik-json-diff>`,
+    html: `<uik-json-diff json-before='{"status":"queued","count":2}' json-after='{"status":"done","count":3,"extra":true}'></uik-json-diff>`,
+    snippetHtml: `<uik-json-diff json-before='{"status":"queued","count":2}' json-after='{"status":"done","count":3,"extra":true}'></uik-json-diff>`,
   }),
   "uik-combobox": () => ({
     layout: "start",

@@ -36,6 +36,7 @@
       "default": "./dist/register.js"
     },
     "./custom-elements.json": "./dist/custom-elements.json",
+    "./contracts/entries.json": "./contracts/entries.json",
     "./layout": {
       "types": "./dist/src/structures/uik-shell-layout.d.ts",
       "import": "./dist/src/structures/uik-shell-layout.js",
@@ -78,6 +79,7 @@
   ],
   "files": [
     "dist",
+    "contracts",
     "README.md"
   ],
   "scripts": {

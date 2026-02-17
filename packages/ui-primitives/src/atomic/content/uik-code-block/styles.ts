@@ -99,16 +99,16 @@ export const styles = css`
     }
 
     .copy {
-      forced-color-adjust: none;
       color: ButtonText;
+      forced-color-adjust: none;
       background-color: ButtonFace;
       border-color: ButtonText;
     }
 
     .copy:focus-visible {
-      box-shadow: none;
       outline: var(--uik-component-code-block-copy-focus-width) solid Highlight;
       outline-offset: var(--uik-component-code-block-copy-focus-offset);
+      box-shadow: none;
     }
   }
 `;

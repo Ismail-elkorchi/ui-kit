@@ -10,7 +10,7 @@ const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
 const setupLayout = async (width = 720) => {
-  const layout = document.createElement("uik-shell-layout") as UikShellLayout;
+  const layout = document.createElement("uik-shell-layout");
   layout.style.width = `${width.toString()}px`;
   layout.style.height = "400px";
   layout.style.setProperty(
@@ -122,7 +122,7 @@ describe("uik-shell layout extension points", () => {
     expect(headerButton.closest("[data-shell-slot='header']")).toBeTruthy();
     expect(
       getComputedStyle(
-        layout.querySelector<HTMLElement>('[part=\"header\"]') ?? document.body,
+        layout.querySelector<HTMLElement>('[part="header"]') ?? document.body,
       ).display,
     ).not.toBe("none");
 
@@ -212,7 +212,7 @@ describe("uik-shell layout extension points", () => {
   });
 
   it("does not treat nested slot attributes in main content as shell regions", async () => {
-    const layout = document.createElement("uik-shell-layout") as UikShellLayout;
+    const layout = document.createElement("uik-shell-layout");
     layout.style.width = "720px";
     layout.style.height = "400px";
     layout.innerHTML = `

@@ -151,7 +151,7 @@ export class UikExample extends LitElement {
   private onControlsTabsSelect = (event: Event) => {
     if (!this.isFromControls(event)) return;
     const detail = (event as CustomEvent<{ id?: string }>).detail;
-    const next = detail?.id?.trim();
+    const next = detail.id?.trim();
     if (next) {
       this.variant = next;
     }
@@ -189,7 +189,7 @@ export class UikExample extends LitElement {
 
   override render() {
     const hasTitleSlot = this.hasSlotContent("title");
-    const titleText = this.title?.trim();
+    const titleText = this.title.trim();
     const hasTitle = Boolean(titleText) || hasTitleSlot;
     const hasControls = this.hasSlotContent("controls");
     const hasPreview = this.hasSlotContent("preview");

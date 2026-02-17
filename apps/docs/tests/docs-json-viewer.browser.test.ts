@@ -4,6 +4,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import "../src/docs.css";
 import { mountDocsApp } from "../app";
 
+interface JsonViewerCopyDetail {
+  kind: string;
+  path: string;
+}
+
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
@@ -59,13 +64,15 @@ describe("docs json viewer page", () => {
     });
 
     try {
-      const copyEvent = new Promise<CustomEvent>((resolve) => {
-        viewer.addEventListener(
-          "json-viewer-copy",
-          (event) => resolve(event as CustomEvent),
-          { once: true },
-        );
-      });
+      const copyEvent = new Promise<CustomEvent<JsonViewerCopyDetail>>(
+        (resolve) => {
+          viewer.addEventListener(
+            "json-viewer-copy",
+            (event) => resolve(event as CustomEvent<JsonViewerCopyDetail>),
+            { once: true },
+          );
+        },
+      );
       copyButton.click();
       const event = await copyEvent;
 
@@ -76,15 +83,10 @@ describe("docs json viewer page", () => {
       const status = viewer.shadowRoot?.querySelector('[part="status"]');
       expect(status?.textContent).toContain("Copied");
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
-      } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
-      }
+      Object.defineProperty(navigator, "clipboard", {
+        value: originalClipboard,
+        configurable: true,
+      });
     }
   });
 });

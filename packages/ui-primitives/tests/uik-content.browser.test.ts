@@ -1,11 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { UikBadge } from "../src/atomic/content/uik-badge";
-import type {
-  UikCodeBlock,
-  UikCodeBlockCopyDetail,
-} from "../src/atomic/content/uik-code-block";
-import type { UikDescriptionList } from "../src/atomic/content/uik-description-list";
+import type { UikCodeBlockCopyDetail } from "../src/atomic/content/uik-code-block";
 import type { UikHeading } from "../src/atomic/content/uik-heading";
 import type { UikIcon } from "../src/atomic/content/uik-icon";
 import type { UikText } from "../src/atomic/content/uik-text";
@@ -136,9 +132,7 @@ describe("uik content primitives", () => {
   });
 
   it("renders description list slots and density", async () => {
-    const list = document.createElement(
-      "uik-description-list",
-    ) as UikDescriptionList;
+    const list = document.createElement("uik-description-list");
     list.density = "compact";
     list.innerHTML = `
       <dt>Status</dt>
@@ -158,7 +152,7 @@ describe("uik content primitives", () => {
   });
 
   it("renders code block content and inline variant", async () => {
-    const codeBlock = document.createElement("uik-code-block") as UikCodeBlock;
+    const codeBlock = document.createElement("uik-code-block");
     codeBlock.textContent = "const status = 'ok';";
     document.body.append(codeBlock);
 
@@ -174,7 +168,7 @@ describe("uik content primitives", () => {
   });
 
   it("copies code block content and announces status", async () => {
-    const codeBlock = document.createElement("uik-code-block") as UikCodeBlock;
+    const codeBlock = document.createElement("uik-code-block");
     codeBlock.copyable = true;
     codeBlock.textContent = "const status = 'ok';";
     document.body.append(codeBlock);
@@ -185,8 +179,14 @@ describe("uik content primitives", () => {
       codeBlock.shadowRoot?.querySelector<HTMLButtonElement>("button.copy");
     expect(copyButton).not.toBeNull();
 
-    const originalClipboard = navigator.clipboard;
-    const originalExecCommand = document.execCommand;
+    const originalClipboardDescriptor = Object.getOwnPropertyDescriptor(
+      navigator,
+      "clipboard",
+    );
+    const originalExecCommandDescriptor = Object.getOwnPropertyDescriptor(
+      document,
+      "execCommand",
+    );
     const writeText = vi.fn().mockRejectedValue(new Error("blocked"));
     const execCommand = vi.fn(() => true);
 
@@ -220,24 +220,23 @@ describe("uik content primitives", () => {
       );
       expect(status?.textContent).toContain("Copied");
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
+      if (originalClipboardDescriptor) {
+        Object.defineProperty(
+          navigator,
+          "clipboard",
+          originalClipboardDescriptor,
+        );
       } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
+        Reflect.deleteProperty(navigator, "clipboard");
       }
-      if (originalExecCommand) {
-        Object.defineProperty(document, "execCommand", {
-          value: originalExecCommand,
-          configurable: true,
-        });
+      if (originalExecCommandDescriptor) {
+        Object.defineProperty(
+          document,
+          "execCommand",
+          originalExecCommandDescriptor,
+        );
       } else {
-        delete (
-          document as Document & { execCommand?: Document["execCommand"] }
-        ).execCommand;
+        Reflect.deleteProperty(document, "execCommand");
       }
     }
   });

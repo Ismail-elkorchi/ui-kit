@@ -9,7 +9,7 @@ const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
 const setupLayout = async (width = 360) => {
-  const layout = document.createElement("uik-shell-layout") as UikShellLayout;
+  const layout = document.createElement("uik-shell-layout");
   layout.style.width = `${width.toString()}px`;
   layout.style.height = "400px";
   layout.style.setProperty(
@@ -35,7 +35,7 @@ const setupLayout = async (width = 360) => {
 };
 
 const setupLayoutWithoutActivity = async (width = 360) => {
-  const layout = document.createElement("uik-shell-layout") as UikShellLayout;
+  const layout = document.createElement("uik-shell-layout");
   layout.style.width = `${width.toString()}px`;
   layout.style.height = "400px";
   layout.style.setProperty(
@@ -59,7 +59,7 @@ const setupLayoutWithoutActivity = async (width = 360) => {
 };
 
 const setupLayoutWithSecondary = async (width = 360) => {
-  const layout = document.createElement("uik-shell-layout") as UikShellLayout;
+  const layout = document.createElement("uik-shell-layout");
   layout.style.width = `${width.toString()}px`;
   layout.style.height = "400px";
   layout.style.setProperty(
@@ -241,13 +241,13 @@ describe("uik-shell-layout drawer", () => {
     const layout = await setupLayoutWithoutActivity(360);
     const drawer = layout.querySelector<HTMLElement>("[data-shell-drawer]");
     const activityRegion = layout.querySelector<HTMLElement>(
-      '[part=\"activity-bar\"]',
+      '[part="activity-bar"]',
     );
     const statusRegion = layout.querySelector<HTMLElement>(
-      '[part=\"status-bar\"]',
+      '[part="status-bar"]',
     );
     const mainRegion = layout.querySelector<HTMLElement>(
-      '[part=\"main-content\"]',
+      '[part="main-content"]',
     );
     if (!drawer || !activityRegion || !statusRegion || !mainRegion) {
       throw new Error("Expected shell regions.");
@@ -275,19 +275,25 @@ describe("uik-shell-layout drawer", () => {
     );
     const sidebar = layout.querySelector<HTMLElement>(
       "uik-shell-secondary-sidebar",
-    ) as HTMLElement & {
-      isOpen?: boolean;
-      updateComplete?: Promise<unknown>;
-    };
+    ) as
+      | (HTMLElement & {
+          isOpen?: boolean;
+          updateComplete?: Promise<unknown>;
+        })
+      | null;
     if (!secondary || !mainRegion || !sidebar) {
       throw new Error("Expected secondary and main regions.");
     }
+    const secondarySidebar = sidebar as {
+      isOpen?: boolean;
+      updateComplete?: Promise<unknown>;
+    };
 
     layout.isSecondarySidebarVisible = true;
-    if ("isOpen" in sidebar) sidebar.isOpen = true;
+    if ("isOpen" in secondarySidebar) secondarySidebar.isOpen = true;
     await layout.updateComplete;
-    if (sidebar.updateComplete) {
-      await sidebar.updateComplete;
+    if (secondarySidebar.updateComplete) {
+      await secondarySidebar.updateComplete;
     }
     await nextFrame();
 
@@ -296,18 +302,18 @@ describe("uik-shell-layout drawer", () => {
     expect(mainRegion.getBoundingClientRect().width).toBeGreaterThan(12);
 
     layout.isSecondarySidebarVisible = false;
-    if ("isOpen" in sidebar) sidebar.isOpen = false;
+    if ("isOpen" in secondarySidebar) secondarySidebar.isOpen = false;
     await layout.updateComplete;
-    if (sidebar.updateComplete) {
-      await sidebar.updateComplete;
+    if (secondarySidebar.updateComplete) {
+      await secondarySidebar.updateComplete;
     }
     await nextFrame();
 
     layout.isSecondarySidebarVisible = true;
-    if ("isOpen" in sidebar) sidebar.isOpen = true;
+    if ("isOpen" in secondarySidebar) secondarySidebar.isOpen = true;
     await layout.updateComplete;
-    if (sidebar.updateComplete) {
-      await sidebar.updateComplete;
+    if (secondarySidebar.updateComplete) {
+      await secondarySidebar.updateComplete;
     }
     await nextFrame();
 

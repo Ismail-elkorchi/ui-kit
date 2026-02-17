@@ -100,12 +100,12 @@ describe("command palette pattern", () => {
     openButton?.focus();
     await userEvent.keyboard("{Control>}{KeyK}{/Control}");
     const palette = await waitForPaletteOpen();
-    await palette?.updateComplete;
+    await palette.updateComplete;
     await nextFrame();
 
     await userEvent.keyboard("{Escape}");
     await nextFrame();
-    expect(palette?.open).toBe(false);
+    expect(palette.open).toBe(false);
     expect(document.activeElement).toBe(openButton);
 
     openButton?.focus();
@@ -114,16 +114,16 @@ describe("command palette pattern", () => {
     await palette.updateComplete;
     await nextFrame();
 
-    const input = palette?.shadowRoot?.querySelector<HTMLInputElement>("input");
+    const input = palette.shadowRoot?.querySelector<HTMLInputElement>("input");
     expect(input).toBeTruthy();
     if (input) {
       input.focus();
       await nextFrame();
       await userEvent.keyboard("Command palette");
       await nextFrame();
-      await palette?.updateComplete;
+      await palette.updateComplete;
       await waitForOptions(palette);
-      const dialog = palette?.shadowRoot?.querySelector<HTMLElement>("dialog");
+      const dialog = palette.shadowRoot?.querySelector<HTMLElement>("dialog");
       if (!dialog) {
         throw new Error("Expected command palette dialog.");
       }
@@ -163,13 +163,16 @@ describe("command palette pattern", () => {
     expect(header).toBeTruthy();
     expect(brand?.getAttribute("href")).toContain("/docs/getting-started");
     expect(searchButton).toBeTruthy();
+    if (!searchButton) {
+      throw new Error("Expected command palette open button.");
+    }
     expect(themeControl).toBeTruthy();
     expect(densityControl).toBeTruthy();
-    expect(searchButton?.closest(".docs-header")).toBe(header);
+    expect(searchButton.closest(".docs-header")).toBe(header);
     expect(themeControl?.closest(".docs-header")).toBe(header);
     expect(densityControl?.closest(".docs-header")).toBe(header);
 
-    await userEvent.click(searchButton as UikButton);
+    await userEvent.click(searchButton);
     const palette = await waitForPaletteOpen();
     expect(palette.open).toBe(true);
   });

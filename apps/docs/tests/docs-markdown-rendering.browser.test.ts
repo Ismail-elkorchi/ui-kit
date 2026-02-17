@@ -92,7 +92,7 @@ describe("docs markdown rendering", () => {
     if (!firstBlock) throw new Error("Expected at least one code block.");
     const copyButton =
       firstBlock.shadowRoot?.querySelector<HTMLButtonElement>("button.copy");
-    expect(copyButton).toBeTruthy();
+    if (!copyButton) throw new Error("Copy button not found.");
     const wrapper =
       firstBlock.shadowRoot?.querySelector<HTMLElement>(".wrapper");
     if (!wrapper) throw new Error("Code block wrapper not found.");
@@ -116,20 +116,15 @@ describe("docs markdown rendering", () => {
     });
 
     try {
-      copyButton?.click();
+      copyButton.click();
       await (firstBlock as unknown as { updateComplete: Promise<void> })
         .updateComplete;
       expect(writeText).toHaveBeenCalled();
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
-      } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
-      }
+      Object.defineProperty(navigator, "clipboard", {
+        value: originalClipboard,
+        configurable: true,
+      });
     }
 
     const codeContents = Array.from(
@@ -141,7 +136,7 @@ describe("docs markdown rendering", () => {
     expect(codeLanguages.length).toBeGreaterThan(0);
 
     const escapedBlock = codeContents.find((node) =>
-      node.textContent?.includes("</script>"),
+      node.textContent.includes("</script>"),
     );
     expect(escapedBlock).toBeTruthy();
     const escapedText = escapedBlock?.textContent ?? "";
@@ -171,10 +166,9 @@ describe("docs markdown rendering", () => {
           return false;
         }
         return Array.from(rules).some((rule) => {
-          if (rule.type !== CSSRule.MEDIA_RULE) return false;
-          const mediaRule = rule;
-          if (!mediaRule.conditionText.includes("forced-colors")) return false;
-          return Array.from(mediaRule.cssRules).some((innerRule) =>
+          if (!(rule instanceof CSSMediaRule)) return false;
+          if (!rule.conditionText.includes("forced-colors")) return false;
+          return Array.from(rule.cssRules).some((innerRule) =>
             innerRule.cssText.includes(".docs-code-block"),
           );
         });
@@ -219,7 +213,7 @@ describe("docs markdown rendering", () => {
 
     const copyButton =
       codeBlock?.shadowRoot?.querySelector<HTMLButtonElement>("button.copy");
-    expect(copyButton).toBeTruthy();
+    if (!copyButton) throw new Error("Copy button not found.");
 
     const originalClipboard = navigator.clipboard;
     const writeText = vi.fn().mockResolvedValue(undefined);
@@ -229,20 +223,15 @@ describe("docs markdown rendering", () => {
     });
 
     try {
-      copyButton?.click();
+      copyButton.click();
       await (codeBlock as unknown as { updateComplete: Promise<void> })
         .updateComplete;
       expect(writeText).toHaveBeenCalled();
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
-      } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
-      }
+      Object.defineProperty(navigator, "clipboard", {
+        value: originalClipboard,
+        configurable: true,
+      });
     }
 
     const tokenBorderWidth = getComputedStyle(example)

@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 import { loadDocsPageModule } from "./content-page-modules";
+import docsManifestData from "./generated/docs-manifest.json";
 
 const escapeHtml = (value: string) =>
   value
@@ -47,7 +48,6 @@ interface DocsManifest {
 }
 
 let docsManifest: DocsManifest | null = null;
-let docsManifestPromise: Promise<DocsManifest> | null = null;
 
 export let docsPages: DocPage[] = [];
 export let labPages: DocPage[] = [];
@@ -69,20 +69,11 @@ const assignManifest = (manifest: DocsManifest) => {
   publicDocsNavPages = publicDocsPages.filter(isNavVisiblePage);
 };
 
-export const ensureDocsContent = async () => {
-  if (docsManifest) return docsManifest;
-  if (!docsManifestPromise) {
-    docsManifestPromise = import("./generated/docs-manifest.json").then(
-      (module) => {
-        const manifest =
-          (module as { default?: DocsManifest }).default ??
-          (module as DocsManifest);
-        assignManifest(manifest);
-        return manifest;
-      },
-    );
-  }
-  return docsManifestPromise;
+export const ensureDocsContent = () => {
+  if (docsManifest) return Promise.resolve(docsManifest);
+  const manifest = docsManifestData as DocsManifest;
+  assignManifest(manifest);
+  return Promise.resolve(manifest);
 };
 
 let componentPages: DocPage[] = [];
@@ -159,7 +150,7 @@ export const renderPageSection = (sectionItem: DocSection) => {
     .replace(
       /<uik-heading([^>]*class="[^"]*docs-heading[^"]*"[^>]*)>([\s\S]*?)<\/uik-heading>/gi,
       (_match, attrs: string, inner: string) => {
-        const levelMatch = attrs.match(/\blevel="([1-6])"/i);
+        const levelMatch = /\blevel="([1-6])"/i.exec(attrs);
         const level = levelMatch?.[1] ?? "2";
         const normalizedAttrs = attrs.replace(/\slevel="[^"]*"/i, "");
         return `<h${level}${normalizedAttrs}>${inner}</h${level}>`;

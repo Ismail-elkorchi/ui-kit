@@ -23,12 +23,12 @@ const getMetaContent = (selector: string) => {
   return element?.content ?? "";
 };
 
-type PageSpec = {
+interface PageSpec {
   route: string;
   title: string;
   summary: string;
   specifiers: string[];
-};
+}
 
 const pages: PageSpec[] = [
   {
@@ -97,7 +97,7 @@ describe("docs integrations", () => {
       expect(codeBlock).toBeTruthy();
 
       const codeText = Array.from(content.querySelectorAll("uik-code-block"))
-        .map((block) => block.textContent ?? "")
+        .map((block) => block.textContent)
         .join("\n");
 
       page.specifiers.forEach((specifier) => {

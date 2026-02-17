@@ -88,27 +88,24 @@ describe("docs activity feed example", () => {
     });
 
     try {
-      const copyEvent = new Promise<CustomEvent>((resolve) => {
-        codeBlock.addEventListener(
-          "code-block-copy",
-          (event) => resolve(event as CustomEvent),
-          { once: true },
-        );
-      });
+      const copyEvent = new Promise<CustomEvent<{ success: boolean }>>(
+        (resolve) => {
+          codeBlock.addEventListener(
+            "code-block-copy",
+            (event) => resolve(event as CustomEvent<{ success: boolean }>),
+            { once: true },
+          );
+        },
+      );
       copyButton.click();
       const event = await copyEvent;
       expect(event.detail.success).toBe(true);
       expect(writeText).toHaveBeenCalled();
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
-      } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
-      }
+      Object.defineProperty(navigator, "clipboard", {
+        value: originalClipboard,
+        configurable: true,
+      });
     }
 
     await runA11y(document.body);

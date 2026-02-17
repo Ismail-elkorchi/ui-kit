@@ -15,9 +15,9 @@ export const styles = css`
 
   .header {
     display: flex;
+    gap: var(--uik-component-example-header-gap);
     align-items: center;
     justify-content: space-between;
-    gap: var(--uik-component-example-header-gap);
     padding: var(--uik-component-example-header-padding-y)
       var(--uik-component-example-header-padding-x);
     border-bottom: var(--uik-component-example-border-width) solid
@@ -26,16 +26,16 @@ export const styles = css`
 
   .title {
     display: flex;
-    align-items: center;
     gap: var(--uik-component-example-header-gap);
+    align-items: center;
     min-width: 0;
   }
 
   .controls {
     display: flex;
-    align-items: center;
-    gap: var(--uik-component-example-header-gap);
     flex-shrink: 0;
+    gap: var(--uik-component-example-header-gap);
+    align-items: center;
   }
 
   .tabs {

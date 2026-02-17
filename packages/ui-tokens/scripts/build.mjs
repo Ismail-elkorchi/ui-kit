@@ -60,12 +60,20 @@ function extractReducedMotionVars(cssText) {
   return [...new Set(matches)].sort();
 }
 
-function injectReducedMotion(cssText) {
-  const vars = extractReducedMotionVars(cssText);
-  if (vars.length === 0) return cssText;
+function getReducedMotionVarName(baseName) {
+  return baseName.replace("--uik-motion-", "--uik-motion-reduced-");
+}
 
-  const reduceLines = vars.map((name) => `${name}:0ms;`);
-  const reduceLinesInline = vars.map((name) => `${name}:0ms;`);
+function buildReducedMotionAssignments(cssText) {
+  const vars = extractReducedMotionVars(cssText);
+  return vars.map(
+    (name) => `${name}:var(${getReducedMotionVarName(name)}, 0ms);`,
+  );
+}
+
+function injectReducedMotion(cssText) {
+  const reduceLines = buildReducedMotionAssignments(cssText);
+  if (reduceLines.length === 0) return cssText;
   const snippet = [
     "",
     "@media (prefers-reduced-motion: reduce) {",
@@ -75,7 +83,7 @@ function injectReducedMotion(cssText) {
     "}",
     "",
     ":where([data-uik-motion='reduced']) {",
-    ...reduceLinesInline,
+    ...reduceLines,
     "}",
     "",
   ].join("\n");

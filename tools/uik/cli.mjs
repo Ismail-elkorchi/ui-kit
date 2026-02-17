@@ -66,7 +66,8 @@ switch (command) {
     }
     console.error("Unknown contracts subcommand.");
     console.log(helpText);
-    process.exit(1);
+    process.exitCode = 1;
+    break;
   case "docs":
     if (subcommand === "generate") {
       run("npm", ["-w", "apps/docs", "run", "deps:build"]);
@@ -76,7 +77,8 @@ switch (command) {
     }
     console.error("Unknown docs subcommand.");
     console.log(helpText);
-    process.exit(1);
+    process.exitCode = 1;
+    break;
   case "release":
     if (!subcommand) {
       runNode(path.join("tools", "release", "cli.mjs"), ["release", ...rest]);
@@ -88,9 +90,10 @@ switch (command) {
     }
     console.error("Unknown release subcommand.");
     console.log(helpText);
-    process.exit(1);
+    process.exitCode = 1;
+    break;
   default:
     console.error("Unknown command.");
     console.log(helpText);
-    process.exit(1);
+    process.exitCode = 1;
 }

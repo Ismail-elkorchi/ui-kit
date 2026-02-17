@@ -7,6 +7,10 @@ import { userEvent } from "vitest/browser";
 import "../src/docs.css";
 import { mountDocsApp } from "../app";
 
+interface CodeBlockCopyDetail {
+  success: boolean;
+}
+
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
@@ -139,27 +143,24 @@ describe("docs examples", () => {
     });
 
     try {
-      const copyEvent = new Promise<CustomEvent>((resolve) => {
-        activeCodeBlock.addEventListener(
-          "code-block-copy",
-          (event) => resolve(event as CustomEvent),
-          { once: true },
-        );
-      });
+      const copyEvent = new Promise<CustomEvent<CodeBlockCopyDetail>>(
+        (resolve) => {
+          activeCodeBlock.addEventListener(
+            "code-block-copy",
+            (event) => resolve(event as CustomEvent<CodeBlockCopyDetail>),
+            { once: true },
+          );
+        },
+      );
       copyButton.click();
       const event = await copyEvent;
       expect(event.detail.success).toBe(true);
       expect(writeText).toHaveBeenCalled();
     } finally {
-      if (originalClipboard) {
-        Object.defineProperty(navigator, "clipboard", {
-          value: originalClipboard,
-          configurable: true,
-        });
-      } else {
-        delete (navigator as typeof navigator & { clipboard?: Clipboard })
-          .clipboard;
-      }
+      Object.defineProperty(navigator, "clipboard", {
+        value: originalClipboard,
+        configurable: true,
+      });
     }
 
     await runA11y(document.body);

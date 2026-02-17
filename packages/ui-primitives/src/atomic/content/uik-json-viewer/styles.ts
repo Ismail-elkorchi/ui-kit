@@ -9,13 +9,13 @@ export const styles = css`
     display: block;
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
+    font-family: var(--uik-typography-font-family-mono);
+    font-size: var(--uik-typography-font-size-2);
+    line-height: var(--uik-typography-line-height-2);
     color: oklch(var(--uik-text-default));
     background-color: oklch(var(--uik-component-json-viewer-bg));
     border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
     border-radius: var(--uik-radius-2);
-    font-family: var(--uik-typography-font-family-mono);
-    font-size: var(--uik-typography-font-size-2);
-    line-height: var(--uik-typography-line-height-2);
   }
 
   .tree {
@@ -28,8 +28,8 @@ export const styles = css`
   .item {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
     gap: var(--uik-layout-control-gap-2);
+    align-items: center;
     min-height: var(--uik-size-control-sm);
     padding-block: var(--uik-space-0);
     color: oklch(var(--uik-text-default));
@@ -67,14 +67,14 @@ export const styles = css`
 
   .content {
     display: inline-flex;
-    align-items: center;
     gap: var(--uik-layout-control-gap-2);
+    align-items: center;
     min-width: var(--uik-space-0);
   }
 
   .key {
-    color: oklch(var(--uik-text-strong));
     font-weight: var(--uik-typography-font-weight-medium);
+    color: oklch(var(--uik-text-strong));
   }
 
   .separator {
@@ -117,8 +117,8 @@ export const styles = css`
   }
 
   .type {
-    color: oklch(var(--uik-text-muted));
     font-size: var(--uik-typography-font-size-1);
+    color: oklch(var(--uik-text-muted));
   }
 
   .actions {
@@ -128,18 +128,18 @@ export const styles = css`
 
   .action-button {
     display: inline-flex;
-    align-items: center;
     gap: var(--uik-space-1);
+    align-items: center;
     padding: var(--uik-layout-control-padding-y-1)
       var(--uik-layout-control-padding-x-1);
-    color: oklch(var(--uik-text-default));
-    background-color: oklch(var(--uik-component-json-viewer-bg));
-    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
-    border-radius: var(--uik-radius-2);
     font-size: var(--uik-typography-font-size-1);
     font-weight: var(--uik-typography-font-weight-medium);
     line-height: var(--uik-typography-line-height-1);
+    color: oklch(var(--uik-text-default));
     cursor: pointer;
+    background-color: oklch(var(--uik-component-json-viewer-bg));
+    border: var(--uik-border-width-1) solid oklch(var(--uik-border-muted));
+    border-radius: var(--uik-radius-2);
   }
 
   .action-button:focus-visible {
@@ -155,11 +155,11 @@ export const styles = css`
   .error {
     padding: var(--uik-layout-control-padding-y-2)
       var(--uik-layout-control-padding-x-2);
-    border-radius: var(--uik-radius-2);
+    font-weight: var(--uik-typography-font-weight-medium);
+    color: oklch(var(--uik-text-danger));
     background-color: oklch(var(--uik-color-danger-1));
     border: var(--uik-border-width-1) solid oklch(var(--uik-border-danger));
-    color: oklch(var(--uik-text-danger));
-    font-weight: var(--uik-typography-font-weight-medium);
+    border-radius: var(--uik-radius-2);
   }
 
   @media (forced-colors: active) {
@@ -181,8 +181,8 @@ export const styles = css`
     }
 
     .action-button {
-      forced-color-adjust: none;
       color: ButtonText;
+      forced-color-adjust: none;
       background-color: ButtonFace;
     }
 
