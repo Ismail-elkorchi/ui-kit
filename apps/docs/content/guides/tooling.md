@@ -1,6 +1,6 @@
 # Tooling
 
-UIK ships a single, repo-local tooling surface so contributors can run gates, generate contracts, refresh docs content, and prepare releases without guesswork. Every command below is safe to copy as-is.
+UIK ships a single contributor tooling surface so contributors can run gates, generate contracts, refresh docs content, and prepare releases without guesswork. Every command below is safe to copy as-is.
 
 ## Run the gate chain
 
@@ -82,5 +82,5 @@ Release workflows run gates before tagging. Use the release check if you want to
 
 ## Notes
 
-- The `uik` CLI delegates to repo scripts. It never invokes a global ATO binary.
+- The `uik` CLI delegates to repo scripts.
 - Docs are a production app and remain private; releases tag and generate notes but do not publish docs.

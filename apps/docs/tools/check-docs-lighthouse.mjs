@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import { promises as fs } from "node:fs";
 import { createRequire } from "node:module";
+import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -16,7 +17,7 @@ const { launch } = chromeLauncher;
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "../../..");
 const docsRoot = path.join(repoRoot, "apps/docs");
-const artifactsRoot = path.join(repoRoot, ".ato/runs/artifacts");
+const artifactsRoot = path.join(os.tmpdir(), "ui-kit", "artifacts");
 const viteBin = path.join(repoRoot, "node_modules/.bin/vite");
 
 const defaultChecks = {

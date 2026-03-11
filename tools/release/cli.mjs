@@ -240,8 +240,6 @@ const runChecks = () => {
   run("npm", ["run", "contracts:generate"]);
   run("npm", ["run", "contracts:validate:build"]);
   run("npm", ["test"]);
-  run("node", ["ato.mjs", "q", "validate", "--json"]);
-  run("node", ["ato.mjs", "gate", "run", "--mode", "full", "--json"]);
 };
 
 const command = process.argv[2];

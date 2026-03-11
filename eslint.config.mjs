@@ -70,9 +70,6 @@ export default defineConfig([
       "**/playwright-report/**",
       "**/test-results/**",
       ".internal/**",
-      ".ato/**",
-      ".ato/cache/**",
-      ".ato/runs/**",
     ],
   },
 

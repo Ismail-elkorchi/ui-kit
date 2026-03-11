@@ -24,7 +24,6 @@ const runStep = (label, command, args) => {
 };
 
 const steps = [
-  ["ATO script guard", "node", ["tools/architecture/check-no-global-ato.mjs"]],
   ["Build deps", npmBin, ["run", "build:deps"]],
   ["ESM relative imports", "node", ["tools/esm/check-relative-imports.mjs"]],
   [
@@ -57,8 +56,6 @@ const steps = [
   ],
   ["Baseline drift", "node", ["tools/baseline/generate.mjs", "--check"]],
   ["Contracts drift", npmBin, ["run", "contracts:validate"]],
-  ["Queue validation", "node", ["tools/ato.mjs", "q", "validate", "--json"]],
-  ["Cycle finish check", "node", ["tools/ato/check-cycle-finish.mjs"]],
   ["Docs tests", npmBin, ["-w", "apps/docs", "run", "test"]],
   ["UI tokens tests", npmBin, ["-w", "packages/ui-tokens", "run", "test"]],
   [

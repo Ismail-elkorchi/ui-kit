@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import http from "node:http";
+import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { spawnSync } from "node:child_process";
@@ -192,14 +193,7 @@ const captureVisuals = async ({ baseUrl, stories }) => {
   const browser = await chromium.launch();
   const failures = [];
   const runId = new Date().toISOString().replace(/[:.]/g, "-");
-  const diffRoot = path.join(
-    repoRoot,
-    ".ato",
-    "runs",
-    "artifacts",
-    "visual-diffs",
-    runId,
-  );
+  const diffRoot = path.join(os.tmpdir(), "ui-kit", "visual-diffs", runId);
 
   try {
     for (const variant of variants) {
